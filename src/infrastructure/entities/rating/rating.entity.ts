@@ -150,7 +150,8 @@ export class RatingEntity extends GenericEntity {
         model.updatedAt = rating.getUpdatedAt();
         model.vocabulary = rating.getVocabulary();
         model.writing = rating.getWriting();
-        model.academicSemester = AcademicSemesterEntity.toAcademicSemester(rating.getAcademicSemester());
+        // TODO FIX 
+        // model.academicSemester = AcademicSemesterEntity.toAcademicSemester(rating.getAcademicSemester());
         return model;
     }
 

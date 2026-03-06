@@ -30,19 +30,19 @@ export class AcademicSemesterEntity extends GenericEntity {
 
     @OneToMany(() => RatingEntity, rating => rating.academicSemester)
     ratings: RatingEntity[];
+    // TODO FIX
+    // static toAcademicSemester(semester: AcademicSemester): AcademicSemesterEntity {
+    //     let model = new AcademicSemesterEntity();
+    //     model.actual = semester.getActual();
+    //     model.beginningDate = semester.getBeginningDate();
+    //     model.createdAt = semester.getCreatedAt();
+    //     model.deletedAt = semester.getDeletedAt();
+    //     model.endingDate = semester.getEndingDate();
+    //     model.id = semester.getId();
+    //     model.updatedAt = semester.getUpdatedAt()
+    //     model.ratings = RatingEntity.toRatingsEntity(semester.getRating());
 
-    static toAcademicSemester(semester: AcademicSemester): AcademicSemesterEntity {
-        let model = new AcademicSemesterEntity();
-        model.actual = semester.getActual();
-        model.beginningDate = semester.getBeginningDate();
-        model.createdAt = semester.getCreatedAt();
-        model.deletedAt = semester.getDeletedAt();
-        model.endingDate = semester.getEndingDate();
-        model.id = semester.getId();
-        model.updatedAt = semester.getUpdatedAt()
-        model.ratings = RatingEntity.toRatingsEntity(semester.getRating());
-
-        return model;
-    }
+    //     return model;
+    // }
 
 }

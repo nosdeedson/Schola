@@ -10,46 +10,23 @@ export class AcademicSemesterValidator implements Validator<AcademicSemester>{
             yup.object()
                 .shape({
                     actual : yup.boolean().required('must inform academicSemester as actual'),
-                    beginningDate : yup.date().required('academicSemester date beginning must be informed'),
-                    endingDate : yup.date().required('academicSemester date ending must be informed')
+                    firstQuarter : yup.object().required('First Quarter is required'),
+                    secondQuarter : yup.object().required('academicSemester date ending must be informed')
                 })
                 .validateSync({
-                    actual : entity.getActual(),
-                    beginningDate : entity.getBeginningDate(),
-                    endingDate: entity.getEndingDate()
+                    actual : entity.getCurrentSemester(),
+                    firstQuarter : entity.getFirstQuarter(),
+                    secondQuarter: entity.getSecondQuarter()
                 },{
                     abortEarly: false
                 })
-                if(isAfter(entity.getBeginningDate(), entity.getEndingDate())){
+                if(isAfter(entity.firstQuarter.endingDate, entity.secondQuarter.beginningDate)){
                     entity.notification?.addError({
-                        context: 'academicSemester',
-                        message: 'the beginning date must be before ending date'
+                        context: "academic semester",
+                        message: "the end of the first Quarter must be before the start of the beggining of the secondQuarter"
                     })
                 }
-                if(isBefore(entity.getEndingDate(), entity.getBeginningDate())){
-                    entity.notification?.addError({
-                        context: 'academicSemester',
-                        message: 'the ending date must be after beginning date'
-                    })
-                }
-                if(isWeekend(entity.getBeginningDate())){
-                    entity.notification?.addError({
-                        context: 'academicSemester',
-                        message: 'the academicSemester must start in a weekday'
-                    })
-                }
-                if(isWeekend(entity.getEndingDate())){
-                    entity.notification?.addError({
-                        context: 'academicSemester',
-                        message: 'the academicSemester must end in a weekday'
-                    })
-                }
-                if(isEqual(entity.getBeginningDate(), entity.getEndingDate())){
-                    entity.notification?.addError({
-                        context: 'academicSemester',
-                        message: 'the beggning and the end of the semester can not be equal'
-                    })
-                }
+                
         } catch (error) {
             let err = error as yup.ValidationError;
             err.errors.forEach(it => {

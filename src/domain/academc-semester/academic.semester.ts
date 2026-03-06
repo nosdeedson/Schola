@@ -1,66 +1,43 @@
 import { Entity } from "../@shared/entity";
-import { Rating } from "../rating/rating";
 import { AcademicSemesterValidator as AcademicSemesterValidator } from "./academic.semester.validator";
+import { Quarter } from "../quarter/quarter";
 
 export class AcademicSemester extends Entity {
 
-    private actual: boolean;
-    private beginningDate: Date;
-    private endingDate: Date;
-    private ratings?: Rating[];
+    firstQuarter: Quarter;
+    secondQuarter: Quarter;
+    currentSemester: boolean;
 
     constructor(
-        actual: boolean,
-        beginningDate: Date,
-        endingDate: Date,
-        id?: string, 
-        createdAt?: Date, 
-        updatedAt?: Date, 
-        deletedAt?: Date
+        firstQuarter: Quarter,
+        secondQuarter: Quarter,
+        currentSemester: boolean,
+        id?: string,
+        createdAt?: Date,
+        updatedAt?: Date,
+        deletedAt?: Date,
     ) {
         super(id, createdAt, updatedAt, deletedAt);
-        this.actual = actual;
-        this.beginningDate = beginningDate;
-        this.endingDate = endingDate;
+        this.firstQuarter = firstQuarter;
+        this.secondQuarter = secondQuarter;
+        this.currentSemester = currentSemester;
         this.validate();
     }
 
-    validate(){
+    validate() {
         new AcademicSemesterValidator().validate(this);
     }
 
-    getActual(): boolean{
-        return this.actual
+    getFirstQuarter(): Quarter{
+        return this.firstQuarter;
     }
 
-    setActual(actual: boolean){
-        this.actual = actual;
+    getSecondQuarter(): Quarter{
+        return this.secondQuarter;
+    } 
+
+    getCurrentSemester(): boolean{
+        return this.currentSemester;
     }
 
-    getBeginningDate(): Date{
-        return this.beginningDate;
-    }
-
-    setBeginningDate(date: Date){
-        this.beginningDate = date;
-    }
-
-    getEndingDate(): Date{
-        return this.endingDate;
-    }
-
-    setEndingDate(date: Date){
-        this.endingDate = date;
-    }
-
-    getRating(): Rating[]{
-        return this.ratings;
-    }
-
-    setRating(rating: Rating){
-        if(!this.ratings){
-            this.ratings = [];
-        }
-        this.ratings.push(rating);
-    }
 }
