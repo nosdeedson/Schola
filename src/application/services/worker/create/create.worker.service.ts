@@ -21,8 +21,15 @@ export class CreateWorkerService extends CreateGenericService {
         this.schoolGroupRepository = schoolGroupRepository;
     }
 
-    public async execute(input: CreateWorkerDto){
+    public async execute(input: CreateWorkerDto): Promise<WorkerEntity>{
         try {
+            const teacherExist = await this.workerRepository.findByName(input.name);
+            if(teacherExist){
+                teacherExist.birthday = input.birthday;
+                teacherExist.updatedAt = new Date();
+                return await this.workerRepository.create(teacherExist) as WorkerEntity;
+            }
+            // TODO NEED TO VERIFY IF TEACHER ALREADY EXIST, YES UPDATE OTHERWISE CREATE
             let worker = new Worker({birthday: input.birthday, name: input.name, role: input.role});
             if(worker.notification?.hasError()){
                 throw new SystemError(worker.notification.getErrors());
@@ -31,7 +38,7 @@ export class CreateWorkerService extends CreateGenericService {
             let schoolGroup = await this.schoolGroupRepository.findByClassCode(input.classCode);
             model.classes = [];
             model.classes.push(schoolGroup);
-            return await this.workerRepository.create(model);
+            return await this.workerRepository.create(model) as WorkerEntity;
             // TODO CREATE THE USER FOR WORKER, WHICH MUST BE DONE IN THE SERVICE THAT WOULD BE CALLED BY THE CONTROLLER
         } catch (error) {
             throw error;

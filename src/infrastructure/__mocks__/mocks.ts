@@ -37,7 +37,7 @@ const rating = new Rating(academicSemester, student, new Date(), Grade.BAD, Grad
 
 const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR });
 admin.setClass(schoolGroup);
-const teacher = new Worker({ birthday: new Date(), name: 'maria', role: RoleEnum.TEACHER });
+const teacher = new Worker({ birthday: new Date(), name: 'juliana', role: RoleEnum.TEACHER });
 const teacherWithJustName = new Worker({ name: 'maria', role: RoleEnum.TEACHER });
 teacher.setClass(schoolGroup);
 

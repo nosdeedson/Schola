@@ -100,14 +100,7 @@ export class ClassRepository implements ClassRepositoryInterface {
     }
 
     async update(entity: ClassEntity) {
-        await this.dataSource.createQueryBuilder()
-            .update(ClassEntity)
-            .set({
-                bookName : entity.bookName,
-                className : entity.className,
-                updatedAt: new Date()
-            })
-            .execute();
+        await this.classRepository.save(entity);
     }
 
 }

@@ -4,8 +4,10 @@ import { setEnv } from '../../../__mocks__/env.mock';
 import { MockSchoolgroupDto } from '../../../__mocks__/mock-schoolgroup-dto';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
+import { CreateSchoolgroupUseCase } from '../../../../application/usecases/schoolgroup-usecases/create/schoolgroup';
+import { UpdateSchoolgroupUsecase } from '../../../../application/usecases/schoolgroup-usecases/update/schoolgroup';
 import { SchoolgroupController } from './schoolgroup.controller';
-import { UpdateSchoolgroupDto } from './update-schoolgroup-dto';
+import { UpdateSchoolgroupDto } from './dto/update/update-schoolgroup-dto';
 import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service';
 
 describe('SchoolgroupController', () => {
@@ -18,6 +20,8 @@ describe('SchoolgroupController', () => {
       controllers: [SchoolgroupController],
       providers: [
         SchoolgroupUseCases,
+        CreateSchoolgroupUseCase,
+        UpdateSchoolgroupUsecase,
         RepositoryFactoryService,
       ],
       imports: [DataBaseConnectionModule]
@@ -37,7 +41,7 @@ describe('SchoolgroupController', () => {
 
   it('should create a schoolgroup', async () => {
     let dto = MockSchoolgroupDto.dtoToCreate();
-    const usecases = jest.spyOn(SchoolgroupUseCases.prototype, 'create')
+    const usecases = jest.spyOn(CreateSchoolgroupUseCase.prototype, 'create')
       .mockImplementationOnce(() => Promise.resolve())
     expect(await controller.create(dto)).toBe(void 0);
     expect(usecases).toHaveBeenCalledTimes(1);
@@ -46,7 +50,7 @@ describe('SchoolgroupController', () => {
 
   it('should throw an exception', async () => {
     let dto = MockSchoolgroupDto.dtoToCreateCausingException();
-    const usecases = jest.spyOn(SchoolgroupUseCases.prototype, 'create')
+    const usecases = jest.spyOn(CreateSchoolgroupUseCase.prototype, 'create')
       .mockImplementationOnce(() => Promise.reject(new BadRequestException("test")));
     try {
       await controller.create(dto)
@@ -89,11 +93,11 @@ describe('SchoolgroupController', () => {
   })
 
   it('should update schoolgroup', async () => {
-    const usecases = jest.spyOn(SchoolgroupUseCases.prototype, 'update')
+    const usecases = jest.spyOn(UpdateSchoolgroupUsecase.prototype, 'update')
       .mockImplementationOnce(async () => await Promise.resolve());
     let dto = new UpdateSchoolgroupDto();
     dto.id = '16efc675-a208-43fe-93dd-8b9a3eebe656';
-    dto.className = 'classname';
+    dto.teacherName = 'new teacher';
     dto.nameBook = "name book"
     expect(await controller.update(dto)).toBe(void 0);
     expect(usecases).toHaveBeenCalledTimes(1);

@@ -45,7 +45,9 @@ export class CreateSchoolgroupDto {
         return new CreateClassDto(
             this.nameBook,
             this.name,
-            scheduleDto
+            scheduleDto,
+            null,
+            teacherEntity,
         )
     }
 }

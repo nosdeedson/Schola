@@ -3,18 +3,10 @@ import { UpdateClassService } from './update.class.service';
 import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
-import { Class } from '../../../../domain/class/class';
-
+import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
+import { RoleEnum } from '../../../../domain/worker/roleEnum';
 
 describe('update class service unit test', () =>{
-
-    let schoolgroup: Class;
-    let entity: ClassEntity;
-
-    beforeEach(() => {
-        schoolgroup = DomainMocks.mockSchoolGroup();
-        entity = ClassEntity.toClassEntity(schoolgroup);
-    });
 
     afterEach(() =>{
         jest.clearAllMocks();
@@ -23,8 +15,8 @@ describe('update class service unit test', () =>{
     it('should throw an error if passing invalid id', async () =>{
         let nonExistentId = '123';
         let wantedBookName = 'bookb1';
-        let wantedClassName = 'b1';
-        let input : UpdateClassDto = new UpdateClassDto(nonExistentId, wantedBookName, wantedClassName);
+        let newTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        let input = new UpdateClassDto(nonExistentId, wantedBookName, newTeacher);
         
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn().mockImplementationOnce(() => {return null});
@@ -41,21 +33,23 @@ describe('update class service unit test', () =>{
     });
 
     it('should update a class', async () =>{
+        const schoolgroup = DomainMocks.mockSchoolGroup();
+        const entity = ClassEntity.toClassEntity(schoolgroup);
+        const newTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
         let wantedId = schoolgroup.getId();
         let wantedBookName = 'bookb1';
-        let wantedClassName = 'b1';
-        let input : UpdateClassDto = new UpdateClassDto(wantedId, wantedBookName, wantedClassName);
+        let input = new UpdateClassDto(wantedId, wantedBookName, newTeacher);
         
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn().mockImplementationOnce(() => {return entity});
-        classRepository.update = jest.fn().mockImplementationOnce(() => {entity.bookName = wantedBookName, entity.className = wantedClassName});
+        classRepository.update = jest.fn().mockImplementationOnce(() => {entity.bookName = wantedBookName, entity.teacher = newTeacher});
         const service = new UpdateClassService(classRepository);
 
         expect(await service.execute(input)).toBe(void 0);
         expect(classRepository.find).toHaveBeenCalledWith(input.id);
         expect(classRepository.find).toHaveBeenCalledTimes(1);
         expect(classRepository.update).toHaveBeenCalledTimes(1);
-        
-    })
+        expect(classRepository.update).toHaveBeenCalledWith(entity);
+    });
 
 })

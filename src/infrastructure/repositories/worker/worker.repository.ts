@@ -50,6 +50,12 @@ export class WorkerRepository implements WorkerRepositoryInterface {
         return all;
     }
 
+    async findByName(name: string): Promise<WorkerEntity> {
+        return this.workerRespository.findOne({
+            where: { fullName: name }
+        })
+    }
+
     async update(entity: WorkerEntity) {
         await this.workerRespository.save(entity);
     }

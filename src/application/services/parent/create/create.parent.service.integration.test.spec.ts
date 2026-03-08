@@ -9,7 +9,6 @@ import { CreateParentDto } from './create.parent.dto';
 import { CreateParentService } from './create.parent.service';
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
-import { SystemError } from "../../../services/@shared/system-error";
 
 describe('CreateParentService integration tests', () => {
 

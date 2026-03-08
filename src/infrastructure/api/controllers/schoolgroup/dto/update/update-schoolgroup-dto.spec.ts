@@ -1,4 +1,4 @@
-import { UpdateSchoolgroupDto } from './update-schoolgroup-dto';
+import { UpdateSchoolgroupDto } from '../update/update-schoolgroup-dto';
 
 describe('UpdateSchoolgroupDto', () => {
 

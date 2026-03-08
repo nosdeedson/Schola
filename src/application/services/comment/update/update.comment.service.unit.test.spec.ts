@@ -24,7 +24,9 @@ describe('UpdateCommentService unit tests', () =>{
         try {
             await service.execute(dto);
         } catch (error) {
+            //@ts-ignore
             expect(error.errors).toBeDefined();
+            //@ts-ignore
             expect(error.errors).toMatchObject([{context: 'comment', message: 'comment not found'}]);
         }
     });

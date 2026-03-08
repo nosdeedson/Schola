@@ -82,4 +82,14 @@ describe("WorkerRepository unit tets", () =>{
         //expect(result).toStrictEqual(model2)
     });
 
+    it('should find teacher entity by name', async () =>{
+        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let model = WorkerEntity.toWorkerEntity(worker);
+        expect(await repository.create(model)).toBeInstanceOf(WorkerEntity);
+        let entity = await repository.findByName(model.fullName);
+        expect(entity).toBeDefined();
+        expect(entity.id).toEqual(model.id);
+        expect(entity.role).toEqual(model.role);
+    });
+
 })

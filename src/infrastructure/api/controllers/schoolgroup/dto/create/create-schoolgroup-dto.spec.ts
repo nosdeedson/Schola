@@ -1,4 +1,4 @@
-import { CreateSchoolgroupDto, Schedule } from './create-schoolgroup-dto';
+import { CreateSchoolgroupDto, Schedule } from '../create/create-schoolgroup-dto';
 
 describe('CreateSchoolgroupDto', () => {
 

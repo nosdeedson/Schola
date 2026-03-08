@@ -1,4 +1,4 @@
-import { CreateSchoolgroupDto, Schedule } from "../api/controllers/schoolgroup/create-schoolgroup-dto";
+import { CreateSchoolgroupDto, Schedule } from "../api/controllers//schoolgroup/dto/create/create-schoolgroup-dto";
 
 export class MockSchoolgroupDto {
 

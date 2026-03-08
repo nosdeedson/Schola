@@ -15,8 +15,9 @@ export class UpdateClassService{
         if(!schoolgroup){
             throw new SystemError([{context: 'class', message: "class not found"}]);
         }
-        schoolgroup.bookName = dto.bookName;
-        schoolgroup.className = dto.className;
+        schoolgroup.bookName = dto.nameBook;
+        schoolgroup.teacher = dto.teacher;
+        schoolgroup.updatedAt = new Date(2026, 3, 1, 23, 59, 59);
         await this.classRepository.update(schoolgroup);
     }
 }

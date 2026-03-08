@@ -8,8 +8,8 @@ import { ClassEntity } from 'src/infrastructure/entities/class/class.entity';
 import { ClassRepository } from 'src/infrastructure/repositories/class/class.repository';
 import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
 import { DataSource } from 'typeorm';
-import { CreateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/create-schoolgroup-dto';
-import { UpdateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/update-schoolgroup-dto';
+import { CreateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-dto';
+import { UpdateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-dto';
 import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';
 import { WorkerRepository } from 'src/infrastructure/repositories/worker/worker.repository';
@@ -19,6 +19,7 @@ import { CreateWorkerService } from 'src/application/services/worker/create/crea
 import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
 import { AccessType } from 'src/domain/user/access.type';
 import { WorkerEntity } from 'src/infrastructure/entities/worker/worker.entity';
+import { SystemError } from 'src/application/services/@shared/system-error';
 
 @Injectable()
 export class SchoolgroupUseCases {
@@ -31,23 +32,6 @@ export class SchoolgroupUseCases {
     ) {
         this.classRepository = this.repositoryFactory.createRepository(TypeRepository.CLASS) as ClassRepository;
         this.teacherReposittory = this.repositoryFactory.createRepository(TypeRepository.WORKER);
-    }
-
-    async create(dto: CreateSchoolgroupDto): Promise<void> {
-        try {
-            const teacherService = new CreateWorkerService(this.teacherReposittory, this.classRepository);
-            const teacherDto = new CreateWorkerDto({
-                name: dto.teacherName,
-                accessType: AccessType.TEACHER,
-                classCode: null,
-            })
-            const teacher = await teacherService.execute(teacherDto) as WorkerEntity;
-            let createService = new CreateClassService(this.classRepository);
-            let input = dto.toInput(teacher);
-            await createService.execute(input);
-        } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
-        }
     }
 
     async delete(id: string): Promise<void>{
@@ -68,16 +52,6 @@ export class SchoolgroupUseCases {
         let allService = new FindAllClassService(this.classRepository);
         let result =  await allService.execute();
         return result;
-    }
-
-    async update(dto: UpdateSchoolgroupDto): Promise<void>{
-        let input = dto.toInput();
-        let updateService = new UpdateClassService(this.classRepository);
-        try {
-            await updateService.execute(input);
-        } catch (error) {
-            TrataErros.tratarErrorsNotFound(error);
-        }
     }
 
 }

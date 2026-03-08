@@ -1,15 +1,17 @@
+import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+
 export class UpdateClassDto{
     id: string;
-    bookName: string;
-    className: string;
+    nameBook: string;
+    teacher: WorkerEntity;
 
     constructor(
         id: string,
-        bookName: string,
-        className: string,
+        nameBook: string,
+        teacher: WorkerEntity,
     ){
-        this.bookName = bookName;
-        this.className = className;
+        this.nameBook = nameBook;
+        this.teacher = teacher;
         this.id = id;
     }
 }
