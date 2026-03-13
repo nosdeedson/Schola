@@ -10,13 +10,12 @@ import { Student } from "../../domain/student/student";
 import { AccessType } from "../../domain/user/access.type";
 import { User } from "../../domain/user/user";
 import { Comment } from "../../domain/comment/comment";
+import { mockQuarter } from "../../../tests/mocks/domains/quarter.mocks";
 
 // first August 2024
 const aValidBeginnig = new Date(2024, 7, 1, 0, 0, 0);
 // 29 November 2024
 const aValidEnding = new Date(2024, 10, 29, 0, 0, 0);
-
-const academicSemester = new AcademicSemester(true, aValidBeginnig, aValidEnding);
 
 const times = new Map<string, string>();
 times.set('Monday', '08:00');
@@ -33,7 +32,7 @@ const parentWithoutStudent = new Parent({ name: "arthur", nameStudents: [], birt
 const schedule = new Schedule(['Monday', 'Tuesday'], times)
 const schoolGroup = new Class('1234', 'nameBook', 'a1', schedule);
 
-const rating = new Rating(academicSemester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
+const rating = new Rating(mockQuarter(), student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
 
 const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR });
 admin.setClass(schoolGroup);
@@ -118,16 +117,7 @@ export class DomainMocks {
         return studentWithoutParent;
     }
 
-    static mockAcademicSemester(): AcademicSemester {
-        return academicSemester;
-    }
-
     static mockRating(): Rating {
-        return rating;
-    }
-
-    static mockRatingWithStudent(student: Student): Rating {
-        const rating = new Rating(academicSemester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
         return rating;
     }
 }

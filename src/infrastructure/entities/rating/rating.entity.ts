@@ -5,6 +5,7 @@ import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { AcademicSemesterEntity } from "../academic-semester/academic.semester.entity";
 import { CommentEntity } from "../comment/comment.entity";
 import { StudentEntity } from "../student/student.entity";
+import { QuarterEntity } from "../quarter/quarter.entity";
 
 
 @Entity('rating')
@@ -122,7 +123,7 @@ export class RatingEntity extends GenericEntity {
         foreignKeyConstraintName: 'fk_academic_semester',
         referencedColumnName: 'id'
     })
-    @ManyToOne(() => AcademicSemesterEntity, academicSemester => academicSemester.ratings)
+    @ManyToOne(() => QuarterEntity, quarter => quarter.ratings)
     academicSemester: AcademicSemesterEntity;
 
     @OneToMany(() => CommentEntity, comment => comment.rating)

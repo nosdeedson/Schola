@@ -1,15 +1,13 @@
 import { Grade } from "../enum/grade/grade";
-import { AcademicSemester } from "../academc-semester/academic.semester";
 import { Student } from "../student/student";
 import { Rating } from "./rating";
 import { Comment } from "../comment/comment"
+import { mockQuarter } from "../../../tests/mocks/domains/quarter.mocks";
 
 
 describe('Rating unit tests', () => {
 
     let student: Student;
-    let period: AcademicSemester;
-
     beforeEach(() => {
         student = new Student({
             birthday: new Date(),
@@ -17,15 +15,12 @@ describe('Rating unit tests', () => {
             enrolled: '123',
             nameParents: ['maria']
         });
-
-        const aValidBeginnig = new Date(2024, 7, 1, 0, 0, 0);
-        const aValidEnding = new Date(2024, 10, 29, 0, 0, 0);
-        period = new AcademicSemester(true, aValidBeginnig, aValidEnding);
     })
 
     it('should instantiate a rating without errors', () => {
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -44,10 +39,10 @@ describe('Rating unit tests', () => {
         expect(rating.getDeletedAt()).toBeUndefined();
     });
 
-    it('notification should inform period not defined', () => {
-        let period;
+    it('notification should inform quarter not defined', () => {
+        let quarter;
         const rating = new Rating(
-            period as any,
+            quarter as any,
             student,
             new Date(),
             Grade.BAD,
@@ -59,13 +54,14 @@ describe('Rating unit tests', () => {
             Grade.BAD,
         );
         expect(rating.notification?.getErrors().length).toBe(1);
-        expect(rating.notification?.messages()).toBe('rating: period of rating must be informed,')
+        expect(rating.notification?.messages()).toBe('rating: quarter of rating must be informed,')
     })
 
     it('notification should inform student not defined', () => {
         let student;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student as any,
             new Date(),
             Grade.BAD,
@@ -82,8 +78,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform dateRating not defined', () => {
         let date;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             date as any,
             Grade.BAD,
@@ -100,8 +97,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform listing not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             grade as any,
@@ -118,8 +116,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform writing not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -136,8 +135,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform reading not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -154,8 +154,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform speaking not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -172,8 +173,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform grammar not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -190,8 +192,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform homework not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -208,8 +211,9 @@ describe('Rating unit tests', () => {
 
     it('notification should inform homework not defined', () => {
         let grade;
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -226,8 +230,9 @@ describe('Rating unit tests', () => {
 
     it('should have at leat one comment', () => {
         let comment = new Comment("comment", '123');
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -246,8 +251,9 @@ describe('Rating unit tests', () => {
 
     it('should get a comment', () => {
         let comment = new Comment("comment", '123');
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -265,10 +271,10 @@ describe('Rating unit tests', () => {
         expect(result).toEqual(comment)
     });
 
-    it('should get the period', () => {
-
+    it('should get the quarter', () => {
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -280,14 +286,14 @@ describe('Rating unit tests', () => {
             Grade.BAD,
         );
         expect(rating).toBeDefined();
-        const result = rating.getAcademicSemester()
-        expect(result).toEqual(period)
+        const result = rating.getQuarter()
+        expect(result).toEqual(quarter)
     });
 
-    it('should get the period', () => {
-
+    it('should get the quarter', () => {
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -304,9 +310,9 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the student', () => {
-
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             new Date(),
             Grade.BAD,
@@ -323,9 +329,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the date rating', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -342,9 +349,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the listining skill', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -361,9 +369,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the writing skill', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -380,9 +389,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the reading skill', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -399,9 +409,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the speaking skill', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -418,9 +429,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the grammar skill', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -437,9 +449,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the homework commitment', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,
@@ -456,9 +469,10 @@ describe('Rating unit tests', () => {
     });
 
     it('should get the vocabulary improvment', () => {
-        let dateRating = new Date()
+        let dateRating = new Date();
+        const quarter = mockQuarter();
         const rating = new Rating(
-            period,
+            quarter,
             student,
             dateRating,
             Grade.BAD,

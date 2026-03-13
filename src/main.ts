@@ -10,10 +10,10 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     
     const config = new DocumentBuilder()
-        .setTitle('Iscola')
-        .setDescription('The Iscola API description')
+        .setTitle('Schola')
+        .setDescription('The Schola API description')
         .setVersion('1.0')
-        .addTag('Iscola')
+        .addTag('Schola')
         .build();
     const documentFactory = () => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-swagger', app, documentFactory);

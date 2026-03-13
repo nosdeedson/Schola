@@ -1,28 +1,26 @@
-import { AcademicSemester } from "../../../domain/academc-semester/academic.semester";
-import { RatingEntity } from "../rating/rating.entity";
 import { AcademicSemesterEntity } from "./academic.semester.entity";
+import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks'
+import { mockQuarter } from '../../../../tests/mocks/domains/quarter.mocks'
 
 describe("AcademicSemester unit test", () => {
 
+    it('should instantiate an AcademicSemesterEntity from AcademicSemester', () => {
+         const firstQuarter = mockQuarter({currentQuarter: true});
+        const secondQuarter = mockQuarter({
+            beginningDate: new Date(2026, 5, 30, 23, 59),
+            endingDate: new Date(2026, 7, 30 , 23, 59 ),
+            currentQuarter: false
+        });
 
-    it('should instantiate an AcademicSemesterModel from AcademicSemester', () => {
-        const ratingFile = jest.spyOn(RatingEntity, 'toRatingsEntity')
-        // first August 2024
-        const aValidBeginnig = new Date(2024, 7, 1, 0, 0, 0);
-        // 29 November 2024
-        const aValidEnding = new Date(2024, 10, 29, 0, 0, 0) 
-        const academicSemester = new AcademicSemester(true, aValidBeginnig, aValidEnding);
-        const model = AcademicSemesterEntity.toAcademicSemester(academicSemester);
-        expect(model).toBeDefined();
-        expect(model.actual).toEqual(academicSemester.getActual());
-        expect(model.beginningDate).toEqual(academicSemester.getBeginningDate());
-        expect(model.createdAt).toEqual(academicSemester.getCreatedAt());
-        expect(model.deletedAt).toEqual(academicSemester.getDeletedAt());
-        expect(model.updatedAt).toEqual(academicSemester.getUpdatedAt());
-        expect(model.endingDate).toEqual(academicSemester.getEndingDate());
-        expect(model.id).toEqual(academicSemester.getId());
-        expect(model.ratings).toEqual(academicSemester.getRating());
-        expect(ratingFile).toHaveBeenCalled();
-        expect(ratingFile).toHaveBeenCalledTimes(1);
+        const semester = mockSemester({currentSemester: true, secondQuarter, firstQuarter});
+        const entity = AcademicSemesterEntity.toEntity(semester);
+        expect(entity).toBeDefined();
+        expect(entity.current).toBeTruthy();
+        expect(entity.quarters[0].beginningDate.getTime()).toEqual(semester.firstQuarter.beginningDate.getTime());
+        expect(entity.quarters[0].endingDate.getTime()).toEqual(semester.firstQuarter.endingDate.getTime());
+        expect(entity.quarters[0].currentQuarter).toBeTruthy();
+        expect(entity.quarters[1].beginningDate.getTime()).toEqual(semester.secondQuarter.beginningDate.getTime());
+        expect(entity.quarters[1].endingDate.getTime()).toEqual(semester.secondQuarter.endingDate.getTime());
+        expect(entity.quarters[1].currentQuarter).toBeFalsy();
     })
 })

@@ -8,7 +8,7 @@ export class RatingValidator implements Validator<Rating>{
         try {
             yup.object()
                 .shape({
-                    period : yup.object().required('period of rating must be informed'),
+                    period : yup.object().required('quarter of rating must be informed'),
                     student : yup.object().required('student receiving rating must be informed'),
                     ratingDate : yup.date().required('rating date must be informed'),
                     listing : yup.string().required('the listining skill must be informed'),
@@ -20,7 +20,7 @@ export class RatingValidator implements Validator<Rating>{
                     vocabulary : yup.string().required('the vocabulary improvment must be informed'),
                 })
                 .validateSync({
-                    period : entity.getAcademicSemester(),
+                    period : entity.getQuarter(),
                     student : entity.getStudent(),
                     ratingDate : entity.getRatingDate(),
                     listing : entity.getListing(),

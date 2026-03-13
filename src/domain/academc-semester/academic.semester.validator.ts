@@ -9,9 +9,9 @@ export class AcademicSemesterValidator implements Validator<AcademicSemester>{
         try {
             yup.object()
                 .shape({
-                    actual : yup.boolean().required('must inform academicSemester as actual'),
+                    actual : yup.boolean().required('must inform academicSemester is the current or not'),
                     firstQuarter : yup.object().required('First Quarter is required'),
-                    secondQuarter : yup.object().required('academicSemester date ending must be informed')
+                    secondQuarter : yup.object().required('Second Quarter is required')
                 })
                 .validateSync({
                     actual : entity.getCurrentSemester(),
@@ -22,7 +22,7 @@ export class AcademicSemesterValidator implements Validator<AcademicSemester>{
                 })
                 if(isAfter(entity.firstQuarter.endingDate, entity.secondQuarter.beginningDate)){
                     entity.notification?.addError({
-                        context: "academic semester",
+                        context: "academicSemester",
                         message: "the end of the first Quarter must be before the start of the beggining of the secondQuarter"
                     })
                 }
