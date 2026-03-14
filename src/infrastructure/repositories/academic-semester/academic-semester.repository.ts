@@ -38,7 +38,10 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
 
     async find(id: string): Promise<AcademicSemesterEntity> {
         const model = await this.academicRepositoryRepository.findOne({
-            where: {id: id}
+            where: {id: id},
+            relations: {
+                quarters: true
+            }
         })
         return model;
     }
@@ -49,7 +52,7 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
 
     async findCurrentSemester(): Promise<AcademicSemesterEntity> {
         return await this.academicRepositoryRepository.findOne({
-            where: {actual: true},
+            where: {current: true},
         });
     }
 
