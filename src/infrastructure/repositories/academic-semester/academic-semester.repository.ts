@@ -47,7 +47,9 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
     }
 
     async findAll(): Promise<AcademicSemesterEntity[]> {
-        return await this.academicRepositoryRepository.find();
+        return await this.academicRepositoryRepository.find({
+            relations: ['quarters']
+        });
     }
 
     async findCurrentSemester(): Promise<AcademicSemesterEntity> {

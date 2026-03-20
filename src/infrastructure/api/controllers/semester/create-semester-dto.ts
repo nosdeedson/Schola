@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsDate } from "class-validator";
-import { InputCreateAcademicSemesterDto } from "src/application/services/academic-semester/create/academic-semester.dto";
+import { CreateAcademicSemesterDto } from "src/application/services/academic-semester/create/academic-semester.dto";
 
 export class CreateSemesterDto{
 
@@ -15,7 +15,7 @@ export class CreateSemesterDto{
     @ApiProperty({description: 'Date of the ending of the academic semester'})
     ending: Date;
 
-    toInput(): InputCreateAcademicSemesterDto{
-        return new InputCreateAcademicSemesterDto(this.beginning, this.ending);
+    toInput(): CreateAcademicSemesterDto{
+        return new CreateAcademicSemesterDto(this.beginning, this.ending);
     }
 }

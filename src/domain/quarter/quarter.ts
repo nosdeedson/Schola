@@ -1,4 +1,3 @@
-import { Notification, NotificationErrorProps } from "src/domain/@shared/notification/notification";
 import { Rating } from "../rating/rating";
 import { QuarterValidator } from "./quarter.validator";
 import { Entity } from "../@shared/entity";

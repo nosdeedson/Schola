@@ -1,49 +1,72 @@
-import { DataSource } from "typeorm";
 import { AcademicSemesterInterface } from "../../../../domain/academc-semester/academic.semester.repository.interface";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from '../../../../infrastructure/repositories/academic-semester/academic-semester.repository';
-import { InputCreateAcademicSemesterDto } from "./academic-semester.dto";
+import { CreateAcademicSemesterDto } from "./semester/academic-semester.dto";
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { Repository } from "typeorm";
+import { mockQuarterDto } from "../../../../../tests/mocks/dto/quarter-dto.mocks";
 
+describe('Academic semester integration test', () => {
 
-describe('Academic semester integration test', () =>{
-
-    let appDataSource: DataSource;
-    let semesterModel;
+    let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterInterface;
-    let input: InputCreateAcademicSemesterDto;
+    let input: CreateAcademicSemesterDto;
 
-    beforeEach( async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error) => console.log(error));
-        semesterModel = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterModel, appDataSource);
-        input = {
-            beginningDate: new Date(2024, 8, 30, 10, 59, 59),
-            endingDate: new Date(2024, 10, 29, 10, 59, 59)
-        };
-    });
-
-    afterEach( async () =>{
-        // await semesterModel.query('delete from academic_semester cascade');
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
+    beforeAll(async () => {
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
     });
 
     it('repository must be instantiated', async () => {
         expect(semesterRepository).toBeDefined();
     })
 
-    it('should save a academicSemester in BD', async () =>{
+    it('should save a academicSemester in BD', async () => {
+        const firstQuarterDto = mockQuarterDto({ currentQuarter: true });
+        const secondQuarterDto = mockQuarterDto({
+            currentQuarter: false,
+            beginningDate: new Date(2026, 3, 1),
+            endingDate: new Date(2026, 5, 3),
+        });
+        const createSemesterDto = new CreateAcademicSemesterDto({
+            firsQuarter: firstQuarterDto,
+            secondQuarter: secondQuarterDto,
+            currentSemester: true
+        })
         let service = new CreateAcademicSemesterService(semesterRepository);
-        expect(await service.execute(input)).toBe(void 0);
+        expect(await service.execute(createSemesterDto)).toBe(void 0);
+
         let results = await semesterRepository.findAll();
         expect(results).toBeDefined();
-        expect(results[0].beginningDate).toEqual(input.beginningDate);
-        expect(results[0].endingDate).toEqual(input.endingDate);
+        expect(results[0].quarters[0].beginningDate.getTime()).toEqual(firstQuarterDto.beginningDate.getTime());
+        expect(results[0].quarters[0].endingDate.getTime()).toEqual(firstQuarterDto.endingDate.getTime());
+        expect(results[0].quarters[0].currentQuarter).toBeTruthy();
+        expect(results[0].quarters[1].beginningDate.getTime()).toEqual(secondQuarterDto.beginningDate.getTime());
+        expect(results[0].quarters[1].endingDate.getTime()).toEqual(secondQuarterDto.endingDate.getTime());
+        expect(results[0].quarters[1].currentQuarter).toBeFalsy();
+        expect(results[0].current).toBeTruthy();
         expect(results[0].id).toBeDefined();
     });
 
+    it('shoud throw an erro if quarters are the same', async () => {
+        const firstQuarterDto = mockQuarterDto();
+        const secondQuarterDto = mockQuarterDto();
+        const createSemesterDto = new CreateAcademicSemesterDto({
+            firsQuarter: firstQuarterDto,
+            secondQuarter: secondQuarterDto,
+            currentSemester: true
+        })
+        const service = new CreateAcademicSemesterService(semesterRepository);
+        await expect(service.execute(createSemesterDto)).rejects.toMatchObject({
+            errors: [
+                {
+                    "context": "academicSemester",
+                    "message": "the end of the first Quarter must be before the start of the beggining of the secondQuarter",
+                },
+            ]
+        });
+        let results = await semesterRepository.findAll();
+        expect(results).toHaveLength(0);
+    });
 });
