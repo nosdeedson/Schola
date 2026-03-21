@@ -13,8 +13,17 @@ export class UpdateAcademicSemesterService{
         try {
             let entity = await this.semesterRepository.find(dto.id);
             if(entity){
-                entity.actual = dto.actual;
-                //entity.deletedAt = new Date();
+                if(dto.updatingQuarter) {
+                    entity.quarters[0].quarterNumber == 1 ? entity.quarters[0].currentQuarter = false : entity.quarters[1].currentQuarter = false;
+                    entity.quarters[1].quarterNumber == 2 ? entity.quarters[1].currentQuarter = true : entity.quarters[0].currentQuarter = false;
+                    entity.updatedAt = new Date();
+                } else if (dto.updatingSemester) {
+                    entity.quarters[1].currentQuarter = false;
+                    entity.quarters[0].currentQuarter = false;
+                    entity.current = false;
+                    entity.deletedAt = new Date();
+                    entity.updatedAt = new Date();
+                }
                 await this.semesterRepository.update(entity);
             }
         } catch (error) {

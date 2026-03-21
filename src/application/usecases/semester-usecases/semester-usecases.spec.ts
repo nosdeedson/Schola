@@ -2,9 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SemesterUsecases } from './semester-usecases';
 import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../infrastructure/__mocks__/env.mock';
-import { CreateSemesterDto } from '../../../infrastructure/api/controllers/semester/create-semester-dto';
 import { CreateAcademicSemesterService } from '../../../application/services/academic-semester/create/create.academic-semester.service';
-import { InputCreateAcademicSemesterDto } from '../../../application/services/academic-semester/create/academic-semester.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { FindAcademicSemesterService } from '../../../application/services/academic-semester/find/find.academic-semester.service';
 import { FindAcademicSemesterDto } from '../../../application/services/academic-semester/find/find.academic-semester.dto';
@@ -15,6 +13,7 @@ import { DomainMocks } from '../../../infrastructure/__mocks__/mocks';
 import { DeleteAcademicSemesterService } from '../../../application/services/academic-semester/delete/delete.academic-semester.service';
 import { UpdateAcademicSemesterService } from '../../../application/services/academic-semester/update/update.academic-semester.service';
 import { RepositoryFactoryService } from "../../../infrastructure/factory/repositiry-factory/repository-factory.service";
+import { mockCreateSemesterDto } from '../../../../tests/mocks/dto/create-semester-dto.mocks';
 
 
 describe('SemesterUsecases', () => {
@@ -41,34 +40,6 @@ describe('SemesterUsecases', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  describe('createSemester', () => {
-    it('should create a semester', async () => {
-      const dto = new CreateSemesterDto();
-      dto.beginning = new Date('2025-01-01');
-      dto.ending = new Date('2025-06-30');
-
-      const mockInput = new InputCreateAcademicSemesterDto(dto.beginning, dto.ending);
-      const toInputSpy = jest.spyOn(dto, 'toInput').mockReturnValue(mockInput);
-      const executeSpy = jest.spyOn(CreateAcademicSemesterService.prototype, 'execute')
-        .mockResolvedValue(undefined);
-
-      await service.createSemester(dto);
-
-      expect(toInputSpy).toHaveBeenCalled();
-      expect(executeSpy).toHaveBeenCalledWith(mockInput);
-    });
-
-    it('should handle errors', async () => {
-      const dto = new CreateSemesterDto();
-      const mockInput = new InputCreateAcademicSemesterDto(new Date(), new Date());
-      jest.spyOn(dto, 'toInput').mockReturnValue(mockInput);
-      jest.spyOn(CreateAcademicSemesterService.prototype, 'execute')
-        .mockRejectedValue(new BadRequestException('Test error'));
-
-      await expect(service.createSemester(dto)).rejects.toThrow();
-    });
   });
 
   describe('find', () => {

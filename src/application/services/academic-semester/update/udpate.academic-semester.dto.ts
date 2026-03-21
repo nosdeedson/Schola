@@ -1,9 +1,16 @@
-export class UpdateAcademicSemesterDto{
+export class UpdateAcademicSemesterDto {
     id: string;
-    actual: boolean;
+    updatingQuarter: boolean;
+    updatingSemester: boolean;
 
-    constructor(id: string, actual: boolean){
+    constructor(params: {
+        id: string,
+        updatingQuarter: boolean,
+        updatingSemester: boolean,
+    }) {
+        const { id, updatingQuarter, updatingSemester } = params;
         this.id = id;
-        this.actual = actual;
+        this.updatingQuarter = updatingQuarter
+        this.updatingSemester = updatingSemester;
     }
 }

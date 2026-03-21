@@ -6,7 +6,9 @@ export class FindAllAcademicSemesterDto {
     
     constructor(entities: AcademicSemesterEntity[]){
         entities.map(it => {
-            let semester = new FindAcademicSemesterDto(it.id, it.actual, it.beginningDate, it.endingDate)
+            const firstQuarter = it.quarters[0].quarterNumber === 1 ? it.quarters[0] : it.quarters[1];
+            const secondQuarter = it.quarters[0].quarterNumber === 2 ? it.quarters[0] : it.quarters[1];
+            let semester = new FindAcademicSemesterDto({id: it.id, current: it.current, firstQuarter, secondQuarter});
             this.all.push(semester)
         })
     }

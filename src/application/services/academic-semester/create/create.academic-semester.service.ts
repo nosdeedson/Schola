@@ -14,7 +14,7 @@ export class CreateAcademicSemesterService {
 
     public async execute(input: CreateAcademicSemesterDto): Promise<void>{
         try {
-            let semester = new AcademicSemester(input.firsQuarter.toDomain(), input.secondQuarter.toDomain(), input.currentSemester );
+            let semester = new AcademicSemester(input.firstQuarter.toDomain(), input.secondQuarter.toDomain(), input.currentSemester );
             if(semester.notification?.hasError()){
                 let errors = semester.notification?.getErrors();
                 throw new SystemError(errors);

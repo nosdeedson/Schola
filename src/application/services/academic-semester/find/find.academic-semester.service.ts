@@ -16,7 +16,9 @@ export class FindAcademicSemesterService {
             if (!semester) {
                 throw new SystemError([{context: 'academicSemester', message: 'Academic Semester not found'}]);
             }
-            let dto = new FindAcademicSemesterDto(semester.id, semester.actual, semester.beginningDate, semester.endingDate);
+            const firstQuarter = semester.quarters[0].quarterNumber === 1 ? semester.quarters[0] : semester.quarters[1];
+            const secondQuarter = semester.quarters[0].quarterNumber === 2 ? semester.quarters[0] : semester.quarters[1];
+            let dto = new FindAcademicSemesterDto({id: semester.id, current: semester.current, firstQuarter: firstQuarter, secondQuarter: secondQuarter});
             return dto;
         } catch (error) {
             throw error;

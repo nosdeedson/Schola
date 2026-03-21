@@ -11,7 +11,6 @@ describe('Academic semester integration test', () => {
 
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterInterface;
-    let input: CreateAcademicSemesterDto;
 
     beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);

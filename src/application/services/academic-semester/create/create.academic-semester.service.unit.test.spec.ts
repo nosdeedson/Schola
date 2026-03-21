@@ -16,7 +16,7 @@ describe('Academic semester service unit test', () => {
             endingDate: new Date(2026, 5, 3),
         });
         const createSemesterDto = new CreateAcademicSemesterDto({
-            firsQuarter: firstQuarterDto,
+            firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
         });
@@ -29,7 +29,7 @@ describe('Academic semester service unit test', () => {
         const firstQuarterDto = mockQuarterDto();
         const secondQuarterDto = mockQuarterDto();
         const createSemesterDto = new CreateAcademicSemesterDto({
-            firsQuarter: firstQuarterDto,
+            firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
         })

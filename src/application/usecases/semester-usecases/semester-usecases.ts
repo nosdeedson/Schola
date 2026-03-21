@@ -4,11 +4,8 @@ import { DeleteAcademicSemesterService } from "src/application/services/academic
 import { FindAcademicSemesterService } from "src/application/services/academic-semester/find/find.academic-semester.service";
 import { FindAllAcademicSemesterDto } from "src/application/services/academic-semester/findAll/findAll.academic-semester.dto";
 import { FindAllAcademicSemesterService } from "src/application/services/academic-semester/findAll/findAll.academic-semester.service";
-import { UpdateAcademicSemesterDto } from "src/application/services/academic-semester/update/udpate.academic-semester.dto";
-import { UpdateAcademicSemesterService } from "src/application/services/academic-semester/update/update.academic-semester.service";
 import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
-import { CreateSemesterDto } from "../../../infrastructure/api/controllers/semester/create-semester-dto";
 import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
 
@@ -22,16 +19,6 @@ export class SemesterUsecases {
     ){
         this.repository = this.repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER) as AcademicSemesterRepository;
      }
-
-    async createSemester(dto: CreateSemesterDto): Promise<void>{
-        try {
-            let createServive = new CreateAcademicSemesterService(this.repository);
-            let input = dto.toInput();
-            await createServive.execute(input);
-        } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
-        }
-    }
 
     async delete(id: string): Promise<void>{
         let deleteService = new DeleteAcademicSemesterService(this.repository);
@@ -53,9 +40,9 @@ export class SemesterUsecases {
     }
 
     async update(id: string, actual: boolean): Promise<any>{
-        let updateService = new UpdateAcademicSemesterService(this.repository);
-        let input = new UpdateAcademicSemesterDto(id, actual);
-        updateService.execute(input);
+        // let updateService = new UpdateAcademicSemesterService(this.repository);
+        // let input = new UpdateAcademicSemesterDto(id, actual);
+        // updateService.execute(input);
     }
 
 }

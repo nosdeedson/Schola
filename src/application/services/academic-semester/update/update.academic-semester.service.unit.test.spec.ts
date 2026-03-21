@@ -1,56 +1,49 @@
-import { AcademicSemester } from "../../../../domain/academc-semester/academic.semester";
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories"
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";
+import { mockSemester } from '../../../../../tests/mocks/domains/semester.mocks';
 
-describe('AcademicSemester unit tests', () =>{
-
-    let semester: AcademicSemester | null;
-    let entity: AcademicSemesterEntity | null;
-    let dto;
-
-    beforeEach(async () =>{
-        semester = DomainMocks.mockAcademicSemester();
-        entity = AcademicSemesterEntity.toAcademicSemester(semester);
-    })
+describe('AcademicSemester unit tests', () => {
 
     afterEach(async () => {
-        semester = null;
-        entity = null;
+        jest.clearAllMocks();
     })
 
-    it('should update an academicSemester', async () => {
+    it('should update semester changing secondQuarter to current', async () => {
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
-        semesterRepository.update = jest.fn()
-            .mockReturnValue(await Promise.resolve(void 0));
+        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const dto = new UpdateAcademicSemesterDto({
+            id: entity.id,
+            updatingQuarter: true,
+            updatingSemester: false,
+        });
         semesterRepository.find = jest.fn()
             .mockReturnValue(await Promise.resolve(entity));
-        
-        
-        dto = new UpdateAcademicSemesterDto(semester?.getId(), false);
-        
+        semesterRepository.update = jest.fn()
+            .mockResolvedValue(void 0);
+
         const service = new UpdateAcademicSemesterService(semesterRepository);
         expect(await service.execute(dto)).toBe(void 0);
-        let result = semesterRepository.find(semester?.getId());
-        expect(result.actual).toBeFalsy();
+        expect(semesterRepository.update).toHaveBeenCalled();
+        expect(semesterRepository.update).toHaveBeenCalledWith(entity);
+        expect(semesterRepository.find).toHaveBeenCalledWith(dto.id);
     });
 
-    it('given wrong id should not update an academicSemester', async () => {
+    it('if semester not found should do anything', async () => {
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const dto = new UpdateAcademicSemesterDto({
+            id: '123',
+            updatingQuarter: true,
+            updatingSemester: false,
+        });
+        semesterRepository.find = jest.fn()
+            .mockReturnValue(await Promise.resolve(null));
         semesterRepository.update = jest.fn()
-            .mockReturnValue(await Promise.resolve(void 0));
-            semesterRepository.update = jest.fn().mockRejectedValueOnce(await Promise.resolve(null))
-            
-            let worngId = '1234';
-            
-            dto = new UpdateAcademicSemesterDto(worngId, false);
-            const service = new UpdateAcademicSemesterService(semesterRepository);
-            expect(await service.execute(dto)).toBe(void 0);
-            semesterRepository.find = jest.fn()
-                .mockReturnValue(await Promise.resolve(entity));
-        let result = semesterRepository.find(semester?.getId());
-        expect(result.actual).toBeTruthy();
+            .mockResolvedValue(void 0);
+
+        const service = new UpdateAcademicSemesterService(semesterRepository);
+        expect(await service.execute(dto)).toBe(void 0);
+        expect(semesterRepository.update).toHaveBeenCalledTimes(0);
     });
-})
+});

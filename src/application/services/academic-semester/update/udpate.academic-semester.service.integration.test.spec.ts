@@ -1,51 +1,66 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from '../../../../infrastructure/repositories/academic-semester/academic-semester.repository';
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
 
 
 describe('Update AcademicSemester integration tests', () =>{
 
-    let appDataSource: DataSource;
-    let semesterModel: Repository<AcademicSemesterEntity>;
+    let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
-    beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-
-        semesterModel = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterModel, appDataSource);
-    });
+    beforeAll(async () =>{
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+    })
 
     afterEach(async () =>{
-        // await semesterModel.query('delete from academic_semester cascade');
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
+        jest.clearAllMocks();
     });
 
     it('repository and model should be instantiated', async () =>{
-        expect(semesterModel).toBeDefined();
+        expect(semesterEntity).toBeDefined();
         expect(semesterRepository).toBeDefined();
-    })
+    });
 
-    it('should update an academicSemester', async () => {
-        let semester = DomainMocks.mockAcademicSemester();
-        let wantedId = semester.getId();
-        let entity = AcademicSemesterEntity.toAcademicSemester(semester);
+    it('should update the second an academicSemester', async () => {
+        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        let wantedId = entity.id;
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        const dto = new UpdateAcademicSemesterDto({
+            id: entity.id,
+            updatingQuarter: true,
+            updatingSemester: false,
+        });
 
         const service = new UpdateAcademicSemesterService(semesterRepository);
-        let dto = new UpdateAcademicSemesterDto(wantedId, false);
         expect(await service.execute(dto)).toBe(void 0);
         let result = await semesterRepository.find(wantedId);
         expect(result).toBeDefined();
         expect(result.id).toBe(wantedId);
-        expect(result.actual).toBeFalsy();
-    })
-})
+        expect(result.current).toBeTruthy();
+        expect(result.quarters[0].currentQuarter).toBeFalsy();
+        expect(result.quarters[1].currentQuarter).toBeTruthy();
+    });
+
+    it('should update the semester as not current', async () => {
+        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        let wantedId = entity.id;
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        const dto = new UpdateAcademicSemesterDto({
+            id: entity.id,
+            updatingQuarter: false,
+            updatingSemester: true,
+        });
+
+        const service = new UpdateAcademicSemesterService(semesterRepository);
+        expect(await service.execute(dto)).toBe(void 0);
+        let result = await semesterRepository.find(wantedId);
+        // as deleted_at is not null by default Typeorm does not find the semester eventhough is in database
+        expect(result).toBeNull();
+    });
+
+});

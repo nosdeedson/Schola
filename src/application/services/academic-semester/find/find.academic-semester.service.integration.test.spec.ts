@@ -7,42 +7,37 @@ import { AcademicSemesterRepository } from "../../../../infrastructure/repositor
 import { FindAcademicSemesterService } from "./find.academic-semester.service";
 import { SystemError } from "../../../../application/services/@shared/system-error";
 import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
 
 describe('Academic semester find integrations tests', () => {
 
-    let appDataSource: DataSource;
-    let semesterModel: Repository<AcademicSemesterEntity>;
+    let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
     let semester: AcademicSemester;
 
-    beforeEach(async () =>{
-        semester = DomainMocks.mockAcademicSemester();
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-        
-        semesterModel = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterModel, appDataSource);
+    beforeAll(async () => {
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
     });
 
     afterEach(async () =>{
-        // await semesterModel.query('delete from academic_semester cascade');
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
-    })
+        jest.clearAllMocks();
+    });
 
     it('model and repository should be instantiated', async () =>{
-        expect(semesterModel).toBeDefined();
+        expect(semesterEntity).toBeDefined();
         expect(semesterRepository).toBeDefined()
     })
 
     it('should find an academicSemester on BD', async () =>{
-        let model = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let entity = AcademicSemesterEntity.toEntity(semester);
         let wantedId = semester.getId();
         var inBD = await semesterRepository.find(wantedId);
         expect(inBD).toBeNull()
-        expect(await semesterRepository.create(model)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const service = new FindAcademicSemesterService(semesterRepository);
         let result = await service.execute(wantedId);
         expect(result).toBeDefined();
@@ -50,16 +45,12 @@ describe('Academic semester find integrations tests', () => {
     })  
 
     it('should not find an academicSemester on BD', async () =>{
-        let model = AcademicSemesterEntity.toAcademicSemester(semester);
-        let wantedId = 'a8b3ddcd-936e-4a35-8d85-6ddde1b019ed';
-        let inBD = await semesterRepository.find(wantedId);
-        expect(inBD).toBeNull()
-        expect(await semesterRepository.create(model)).toBeInstanceOf(AcademicSemesterEntity);
+       let semester = mockSemester();
+        let entity = AcademicSemesterEntity.toEntity(semester);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        let doesNotExist = 'a8b3ddcd-936e-4a35-8d85-6ddde1b019ed';
         const service = new FindAcademicSemesterService(semesterRepository);
-        try {
-            await service.execute(wantedId);
-        } catch (error) {
-            expect(error).toBeInstanceOf(SystemError);
-        }
+        await expect(service.execute(doesNotExist))
+         .rejects.toMatchObject({errors: [{context: 'academicSemester', message: 'Academic Semester not found'}]});
     });  
 });

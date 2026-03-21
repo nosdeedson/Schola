@@ -1,5 +1,8 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { FindAllAcademicSemesterService } from './findAll.academic-semester.service';
+import { mockSemester } from '../../../../../tests/mocks/domains/semester.mocks';
+import { mockQuarter } from '../../../../../tests/mocks/domains/quarter.mocks';
+import { AcademicSemesterEntity } from '../../../../infrastructure/entities/academic-semester/academic.semester.entity';
 
 describe('findAll service unit tests', () =>{
     
@@ -16,23 +19,37 @@ describe('findAll service unit tests', () =>{
     })
 
     it('should receive an array of semester', async () =>{
-        let beginningDate = new Date(2024, 9, 11, 10, 0, 0);
-        let beginningDate1 = new Date(2024, 11, 11, 10, 0, 0);
-        let endingDate = new Date(2025, 9, 11, 10, 0, 0);
-        let endingDate1 = new Date(2025, 11, 11, 10, 0, 0);
+        const semester1 = mockSemester({currentSemester: true});
+        const entity1 = AcademicSemesterEntity.toEntity(semester1)
+        const thirdQuarter = mockQuarter({
+            currentQuarter: false,
+            beginningDate: new Date(2026, 7, 1, 0, 0, 0),
+            endingDate: new Date(2026, 8, 30, 23, 59, 59),
+        });
+        const forth = mockQuarter({
+            currentQuarter: false,
+            beginningDate: new Date(2026, 9, 1, 0, 0, 0),
+            endingDate: new Date(2026, 10, 30, 23, 59, 59),
+        });
+        const semester2 = mockSemester({
+            currentSemester: false,
+            firstQuarter: thirdQuarter,
+            secondQuarter: forth
+        });
+        const entity2 = AcademicSemesterEntity.toEntity(semester2);
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         semesterRepository.findAll = jest.fn()
             .mockImplementationOnce(() =>{
                 return [
-                    {id: '1234', actual: false, beginningDate, endingDate},
-                    {id: '4321', actual: true, beginningDate1, endingDate1}
+                    entity1,
+                    entity2
                 ]
             })
         const service = new FindAllAcademicSemesterService(semesterRepository);
         let results = await service.execute();
         expect(results.all.length).toBe(2);
-        expect(results.all[0].id).toBe('1234');
-        expect(results.all[1].id).toBe('4321');
+        expect(results.all[0].id).toBe(semester1.getId());
+        expect(results.all[1].id).toBe(semester2.getId());
         expect(semesterRepository.findAll).toHaveBeenCalledTimes(1)
     })
 })

@@ -1,22 +1,25 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SemesterUsecases } from '../../../../application/usecases/semester-usecases/semester-usecases';
-import { CreateSemesterDto } from './create-semester-dto';
-import { bool, boolean, string } from 'yup';
 import { FindAllAcademicSemesterDto } from 'src/application/services/academic-semester/findAll/findAll.academic-semester.dto';
+import { CreateAcademicSemesterDto } from 'src/application/services/academic-semester/create/semester/academic-semester.dto';
+import { CreateSemesterUsecase } from 'src/application/usecases/semester-usecases/create/create-semester-usecase';
 
 @ApiTags('Semester controller')
 @Controller('semesters')
 export class SemesterController {
 
-    constructor(private semesterUseCases: SemesterUsecases){}
+    constructor(
+        private createSemester: CreateSemesterUsecase,
+        private semesterUseCases: SemesterUsecases
+    ){}
 
     @ApiOperation({description: "Create a semester"})
     @ApiResponse({status: 201, description: 'return 201 if everything ok'})
     @ApiResponse({status: '4XX', description: 'Return exception of 400 status if request has incorrect information'})
     @Post()
-    async create(@Body() dto: CreateSemesterDto): Promise<void>{
-       await this.semesterUseCases.createSemester(dto);
+    async create(@Body() dto: CreateAcademicSemesterDto): Promise<void>{
+       await this.createSemester.create(dto);
     }
 
     @ApiOperation({description: "Delete academic semester", })

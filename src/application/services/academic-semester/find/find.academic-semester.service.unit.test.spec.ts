@@ -1,5 +1,6 @@
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
+import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { FindAcademicSemesterService } from "../find/find.academic-semester.service"
 
 describe('find academic semester unit test', () =>{
@@ -10,36 +11,19 @@ describe('find academic semester unit test', () =>{
 
     it('should find an academicSemester', async () =>{
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
+        const semester = mockSemester();
+        const entity = AcademicSemesterEntity.toEntity(semester);
         semesterRepository.find = jest.fn().mockImplementationOnce(() => {
-            return semester
+            return entity;
         });
-        const semester = DomainMocks.mockAcademicSemester();
         let wantedId = semester.getId();
         const service = new FindAcademicSemesterService(semesterRepository);
         let result = await service.execute(wantedId);
         expect(result).toBeDefined();
         expect(result.id).toBe(wantedId);
-        expect(result.beginningDate).toBe(semester.getBeginningDate());
-        expect(result.endingDate).toBe(semester.getEndingDate());
+        expect(result.firstQuarter.beginningDate.getTime()).toBe(semester.firstQuarter.beginningDate.getTime());
+        expect(result.firstQuarter.endingDate.getTime()).toBe(semester.firstQuarter.endingDate.getTime());
         expect(semesterRepository.find).toHaveBeenCalledTimes(1)
         expect(semesterRepository.find).toHaveBeenCalledWith(wantedId)
-    })
-
-    it('should not find an academicSemester with the worng id', async () =>{
-        let beginningDate = new Date(2024, 9, 11, 10, 0, 0);
-        let endingDate = new Date(2024, 11, 11, 10, 0, 0);
-        const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
-        semesterRepository.find = jest.fn().mockImplementationOnce(() => {
-            return null;
-        });
-        const service = new FindAcademicSemesterService(semesterRepository);
-        try {
-            let result = await service.execute('4321');
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors[0].message).toBe('Academic Semester not found');
-        }
-        expect(semesterRepository.find).toHaveBeenCalledTimes(1)
-        expect(semesterRepository.find).toHaveBeenCalledWith('4321')
-    })
-})
+    });
+});

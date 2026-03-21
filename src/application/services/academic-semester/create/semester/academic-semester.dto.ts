@@ -2,17 +2,17 @@ import { QuarterDto } from "../quarter/quarter.dto";
 
 export class CreateAcademicSemesterDto {
 
-    firsQuarter: QuarterDto;
+    firstQuarter: QuarterDto;
     secondQuarter: QuarterDto;
     currentSemester: boolean;
 
     constructor(params: {
-        firsQuarter: QuarterDto,
+        firstQuarter: QuarterDto,
         secondQuarter: QuarterDto,
         currentSemester: boolean,
     }) {
-        const { firsQuarter, secondQuarter, currentSemester } = params;
-        this.firsQuarter = firsQuarter;
+        const { firstQuarter, secondQuarter, currentSemester } = params;
+        this.firstQuarter = firstQuarter;
         this.secondQuarter = secondQuarter;
         this.currentSemester = currentSemester
     }

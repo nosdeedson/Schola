@@ -1,5 +1,6 @@
 import { dot } from "node:test/reporters";
 import { Quarter } from "src/domain/quarter/quarter";
+import { QuarterEntity } from "src/infrastructure/entities/quarter/quarter.entity";
 
 export class QuarterDto{
     beginningDate: Date;
@@ -19,5 +20,13 @@ export class QuarterDto{
 
     toDomain(): Quarter{
         return new Quarter({currentQuarter: this.currentQuarter, beginningDate: this.beginningDate, endingDate: this.endingDate})
+    }
+
+    static fromDomain(quarter: QuarterEntity): QuarterDto{
+        return new QuarterDto({
+            beginningDate: quarter.beginningDate,
+            endingDate: quarter.endingDate,
+            currentQuarter: quarter.currentQuarter,
+        })
     }
 }
