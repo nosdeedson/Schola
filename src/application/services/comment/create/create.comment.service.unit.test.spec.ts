@@ -1,3 +1,5 @@
+import { mockQuarter } from "../../../../../tests/mocks/domains/quarter.mocks";
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
@@ -13,22 +15,15 @@ describe('create comment use service unit test', () =>{
         const dto = new CreateCommentDto('test a test', '0e2189bd-8f47-4665-90b3-53191b52e606', "55c63535-25f8-471e-8184-d1f1d44a042c");
 
         const service = new CreateCommentService(commentRepository,ratingRepository);
-        try {
-            expect(await service.execute(dto)).toBe(void 0);
-        } catch (error) {      
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject( [{
+        await expect( service.execute(dto)).rejects.toMatchObject({errors: [{
                 "context": "comment",
                 "message": "Rating not found",
-              }]);
-            expect(ratingRepository.find).toHaveBeenCalledTimes(1);
-        }
-    })
+              }]});
+    });
 
     it('should create a comment', async () =>{
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating()
         let entity = RatingEntity.toRatingEntity(rating);
 
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();

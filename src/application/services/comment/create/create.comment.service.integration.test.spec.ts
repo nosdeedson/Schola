@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
 import { CreateCommentDto } from "./create.comment.dto";
 import { CommentRepository } from "../../../../infrastructure/repositories/comment/comment.respository";
@@ -12,18 +11,19 @@ import { RatingRepositiry } from "../../../../infrastructure/repositories/rating
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { CreateCommentService } from './create.comment.service';
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
+import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 
-describe('create comment service integration tests', () =>{
+describe('create comment service integration tests', () => {
 
-    let appDataSource: DataSource;
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
-    
+
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
@@ -33,39 +33,30 @@ describe('create comment service integration tests', () =>{
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
-    beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error) => console.log(error));
+    beforeAll(async () => {
 
-        commentEntity = appDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, appDataSource);
+        commentEntity = TestDataSource.getRepository(CommentEntity);
+        commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
-        semesterEntity = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, appDataSource);
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
 
-        ratingEntity = appDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, appDataSource);
+        ratingEntity = TestDataSource.getRepository(RatingEntity);
+        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
 
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(studentEntity, TestDataSource);
 
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource)
-        
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource)
+
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(CommentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(RatingEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
-    it('repositories and entities must be instantiated', () =>{
+    it('repositories and entities must be instantiated', () => {
         expect(parentEntity).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(semesterEntity).toBeDefined();
@@ -78,27 +69,18 @@ describe('create comment service integration tests', () =>{
         expect(commentRepository).toBeDefined();
     });
 
-    it('should throw a systemError', async () =>{
+    it('should throw a systemError', async () => {
         const dto = new CreateCommentDto('test a test', '0e2189bd-8f47-4665-90b3-53191b52e606', "55c63535-25f8-471e-8184-d1f1d44a042c");
         const service = new CreateCommentService(commentRepository, ratingRepository);
-
-        try {
-            await service.execute(dto);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject( [{
-                "context": "comment",
-                "message": "Rating not found",
-              }]);
-        }
+        await expect(service.execute(dto)).rejects.toMatchObject({errors:
+            [{"context": "comment", "message": "Rating not found",}]
+        });
     })
 
-    it('should save a comment', async () =>{
+    it('should save a comment', async () => {
 
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester()
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity)
 
         let student = DomainMocks.mockStudent();
@@ -106,7 +88,7 @@ describe('create comment service integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);

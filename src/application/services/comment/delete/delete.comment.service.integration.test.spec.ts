@@ -13,6 +13,9 @@ import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { DeleteCommentService } from "./delete.comment.service";
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 
 
 describe('DeleteCommentService integration test', () =>{
@@ -33,35 +36,26 @@ describe('DeleteCommentService integration test', () =>{
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
-    beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error) => console.log(error));
+    beforeAll(async () => {
 
-        commentEntity = appDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, appDataSource);
+        commentEntity = TestDataSource .getRepository(CommentEntity);
+        commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
-        semesterEntity = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, appDataSource);
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
 
-        ratingEntity = appDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, appDataSource);
+        ratingEntity = TestDataSource.getRepository(RatingEntity);
+        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
 
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(studentEntity, TestDataSource);
 
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource)
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource)
         
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(CommentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(RatingEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
@@ -85,8 +79,8 @@ describe('DeleteCommentService integration test', () =>{
     })
 
     it('given a valid comment should delete it on BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = DomainMocks.mockStudent();
@@ -94,7 +88,7 @@ describe('DeleteCommentService integration test', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);

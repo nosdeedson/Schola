@@ -1,9 +1,9 @@
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
-import { FindCommentService } from './find.comment.service';
 import { CommentEntity } from '../../../../infrastructure/entities/comment/comment.entity';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
-
+import { FindCommentService } from './find.comment.service';
 
 describe('FindCommentService unit tests', () =>{
 
@@ -16,36 +16,14 @@ describe('FindCommentService unit tests', () =>{
         const service = new FindCommentService(commentRepository);
 
         const wantedId = '1234';
-        try {
-            const result = await service.execute(wantedId);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'comment', message: 'comment not found'}]);
-            //@ts-ignore
-            expect(error.errors).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({context: 'comment'}),
-                    expect.objectContaining({message: 'comment not found'})
-                ]),
-            );
-            //@ts-ignore
-            expect(error.errors[0]).toEqual(
-                expect.objectContaining({context: 'comment'})
-            );
-            //@ts-ignore
-            expect(error.errors[0]).toEqual(
-                expect.objectContaining({message: 'comment not found'})
-            )
-            expect(commentRepository.find).toHaveBeenCalledTimes(1);
-            expect(commentRepository.find).toHaveBeenCalledWith(wantedId);
-        }
+        await expect(service.execute(wantedId)).rejects.toMatchObject({errors: 
+            [{context: 'comment', message: 'comment not found'}]
+        });
     });
 
     it('should find a comment', async () =>{
         const comment = DomainMocks.mockComment();
-        const rating = DomainMocks.mockRating();
+        const rating = mockRating();
         const ratingEntity = RatingEntity.toRatingEntity(rating);
         const entity = CommentEntity.toCommentEntity(comment, ratingEntity);
         

@@ -1,6 +1,4 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
@@ -14,11 +12,12 @@ import { RatingRepositiry } from "../../../../infrastructure/repositories/rating
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateCommentDto } from './update.comment.dto';
 import { UpdateCommentService } from './update.comment.service';
-
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 
 describe('UpdateCommentService integration tests', () =>{
     
-    let appDataSource: DataSource;
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
@@ -34,35 +33,25 @@ describe('UpdateCommentService integration tests', () =>{
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
-    beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error) => console.log(error));
+    beforeAll(async () => {
+        commentEntity = TestDataSource.getRepository(CommentEntity);
+        commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
-        commentEntity = appDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, appDataSource);
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
 
-        semesterEntity = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, appDataSource);
+        ratingEntity = TestDataSource.getRepository(RatingEntity);
+        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
 
-        ratingEntity = appDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, appDataSource);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(studentEntity, TestDataSource);
 
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
-
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource)
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource)
         
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(CommentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(RatingEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
@@ -82,8 +71,8 @@ describe('UpdateCommentService integration tests', () =>{
 
     it('given the wrong id should throw an SystemError', async () =>{
 
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntityToSave = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = DomainMocks.mockStudent();
@@ -91,7 +80,7 @@ describe('UpdateCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
@@ -117,8 +106,8 @@ describe('UpdateCommentService integration tests', () =>{
     });
 
     it('given a valid id should update a comment', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntityToSave = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = DomainMocks.mockStudent();
@@ -126,7 +115,7 @@ describe('UpdateCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);

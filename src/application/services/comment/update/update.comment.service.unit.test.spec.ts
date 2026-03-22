@@ -4,6 +4,7 @@ import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks_
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity} from '../../../../infrastructure/entities/comment/comment.entity';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
+import { mockRating } from '../../../../../tests/mocks/domains/rating.mocks';
 
 describe('UpdateCommentService unit tests', () =>{
 
@@ -33,7 +34,7 @@ describe('UpdateCommentService unit tests', () =>{
 
     it('should update a comment', async () =>{
         const comment = DomainMocks.mockComment();
-        const rating = DomainMocks.mockRating();
+        const rating = mockRating();
         const ratingEntity = RatingEntity.toRatingEntity(rating);
         const entity = CommentEntity.toCommentEntity(comment, ratingEntity);
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();

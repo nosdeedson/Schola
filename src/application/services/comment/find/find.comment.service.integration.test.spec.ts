@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
@@ -11,12 +10,13 @@ import { RatingRepositiry } from "../../../../infrastructure/repositories/rating
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindCommentService } from './find.comment.service';
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
 
 describe('FindCommentService integration tests', () =>{
 
-    let appDataSource: DataSource;
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
@@ -32,35 +32,21 @@ describe('FindCommentService integration tests', () =>{
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
-    beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error) => console.log(error));
-
-        commentEntity = appDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, appDataSource);
-
-        semesterEntity = appDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, appDataSource);
-
-        ratingEntity = appDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, appDataSource);
-
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
-
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource)
+    beforeAll(async () => {
+        commentEntity = TestDataSource.getRepository(CommentEntity);
+        commentRepository = new CommentRepository(commentEntity, TestDataSource);
+        semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
+        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        ratingEntity = TestDataSource.getRepository(RatingEntity);
+        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource)
         
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(CommentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(RatingEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(AcademicSemesterEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
@@ -81,34 +67,14 @@ describe('FindCommentService integration tests', () =>{
         const nonExistentId = '2da72bf9-8a41-420a-be07-1ee16329a63a';
         const service = new FindCommentService(commentRepository);
 
-        try {
-            let result = await service.execute(nonExistentId);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'comment', message: 'comment not found'}]);
-            //@ts-ignore
-            expect(error.errors).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({context: 'comment'}),
-                    expect.objectContaining({message: 'comment not found'})
-                ])
-            );
-            //@ts-ignore
-            expect(error.errors[0]).toEqual(
-                expect.objectContaining({context: 'comment'})
-            );
-            //@ts-ignore
-            expect(error.errors[0]).toEqual(
-                expect.objectContaining({message: 'comment not found'})
-            )
-        }
+        await expect(service.execute(nonExistentId)).rejects.toMatchObject(
+            {errors: [{"context": "comment", "message": "comment not found"}]}
+        );
     });
 
     it('should a comment', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = DomainMocks.mockStudent();
@@ -116,7 +82,7 @@ describe('FindCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);

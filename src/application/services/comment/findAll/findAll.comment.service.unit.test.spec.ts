@@ -3,6 +3,7 @@ import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks_
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity } from '../../../../infrastructure/entities/comment/comment.entity';
 import { FindAllCommentService } from './findAll.comment.service';
+import { mockRating } from '../../../../../tests/mocks/domains/rating.mocks';
 
 describe('FindAllCommentService unit tests', () => {
 
@@ -18,7 +19,7 @@ describe('FindAllCommentService unit tests', () => {
 
     it('should find all comments', async () =>{
         const comment = DomainMocks.mockComment();
-        const rating = DomainMocks.mockRating();
+        const rating = mockRating();
         const ratingEntity = RatingEntity.toRatingEntity(rating);
         const entities = CommentEntity.toCommentEntity(comment, ratingEntity);
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
