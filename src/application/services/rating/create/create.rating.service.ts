@@ -16,7 +16,7 @@ export class CreateRatingService{
 
         try {
             const rating = new Rating(
-                dto.semester, 
+                dto?.quarter, 
                 dto.student,
                 new Date(),
                 dto.listing,

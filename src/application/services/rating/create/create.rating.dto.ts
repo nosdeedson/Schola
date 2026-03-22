@@ -1,5 +1,6 @@
 import { AcademicSemester } from "src/domain/academc-semester/academic.semester";
 import { Grade } from "src/domain/enum/grade/grade";
+import { Quarter } from "src/domain/quarter/quarter";
 import { Student } from "src/domain/student/student";
 import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
 import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
@@ -7,7 +8,7 @@ import { StudentEntity } from "src/infrastructure/entities/student/student.entit
 export class CreateRatingDto{
     
     student: Student;
-    semester: AcademicSemester;
+    quarter: Quarter;
     listing: Grade;
     writing: Grade;
     reading: Grade;
@@ -18,7 +19,7 @@ export class CreateRatingDto{
 
     constructor(
         student: Student,
-        semester: AcademicSemester,
+        quater: Quarter,
         listing: Grade,
         writing: Grade,
         reading: Grade,
@@ -28,7 +29,7 @@ export class CreateRatingDto{
         vocabulary: Grade,
     ){
         this.student = student;
-        this.semester = semester;
+        this.quarter = quater;
         this.listing = listing;
         this.writing = writing;
         this.reading = reading;
