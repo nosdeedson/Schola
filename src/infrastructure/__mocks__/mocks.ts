@@ -32,8 +32,6 @@ const parentWithoutStudent = new Parent({ name: "arthur", nameStudents: [], birt
 const schedule = new Schedule(['Monday', 'Tuesday'], times)
 const schoolGroup = new Class('1234', 'nameBook', 'a1', schedule);
 
-const rating = new Rating(mockQuarter(), student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
-
 const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR });
 admin.setClass(schoolGroup);
 const teacher = new Worker({ birthday: new Date(), name: 'juliana', role: RoleEnum.TEACHER });
@@ -115,9 +113,5 @@ export class DomainMocks {
 
     static mockStudentWithoutParent(): Student {
         return studentWithoutParent;
-    }
-
-    static mockRating(): Rating {
-        return rating;
     }
 }

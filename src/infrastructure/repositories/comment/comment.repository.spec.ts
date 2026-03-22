@@ -14,7 +14,8 @@ import { CommentRepository } from '../comment/comment.respository';
 import { RatingRepositiry } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
-
+import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
+import { mockRating } from '../../../../tests/mocks/domains/rating.mocks';
 
 describe('CommentRepository unit test', () => {
 
@@ -59,8 +60,8 @@ describe('CommentRepository unit test', () => {
 
     it('should save a commnet on BD', async () => {
 
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -73,7 +74,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -91,8 +92,8 @@ describe('CommentRepository unit test', () => {
     });
 
     it('should delete a comment', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -105,7 +106,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -121,8 +122,8 @@ describe('CommentRepository unit test', () => {
 
 
     it('should not throw error when deleting a comment with a wrong id', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -135,7 +136,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -150,8 +151,8 @@ describe('CommentRepository unit test', () => {
     })
 
     it('should find a comment', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -164,7 +165,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -182,8 +183,8 @@ describe('CommentRepository unit test', () => {
     })
 
     it('should find all comments', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -196,7 +197,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -218,8 +219,8 @@ describe('CommentRepository unit test', () => {
     })
 
     it('should update a comment', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let academicSemester = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -232,7 +233,7 @@ describe('CommentRepository unit test', () => {
         
         parent.setStudents([student])
 
-        let rating = DomainMocks.mockRatingWithStudent(student);
+        let rating = mockRating();
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
