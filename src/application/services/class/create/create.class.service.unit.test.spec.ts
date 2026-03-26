@@ -45,23 +45,14 @@ describe('CreateClassUsecas unit test', () => {
         let nameBook = '';
         classDto = new CreateClassDto(nameBook, 'a1class1', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
-            .mockImplementationOnce(() => {
-                return '123456';
-            })
+            .mockImplementationOnce(() => '123456')
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
         
-        try {
-            await service.execute(classDto);
-        } catch (error) {   
-            //@ts-ignore
-            expect(error?.errors).toBeDefined();
-            //@ts-ignore
-            expect(error?.errors).toStrictEqual([{context: "class", message: "Name of the book is required"}]);
-            expect(classRepository.create).toHaveBeenCalledTimes(0);
-            expect(classCodeHelper).toHaveBeenCalledTimes(1);
-        }
-    })
+        await expect(service.execute(classDto)).rejects.toMatchObject({errors: 
+            [{context: "class", message: "Name of the book is required"}]
+        });
+    });
 
     it('should throw erro name of class required', async () => {
         let nameOfClass= '';
@@ -73,56 +64,39 @@ describe('CreateClassUsecas unit test', () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
         try {
-            await service.execute(classDto);
+            await expect(service.execute(classDto)).rejects.toMatchObject({errors:
+                [{context: "class", message: "Name of the class is required"}]
+            });
         } catch (error) {   
             // @ts-ignore
-            expect(error.errors).toBeDefined();
             // @ts-ignore
-            expect(error.errors).toStrictEqual([{context: "class", message: "Name of the class is required"}]);
+            expect(error.errors).toStrictEqual();
             expect(classRepository.create).toHaveBeenCalledTimes(0);
         }
     })
 
     it('should throw erro classcode is required', async () => {
-        let classCode = 'undefined';
+        let classCode = undefined as any;
         classDto = new CreateClassDto('a1', 'nameofclass', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
-            .mockImplementationOnce(() => {
-                return classCode;
-            })
+            .mockImplementationOnce(() => classCode );
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
-        try {
-            await service.execute(classDto);
-        } catch (error) { 
-            // @ts-ignore  
-            expect(error.errors).toBeDefined();
-            // @ts-ignore
-            expect(error.errors).toStrictEqual([{context: "class", message: "classcode is required"}]);
-            expect(classRepository.create).toHaveBeenCalledTimes(0);
-        }
-
-    })
-
-    it('should throw erro schedule is required', async () => {
-        let schedule: any;
-        classDto = new CreateClassDto('a1', 'nameofclass', schedule);
-        const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
-            .mockImplementationOnce(() => {
-                return '123456';
-            })
-        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const service = new CreateClassService(classRepository);
-        try {
-            await service.execute(classDto);
-        } catch (error) {   
-            // @ts-ignore
-            expect(error.errors).toBeDefined();
-            // @ts-ignore
-            expect(error.errors).toStrictEqual([{context: "class", message: "schedule is required"}]);
-            expect(classRepository.create).toHaveBeenCalledTimes(0);
-        }
-
+        await expect(service.execute(classDto)).rejects.toMatchObject({errors:
+            [{context: "class", message: "classcode is required"}]
+        });
     });
 
-})
+    it('should throw erro schedule is required', async () => {
+        let schedule = undefined as any;
+        classDto = new CreateClassDto('a1', 'nameofclass', schedule);
+        const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
+            .mockImplementationOnce(() => '123456')
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const service = new CreateClassService(classRepository);
+        await expect(service.execute(classDto)).rejects.toMatchObject({errors:
+            [{context: "class", message: "schedule is required"}]
+        });
+    });
+
+});

@@ -29,7 +29,7 @@ describe('Academic semester integration test', () => {
             endingDate: new Date(2026, 5, 3),
         });
         const createSemesterDto = new CreateAcademicSemesterDto({
-            firsQuarter: firstQuarterDto,
+            firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
         })
@@ -52,7 +52,7 @@ describe('Academic semester integration test', () => {
         const firstQuarterDto = mockQuarterDto();
         const secondQuarterDto = mockQuarterDto();
         const createSemesterDto = new CreateAcademicSemesterDto({
-            firsQuarter: firstQuarterDto,
+            firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
         })

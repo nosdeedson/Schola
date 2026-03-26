@@ -24,10 +24,7 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.findByClassCode = jest.fn().mockImplementationOnce(
-            () => {
-                return ClassEntity.toClassEntity(DomainMocks.mockSchoolGroup());
-            }
-        );
+            () => ClassEntity.toClassEntity(DomainMocks.mockSchoolGroup()));
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
         workerRepository.create = jest.fn().mockResolvedValue(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER)));
         const service = new CreateWorkerService(workerRepository, classRepository );
@@ -41,60 +38,40 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.findByClassCode = jest.fn().mockImplementationOnce(
-            () => {
-                return ClassEntity.toClassEntity(DomainMocks.mockSchoolGroup());
-            }
-        );
+            () => ClassEntity.toClassEntity(DomainMocks.mockSchoolGroup()));
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
         worker.name = '';
         const service = new CreateWorkerService(workerRepository,classRepository );
-        try {
-            await service.execute(worker);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors[0].message).toBe("Name should not be null")
-        }
+        await expect(service.execute(worker)).rejects.toMatchObject({errors: 
+            [{context: 'teacher', message: "Name should not be null"}]
+        });
     });
 
     it("should throw error teacher should not be null", async () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        classRepository.findByClassCode = jest.fn().mockImplementationOnce(
-            () => {
-                return {}
-            }
-        );
+        classRepository.findByClassCode = jest.fn().mockImplementationOnce(() => {});
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
         let nothing: any;
         worker.role = nothing;
         const service = new CreateWorkerService(workerRepository, classRepository);
-        try {
-            await service.execute(worker);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors[0].message).toBe("Role should not be null")
-        }
-    })
+        await expect(service.execute(worker)).rejects.toMatchObject({errors:
+            [{context: 'teacher', message: "Role should not be null"}]
+        });
+    });
 
     it("should throw database not available", async () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        classRepository.findByClassCode = jest.fn().mockImplementationOnce(
-            () => {
-                return {}
-            }
-        );
+        classRepository.findByClassCode = jest.fn().mockImplementationOnce(() => {});
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
         workerRepository.create = jest.fn().mockImplementationOnce( () => {
             throw new SystemError([{context: 'teacher', message: "database not available"}]); 
         })
         const service = new CreateWorkerService(workerRepository, classRepository);
-        try {
-            await service.execute(worker)
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors[0].message).toBe('database not available')
-        }
+        await expect(service.execute(worker)).rejects.toMatchObject({errors:
+            [{context: 'teacher', message: "database not available"}]
+        });
     });
 
     it('should update an existing teacher', async () => {
@@ -103,11 +80,11 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
-        workerRepository.update = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
+        workerRepository.create = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
         const service = new CreateWorkerService(workerRepository, classRepository);
         const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER})
         expect(await service.execute(dto)).toBeInstanceOf(WorkerEntity);
-        expect(workerRepository.update).toHaveBeenCalledTimes(1);
+        expect(workerRepository.create).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
     });
-});
+})

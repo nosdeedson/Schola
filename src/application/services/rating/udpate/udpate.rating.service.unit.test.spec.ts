@@ -1,9 +1,9 @@
 import { Grade } from '../../../../domain/enum/grade/grade';
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { UpdateRatingDto } from './udpate.rating.dto';
 import { UpdateRatingService } from './update.rating.service';
+import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks"
 
 describe('update rating service unit tests', () => {
 
@@ -24,7 +24,7 @@ describe('update rating service unit tests', () => {
     });
 
     it('should update a rating', async () => {
-        const rating = DomainMocks.mockRating();
+        const rating = mockRating();
         const entity = RatingEntity.toRatingEntity(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         ratingRepository.find = jest.fn().mockImplementationOnce(() => { return entity });

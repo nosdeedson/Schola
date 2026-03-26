@@ -1,3 +1,4 @@
+import { QuarterDto } from "src/application/services/academic-semester/create/quarter/quarter.dto";
 import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
 import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
 
@@ -50,12 +51,14 @@ class ClassInfoDto{
 }
 
 class SemesterInfoDto{
-    beginnigDate: Date;
-    endingDate: Date;
-    actual: boolean;
+    firstQuarter: QuarterDto;
+    secondQuarter: QuarterDto;
+    current: boolean;
     constructor(semester: AcademicSemesterEntity){
-        this.beginnigDate = semester?.beginningDate;
-        this.endingDate = semester?.endingDate;
-        this.actual = semester?.actual;
+        const first = semester.quarters[0].quarterNumber == 1 ? semester.quarters[0] : semester.quarters[1];
+        const second = semester.quarters[1].quarterNumber == 1 ? semester.quarters[1] : semester.quarters[0];
+        this.firstQuarter = QuarterDto.fromDomain(first);
+        this.secondQuarter = QuarterDto.fromDomain(second);
+        this.current = semester?.current;
     }
 }

@@ -16,7 +16,7 @@ export class CreateClassService {
     async execute(dto: CreateClassDto) {
         try{
             dto.classCode = ClassCodeHelper.createClassCode();
-            let schedule = new Schedule(dto.scheduleDto.dayOfWeeks, dto.scheduleDto.times);
+            let schedule = new Schedule(dto?.scheduleDto?.dayOfWeeks, dto?.scheduleDto?.times);
             let schoolGroup = new Class(dto.classCode, dto.nameBook, dto.name, schedule);
             if( schoolGroup.notification.hasError()){
                 throw new SystemError(schoolGroup.notification?.getErrors());

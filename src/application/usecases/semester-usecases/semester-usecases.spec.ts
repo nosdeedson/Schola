@@ -2,19 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SemesterUsecases } from './semester-usecases';
 import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../infrastructure/__mocks__/env.mock';
-import { CreateAcademicSemesterService } from '../../../application/services/academic-semester/create/create.academic-semester.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { FindAcademicSemesterService } from '../../../application/services/academic-semester/find/find.academic-semester.service';
 import { FindAcademicSemesterDto } from '../../../application/services/academic-semester/find/find.academic-semester.dto';
 import { FindAllAcademicSemesterService } from '../../../application/services/academic-semester/findAll/findAll.academic-semester.service';
 import { FindAllAcademicSemesterDto } from '../../../application/services/academic-semester/findAll/findAll.academic-semester.dto';
 import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
-import { DomainMocks } from '../../../infrastructure/__mocks__/mocks';
 import { DeleteAcademicSemesterService } from '../../../application/services/academic-semester/delete/delete.academic-semester.service';
 import { UpdateAcademicSemesterService } from '../../../application/services/academic-semester/update/update.academic-semester.service';
 import { RepositoryFactoryService } from "../../../infrastructure/factory/repositiry-factory/repository-factory.service";
-import { mockCreateSemesterDto } from '../../../../tests/mocks/dto/create-semester-dto.mocks';
-
+import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
+import { mockQuarterDto } from '../../../../tests/mocks/dto/quarter-dto.mocks';
 
 describe('SemesterUsecases', () => {
   let service: SemesterUsecases;
@@ -45,7 +43,14 @@ describe('SemesterUsecases', () => {
   describe('find', () => {
     it('should find a semester by id', async () => {
       const id = 'test-id';
-      const mockResult = new FindAcademicSemesterDto(id, true, new Date(), new Date());
+      const firstQuarter = mockQuarterDto();
+      const secondQuarter = mockQuarterDto();
+      const mockResult = new FindAcademicSemesterDto({
+        id: "123",
+        current: true,
+        firstQuarter,
+        secondQuarter
+      });
       const executeSpy = jest.spyOn(FindAcademicSemesterService.prototype, 'execute')
         .mockResolvedValue(mockResult);
 
@@ -67,8 +72,8 @@ describe('SemesterUsecases', () => {
 
   describe('findAll', () => {
     it('should find all semesters', async () => {
-      const mockResult1 = AcademicSemesterEntity.toAcademicSemester(DomainMocks.mockAcademicSemester());
-      const mockResult2 = AcademicSemesterEntity.toAcademicSemester(DomainMocks.mockAcademicSemester());
+      const mockResult1 = AcademicSemesterEntity.toEntity(mockSemester());
+      const mockResult2 = AcademicSemesterEntity.toEntity(mockSemester());
       const mockResults = new FindAllAcademicSemesterDto([mockResult1, mockResult2]);
       const executeSpy = jest.spyOn(FindAllAcademicSemesterService.prototype, 'execute')
         .mockResolvedValue(mockResults);

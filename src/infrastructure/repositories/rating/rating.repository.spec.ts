@@ -8,6 +8,7 @@ import { AcademicSemesterRepository } from '../academic-semester/academic-semest
 import { RatingRepositiry } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
+import { mockSemester } from "../../../../tests/mocks/domains/semester.mocks";
 
 describe('RatingRepository unit tests', () =>{
 
@@ -37,15 +38,15 @@ describe('RatingRepository unit tests', () =>{
     });
 
     it('should save a rating on the BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
-        let rating = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         let wantedId = rating.getId();
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
@@ -56,15 +57,15 @@ describe('RatingRepository unit tests', () =>{
     });
 
     it('should delete a rating on the BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
-        let rating = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         let wantedId = rating.getId();
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
@@ -74,15 +75,15 @@ describe('RatingRepository unit tests', () =>{
     }); 
     
     it('should find a rating on the BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
-        let rating = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         let wantedId = rating.getId();
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
@@ -93,18 +94,18 @@ describe('RatingRepository unit tests', () =>{
     }); 
 
     it('should find all rating on the BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
-        let rating = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, '1cfb1c26-5e1e-449e-bdbe-1749bc035379')
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, '1cfb1c26-5e1e-449e-bdbe-1749bc035379')
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
-        let rating2 = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, 'd146249c-0341-4c52-bd02-421f104e5c45')
+        let rating2 = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, 'd146249c-0341-4c52-bd02-421f104e5c45')
         let ratingEntity2 = RatingEntity.toRatingEntity(rating2);
         expect(await ratingRepository.create(ratingEntity2)).toBeInstanceOf(RatingEntity);
         let results = await ratingRepository.findAll();
@@ -115,15 +116,15 @@ describe('RatingRepository unit tests', () =>{
     });
 
     it('should update a rating on the BD', async () =>{
-        let semester = DomainMocks.mockAcademicSemester();
-        let semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        let semester = mockSemester();
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
-        let rating = new Rating(semester, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         let wantedId = rating.getId();
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);

@@ -1,11 +1,12 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DeleteRatingService } from './delete.rating.service';
+import {mockRating} from '../../../../../tests/mocks/domains/rating.mocks';
 
 describe('DeleteRatingService unit tests', () =>{
 
     it('should not thorw an error while trying to deleting a rating', async () => {
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         
         let ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
 
@@ -19,7 +20,7 @@ describe('DeleteRatingService unit tests', () =>{
     });
 
     it('should delete a rating', async () => {
-        let rating = DomainMocks.mockRating();
+        let rating = mockRating();
         
         let ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
 

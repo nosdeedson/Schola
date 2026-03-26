@@ -27,13 +27,9 @@ export class ClassValidator implements Validator<Class> {
                 entity.notification?.addError({ context: 'class', message: 'schedule is required' })
             } else{
                 if(entity.getSchecule().notification.hasError()){
-                    entity.notification?.addError({ context: 'class', message: 'schedule is invalid' })
-                }
-                if (entity.getSchecule().getDayOfWeek()[0] === 'Sunday' || entity.getSchecule().getDayOfWeek()[0] === 'Saturday') {
-                    entity.notification?.addError({ context: 'class', message: 'schedule must be a weekday' })
-                }
-                if (entity.getSchecule().getDayOfWeek()[1] === 'Sunday' || entity.getSchecule().getDayOfWeek()[1] === 'Saturday') {
-                    entity.notification?.addError({ context: 'class', message: 'schedule must be a weekday' })
+                    entity.getSchecule().notification.getErrors().forEach(it => {
+                        entity.notification?.addError({ context: 'class', message: it.contex + " : " + it.message })
+                    });
                 }
                 if (
                     entity.getSchecule().getDayOfWeek()[0] === entity.getSchecule().getDayOfWeek()[1]

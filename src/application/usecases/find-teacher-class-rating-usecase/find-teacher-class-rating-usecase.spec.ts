@@ -10,6 +10,7 @@ import { FindCurrentSemesterService } from '../../services/academic-semester/fin
 import { FindTeacherClassRatingService } from '../../services/class/find-teacher-class-rating/find-teacher-class-rating';
 import { TeacherClassRatingDto } from './find-teacher-class-rating-dto';
 import { FindTeacherClassRatingUsecase } from './find-teacher-class-rating-usecase';
+import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
 
 describe('FindTeacherClassRatingUsecase unit test', () =>{
 
@@ -65,8 +66,8 @@ describe('FindTeacherClassRatingUsecase unit test', () =>{
         classModel.setTeacher(teacher);
         classModel.setStudent(DomainMocks.mockStudent());
         const classEntity = ClassEntity.toClassEntity(classModel);
-        const semester = DomainMocks.mockAcademicSemester();
-        const semesterEntity = AcademicSemesterEntity.toAcademicSemester(semester);
+        const semester =  mockSemester();
+        const semesterEntity = AcademicSemesterEntity.toEntity(semester);
         
         const findTeacherClassRating = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
             .mockResolvedValue(Promise.resolve(classEntity));
@@ -82,8 +83,7 @@ describe('FindTeacherClassRatingUsecase unit test', () =>{
         expect(currentSemester).toHaveBeenCalledTimes(1);
         expect(result.teacherId).toBe(teacherId);
         expect(result.classId).toBe(classId);
-        expect(result.semester.actual).toBeTruthy();
-        expect(result.semester.beginnigDate.getTime()).toEqual(semesterEntity.beginningDate.getTime());
+        expect(result.semester.current).toBeTruthy();
         expect(result.students).toHaveLength(1);
     });
 

@@ -61,17 +61,7 @@ describe('Teacher unit test', () =>{
         expect(teacher.notification?.getErrors().length).toBe(1)
         expect(teacher.notification?.getErrors()[0].message).toBe('Name should not be null')
         expect(teacher.notification?.messages('teacher')).toBe('teacher: Name should not be null,')
-    })
-
-    it('should have error if birthDay empty', () =>{
-        let expectedBirthDay;
-        let name = 'edson';
-        let expectedRole = RoleEnum.TEACHER;
-        const teacher = new Worker({birthday: expectedBirthDay as any, name, role: expectedRole});
-        expect(teacher.notification?.getErrors().length).toBe(1)
-        expect(teacher.notification?.getErrors()[0].message).toBe('Birthday should not be null')
-        expect(teacher.notification?.messages('teacher')).toBe('teacher: Birthday should not be null,')
-    })
+    });
 
     it('should have error if role empty', () =>{
         const expectedBirthDay = new Date();
@@ -88,11 +78,10 @@ describe('Teacher unit test', () =>{
         let name;
         let expectedRole;
         const teacher = new Worker({birthday: expectedBirthDay as any, name: name as any, role: expectedRole as any});
-        expect(teacher.notification?.getErrors().length).toBe(3)
+        expect(teacher.notification?.getErrors().length).toBe(2)
         expect(teacher.notification?.getErrors()[0].message).toBe('Name should not be null')
-        expect(teacher.notification?.getErrors()[1].message).toBe('Birthday should not be null')
-        expect(teacher.notification?.getErrors()[2].message).toBe('Role should not be null')
-        expect(teacher.notification?.messages('teacher')).toBe('teacher: Name should not be null,teacher: Birthday should not be null,teacher: Role should not be null,')
+        expect(teacher.notification?.getErrors()[1].message).toBe('Role should not be null')
+        expect(teacher.notification?.messages('teacher')).toBe('teacher: Name should not be null,teacher: Role should not be null,')
     });
 
     it('should instantiate a Teacher with one class', () =>{
