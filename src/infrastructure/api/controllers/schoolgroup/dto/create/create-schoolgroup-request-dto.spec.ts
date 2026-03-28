@@ -1,9 +1,9 @@
-import { CreateSchoolgroupDto, Schedule } from '../create/create-schoolgroup-dto';
+import { CreateSchoolgroupRequestDto, Schedule } from '../create/create-schoolgroup-request-dto';
 
 describe('CreateSchoolgroupDto', () => {
 
   it('should be defined', () => {
-    expect(new CreateSchoolgroupDto()).toBeDefined();
+    expect(new CreateSchoolgroupRequestDto()).toBeDefined();
   });
 
   it('should return a CreateClassDto', () =>{
@@ -14,7 +14,7 @@ describe('CreateSchoolgroupDto', () => {
     schedule.times = [];
     schedule.times.push(...['08:00', '09:00']);
 
-    let dto = new CreateSchoolgroupDto();
+    let dto = new CreateSchoolgroupRequestDto();
     dto.name = 'teste';
     dto.nameBook = 'book name';
     dto.scheduleDto = schedule;

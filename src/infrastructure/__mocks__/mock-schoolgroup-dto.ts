@@ -1,4 +1,4 @@
-import { CreateSchoolgroupDto, Schedule } from "../api/controllers//schoolgroup/dto/create/create-schoolgroup-dto";
+import { CreateSchoolgroupRequestDto, Schedule } from "../api/controllers//schoolgroup/dto/create/create-schoolgroup-request-dto";
 
 export class MockSchoolgroupDto {
 
@@ -55,7 +55,7 @@ export class MockSchoolgroupDto {
     schedule.times = [];
     schedule.times.push(...['08:00', '09:00']);
 
-    let dto = new CreateSchoolgroupDto();
+    let dto = new CreateSchoolgroupRequestDto();
     dto.name = 'teste';
     dto.nameBook = 'book name';
     dto.scheduleDto = schedule;
@@ -69,7 +69,7 @@ export class MockSchoolgroupDto {
     schedule.times = [];
     schedule.times.push(...['08:00']);
 
-    let dto = new CreateSchoolgroupDto();
+    let dto = new CreateSchoolgroupRequestDto();
     dto.name = 'teste';
     dto.nameBook = 'book name';
     dto.scheduleDto = schedule;

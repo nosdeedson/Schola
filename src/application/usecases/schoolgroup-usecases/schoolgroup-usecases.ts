@@ -8,7 +8,7 @@ import { ClassEntity } from 'src/infrastructure/entities/class/class.entity';
 import { ClassRepository } from 'src/infrastructure/repositories/class/class.repository';
 import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
 import { DataSource } from 'typeorm';
-import { CreateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-dto';
+import { CreateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto';
 import { UpdateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-dto';
 import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';

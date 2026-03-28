@@ -5,7 +5,7 @@ import { CreateWorkerService } from "src/application/services/worker/create/crea
 import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
 import { AccessType } from "src/domain/user/access.type";
 import { WorkerRepositoryInterface } from "src/domain/worker/worker.repository.interface";
-import { CreateSchoolgroupDto } from "src/infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-dto";
+import { CreateSchoolgroupRequestDto } from "src/infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto";
 import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
 import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
@@ -24,7 +24,7 @@ export class CreateSchoolgroupUseCase {
         this.teacherReposittory = this.repositoryFactory.createRepository(TypeRepository.WORKER);
     }
 
-    async create(dto: CreateSchoolgroupDto): Promise<void> {
+    async create(dto: CreateSchoolgroupRequestDto): Promise<void> {
         try {
             const teacherService = new CreateWorkerService(this.teacherReposittory, this.classRepository);
             const teacherDto = new CreateWorkerDto({

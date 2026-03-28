@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { CreateSchoolgroupDto } from './dto/create/create-schoolgroup-dto';
+import { CreateSchoolgroupRequestDto } from './dto/create/create-schoolgroup-request-dto';
 import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateSchoolgroupDto } from './dto/update/update-schoolgroup-dto';
@@ -20,7 +20,7 @@ export class SchoolgroupController {
     @ApiResponse({status: 201,})
     @ApiResponse({status: '4XX', description: 'Return status 400 when request has invalid information'})
     @Post()
-    async create(@Body() dto: CreateSchoolgroupDto): Promise<void>{
+    async create(@Body() dto: CreateSchoolgroupRequestDto): Promise<void>{
         await this.createSchoolgroup.create(dto);
     }
 
