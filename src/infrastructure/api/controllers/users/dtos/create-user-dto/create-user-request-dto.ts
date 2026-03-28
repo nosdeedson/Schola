@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsStrongPassword, Length, Max, MaxLength, Min } from "class-validator";
 import { AccessType } from "src/domain/user/access.type";
 
-export class CreateUserDto {
+export class CreateUserRequestDto {
     @ApiProperty({
         description: 'Name of user',
         example: 'John Doe',

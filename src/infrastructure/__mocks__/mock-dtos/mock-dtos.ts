@@ -2,7 +2,7 @@ import { FindUserDto } from "../../../application/services/user/find/find.user.d
 import { AccessType } from "../../../domain/user/access.type";
 import { OutputFindWorkerDto } from '../../../application/services/worker/find/find.worker.dto'
 import { RoleEnum } from "../../../domain/worker/roleEnum";
-import { CreateUserDto } from "../../api/controllers/users/dtos/create-user-dto/create-user-dto";
+import { CreateUserRequestDto } from "../../api/controllers/users/dtos/create-user-dto/create-user-request-dto";
 import { ClassesOfTeacherDto } from "../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
 import { TeacherClassRatingDto } from "../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-dto";
 import { mockQuarterDto } from "../../../../tests/mocks/domain-dto/quarter-dto.mocks";
@@ -36,8 +36,8 @@ export function mockOutputFindWorkerDto(
 
 
 export function mockCreateWorkersDto(
-    overrides: Partial<CreateUserDto> = {},
-): CreateUserDto {
+    overrides: Partial<CreateUserRequestDto> = {},
+): CreateUserRequestDto {
     return {
         name: 'worker',
         birthDate: '2025-02-03T12:00:00Z',

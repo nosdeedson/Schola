@@ -10,6 +10,7 @@ import { FindUserFactoryService } from '../../../factory/find-user-factory/find-
 import { mockCreateWorkersDto } from '../../../__mocks__/mock-dtos/mock-dtos';
 import { BadRequestException } from '@nestjs/common';
 import { UserUsecasesService } from '../../../../application/usecases/user-usecases/user-usecases.service';
+import { AccessType } from '../../../../domain/user/access.type';
 
 
 describe('UsersController', () => {
@@ -38,18 +39,44 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should create a new user', async () => {
+  it('should create a new user as admin', async () => {
     const dto = mockCreateWorkersDto();
     const userUsecasesService = jest.spyOn(UserUsecasesService.prototype, 'create')
       .mockImplementation(async () => Promise.resolve(void 0));
     await expect(controller.create(dto)).resolves.not.toThrow();
+    expect(userUsecasesService).toHaveBeenCalled();
   });
 
-  it('should throw an error when create a new user', async () => {
+  it('should create a new user as teacher', async () => {
+    const dto = mockCreateWorkersDto({accessType: AccessType.TEACHER});
+    const userUsecasesService = jest.spyOn(UserUsecasesService.prototype, 'create')
+      .mockImplementation(async () => Promise.resolve(void 0));
+    await expect(controller.create(dto)).resolves.not.toThrow();
+    expect(userUsecasesService).toHaveBeenCalled();
+  });
+
+  it('should create a new user as student', async () => {
+    const dto = mockCreateWorkersDto({accessType: AccessType.STUDENT});
+    const userUsecasesService = jest.spyOn(UserUsecasesService.prototype, 'create')
+      .mockImplementation(async () => Promise.resolve(void 0));
+    await expect(controller.create(dto)).resolves.not.toThrow();
+    expect(userUsecasesService).toHaveBeenCalled();
+  });
+
+  it('should create a new user as parent', async () => {
+    const dto = mockCreateWorkersDto({accessType: AccessType.PARENT});
+    const userUsecasesService = jest.spyOn(UserUsecasesService.prototype, 'create')
+      .mockImplementation(async () => Promise.resolve(void 0));
+    await expect(controller.create(dto)).resolves.not.toThrow();
+    expect(userUsecasesService).toHaveBeenCalled();
+  });
+
+  it('should throw an error when creating a user', async () => {
     const dto = mockCreateWorkersDto();
     const userUsecasesService = jest.spyOn(UserUsecasesService.prototype, 'create')
       .mockImplementation(async () => Promise.reject(new BadRequestException("Error creating user")));
     await expect(controller.create(dto)).rejects.toThrow(BadRequestException);
+    expect(userUsecasesService).toHaveBeenCalled();
   });
 
 });

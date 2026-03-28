@@ -4,7 +4,7 @@ import { CreateParentDto } from 'src/application/services/parent/create/create.p
 import { CreateStudentDto } from 'src/application/services/student/create/create.student.dto';
 import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
 import { AccessType } from 'src/domain/user/access.type';
-import { CreateUserDto } from 'src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-dto';
+import { CreateUserRequestDto } from 'src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 
 export type GenericPersonDto = 
  | CreateWorkerDto
@@ -14,7 +14,7 @@ export type GenericPersonDto =
 @Injectable()
 export class CreatePersonFactoryService {
 
-    public static createDTOPersonFactory(dto: CreateUserDto): any {
+    public static createDTOPersonFactory(dto: CreateUserRequestDto): any {
         switch (dto.accessType) {
             case AccessType.PARENT:
                 return new CreateParentDto(new Date(dto.birthDate), dto.name, dto.students);

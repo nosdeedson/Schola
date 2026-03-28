@@ -1,6 +1,6 @@
-import{ CreateUserDto } from './create-user-dto'
+import{ CreateUserRequestDto } from './create-user-request-dto'
 describe('CreateWorkersDto', () => {
   it('should be defined', () => {
-    expect(new CreateUserDto()).toBeDefined();
+    expect(new CreateUserRequestDto()).toBeDefined();
   });
 });

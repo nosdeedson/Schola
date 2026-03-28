@@ -9,7 +9,7 @@ import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-
 import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';
 import { UserRepository } from 'src/infrastructure/repositories/user/user.repository';
 import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
-import { CreateUserDto } from '../../../infrastructure/api/controllers/users/dtos/create-user-dto/create-user-dto';
+import { CreateUserRequestDto } from '../../../infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 import { FindUserOutPutDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto';
 import { FindUserFactoryService } from 'src/infrastructure/factory/find-user-factory/find-user-factory.service';
 import { CreatePersonFactoryService } from 'src/infrastructure/factory/create-person/create-person-factory.service';
@@ -27,7 +27,7 @@ export class UserUsecasesService {
         this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
     }
 
-    async create(dto: CreateUserDto): Promise<void> {
+    async create(dto: CreateUserRequestDto): Promise<void> {
         try {
             let createPerson = CreatePersonFactoryService.createDTOPersonFactory(dto);
             let createperson = this.userServiceFactory.createUserServiceFactory(dto.accessType);
