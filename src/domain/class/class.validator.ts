@@ -27,15 +27,19 @@ export class ClassValidator implements Validator<Class> {
                 entity.notification?.addError({ context: 'class', message: 'schedule is required' })
             } else{
                 if(entity.getSchecule().notification.hasError()){
+                    let msg = "";
                     entity.getSchecule().notification.getErrors().forEach(it => {
-                        entity.notification?.addError({ context: 'class', message: it.contex + " : " + it.message })
+                        msg += `${it.context} : ${it.message}, `
                     });
+                    entity.notification?.addError({ context: 'class', message: msg })
                 }
-                if (
-                    entity.getSchecule().getDayOfWeek()[0] === entity.getSchecule().getDayOfWeek()[1]
-                    && entity.getSchecule().getTimes()[0] === entity.getSchecule().getTimes()[1]
-                ) {
-                    entity.notification?.addError({ context: 'class', message: 'time must be different when day of week are equal' })
+                if(entity.getSchecule().getDayOfWeek() && entity.getSchecule().getTimes()){
+                    if (
+                        entity.getSchecule().getDayOfWeek()[0] === entity.getSchecule().getDayOfWeek()[1]
+                        && entity.getSchecule().getTimes()[0] === entity.getSchecule().getTimes()[1]
+                    ) {
+                        entity.notification?.addError({ context: 'class', message: 'time must be different when day of week are equal' })
+                    }
                 }
             }
         } catch (error) {

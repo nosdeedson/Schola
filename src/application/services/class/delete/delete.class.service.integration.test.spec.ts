@@ -2,30 +2,23 @@ import { ClassEntity } from "../../../../infrastructure/entities/class/class.ent
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { DeleteClassService } from './delete.class.service';
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 
 
 describe('delete class service integration test', () =>{
 
-    let appDatasource: DataSource;
     let classEntity: Repository<ClassEntity>;
     let classRepository: ClassRepository;
 
     let entity;
 
-    beforeEach(async () =>{
-        appDatasource = AppDataSource.getAppDataSource();
-        await appDatasource.initialize()
-            .catch(error => console.log(error));
-        classEntity = appDatasource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, appDatasource);
+    beforeAll(async () =>{
+        classEntity = TestDataSource.getRepository(ClassEntity);
+        classRepository = new ClassRepository(classEntity, TestDataSource);
     });
 
     afterEach(async () =>{
-        await appDatasource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDatasource.destroy();
         jest.clearAllMocks();
     })
 

@@ -8,6 +8,8 @@ import { AcademicSemesterRepository } from "src/infrastructure/repositories/acad
 import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
 import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
+import { UpdateAcademicSemesterService } from "src/application/services/academic-semester/update/update.academic-semester.service";
+import { UpdateAcademicSemesterDto } from "src/application/services/academic-semester/update/udpate.academic-semester.dto";
 
 @Injectable()
 export class SemesterUsecases {

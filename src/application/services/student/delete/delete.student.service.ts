@@ -12,7 +12,7 @@ export class DeleteStudentService extends DeleteGenericService{
 
     async execute(id: string): Promise<void>{
         try {
-            this.studentRepository.delete(id);
+            await this.studentRepository.delete(id);
         } catch (error) {
             throw error;
         }

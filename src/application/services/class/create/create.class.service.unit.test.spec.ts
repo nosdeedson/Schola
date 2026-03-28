@@ -48,14 +48,15 @@ describe('CreateClassUsecas unit test', () => {
             .mockImplementationOnce(() => '123456')
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
-        
-        await expect(service.execute(classDto)).rejects.toMatchObject({errors: 
-            [{context: "class", message: "Name of the book is required"}]
+
+        await expect(service.execute(classDto)).rejects.toMatchObject({
+            errors:
+                [{ context: "class", message: "Name of the book is required" }]
         });
     });
 
     it('should throw erro name of class required', async () => {
-        let nameOfClass= '';
+        let nameOfClass = '';
         classDto = new CreateClassDto('a1', nameOfClass, scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => {
@@ -63,27 +64,23 @@ describe('CreateClassUsecas unit test', () => {
             })
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
-        try {
-            await expect(service.execute(classDto)).rejects.toMatchObject({errors:
-                [{context: "class", message: "Name of the class is required"}]
-            });
-        } catch (error) {   
-            // @ts-ignore
-            // @ts-ignore
-            expect(error.errors).toStrictEqual();
-            expect(classRepository.create).toHaveBeenCalledTimes(0);
-        }
+        await expect(service.execute(classDto)).rejects.toMatchObject({
+            errors:
+                [{ context: "class", message: "Name of the class is required" }]
+        });
+        expect(classRepository.create).toHaveBeenCalledTimes(0);
     })
 
     it('should throw erro classcode is required', async () => {
         let classCode = undefined as any;
         classDto = new CreateClassDto('a1', 'nameofclass', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
-            .mockImplementationOnce(() => classCode );
+            .mockImplementationOnce(() => classCode);
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
-        await expect(service.execute(classDto)).rejects.toMatchObject({errors:
-            [{context: "class", message: "classcode is required"}]
+        await expect(service.execute(classDto)).rejects.toMatchObject({
+            errors:
+                [{ context: "class", message: "classcode is required" }]
         });
     });
 
@@ -94,8 +91,14 @@ describe('CreateClassUsecas unit test', () => {
             .mockImplementationOnce(() => '123456')
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateClassService(classRepository);
-        await expect(service.execute(classDto)).rejects.toMatchObject({errors:
-            [{context: "class", message: "schedule is required"}]
+        await expect(service.execute(classDto)).rejects.toMatchObject({
+            errors:
+                [
+                    {
+                        context: 'class',
+                        message: 'schedule : days of week must be defined, schedule : times must be defined, '
+                    }
+                ]
         });
     });
 

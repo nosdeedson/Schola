@@ -5,6 +5,7 @@ import { RoleEnum } from "../../../domain/worker/roleEnum";
 import { CreateUserDto } from "../../api/controllers/users/dtos/create-user-dto/create-user-dto";
 import { ClassesOfTeacherDto } from "../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
 import { TeacherClassRatingDto } from "../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-dto";
+import { mockQuarterDto } from "../../../../tests/mocks/dto/quarter-dto.mocks";
 
 export function mockFindUserDto(
     overrides: Partial<FindUserDto> = {},
@@ -105,9 +106,9 @@ export function mockTeacherClassRatingDto(): TeacherClassRatingDto {
             }
         ],
         "semester": {
-            "beginnigDate": new Date("2026-02-01T00:00:00.000Z"),
-            "endingDate": new Date("2026-06-30T00:00:00.000Z"),
-            "actual": true
+            "firstQuarter": mockQuarterDto(),
+            "secondQuarter": mockQuarterDto(),
+            "current": true
         } 
     } as TeacherClassRatingDto;
 }
