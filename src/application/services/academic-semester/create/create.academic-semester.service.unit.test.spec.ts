@@ -1,7 +1,7 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { CreateAcademicSemesterDto } from './semester/academic-semester.dto';
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
-import { mockQuarterDto } from "../../../../../tests/mocks/dto/quarter-dto.mocks";
+import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 
 describe('Academic semester service unit test', () => {
 

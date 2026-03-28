@@ -5,7 +5,7 @@ import { CreateAcademicSemesterDto } from "./semester/academic-semester.dto";
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { Repository } from "typeorm";
-import { mockQuarterDto } from "../../../../../tests/mocks/dto/quarter-dto.mocks";
+import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 
 describe('Academic semester integration test', () => {
 

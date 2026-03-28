@@ -1,11 +1,13 @@
 import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
+import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
+import { SystemError } from "../../@shared/system-error";
 
 export class UpdateAcademicSemesterService{
 
-    private semesterRepository: AcademicSemesterRepository;
+    private semesterRepository: AcademicSemesterInterface;
 
-    constructor(semesterRepository: AcademicSemesterRepository){
+    constructor(semesterRepository: AcademicSemesterInterface){
         this.semesterRepository = semesterRepository;
     }
 
@@ -25,6 +27,8 @@ export class UpdateAcademicSemesterService{
                     entity.updatedAt = new Date();
                 }
                 await this.semesterRepository.update(entity);
+            } else {
+                throw new SystemError([{context: 'semester', message: 'semester not found'}]);
             }
         } catch (error) {
             throw error;

@@ -11,9 +11,9 @@ import { AcademicSemesterEntity } from '../../../infrastructure/entities/academi
 import { DeleteAcademicSemesterService } from '../../../application/services/academic-semester/delete/delete.academic-semester.service';
 import { UpdateAcademicSemesterService } from '../../../application/services/academic-semester/update/update.academic-semester.service';
 import { RepositoryFactoryService } from "../../../infrastructure/factory/repositiry-factory/repository-factory.service";
-import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
-import { mockQuarterDto } from '../../../../tests/mocks/dto/quarter-dto.mocks';
-import { mockQuarter } from '../../../../tests/mocks/domains/quarter.mocks';
+import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
+import { mockQuarterDto } from '../../../../tests/mocks/domain-dto/quarter-dto.mocks';
+import { mockQuarter } from '../../../../tests/mocks/domain/quarter.mocks';
 import { Quarter } from '../../../domain/quarter/quarter';
 import { mockQuarterEntity } from '../../../../tests/mocks/entities/quarter-entity.mock';
 

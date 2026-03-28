@@ -1,7 +1,7 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { FindAllAcademicSemesterService } from './findAll.academic-semester.service';
-import { mockSemester } from '../../../../../tests/mocks/domains/semester.mocks';
-import { mockQuarter } from '../../../../../tests/mocks/domains/quarter.mocks';
+import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
+import { mockQuarter } from '../../../../../tests/mocks/domain/quarter.mocks';
 import { AcademicSemesterEntity } from '../../../../infrastructure/entities/academic-semester/academic.semester.entity';
 
 describe('findAll service unit tests', () =>{

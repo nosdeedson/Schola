@@ -3,7 +3,7 @@ import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks_
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { UpdateRatingDto } from './udpate.rating.dto';
 import { UpdateRatingService } from './update.rating.service';
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks"
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks"
 
 describe('update rating service unit tests', () => {
 

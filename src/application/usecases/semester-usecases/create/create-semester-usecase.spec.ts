@@ -3,10 +3,10 @@ import { CreateSemesterUsecase } from './create-semester-usecase';
 import { setEnv } from "../../../../infrastructure/__mocks__/env.mock";
 import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
-import { mockCreateSemesterDto } from '../../../../../tests/mocks/dto/create-semester-dto.mocks';
+import { mockCreateSemesterDto } from '../../../../../tests/mocks/domain-dto/create-semester-dto.mocks';
 import { CreateAcademicSemesterService} from '../../../services/academic-semester/create/create.academic-semester.service';
-import { SystemError } from '../../../../application/services/@shared/system-error';
-import { mockQuarterDto } from "../../../../../tests/mocks/dto/quarter-dto.mocks";
+import { SystemError } from '../../../services/@shared/system-error';
+import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";
 import { BadRequestException } from "@nestjs/common";
 

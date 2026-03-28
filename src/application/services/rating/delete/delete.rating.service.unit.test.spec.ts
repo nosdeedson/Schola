@@ -1,7 +1,7 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DeleteRatingService } from './delete.rating.service';
-import {mockRating} from '../../../../../tests/mocks/domains/rating.mocks';
+import {mockRating} from '../../../../../tests/mocks/domain/rating.mocks';
 
 describe('DeleteRatingService unit tests', () =>{
 

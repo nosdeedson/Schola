@@ -4,7 +4,7 @@ import { AcademicSemesterRepository } from '../../../../infrastructure/repositor
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 
 
 describe('Update AcademicSemester integration tests', () =>{

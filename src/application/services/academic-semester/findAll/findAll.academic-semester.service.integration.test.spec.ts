@@ -5,8 +5,8 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { FindAllAcademicSemesterService } from "./findAll.academic-semester.service";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockQuarter } from "../../../../../tests/mocks/domains/quarter.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockQuarter } from "../../../../../tests/mocks/domain/quarter.mocks";
 
 describe('AcademicSemester integration tests', () => {
 

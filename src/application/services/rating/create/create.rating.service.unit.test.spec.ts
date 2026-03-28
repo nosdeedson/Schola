@@ -1,4 +1,4 @@
-import { mockQuarter } from "../../../../../tests/mocks/domains/quarter.mocks";
+import { mockQuarter } from "../../../../../tests/mocks/domain/quarter.mocks";
 import { Grade } from "../../../../domain/enum/grade/grade";
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";

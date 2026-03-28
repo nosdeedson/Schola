@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemester } from "../../../../domain/academc-semester/academic.semester";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";

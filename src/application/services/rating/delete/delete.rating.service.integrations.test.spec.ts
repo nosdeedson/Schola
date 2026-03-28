@@ -9,8 +9,8 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 
 describe('Delete rating domain service integration tests', () => {

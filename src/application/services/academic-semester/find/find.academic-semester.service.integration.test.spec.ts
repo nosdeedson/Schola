@@ -8,7 +8,7 @@ import { FindAcademicSemesterService } from "./find.academic-semester.service";
 import { SystemError } from "../../../../application/services/@shared/system-error";
 import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 
 describe('Academic semester find integrations tests', () => {
 

@@ -4,7 +4,7 @@ import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks_
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity} from '../../../../infrastructure/entities/comment/comment.entity';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
-import { mockRating } from '../../../../../tests/mocks/domains/rating.mocks';
+import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 
 describe('UpdateCommentService unit tests', () =>{
 

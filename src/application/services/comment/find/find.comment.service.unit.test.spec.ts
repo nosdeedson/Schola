@@ -1,4 +1,4 @@
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity } from '../../../../infrastructure/entities/comment/comment.entity';

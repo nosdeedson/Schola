@@ -12,8 +12,8 @@ import { FindCommentService } from './find.comment.service';
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 describe('FindCommentService integration tests', () =>{
 

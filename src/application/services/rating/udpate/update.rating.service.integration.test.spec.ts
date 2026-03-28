@@ -10,8 +10,8 @@ import { RatingRepositiry } from "../../../../infrastructure/repositories/rating
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateRatingDto } from "./udpate.rating.dto";
 import { UpdateRatingService } from './update.rating.service';
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 
 

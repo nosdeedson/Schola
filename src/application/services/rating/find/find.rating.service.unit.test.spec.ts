@@ -1,7 +1,7 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { FindRatingService } from "./find.rating.service";
 import { RatingEntity} from '../../../../infrastructure/entities/rating/rating.entity';
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 describe('find rating unit tests', () =>{
 

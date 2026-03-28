@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 
 describe('FindCurrentSemesterService integration test', () => {
 

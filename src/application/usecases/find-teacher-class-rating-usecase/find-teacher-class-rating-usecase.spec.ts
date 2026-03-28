@@ -10,7 +10,7 @@ import { FindCurrentSemesterService } from '../../services/academic-semester/fin
 import { FindTeacherClassRatingService } from '../../services/class/find-teacher-class-rating/find-teacher-class-rating';
 import { TeacherClassRatingDto } from './find-teacher-class-rating-dto';
 import { FindTeacherClassRatingUsecase } from './find-teacher-class-rating-usecase';
-import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
+import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
 
 describe('FindTeacherClassRatingUsecase unit test', () =>{
 

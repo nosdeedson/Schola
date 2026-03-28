@@ -5,7 +5,7 @@ import { ParentRepository } from "../../../../infrastructure/repositories/parent
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DeleteStudentService } from "../delete/delete.student.service";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockStudent } from '../../../../../tests/mocks/domains/student.mocks';
+import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
 
 describe('DeleteStudentService integration tests', () => {
     let studentEntity: Repository<StudentEntity>;

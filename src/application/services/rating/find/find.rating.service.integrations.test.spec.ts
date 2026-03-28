@@ -9,8 +9,8 @@ import { AcademicSemesterRepository } from "../../../../infrastructure/repositor
 import { RatingRepositiry } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindRatingService } from './find.rating.service';
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 describe('find rating integration tests', () => {
 

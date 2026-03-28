@@ -9,7 +9,7 @@ import { StudentRepository } from "../../../../infrastructure/repositories/stude
 import { CreateRatingService } from './create.rating.service';
 import { CreateRatingDto } from './create.rating.dto';
 import { Grade } from "../../../../domain/enum/grade/grade";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { Repository } from "typeorm";
 
 describe('create rating integration tests', () => {

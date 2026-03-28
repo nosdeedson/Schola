@@ -15,8 +15,8 @@ import { RatingRepositiry } from "../../../../infrastructure/repositories/rating
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindAllCommentService } from './findAll.comment.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { mockSemester } from "../../../../../tests/mocks/domains/semester.mocks";
-import { mockRating } from "../../../../../tests/mocks/domains/rating.mocks";
+import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 describe('FindAllCommentService integration tests', () =>{
 

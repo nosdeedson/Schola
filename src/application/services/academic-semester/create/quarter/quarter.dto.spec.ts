@@ -1,4 +1,4 @@
-import { mockQuarterDto } from "../../../../../../tests/mocks/dto/quarter-dto.mocks";
+import { mockQuarterDto } from "../../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 import { Quarter } from "../../../../../domain/quarter/quarter";
 
 describe('quarterDto', () => {
