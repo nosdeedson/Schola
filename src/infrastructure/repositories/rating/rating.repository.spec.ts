@@ -8,7 +8,7 @@ import { AcademicSemesterRepository } from '../academic-semester/academic-semest
 import { RatingRepositiry } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
-import { mockSemester } from "../../../../tests/mocks/domains/semester.mocks";
+import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 
 describe('RatingRepository unit tests', () =>{
 

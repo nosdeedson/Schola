@@ -11,7 +11,7 @@ import { BadRequestException } from '@nestjs/common';
 import { RepositoryFactoryService } from '../../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { FindAcademicSemesterDto } from '../../../../application/services/academic-semester/find/find.academic-semester.dto';
 import { FindAllAcademicSemesterDto } from '../../../../application/services/academic-semester/findAll/findAll.academic-semester.dto';
-import { mockCreateSemesterDto } from '../../../../../tests/mocks/dto/create-semester-dto.mocks';
+import { mockCreateSemesterDto } from '../../../../../tests/mocks/domain-dto/create-semester-dto.mocks';
 
 describe('SemesterController', () => {
   let controller: SemesterController;

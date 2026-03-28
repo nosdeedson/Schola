@@ -14,8 +14,8 @@ import { CommentRepository } from '../comment/comment.respository';
 import { RatingRepositiry } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
-import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks';
-import { mockRating } from '../../../../tests/mocks/domains/rating.mocks';
+import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
+import { mockRating } from '../../../../tests/mocks/domain/rating.mocks';
 
 describe('CommentRepository unit test', () => {
 

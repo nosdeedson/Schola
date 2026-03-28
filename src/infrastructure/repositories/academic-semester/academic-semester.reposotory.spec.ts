@@ -1,5 +1,5 @@
-import { mockQuarter } from "../../../../tests/mocks/domains/quarter.mocks";
-import { mockSemester } from "../../../../tests/mocks/domains/semester.mocks";
+import { mockQuarter } from "../../../../tests/mocks/domain/quarter.mocks";
+import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemesterEntity } from "../../entities/academic-semester/academic.semester.entity";
 import { TestDataSource } from '../config-test/test.datasource';
 import { AcademicSemesterRepository } from './academic-semester.repository';

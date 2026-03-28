@@ -1,4 +1,3 @@
-import { first, retry } from "rxjs";
 import { QuarterDto } from "../../../src/application/services/academic-semester/create/quarter/quarter.dto";
 import { CreateAcademicSemesterDto } from "../../../src/application/services/academic-semester/create/semester/academic-semester.dto";
 import { mockQuarterDto } from "./quarter-dto.mocks";

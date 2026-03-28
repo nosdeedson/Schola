@@ -10,7 +10,7 @@ import { Student } from "../../domain/student/student";
 import { AccessType } from "../../domain/user/access.type";
 import { User } from "../../domain/user/user";
 import { Comment } from "../../domain/comment/comment";
-import { mockQuarter } from "../../../tests/mocks/domains/quarter.mocks";
+import { mockQuarter } from "../../../tests/mocks/domain/quarter.mocks";
 
 // first August 2024
 const aValidBeginnig = new Date(2024, 7, 1, 0, 0, 0);

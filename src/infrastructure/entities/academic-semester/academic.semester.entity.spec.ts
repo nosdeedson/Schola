@@ -1,6 +1,6 @@
 import { AcademicSemesterEntity } from "./academic.semester.entity";
-import { mockSemester } from '../../../../tests/mocks/domains/semester.mocks'
-import { mockQuarter } from '../../../../tests/mocks/domains/quarter.mocks'
+import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks'
+import { mockQuarter } from '../../../../tests/mocks/domain/quarter.mocks'
 
 describe("AcademicSemester unit test", () => {
 

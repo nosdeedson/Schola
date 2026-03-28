@@ -2,7 +2,7 @@ import { Grade } from "../enum/grade/grade";
 import { Student } from "../student/student";
 import { Rating } from "./rating";
 import { Comment } from "../comment/comment"
-import { mockQuarter } from "../../../tests/mocks/domains/quarter.mocks";
+import { mockQuarter } from "../../../tests/mocks/domain/quarter.mocks";
 
 
 describe('Rating unit tests', () => {

@@ -1,4 +1,4 @@
-import { mockQuarter } from "../../../tests/mocks/domains/quarter.mocks"
+import { mockQuarter } from "../../../tests/mocks/domain/quarter.mocks"
 import { AcademicSemester } from "./academic.semester"
 
 describe('AcademicSemester unit tests', () =>{
