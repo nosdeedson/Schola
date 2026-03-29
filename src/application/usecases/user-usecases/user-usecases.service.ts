@@ -27,19 +27,6 @@ export class UserUsecasesService {
         this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
     }
 
-    async create(dto: CreateUserRequestDto): Promise<void> {
-        try {
-            let createPerson = CreatePersonFactoryService.createDTOPersonFactory(dto);
-            let createperson = this.userServiceFactory.createUserServiceFactory(dto.accessType);
-            const person = await createperson.execute(createPerson);
-            let createUser = new CreateUserService(this.userRepository, createperson.personRepository);
-            let input = new InputCreateUserDto(dto, person.id);
-            await createUser.execute(input);
-        } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
-        }
-    }
-
     async delete(id: string): Promise<void> {
         try {
             let userFindService = new FindUserService(this.userRepository);

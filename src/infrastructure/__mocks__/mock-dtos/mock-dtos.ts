@@ -35,7 +35,7 @@ export function mockOutputFindWorkerDto(
 }
 
 
-export function mockCreateWorkersDto(
+export function mockCreateUsersDto(
     overrides: Partial<CreateUserRequestDto> = {},
 ): CreateUserRequestDto {
     return {

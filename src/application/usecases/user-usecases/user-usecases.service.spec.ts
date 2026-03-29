@@ -20,12 +20,6 @@ import { TrataErros } from "../../../infrastructure/utils/trata-erros/trata-erro
 import { FindUserOutPutDto } from "../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto";
 
 
-// create user mocks
-// my return from the factory
-const createPersonServiceMock = {
-  execute: jest.fn(),
-};
-
 const userServiceFactoryMock = {
   createUserServiceFactory: jest.fn(),
 };
@@ -90,84 +84,7 @@ describe('UserUsecasesService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create', () => {
 
-    it('should create a user as a TEACHER', async () => {
-      const person = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
-      const mockInput = mockCreateWorkersDto();
-      const input = new CreateWorkerDto(mockInput);
-      userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
-      createPersonServiceMock.execute.mockResolvedValue(person);
-      const createUserService = jest.spyOn(CreateUserService.prototype, 'execute')
-        .mockImplementationOnce(() => Promise.resolve(void 0));
-      await service.create(mockInput);
-      expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1)
-      expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
-      expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-      expect(createPersonServiceMock.execute).toHaveBeenCalledWith(input);
-      expect(createUserService).toHaveBeenCalledTimes(1);
-    });
-    
-    it('should throw an error when creating worker', async () => {
-      const mockInput = mockCreateWorkersDto();
-      var errorToThrow = new SystemError([{
-        "context": "worker",
-        "message": "error while creating worker",
-      }]);
-
-      userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
-      createPersonServiceMock.execute.mockRejectedValue(errorToThrow);
-
-      const createUser = jest.spyOn(CreateUserService.prototype, 'execute')
-        .mockImplementation(async () => await Promise.resolve(void 0));
-
-      const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
-        .mockImplementation(() => { throw new BadRequestException('error while creating worker') });
-
-      try {
-        await service.create(mockInput);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestException);
-        expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
-        expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-        expect(createUser).toHaveBeenCalledTimes(0);
-        expect(tratarError).toHaveBeenCalledTimes(1);
-        expect(tratarError).toHaveBeenCalledWith(errorToThrow);
-      }
-    });
-
-    it('should throw an error when creating user', async () => {
-      const person = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
-      const mockInput = mockCreateWorkersDto();
-      const input = new CreateWorkerDto(mockInput);
-      var errorToThrow = new SystemError([{
-        "context": "user",
-        "message": "error while creating user",
-      }]);
-
-      userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
-      createPersonServiceMock.execute.mockResolvedValue(person);
-
-      const createUser = jest.spyOn(CreateUserService.prototype, 'execute')
-        .mockRejectedValue(errorToThrow);
-
-      const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
-        .mockImplementationOnce(() => { throw new BadRequestException('test') });
-
-      try {
-        await service.create(mockInput);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestException);
-        expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
-        expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-        expect(createPersonServiceMock.execute).toHaveBeenCalledWith(input);
-        expect(createUser).toHaveBeenCalledTimes(1);
-        expect(tratarError).toHaveBeenCalledTimes(1);
-        expect(tratarError).toHaveBeenCalledWith(errorToThrow);
-      }
-    });
-
-  });
 
   describe('delele', () => {
 
