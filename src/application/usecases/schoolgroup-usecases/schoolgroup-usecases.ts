@@ -9,7 +9,7 @@ import { ClassRepository } from 'src/infrastructure/repositories/class/class.rep
 import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
 import { DataSource } from 'typeorm';
 import { CreateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto';
-import { UpdateSchoolgroupDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-dto';
+import { UpdateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto';
 import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';
 import { WorkerRepository } from 'src/infrastructure/repositories/worker/worker.repository';

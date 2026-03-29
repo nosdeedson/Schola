@@ -1,16 +1,15 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
-import { UpdateSchoolgroupUsecase } from './schoolgroup';
 import { setEnv } from '../../../../infrastructure/__mocks__/env.mock';
 import { DataBaseConnectionModule } from '../../../../infrastructure/data-base-connection/data-base-connection.module';
 import { BadRequestException } from '@nestjs/common';
-import { UpdateSchoolgroupDto } from '../../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-dto';
 import { RepositoryFactoryService } from '../../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { UpdateClassService } from '../../../services/class/update/update.class.service';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { RoleEnum } from '../../../../domain/worker/roleEnum';
 import { WorkerRepository } from '../../../../infrastructure/repositories/worker/worker.repository';
+import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
 
 describe('UpdateSchoolgroupUsecase', () => {
 
@@ -46,7 +45,7 @@ describe('UpdateSchoolgroupUsecase', () => {
 
     it('should update a schoolgroup', async () => {
         const id = "222f51d1-5fb2-4048-9aac-24bc2951f57c";
-        const dto = new UpdateSchoolgroupDto();
+        const dto = new UpdateSchoolReqque();
         dto.id = id;
         dto.nameBook = "bookName";
         dto.teacherName = "new Teacher";

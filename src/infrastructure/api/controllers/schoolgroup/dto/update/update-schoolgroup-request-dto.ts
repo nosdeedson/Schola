@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { UpdateClassDto } from "src/application/services/class/update/udpate.class.dto";
 import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
 
-export class UpdateSchoolgroupDto{
+export class UpdateSchoolgroupRequestDto{
     @ApiProperty({description: 'id of schoolgroup'})
     id: string;
 

@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { CreateSchoolgroupRequestDto } from './dto/create/create-schoolgroup-request-dto';
 import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UpdateSchoolgroupDto } from './dto/update/update-schoolgroup-dto';
+import { UpdateSchoolgroupRequestDto } from './dto/update/update-schoolgroup-request-dto';
 import { CreateSchoolgroupUseCase } from 'src/application/usecases/schoolgroup-usecases/create/schoolgroup';
-import { UpdateSchoolgroupUsecase } from 'src/application/usecases/schoolgroup-usecases/update/schoolgroup';
+import { UpdateSchoolgroupUsecase } from 'src/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
 
 @ApiTags('Class contoller')
 @Controller('classes')
@@ -49,7 +49,7 @@ export class SchoolgroupController {
     @ApiResponse({status: 204, description: ''})
     @ApiResponse({status: '4XX', description: 'If schoolgroup not found throw exeception'})
     @Patch()
-    async update(@Body() dto: UpdateSchoolgroupDto): Promise<void>{
+    async update(@Body() dto: UpdateSchoolgroupRequestDto): Promise<void>{
         await this.updateSchoolgroup.update(dto);
     }
 
