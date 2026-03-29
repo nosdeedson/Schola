@@ -1,5 +1,5 @@
 import { QuarterDto } from "../../../src/application/services/academic-semester/create/quarter/quarter.dto";
-import { CreateAcademicSemesterDto } from "../../../src/application/services/academic-semester/create/semester/academic-semester.dto";
+import { CreateAcademicSemesterUsecaseDto } from "../../../src/application/services/academic-semester/create/semester/academic-semester-usecase.dto";
 import { mockQuarterDto } from "./quarter-dto.mocks";
 
 
@@ -11,8 +11,8 @@ type CreateSemesterDtoMock = {
 
 export function mockCreateSemesterDto(
     overrides: CreateSemesterDtoMock = {}
-): CreateAcademicSemesterDto {
-    return new CreateAcademicSemesterDto({
+): CreateAcademicSemesterUsecaseDto {
+    return new CreateAcademicSemesterUsecaseDto({
         firstQuarter: overrides.firstQuarter ?? mockQuarterDto(),
         secondQuarter: overrides.secondQuarter ?? mockQuarterDto(),
         currentSemester: overrides.currentSemester ?? true

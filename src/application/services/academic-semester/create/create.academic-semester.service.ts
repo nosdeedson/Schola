@@ -1,6 +1,6 @@
 import { AcademicSemester } from 'src/domain/academc-semester/academic.semester';
 import { AcademicSemesterInterface } from '../../../../domain/academc-semester/academic.semester.repository.interface';
-import { CreateAcademicSemesterDto } from './semester/academic-semester.dto';
+import { CreateAcademicSemesterUsecaseDto } from './semester/academic-semester-usecase.dto';
 import { AcademicSemesterEntity } from 'src/infrastructure/entities/academic-semester/academic.semester.entity';
 import { SystemError } from 'src/application/services/@shared/system-error';
 
@@ -12,7 +12,7 @@ export class CreateAcademicSemesterService {
         this.semesterRepository = semesterRespository;
     }
 
-    public async execute(input: CreateAcademicSemesterDto): Promise<void>{
+    public async execute(input: CreateAcademicSemesterUsecaseDto): Promise<void>{
         try {
             let semester = new AcademicSemester(input.firstQuarter.toDomain(), input.secondQuarter.toDomain(), input.currentSemester );
             if(semester.notification?.hasError()){

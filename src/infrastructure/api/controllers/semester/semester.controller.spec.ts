@@ -5,19 +5,20 @@ import { CreateSemesterUsecase } from '../../../../application/usecases/semester
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../__mocks__/env.mock';
 import { MockSemesterDto } from '../../../__mocks__/mock-semester-dto';
-import { DomainMocks } from "../../../__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../entities/academic-semester/academic.semester.entity";
 import { BadRequestException } from '@nestjs/common';
 import { RepositoryFactoryService } from '../../../../infrastructure/factory/repositiry-factory/repository-factory.service';
-import { FindAcademicSemesterDto } from '../../../../application/services/academic-semester/find/find.academic-semester.dto';
 import { FindAllAcademicSemesterDto } from '../../../../application/services/academic-semester/findAll/findAll.academic-semester.dto';
-import { mockCreateSemesterDto } from '../../../../../tests/mocks/domain-dto/create-semester-dto.mocks';
+import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto';
+import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto';
+
+
 
 describe('SemesterController', () => {
   let controller: SemesterController;
   let module: TestingModule;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SemesterController],
@@ -34,6 +35,9 @@ describe('SemesterController', () => {
 
   afterEach( async () => {
     jest.clearAllMocks();
+  });
+
+  afterAll( async () => {
     module.close();
   });
 
@@ -42,7 +46,7 @@ describe('SemesterController', () => {
   }, 5000);
 
   it('should create a semester', async () => {
-    let dto = mockCreateSemesterDto();
+    let dto = mockSemesterRequestDto();
     const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'create')
      .mockImplementation(() => Promise.resolve());
     expect(await controller.create(dto)).toBe(void 0);
@@ -50,17 +54,16 @@ describe('SemesterController', () => {
     expect(useCase).toHaveBeenCalledWith(dto);
   });
 
-  it('should throw an error', async () => {
-    let dto = MockSemesterDto.dtoToCreate();
+  it('should throw an error while creating a semester', async () => {
+    let quarter = mockQuarterRequestDto();
+    let dto = mockSemesterRequestDto(
+      {firstQuarter: quarter,secondQuarter: quarter}
+    );
     const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'create')
      .mockImplementationOnce(() => Promise.reject(new BadRequestException('test')));
-      try {
-        await controller.create(dto)
-      } catch (error) {
-        expect(error).toBeDefined();
-        expect(useCase).toHaveBeenCalledTimes(1);
-        expect(useCase).toHaveBeenCalledWith(dto);
-      }
+     await expect(controller.create(dto)).rejects.toMatchObject(new BadRequestException('test'));
+    expect(useCase).toHaveBeenCalledTimes(1);
+    expect(useCase).toHaveBeenCalledWith(dto);
   });
 
   it('should delete a semester', async () => {

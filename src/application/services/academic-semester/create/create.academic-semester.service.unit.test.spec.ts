@@ -1,5 +1,5 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
-import { CreateAcademicSemesterDto } from './semester/academic-semester.dto';
+import { CreateAcademicSemesterUsecaseDto } from './semester/academic-semester-usecase.dto';
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
 import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 
@@ -15,7 +15,7 @@ describe('Academic semester service unit test', () => {
             beginningDate: new Date(2026, 3, 1),
             endingDate: new Date(2026, 5, 3),
         });
-        const createSemesterDto = new CreateAcademicSemesterDto({
+        const createSemesterDto = new CreateAcademicSemesterUsecaseDto({
             firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
@@ -28,7 +28,7 @@ describe('Academic semester service unit test', () => {
     it('should throw an error when firstQuarter and secondQuarter are the samse', async () => {
         const firstQuarterDto = mockQuarterDto();
         const secondQuarterDto = mockQuarterDto();
-        const createSemesterDto = new CreateAcademicSemesterDto({
+        const createSemesterDto = new CreateAcademicSemesterUsecaseDto({
             firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true

@@ -1,6 +1,6 @@
 import { QuarterDto } from "../quarter/quarter.dto";
 
-export class CreateAcademicSemesterDto {
+export class CreateAcademicSemesterUsecaseDto {
 
     firstQuarter: QuarterDto;
     secondQuarter: QuarterDto;
