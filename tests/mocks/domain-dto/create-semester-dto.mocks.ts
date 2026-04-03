@@ -1,5 +1,5 @@
 import { QuarterDto } from "../../../src/application/services/academic-semester/create/quarter/quarter.dto";
-import { CreateAcademicSemesterUsecaseDto } from "../../../src/application/services/academic-semester/create/semester/academic-semester-usecase.dto";
+import { CreateAcademicSemesterUsecaseDto } from "../../../src/application/services/academic-semester/create/semester/create-academic-semester-usecase.dto";
 import { mockQuarterDto } from "./quarter-dto.mocks";
 
 
