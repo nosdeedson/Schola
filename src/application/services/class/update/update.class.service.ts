@@ -1,6 +1,6 @@
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { UpdateClassDto } from "./udpate.class.dto";
-import { SystemError } from "src/application/services/@shared/system-error";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 export class UpdateClassService{
 

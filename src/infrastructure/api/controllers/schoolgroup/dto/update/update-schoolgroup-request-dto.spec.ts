@@ -13,8 +13,7 @@ describe('UpdateSchoolgroupDto', () => {
         let dto = new UpdateSchoolgroupRequestDto();
         dto.id = "16efc675-a208-43fe-93dd-8b9a3eebe656";
         dto.nameBook = 'name book';
-        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
-        let input = dto.toInput(teacher);
+        let input = dto.toUpdateSchoolgroupUsecaseDto();
         expect(input).toBeDefined();
         expect(input.id).toBe(dto.id);
         expect(input.nameBook).toBe(dto.nameBook);

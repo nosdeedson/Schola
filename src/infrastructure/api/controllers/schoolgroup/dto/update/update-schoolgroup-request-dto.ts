@@ -1,22 +1,22 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UpdateClassUsecaseDto } from "src/application/services/class/update/udpate.class.dto";
-import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
+import { UpdateSchoolgroupUsecaseDto } from "@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase.dto";
 
-export class UpdateSchoolgroupRequestDto{
-    @ApiProperty({description: 'id of schoolgroup'})
+export class UpdateSchoolgroupRequestDto {
+
+    @ApiProperty({ description: 'id of schoolgroup' })
     id: string;
 
-    @ApiProperty({description: 'the name of the new teacher of class'})
-    teacherName: string;
-
-    @ApiProperty({description: 'new book name'})
+    @ApiProperty({ description: 'new book name' })
     nameBook: string;
 
-    toInput(teacher: WorkerEntity): UpdateClassUsecaseDto{
-        return new UpdateClassUsecaseDto(
-            this.id,
-            this.nameBook,
-            teacher
-        )
+    @ApiProperty({ description: 'the name of the new teacher of class' })
+    teacherName: string;
+
+    toUpdateSchoolgroupUsecaseDto(): UpdateSchoolgroupUsecaseDto {
+        return new UpdateSchoolgroupUsecaseDto({
+            id: this.id,
+            nameBook: this.nameBook,
+            teacherName: this.teacherName
+        });
     }
 }

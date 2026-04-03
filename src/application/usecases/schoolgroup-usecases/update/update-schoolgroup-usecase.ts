@@ -29,7 +29,7 @@ export class UpdateSchoolgroupUsecase {
             let updateService = new UpdateClassService(this.classRepository);
             await updateService.execute(input);
         } catch (error) {
-            TrataErros.tratarErrorsNotFound(error);
+            TrataErros.tratarErrorsNotFound(error as SystemError);
         }
     }
 }

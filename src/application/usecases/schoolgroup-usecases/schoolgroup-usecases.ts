@@ -1,25 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateClassService } from 'src/application/services/class/create/create.class.service';
-import { DeleteClassService } from 'src/application/services/class/delete/delete.class.service';
-import { FindClassService } from 'src/application/services/class/find/find.class.service';
-import { FindAllClassService } from 'src/application/services/class/findAll/findAll.class.service';
-import { UpdateClassService } from 'src/application/services/class/update/update.class.service';
-import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
-import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
-import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
-import { DataSource } from 'typeorm';
-import { CreateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto';
-import { UpdateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto';
-import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
-import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
-import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
 import { ClassRepositoryInterface } from '@/domain/class/class.repository.interface';
 import { WorkerRepositoryInterface } from '@/domain/worker/worker.repository.interface';
-import { CreateWorkerService } from 'src/application/services/worker/create/create.worker.service';
-import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
-import { AccessType } from '@/domain/user/access.type';
-import { WorkerEntity } from '@/infrastructure/entities/worker/worker.entity';
-import { SystemError } from 'src/application/services/@shared/system-error';
+import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
+import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
+import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
+import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
+import { Injectable } from '@nestjs/common';
+import { DeleteClassService } from '@/application/services/class/delete/delete.class.service';
+import { FindClassService } from '@/application/services/class/find/find.class.service';
+import { FindAllClassService } from '@/application/services/class/findAll/findAll.class.service';
+import { SystemError } from '@/application/services/@shared/system-error';
 
 @Injectable()
 export class SchoolgroupUseCases {
@@ -44,7 +33,7 @@ export class SchoolgroupUseCases {
             let findService = new FindClassService(this.classRepository);
             return await findService.execute(id);
         } catch (error) {
-            TrataErros.tratarErrorsNotFound(error);
+            TrataErros.tratarErrorsNotFound(error as SystemError);
         }
     }
 

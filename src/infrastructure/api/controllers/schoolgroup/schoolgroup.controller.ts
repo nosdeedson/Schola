@@ -3,9 +3,9 @@ import { CreateSchoolgroupRequestDto } from './dto/create/create-schoolgroup-req
 import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateSchoolgroupRequestDto } from './dto/update/update-schoolgroup-request-dto';
-import { CreateSchoolgroupUseCase } from 'src/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
-import { UpdateSchoolgroupUsecase } from 'src/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
-import { CreateSchoolgroupUseCaseDto } from 'src/application/usecases/schoolgroup-usecases/create/dto/create-schoolgroupt-usecase.dto';
+import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
+import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
+import { CreateSchoolgroupUseCaseDto } from '@/application/usecases/schoolgroup-usecases/create/dto/create-schoolgroup-usecase.dto';
 
 @ApiTags('Class contoller')
 @Controller('classes')
@@ -57,7 +57,7 @@ export class SchoolgroupController {
     @ApiResponse({status: '4XX', description: 'If schoolgroup not found throw exeception'})
     @Patch()
     async update(@Body() dto: UpdateSchoolgroupRequestDto): Promise<void>{
-        await this.updateSchoolgroup.update(dto);
+        await this.updateSchoolgroup.update(dto.toUpdateSchoolgroupUsecaseDto());
     }
 
 }

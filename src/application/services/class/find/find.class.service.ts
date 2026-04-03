@@ -1,6 +1,6 @@
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { FindClassDto } from "./find.class.dto";
-import { SystemError } from "src/application/services/@shared/system-error";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 export class FindClassService{
 
