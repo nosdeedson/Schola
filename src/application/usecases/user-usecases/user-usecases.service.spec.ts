@@ -6,14 +6,10 @@ import { RepositoryFactoryService } from "../../../infrastructure/factory/reposi
 import { CreateUserFactoryService } from "../../../infrastructure/factory/create-user-service-factory/create-user-factory-service";
 import { DeleteUserFactoryService } from "../../../infrastructure/factory/delete-user-factory/delete-user-factory.service";
 import { FindUserFactoryService } from "../../../infrastructure/factory/find-user-factory/find-user-factory.service";
-import { DomainMocks } from "../../../infrastructure/__mocks__/mocks";
 import { RoleEnum } from "../../../domain/worker/roleEnum";
-import { WorkerEntity } from "../../../infrastructure/entities/worker/worker.entity";
-import { CreateUserService } from "../../services/user/create/create.user.service";
 import { DeleteUserService } from "../../services/user/delete/delete.user.service";
 import { FindUserService } from "../../services/user/find/find.user.service";
-import { mockCreateWorkersDto, mockFindUserDto, mockOutputFindWorkerDto } from "../../../infrastructure/__mocks__/mock-dtos/mock-dtos";
-import { CreateWorkerDto } from "../../services/worker/create/create.worker.dto";
+import { mockFindUserDto, mockOutputFindWorkerDto } from "../../../infrastructure/__mocks__/mock-dtos/mock-dtos";
 import { BadRequestException } from "@nestjs/common";
 import { SystemError } from "../../services/@shared/system-error";
 import { TrataErros } from "../../../infrastructure/utils/trata-erros/trata-erros";

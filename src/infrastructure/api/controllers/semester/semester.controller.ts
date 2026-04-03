@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SemesterUsecases } from '../../../../application/usecases/semester-usecases/semester-usecases';
 import { FindAllAcademicSemesterDto } from 'src/application/services/academic-semester/findAll/findAll.academic-semester.dto';
-import { CreateAcademicSemesterUsecaseDto } from 'src/application/services/academic-semester/create/semester/academic-semester-usecase.dto';
+import { CreateAcademicSemesterUsecaseDto } from 'src/application/services/academic-semester/create/semester/create-academic-semester-usecase.dto';
 import { CreateSemesterUsecase } from 'src/application/usecases/semester-usecases/create/create-semester-usecase';
 import { SemesterRequestDto } from './dto/semester-request-dto';
 

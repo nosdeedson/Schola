@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UpdateClassDto } from "src/application/services/class/update/udpate.class.dto";
+import { UpdateClassUsecaseDto } from "src/application/services/class/update/udpate.class.dto";
 import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
 
 export class UpdateSchoolgroupRequestDto{
@@ -12,8 +12,8 @@ export class UpdateSchoolgroupRequestDto{
     @ApiProperty({description: 'new book name'})
     nameBook: string;
 
-    toInput(teacher: WorkerEntity): UpdateClassDto{
-        return new UpdateClassDto(
+    toInput(teacher: WorkerEntity): UpdateClassUsecaseDto{
+        return new UpdateClassUsecaseDto(
             this.id,
             this.nameBook,
             teacher

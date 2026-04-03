@@ -1,12 +1,13 @@
 import { DateHelper } from '../../../../helpers/date/date.helper';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
-import { CreateClassDto } from './create.class.dto';
+import { CreateClassUsecaseDto } from './create.class.usecase.dto';
 import { ScheduleDto } from './schedule-dto';
 import { CreateClassService } from './create.class.service';
 import { DataSource } from 'typeorm';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../../../infrastructure/repositories/config-test/appDataSource';
+import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
 
 describe('create class service integration test', () => {
 
@@ -21,13 +22,9 @@ describe('create class service integration test', () => {
     let times = new Map<string, string>();
     let scheduleDto: ScheduleDto;
 
-    beforeEach( async () => {
-        appDatasource = AppDataSource.getAppDataSource();
-        await appDatasource.initialize()
-            .catch(error => console.log(error));
-
-        classEntity = appDatasource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, appDatasource);  
+    beforeAll( async () => {
+        classEntity = TestDataSource.getRepository(ClassEntity);
+        classRepository = new ClassRepository(classEntity, TestDataSource);  
         dayOfWeek1 = DateHelper.getDayOfweek(aValidDate1);
         dayOfWeek2 = DateHelper.getDayOfweek(aValidDate2);
         DateHelper.setTime(times, dayOfWeek1, '08:00');
@@ -36,8 +33,6 @@ describe('create class service integration test', () => {
     });
 
     afterEach(async () =>{
-        await appDatasource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDatasource.destroy();
         jest.clearAllMocks();
     });
 
@@ -47,7 +42,7 @@ describe('create class service integration test', () => {
     });
 
     it('should create a class on BD', async () => {
-        let classDto = new CreateClassDto('a1', 'a1class1', scheduleDto);
+        let classDto = new CreateClassUsecaseDto('a1', 'a1class1', scheduleDto);
         let service = new CreateClassService(classRepository);
         expect(await service.execute(classDto)).toBe(void 0);
         let results = await classRepository.findAll();

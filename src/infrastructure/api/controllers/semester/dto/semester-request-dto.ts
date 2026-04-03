@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { QuarterRequestDto } from "./quarter-request-dto";
 import { Type } from "class-transformer";
-import { CreateAcademicSemesterUsecaseDto } from "src/application/services/academic-semester/create/semester/academic-semester-usecase.dto";
+import { CreateAcademicSemesterUsecaseDto } from "src/application/services/academic-semester/create/semester/create-academic-semester-usecase.dto";
 
 export class SemesterRequestDto {
 

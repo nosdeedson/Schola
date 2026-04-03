@@ -1,5 +1,5 @@
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
-import { CreateAcademicSemesterUsecaseDto } from './semester/academic-semester-usecase.dto';
+import { CreateAcademicSemesterUsecaseDto } from './semester/create-academic-semester-usecase.dto';
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
 import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 

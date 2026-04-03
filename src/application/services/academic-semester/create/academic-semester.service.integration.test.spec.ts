@@ -1,7 +1,7 @@
 import { AcademicSemesterInterface } from "../../../../domain/academc-semester/academic.semester.repository.interface";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from '../../../../infrastructure/repositories/academic-semester/academic-semester.repository';
-import { CreateAcademicSemesterDto } from "./semester/academic-semester.dto";
+import { CreateAcademicSemesterUsecaseDto } from "./semester/create-academic-semester-usecase.dto";
 import { CreateAcademicSemesterService } from './create.academic-semester.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { Repository } from "typeorm";
@@ -28,7 +28,7 @@ describe('Academic semester integration test', () => {
             beginningDate: new Date(2026, 3, 1),
             endingDate: new Date(2026, 5, 3),
         });
-        const createSemesterDto = new CreateAcademicSemesterDto({
+        const createSemesterDto = new CreateAcademicSemesterUsecaseDto({
             firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true
@@ -51,7 +51,7 @@ describe('Academic semester integration test', () => {
     it('shoud throw an erro if quarters are the same', async () => {
         const firstQuarterDto = mockQuarterDto();
         const secondQuarterDto = mockQuarterDto();
-        const createSemesterDto = new CreateAcademicSemesterDto({
+        const createSemesterDto = new CreateAcademicSemesterUsecaseDto({
             firstQuarter: firstQuarterDto,
             secondQuarter: secondQuarterDto,
             currentSemester: true

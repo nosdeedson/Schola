@@ -10,25 +10,14 @@ import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { RoleEnum } from '../../../../domain/worker/roleEnum';
 import { WorkerRepository } from '../../../../infrastructure/repositories/worker/worker.repository';
 import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
+import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
+import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/domain-dto/update-schoolgroup-usecase-dto.mocks';
 
 describe('UpdateSchoolgroupUsecase', () => {
 
     let service: UpdateSchoolgroupUsecase;
     let module: TestingModule
-    let input: any;
-    beforeEach(async () => {
-        input = {
-            classCode: undefined,
-            nameBook: "book name",
-            name: "teste",
-            scheduleDto: {
-                dayOfWeeks: [
-                    "Monday",
-                    "Tuesday",
-                ],
-                times: { 'Monday': '08:00', 'Tuesday': '09:00' },
-            },
-        };
+    beforeAll(async () => {
         setEnv();
         module = await Test.createTestingModule({
             imports: [DataBaseConnectionModule],
@@ -44,18 +33,14 @@ describe('UpdateSchoolgroupUsecase', () => {
     });
 
     it('should update a schoolgroup', async () => {
-        const id = "222f51d1-5fb2-4048-9aac-24bc2951f57c";
-        const dto = new UpdateSchoolReqque();
-        dto.id = id;
-        dto.nameBook = "bookName";
-        dto.teacherName = "new Teacher";
+        const dto = mockUpdateSchoolgroupUsecaseDto();
+        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
         const findTeacher = jest.spyOn(WorkerRepository.prototype, 'findByName')
-            .mockImplementationOnce(async () => await Promise.resolve(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER))));
+            .mockImplementationOnce(async () => await Promise.resolve(teacher));
         const update = jest.spyOn(UpdateClassService.prototype, 'execute')
             .mockImplementationOnce(async () => await Promise.resolve(void 0));
-        const input = dto.toInput(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER)));
-
-        await service.update(dto);
+        const input = dto.toInput(teacher);
+        expect(await service.update(dto)).toBe(void 0);
         expect(update).toHaveBeenCalledTimes(1);
         expect(update).toHaveBeenCalledWith(input);
         expect(findTeacher).toHaveBeenCalledTimes(1);
@@ -63,7 +48,7 @@ describe('UpdateSchoolgroupUsecase', () => {
 
     it('should throw an error', async () => {
         const id = "1";
-        const dto = new UpdateSchoolgroupDto()
+        const dto = new UpdateSchoolgroupUsecaseDto();
         dto.id = id;
         dto.nameBook = "bookName";
         dto.teacherName = "new teacher";

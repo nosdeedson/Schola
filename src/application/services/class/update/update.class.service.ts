@@ -17,7 +17,7 @@ export class UpdateClassService{
         }
         schoolgroup.bookName = dto.nameBook;
         schoolgroup.teacher = dto.teacher;
-        schoolgroup.updatedAt = new Date(2026, 3, 1, 23, 59, 59);
+        schoolgroup.updatedAt = new Date();
         await this.classRepository.update(schoolgroup);
     }
 }

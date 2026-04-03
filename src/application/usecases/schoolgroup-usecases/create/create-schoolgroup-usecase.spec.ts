@@ -7,7 +7,7 @@ import { BadRequestException } from "@nestjs/common";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { MockSchoolgroupDto } from "../../../../infrastructure/__mocks__/mock-schoolgroup-dto";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { CreateSchoolgroupDto } from "../../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-dto";
+import { CreateSchoolgroupRequestDto } from "../../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateClassService } from "../../../services/class/create/create.class.service";
 import { CreateWorkerService } from "../../../services/worker/create/create.worker.service";
@@ -56,7 +56,7 @@ describe('CreateSchoolGroupUsecase', () => {
         const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true))));
 
-        const toInput = jest.spyOn(CreateSchoolgroupDto.prototype, 'toInput')
+        const toInput = jest.spyOn(CreateSchoolgroupRequestDto.prototype, 'toInput')
             .mockReturnValueOnce(input)
 
         expect(await service.create(dto)).toBe(void 0);
@@ -73,7 +73,7 @@ describe('CreateSchoolGroupUsecase', () => {
 
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
-        const toInput = jest.spyOn(CreateSchoolgroupDto.prototype, 'toInput')
+        const toInput = jest.spyOn(CreateSchoolgroupRequestDto.prototype, 'toInput')
             .mockReturnValueOnce(input)
 
         try {

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { CreateClassUsecaseDto } from "src/application/services/class/create/create.class.dto";
+import { CreateClassUsecaseDto } from "src/application/services/class/create/create.class.usecase.dto";
 import { ScheduleDto } from "src/application/services/class/create/schedule-dto";
 import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
 

@@ -3,7 +3,7 @@ import { ClassRepositoryInterface } from "src/domain/class/class.repository.inte
 import { Schedule } from "../../../../domain/schedule/schedule";
 import { ClassCodeHelper } from "../../../../helpers/classCode/class-code.heper";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
-import { CreateClassUsecaseDto } from "./create.class.dto";
+import { CreateClassUsecaseDto } from "./create.class.usecase.dto";
 import { SystemError } from "../../@shared/system-error";
 
 export class CreateClassService {

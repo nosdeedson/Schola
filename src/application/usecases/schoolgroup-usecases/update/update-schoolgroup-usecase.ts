@@ -9,6 +9,7 @@ import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-
 import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
 import { ClassRepository } from "src/infrastructure/repositories/class/class.repository";
 import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
+import { UpdateSchoolgroupUsecaseDto } from "./update-schoolgroup-usecase.dto";
 
 @Injectable()
 export class UpdateSchoolgroupUsecase {
@@ -22,7 +23,7 @@ export class UpdateSchoolgroupUsecase {
         this.teacherReposittory = this.repositoryFactory.createRepository(TypeRepository.WORKER);
     }
 
-    async update(dto: UpdateClassDto): Promise<void> {
+    async update(dto: UpdateSchoolgroupUsecaseDto): Promise<void> {
         try {
             const teacher = await this.teacherReposittory.findByName(dto.teacherName);
             if (!teacher) throw new SystemError([{ context: 'teacher', message: 'teacher not found' }]);

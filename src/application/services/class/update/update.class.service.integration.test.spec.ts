@@ -59,10 +59,8 @@ describe('update class integration test', () =>{
         let schoolgroup = DomainMocks.mockSchoolGroup();
         let classEntity = ClassEntity.toClassEntity(schoolgroup);
         classEntity.teacher = teacher;
-        const result = await classRepository.create(classEntity);
-
-        expect(result).toBeInstanceOf(ClassEntity);
-        let wantedId = result.id;
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        let wantedId = classEntity.id;
         let oldTeacherName = classEntity.teacher.fullName;
         let wantedBookName = 'new book';
         let wantedTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
