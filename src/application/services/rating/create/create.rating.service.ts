@@ -1,7 +1,7 @@
-import { RatingRepositoryInterface } from "src/domain/rating/rating.repository.interface";
+import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { CreateRatingDto } from "./create.rating.dto";
-import { Rating } from "src/domain/rating/rating";
-import { RatingEntity } from "src/infrastructure/entities/rating/rating.entity";
+import { Rating } from "@/domain/rating/rating";
+import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { SystemError } from "src/application/services/@shared/system-error";
 
 export class CreateRatingService{

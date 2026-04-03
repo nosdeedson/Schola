@@ -1,18 +1,18 @@
-import { User } from "src/domain/user/user";
-import { UserRepositoryInterface } from "src/domain/user/user.repository.interface";
-import { UserEntity } from "src/infrastructure/entities/user/user.entity";
+import { User } from "@/domain/user/user";
+import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
+import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { PeronRepositoryInterface } from "../../../../domain/@shared/repository/person.repository.interface";
 import { InputCreateUserDto } from "./input.create.user.dto";
-import { AccessType } from "src/domain/user/access.type";
-import { PersonEntity } from "src/infrastructure/entities/@shared/person.entity";
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
-import { Worker } from "src/domain/worker/worker";
-import { Parent } from "src/domain/parent/parent";
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
-import { Student } from "src/domain/student/student";
-import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
-import { RepositoryInterface } from "src/domain/@shared/repository/repository.interface";
+import { AccessType } from "@/domain/user/access.type";
+import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
+import { Worker } from "@/domain/worker/worker";
+import { Parent } from "@/domain/parent/parent";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { Student } from "@/domain/student/student";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { RepositoryInterface } from "@/domain/@shared/repository/repository.interface";
 
 export class CreateUserService {
 

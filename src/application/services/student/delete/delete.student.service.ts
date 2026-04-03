@@ -1,5 +1,5 @@
 import { DeleteGenericService } from "src/application/services/@shared/delete-generic-service";
-import { StudentRepositoryInterface } from "src/domain/student/student.repository.interface";
+import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
 
 export class DeleteStudentService extends DeleteGenericService{
 

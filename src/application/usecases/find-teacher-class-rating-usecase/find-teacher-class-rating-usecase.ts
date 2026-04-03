@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { FindCurrentSemesterService } from "src/application/services/academic-semester/find-current/find-current-semester.service";
 import { FindTeacherClassRatingService } from "src/application/services/class/find-teacher-class-rating/find-teacher-class-rating";
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
-import { ClassRepository } from "src/infrastructure/repositories/class/class.repository";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { TeacherClassRatingDto } from "./find-teacher-class-rating-dto";
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { ParentStudentEntity } from "src/infrastructure/entities/parent-student/parent.student.entity";
+import { ParentStudentEntity } from "@/infrastructure/entities/parent-student/parent.student.entity";
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 
 export class ParentStudentRepository {

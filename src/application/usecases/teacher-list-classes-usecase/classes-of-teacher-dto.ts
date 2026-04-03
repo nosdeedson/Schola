@@ -1,4 +1,4 @@
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 
 export class ClassesOfTeacherDto {
     teacherId: string;

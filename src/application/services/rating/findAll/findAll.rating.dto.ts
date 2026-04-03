@@ -1,4 +1,4 @@
-import { RatingEntity } from "src/infrastructure/entities/rating/rating.entity";
+import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { FindRatingDto } from "../find/find.rating.dto";
 
 export class FindAllRatingDto {

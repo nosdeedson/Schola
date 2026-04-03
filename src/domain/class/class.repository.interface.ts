@@ -1,4 +1,4 @@
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { RepositoryInterface } from "../@shared/repository/repository.interface";
 import { ClassesOfTeacherDto } from "src/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
 

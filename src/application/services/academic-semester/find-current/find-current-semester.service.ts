@@ -1,5 +1,5 @@
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
-import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 
 export class FindCurrentSemesterService {
 

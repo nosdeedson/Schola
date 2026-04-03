@@ -1,5 +1,5 @@
-import { UserRepositoryInterface } from "src/domain/user/user.repository.interface";
-import { UserEntity } from "src/infrastructure/entities/user/user.entity";
+import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
+import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { DataSource, Repository } from "typeorm";
 
 export class UserRepository implements UserRepositoryInterface{

@@ -3,16 +3,16 @@ import { CreateUserService } from 'src/application/services/user/create/create.u
 import { InputCreateUserDto } from 'src/application/services/user/create/input.create.user.dto';
 import { DeleteUserService } from 'src/application/services/user/delete/delete.user.service';
 import { FindUserService } from 'src/application/services/user/find/find.user.service';
-import { CreateUserFactoryService } from 'src/infrastructure/factory/create-user-service-factory/create-user-factory-service';
-import { DeleteUserFactoryService } from 'src/infrastructure/factory/delete-user-factory/delete-user-factory.service';
-import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-factory/repository-factory.service';
-import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';
-import { UserRepository } from 'src/infrastructure/repositories/user/user.repository';
-import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
+import { CreateUserFactoryService } from '@/infrastructure/factory/create-user-service-factory/create-user-factory-service';
+import { DeleteUserFactoryService } from '@/infrastructure/factory/delete-user-factory/delete-user-factory.service';
+import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
+import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
+import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
+import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { CreateUserRequestDto } from '../../../infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 import { FindUserOutPutDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto';
-import { FindUserFactoryService } from 'src/infrastructure/factory/find-user-factory/find-user-factory.service';
-import { CreatePersonFactoryService } from 'src/infrastructure/factory/create-person/create-person-factory.service';
+import { FindUserFactoryService } from '@/infrastructure/factory/find-user-factory/find-user-factory.service';
+import { CreatePersonFactoryService } from '@/infrastructure/factory/create-person/create-person-factory.service';
 
 @Injectable()
 export class UserUsecasesService {

@@ -1,6 +1,6 @@
-import { ParentReporitoryInterface } from "src/domain/parent/parent.repository.interface";
+import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.interface";
 import { FindAllParentDto } from "./findAll.parent.dto";
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 
 export class FindAllParentService{
 

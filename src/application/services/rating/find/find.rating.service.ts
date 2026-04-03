@@ -1,4 +1,4 @@
-import { RatingRepositoryInterface } from "src/domain/rating/rating.repository.interface";
+import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { FindRatingDto } from "./find.rating.dto";
 import { SystemError } from "src/application/services/@shared/system-error";
 

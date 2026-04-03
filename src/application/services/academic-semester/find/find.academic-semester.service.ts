@@ -1,4 +1,4 @@
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { FindAcademicSemesterDto } from "./find.academic-semester.dto";
 import { SystemError } from "src/application/services/@shared/system-error";
 

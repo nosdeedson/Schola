@@ -1,4 +1,4 @@
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 
 export class DeleteClassService{
 

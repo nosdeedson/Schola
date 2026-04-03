@@ -9,7 +9,7 @@ import { CommentEntity } from "../../entities/comment/comment.entity";
 import { RatingEntity } from "../../entities/rating/rating.entity";
 import { UserEntity } from "../../entities/user/user.entity";
 import { ParentStudentEntity } from "../../entities/parent-student/parent.student.entity";
-import { QuarterEntity } from "src/infrastructure/entities/quarter/quarter.entity";
+import { QuarterEntity } from "../../entities/quarter/quarter.entity";
 
 export class AppDataSource {
 

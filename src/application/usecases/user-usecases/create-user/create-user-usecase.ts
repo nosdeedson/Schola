@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserService } from "src/application/services/user/create/create.user.service";
 import { InputCreateUserDto } from "src/application/services/user/create/input.create.user.dto";
-import { CreateUserRequestDto } from "src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto";
-import { CreatePersonFactoryService } from "src/infrastructure/factory/create-person/create-person-factory.service";
-import { CreateUserFactoryService } from "src/infrastructure/factory/create-user-service-factory/create-user-factory-service";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
-import { UserRepository } from "src/infrastructure/repositories/user/user.repository";
-import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
+import { CreateUserRequestDto } from "@/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto";
+import { CreatePersonFactoryService } from "@/infrastructure/factory/create-person/create-person-factory.service";
+import { CreateUserFactoryService } from "@/infrastructure/factory/create-user-service-factory/create-user-factory-service";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { UserRepository } from "@/infrastructure/repositories/user/user.repository";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { SystemError } from "src/application/services/@shared/system-error";
-import { ParentReporitoryInterface } from "src/domain/parent/parent.repository.interface";
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
+import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.interface";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { CreateParentDto } from "./create.parent.dto";
 import { CreateGenericService } from "src/application/services/@shared/create-generic-service";
 

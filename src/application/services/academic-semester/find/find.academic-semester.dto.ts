@@ -1,5 +1,5 @@
 import { QuarterDto } from "../create/quarter/quarter.dto";
-import { QuarterEntity } from "src/infrastructure/entities/quarter/quarter.entity";
+import { QuarterEntity } from "@/infrastructure/entities/quarter/quarter.entity";
 
 export class FindAcademicSemesterDto {
 

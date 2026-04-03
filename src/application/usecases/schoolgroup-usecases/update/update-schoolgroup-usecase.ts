@@ -1,15 +1,13 @@
 import { Injectable } from "@nestjs/common";
-import { SystemError } from "src/application/services/@shared/system-error";
-import { UpdateClassDto } from "src/application/services/class/update/udpate.class.dto";
-import { UpdateClassService } from "src/application/services/class/update/update.class.service";
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
-import { WorkerRepositoryInterface } from "src/domain/worker/worker.repository.interface";
-import { UpdateSchoolgroupRequestDto } from "src/infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
-import { ClassRepository } from "src/infrastructure/repositories/class/class.repository";
-import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
 import { UpdateSchoolgroupUsecaseDto } from "./update-schoolgroup-usecase.dto";
+import { SystemError } from "@/application/services/@shared/system-error";
+import { UpdateClassService } from "@/application/services/class/update/update.class.service";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
+import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 
 @Injectable()
 export class UpdateSchoolgroupUsecase {

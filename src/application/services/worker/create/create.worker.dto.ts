@@ -1,6 +1,5 @@
-import { AccessType } from "src/domain/user/access.type";
+import { AccessType } from "@/domain/user/access.type";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { CreateUserRequestDto } from "src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto";
 
 export class CreateWorkerDto {
     name: string;

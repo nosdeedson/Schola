@@ -1,4 +1,4 @@
-import { Student } from "src/domain/student/student";
+import { Student } from "@/domain/student/student";
 import { UserConverter } from "../@shared/user-converter/user.converter.interface";
 import { StudentEntity } from "./student.entity";
 

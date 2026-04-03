@@ -3,8 +3,9 @@ import { CreateSchoolgroupRequestDto } from './dto/create/create-schoolgroup-req
 import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateSchoolgroupRequestDto } from './dto/update/update-schoolgroup-request-dto';
-import { CreateSchoolgroupUseCase } from 'src/application/usecases/schoolgroup-usecases/create/schoolgroup';
+import { CreateSchoolgroupUseCase } from 'src/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
 import { UpdateSchoolgroupUsecase } from 'src/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
+import { CreateSchoolgroupUseCaseDto } from 'src/application/usecases/schoolgroup-usecases/create/dto/create-schoolgroupt-usecase.dto';
 
 @ApiTags('Class contoller')
 @Controller('classes')
@@ -21,7 +22,13 @@ export class SchoolgroupController {
     @ApiResponse({status: '4XX', description: 'Return status 400 when request has invalid information'})
     @Post()
     async create(@Body() dto: CreateSchoolgroupRequestDto): Promise<void>{
-        await this.createSchoolgroup.create(dto);
+        const usecaseDto = new CreateSchoolgroupUseCaseDto({
+            name: dto.name,
+            nameBook: dto.nameBook,
+            scheduleDto: dto.scheduleDto,
+            teacherName: dto.teacherName
+        })
+        await this.createSchoolgroup.create(usecaseDto);
     }
 
     @ApiOperation({description: 'Delete a schoolgroup'})

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
-import { AccessType } from 'src/domain/user/access.type';
+import { AccessType } from '@/domain/user/access.type';
 import { SystemError } from 'src/application/services/@shared/system-error';
 import { FindParentService } from 'src/application/services/parent/find/find.parent.service';
 import { FindStudentService } from 'src/application/services/student/find/find.student.service';

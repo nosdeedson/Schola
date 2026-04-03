@@ -1,5 +1,5 @@
 import { SystemError } from "src/application/services/@shared/system-error";
-import { RatingRepositoryInterface } from "src/domain/rating/rating.repository.interface";
+import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { UpdateRatingDto } from "./udpate.rating.dto";
 
 export class UpdateRatingService{

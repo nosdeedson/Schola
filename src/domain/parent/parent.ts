@@ -1,4 +1,4 @@
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { Person } from "../@shared/person";
 import { Student } from "../student/student";
 import { ParentValidator } from "./parent.validator";

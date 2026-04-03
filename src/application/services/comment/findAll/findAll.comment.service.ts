@@ -1,4 +1,4 @@
-import { CommentRepositoryInterface } from "src/domain/comment/comment.repository.interface";
+import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
 import { FindAllCommentDto } from "./findAll.comment.dto";
 
 export class FindAllCommentService {

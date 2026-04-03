@@ -1,6 +1,6 @@
 import { FindUserDto } from "src/application/services/user/find/find.user.dto";
-import { AccessType } from "src/domain/user/access.type";
-import { RoleEnum } from "src/domain/worker/roleEnum";
+import { AccessType } from "@/domain/user/access.type";
+import { RoleEnum } from "@/domain/worker/roleEnum";
 
 export class FindUserOutPutDto {
     id: string;

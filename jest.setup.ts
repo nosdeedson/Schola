@@ -1,4 +1,4 @@
-import { TestDataSource } from './src/infrastructure/repositories/config-test/test.datasource';
+import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
 
 beforeAll(async () => {
   if (!TestDataSource.isInitialized) {

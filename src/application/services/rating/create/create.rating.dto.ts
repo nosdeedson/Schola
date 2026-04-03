@@ -1,9 +1,9 @@
-import { AcademicSemester } from "src/domain/academc-semester/academic.semester";
-import { Grade } from "src/domain/enum/grade/grade";
-import { Quarter } from "src/domain/quarter/quarter";
-import { Student } from "src/domain/student/student";
-import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
+import { Grade } from "@/domain/enum/grade/grade";
+import { Quarter } from "@/domain/quarter/quarter";
+import { Student } from "@/domain/student/student";
+import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 
 export class CreateRatingDto{
     

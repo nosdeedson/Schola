@@ -1,17 +1,17 @@
-import { ParentReporitoryInterface } from "src/domain/parent/parent.repository.interface";
-import { StudentRepositoryInterface } from "src/domain/student/student.repository.interface";
+import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.interface";
+import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
 import { CreateGenericService } from "../../@shared/create-generic-service";
 import { CreateParentDto } from "../../parent/create/create.parent.dto";
 import { CreateParentService } from "../../parent/create/create.parent.service";
-import { Student } from "src/domain/student/student";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
-import { ParentStudentRepository } from "src/infrastructure/repositories/parent-student/parent.student.repositoy";
-import { ParentStudentEntity } from "src/infrastructure/entities/parent-student/parent.student.entity";
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
+import { Student } from "@/domain/student/student";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { ParentStudentRepository } from "@/infrastructure/repositories/parent-student/parent.student.repositoy";
+import { ParentStudentEntity } from "@/infrastructure/entities/parent-student/parent.student.entity";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { CreateStudentDto } from "../../student/create/create.student.dto";
 import { CreateStudentService } from "../../student/create/create.student.service";
-import { ClassRepository } from "src/infrastructure/repositories/class/class.repository";
-import { Parent } from "src/domain/parent/parent";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
+import { Parent } from "@/domain/parent/parent";
 
 export class CreateParentStudentService extends CreateGenericService {
 

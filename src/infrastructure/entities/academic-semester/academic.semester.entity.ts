@@ -1,7 +1,7 @@
-import { AcademicSemester } from "src/domain/academc-semester/academic.semester";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { QuarterEntity } from "../quarter/quarter.entity";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 
 
 @Entity("academic_semester")

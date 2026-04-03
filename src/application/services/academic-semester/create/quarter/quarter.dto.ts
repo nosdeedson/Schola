@@ -1,6 +1,6 @@
 import { dot } from "node:test/reporters";
-import { Quarter } from "src/domain/quarter/quarter";
-import { QuarterEntity } from "src/infrastructure/entities/quarter/quarter.entity";
+import { Quarter } from "@/domain/quarter/quarter";
+import { QuarterEntity } from "@/infrastructure/entities/quarter/quarter.entity";
 
 export class QuarterDto{
     beginningDate: Date;

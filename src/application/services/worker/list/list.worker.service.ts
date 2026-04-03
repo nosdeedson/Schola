@@ -1,4 +1,4 @@
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
 import { OutputFindWorkerDto } from "../find/find.worker.dto";
 import { OutputFindAllWorkerDto } from "./list.worker.dto";

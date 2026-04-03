@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "src/domain/user/user.repository.interface";
+import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { SystemError } from "src/application/services/@shared/system-error";
 import { UpdateUserDto } from "./update.user.dto";
 

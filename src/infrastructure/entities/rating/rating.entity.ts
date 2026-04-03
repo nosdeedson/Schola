@@ -1,4 +1,4 @@
-import { Rating } from "src/domain/rating/rating";
+import { Rating } from "@/domain/rating/rating";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Grade } from "../../../domain/enum/grade/grade";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";

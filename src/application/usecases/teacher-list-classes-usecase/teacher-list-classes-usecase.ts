@@ -1,7 +1,7 @@
 import { FindTeacherClassesService } from "src/application/services/class/find-teacher-classes/find.teacher-classes";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
-import { ClassRepository } from "src/infrastructure/repositories/class/class.repository";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { ClassesOfTeacherDto } from "./classes-of-teacher-dto";
 import { Injectable } from "@nestjs/common";
 

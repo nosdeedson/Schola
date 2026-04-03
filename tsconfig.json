@@ -9,7 +9,6 @@
         "target": "ES2021",
         "sourceMap": true,
         "outDir": "./dist",
-        "baseUrl": ".",
         "incremental": true,
         "skipLibCheck": true,
         "strictNullChecks": false,
@@ -18,16 +17,20 @@
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
         "paths": {
-            "src/*": ["src/*"],
-            // "@domain/*": ["src/domain-services/*"],
-            // "@infrastructure/*": ["src/infrastructure/*"],
-        }
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "types": [
+            "node",
+            "jest"
+        ]
     },
     "exclude": [
         "**/__mocks__/*",
-        "**/*.spec.ts"
     ],
     "include": [
-        "src/**/*.ts"
-, "jest.setup.ts"    ]
+        "src/**/*.ts",
+        "jest.setup.ts"
+    ]
 }

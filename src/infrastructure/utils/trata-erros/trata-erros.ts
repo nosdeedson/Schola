@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
-import { SystemError } from "src/application/services/@shared/system-error";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 export class TrataErros {
     // TODO ADD HTTP STATUS TO SystemError

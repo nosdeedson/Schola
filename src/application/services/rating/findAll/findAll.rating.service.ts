@@ -1,4 +1,4 @@
-import { RatingRepositoryInterface } from "src/domain/rating/rating.repository.interface";
+import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { FindAllRatingDto } from "./findAll.rating.dto";
 
 export class FindAllRatingService {

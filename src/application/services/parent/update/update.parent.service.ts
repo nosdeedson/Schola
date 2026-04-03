@@ -1,6 +1,6 @@
-import { ParentReporitoryInterface } from "src/domain/parent/parent.repository.interface";
-import { ParentEntity } from "src/infrastructure/entities/parent/parent.entity";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.interface";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { SystemError } from "src/application/services/@shared/system-error";
 
 export class UpdateParentService{

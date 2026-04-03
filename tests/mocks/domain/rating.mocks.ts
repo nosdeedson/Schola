@@ -1,7 +1,7 @@
-import { Grade } from "../../../src/domain/enum/grade/grade";
-import { Quarter } from "../../../src/domain/quarter/quarter";
-import { Rating } from "../../../src/domain/rating/rating";
-import { Student } from "../../../src/domain/student/student";
+import { Grade } from "../../../@/domain/enum/grade/grade";
+import { Quarter } from "../../../@/domain/quarter/quarter";
+import { Rating } from "../../../@/domain/rating/rating";
+import { Student } from "../../../@/domain/student/student";
 import { mockQuarter } from "./quarter.mocks";
 import { mockStudent } from "./student.mocks";
 

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "type
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { RatingEntity } from "../rating/rating.entity";
 import { AcademicSemesterEntity } from "../academic-semester/academic.semester.entity";
-import { Quarter } from "src/domain/quarter/quarter";
+import { Quarter } from "@/domain/quarter/quarter";
 
 @Entity('quarter')
 export class QuarterEntity extends GenericEntity {

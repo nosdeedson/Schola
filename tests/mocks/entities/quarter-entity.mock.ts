@@ -1,4 +1,4 @@
-import { QuarterEntity } from "../../../src/infrastructure/entities/quarter/quarter.entity";
+import { QuarterEntity } from "../../../@/infrastructure/entities/quarter/quarter.entity";
 import { mockQuarter } from "../domains/quarter.mocks";
 
 export function mockQuarterEntity(){

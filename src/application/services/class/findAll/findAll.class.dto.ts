@@ -1,4 +1,4 @@
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { FindClassDto } from "../find/find.class.dto";
 import { All } from "@nestjs/common";
 

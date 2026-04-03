@@ -1,10 +1,10 @@
-import { SystemError } from 'src/application/services/@shared/system-error';
 import { ClassRepositoryInterface } from '../../../../domain/class/class.repository.interface';
 import { Worker } from '../../../../domain/worker/worker';
 import { WorkerRepositoryInterface } from '../../../../domain/worker/worker.repository.interface';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
+import { CreateGenericService } from '../../@shared/create-generic-service';
+import { SystemError } from '../../@shared/system-error';
 import { CreateWorkerDto } from './create.worker.dto';
-import { CreateGenericService } from 'src/application/services/@shared/create-generic-service';
 
 
 export class CreateWorkerService extends CreateGenericService {

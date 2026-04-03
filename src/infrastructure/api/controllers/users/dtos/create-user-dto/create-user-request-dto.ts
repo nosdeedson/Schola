@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsStrongPassword, Length, Max, MaxLength, Min } from "class-validator";
-import { AccessType } from "src/domain/user/access.type";
+import { AccessType } from "@/domain/user/access.type";
 
 export class CreateUserRequestDto {
     @ApiProperty({

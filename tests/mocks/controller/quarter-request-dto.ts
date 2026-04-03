@@ -1,4 +1,4 @@
-import { QuarterRequestDto } from "../../../src/infrastructure/api/controllers/semester/dto/quarter-request-dto";
+import { QuarterRequestDto } from "../../../@/infrastructure/api/controllers/semester/dto/quarter-request-dto";
 
 
 export function mockQuarterRequestDto(

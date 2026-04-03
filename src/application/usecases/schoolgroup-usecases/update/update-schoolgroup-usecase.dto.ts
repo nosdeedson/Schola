@@ -1,5 +1,5 @@
 import { UpdateClassDto } from "src/application/services/class/update/udpate.class.dto";
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 
 export class UpdateSchoolgroupUsecaseDto {
     id: string;

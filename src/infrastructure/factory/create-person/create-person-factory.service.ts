@@ -3,8 +3,8 @@ import { SystemError } from 'src/application/services/@shared/system-error';
 import { CreateParentDto } from 'src/application/services/parent/create/create.parent.dto';
 import { CreateStudentDto } from 'src/application/services/student/create/create.student.dto';
 import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
-import { AccessType } from 'src/domain/user/access.type';
-import { CreateUserRequestDto } from 'src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
+import { AccessType } from '@/domain/user/access.type';
+import { CreateUserRequestDto } from '@/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 
 export type GenericPersonDto = 
  | CreateWorkerDto

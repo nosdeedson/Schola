@@ -1,7 +1,7 @@
-import { StudentRepositoryInterface } from "src/domain/student/student.repository.interface";
+import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
 import { FindStutendDto } from "./find.student.dto";
 import { SystemError } from "src/application/services/@shared/system-error";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 
 export class FindStudentService {
 

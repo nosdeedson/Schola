@@ -1,4 +1,4 @@
-import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
+import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { FindAcademicSemesterDto } from "../find/find.academic-semester.dto";
 
 export class FindAllAcademicSemesterDto {

@@ -1,4 +1,4 @@
-import { UserEntity } from "src/infrastructure/entities/user/user.entity";
+import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { FindUserDto } from "../find/find.user.dto";
 
 export class FindAllUserDto {

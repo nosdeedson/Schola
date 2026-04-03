@@ -1,4 +1,4 @@
-import { CommentRepositoryInterface } from "src/domain/comment/comment.repository.interface";
+import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
 import { FindCommentDto } from "./find.comment.dto";
 import { SystemError } from "src/application/services/@shared/system-error";
 

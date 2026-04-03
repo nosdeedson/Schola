@@ -1,5 +1,5 @@
 import { ClassesOfTeacherDto } from "src/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 
 export class FindTeacherClassesService {
 

@@ -1,26 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RepositoryInterface } from 'src/domain/@shared/repository/repository.interface';
-import { AcademicSemesterEntity } from 'src/infrastructure/entities/academic-semester/academic.semester.entity';
-import { AcademicSemesterRepository } from 'src/infrastructure/repositories/academic-semester/academic-semester.repository';
+import { AcademicSemesterRepository } from '@/infrastructure/repositories/academic-semester/academic-semester.repository';
 import { DataSource } from 'typeorm';
 import { TypeRepository } from './type-repository';
-import { ClassRepository } from 'src/infrastructure/repositories/class/class.repository';
-import { ClassEntity } from 'src/infrastructure/entities/class/class.entity';
-import { StudentRepository } from 'src/infrastructure/repositories/student/student.repository';
-import { StudentEntity } from 'src/infrastructure/entities/student/student.entity';
-import { CommentRepository } from 'src/infrastructure/repositories/comment/comment.respository';
-import { CommentEntity } from 'src/infrastructure/entities/comment/comment.entity';
-import { ParentRepository } from 'src/infrastructure/repositories/parent/parent.repository';
-import { ParentEntity } from 'src/infrastructure/entities/parent/parent.entity';
-import { RatingEntity } from 'src/infrastructure/entities/rating/rating.entity';
-import { RatingRepositiry } from 'src/infrastructure/repositories/rating/rating.repository';
-import { UserRepository } from 'src/infrastructure/repositories/user/user.repository';
-import { UserEntity } from 'src/infrastructure/entities/user/user.entity';
-import { WorkerRepository } from 'src/infrastructure/repositories/worker/worker.repository';
-import { WorkerEntity } from 'src/infrastructure/entities/worker/worker.entity';
-import { SystemError } from 'src/application/services/@shared/system-error';
-import { ParentStudentRepository } from 'src/infrastructure/repositories/parent-student/parent.student.repositoy';
-import { ParentStudentEntity } from 'src/infrastructure/entities/parent-student/parent.student.entity';
+import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
+import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
+import { StudentRepository } from '@/infrastructure/repositories/student/student.repository';
+import { StudentEntity } from '@/infrastructure/entities/student/student.entity';
+import { CommentRepository } from '@/infrastructure/repositories/comment/comment.respository';
+import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
+import { ParentRepository } from '@/infrastructure/repositories/parent/parent.repository';
+import { ParentEntity } from '@/infrastructure/entities/parent/parent.entity';
+import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
+import { RatingRepositiry } from '@/infrastructure/repositories/rating/rating.repository';
+import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
+import { UserEntity } from '@/infrastructure/entities/user/user.entity';
+import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
+import { WorkerEntity } from '@/infrastructure/entities/worker/worker.entity';
+import { SystemError } from '@/application/services/@shared/system-error';
+import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
+import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
+import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 
 @Injectable()
 export class RepositoryFactoryService {

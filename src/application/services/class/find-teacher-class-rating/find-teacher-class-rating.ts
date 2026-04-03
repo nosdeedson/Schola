@@ -1,5 +1,5 @@
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 
 export class FindTeacherClassRatingService {
 

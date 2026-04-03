@@ -1,4 +1,4 @@
-import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
+import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { FindAllAcademicSemesterDto } from "./findAll.academic-semester.dto";
 
 export class FindAllAcademicSemesterService {

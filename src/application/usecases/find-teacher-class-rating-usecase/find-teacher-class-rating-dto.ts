@@ -1,6 +1,6 @@
 import { QuarterDto } from "src/application/services/academic-semester/create/quarter/quarter.dto";
-import { AcademicSemesterEntity } from "src/infrastructure/entities/academic-semester/academic.semester.entity";
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
+import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 
 export class TeacherClassRatingDto {
     teacherId: string;

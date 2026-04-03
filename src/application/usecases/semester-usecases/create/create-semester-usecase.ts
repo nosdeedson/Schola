@@ -1,10 +1,10 @@
 import { CreateAcademicSemesterService } from "src/application/services/academic-semester/create/create.academic-semester.service";
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
-import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { CreateAcademicSemesterUsecaseDto } from "src/application/services/academic-semester/create/semester/create-academic-semester-usecase.dto";
-import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

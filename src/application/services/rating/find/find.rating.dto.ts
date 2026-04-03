@@ -1,5 +1,5 @@
-import { Grade } from "src/domain/enum/grade/grade";
-import { RatingEntity } from "src/infrastructure/entities/rating/rating.entity";
+import { Grade } from "@/domain/enum/grade/grade";
+import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
 export class FindRatingDto{
     id: string;

@@ -1,4 +1,4 @@
-import { CommentEntity } from "src/infrastructure/entities/comment/comment.entity";
+import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 
 export class FindCommentDto{
 

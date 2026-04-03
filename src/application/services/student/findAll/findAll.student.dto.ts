@@ -1,4 +1,4 @@
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { FindStutendDto } from "../find/find.student.dto";
 
 export class FindAllStudentDto{

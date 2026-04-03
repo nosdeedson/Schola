@@ -14,7 +14,7 @@ module.exports = {
   forceExit: true,
   testRegex: ".*\\.spec\\.ts$",
   moduleNameMapper:{
-    "^src/(.*)$": "<rootDir>/$1"
+    '^@/(.*)$': '<rootDir>/$1',
   },
   coverageDirectory: '../coverage',
   setupFilesAfterEnv: ['../jest.setup.ts'],

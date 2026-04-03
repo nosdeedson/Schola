@@ -1,4 +1,4 @@
-import { Comment } from "src/domain/comment/comment";
+import { Comment } from "@/domain/comment/comment";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { RatingEntity } from "../rating/rating.entity";

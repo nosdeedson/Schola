@@ -1,6 +1,6 @@
-import { ClassEntity } from "src/infrastructure/entities/class/class.entity";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 
 export class FindClassDto {
 

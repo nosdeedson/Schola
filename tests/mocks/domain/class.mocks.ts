@@ -1,5 +1,5 @@
-import { Class } from "../../../src/domain/class/class";
-import { Schedule } from "../../../src/domain/schedule/schedule";
+import { Class } from "../../../@/domain/class/class";
+import { Schedule } from "../../../@/domain/schedule/schedule";
 import { mockSchedule } from "./schedule.mocks";
 
 

@@ -1,6 +1,6 @@
-import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
+import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { SystemError } from "../../@shared/system-error";
 
 export class UpdateAcademicSemesterService{

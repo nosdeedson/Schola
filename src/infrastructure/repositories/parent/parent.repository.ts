@@ -1,8 +1,8 @@
 import { ParentEntity } from '../../../infrastructure/entities/parent/parent.entity';
 import { ParentReporitoryInterface } from '../../../domain/parent/parent.repository.interface';
 import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
-import { ParentStudentEntity } from 'src/infrastructure/entities/parent-student/parent.student.entity';
-import { Parent } from 'src/domain/parent/parent';
+import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
+import { Parent } from '@/domain/parent/parent';
 import { from } from 'rxjs';
 
 

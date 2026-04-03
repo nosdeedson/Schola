@@ -1,8 +1,8 @@
-import { CommentRepositoryInterface } from "src/domain/comment/comment.repository.interface";
+import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
 import { CreateCommentDto } from "./create.comment.dto";
-import { Comment } from "src/domain/comment/comment";
-import { CommentEntity } from "src/infrastructure/entities/comment/comment.entity";
-import { RatingRepositoryInterface } from "src/domain/rating/rating.repository.interface";
+import { Comment } from "@/domain/comment/comment";
+import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
+import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { SystemError } from "src/application/services/@shared/system-error";
 
 export class CreateCommentService{

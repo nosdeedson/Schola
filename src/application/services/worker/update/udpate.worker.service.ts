@@ -1,4 +1,4 @@
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
 import { InputUpdateWorkerDto } from "./update.worker.dto";
 

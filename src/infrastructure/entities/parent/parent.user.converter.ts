@@ -1,4 +1,4 @@
-import { Parent } from "src/domain/parent/parent";
+import { Parent } from "@/domain/parent/parent";
 import { UserConverter } from "../@shared/user-converter/user.converter.interface";
 import { ParentEntity } from "./parent.entity";
 

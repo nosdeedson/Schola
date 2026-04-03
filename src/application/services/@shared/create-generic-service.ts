@@ -1,5 +1,5 @@
-import { PeronRepositoryInterface } from "src/domain/@shared/repository/person.repository.interface";
-import { RepositoryInterface } from "src/domain/@shared/repository/repository.interface";
+import { PeronRepositoryInterface } from "@/domain/@shared/repository/person.repository.interface";
+import { RepositoryInterface } from "@/domain/@shared/repository/repository.interface";
 
 export abstract class CreateGenericService {
     public personRepository: RepositoryInterface<any>;

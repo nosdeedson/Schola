@@ -1,4 +1,4 @@
-import { CommentRepositoryInterface } from "src/domain/comment/comment.repository.interface";
+import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
 
 export class DeleteCommentService{
 

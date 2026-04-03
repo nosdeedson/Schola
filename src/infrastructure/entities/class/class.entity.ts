@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { StudentEntity } from "../student/student.entity";
 import { WorkerEntity } from "../worker/worker.entity";
-import { Class } from "src/domain/class/class";
+import { Class } from "@/domain/class/class";
 
 @Entity('class')
 export class ClassEntity extends GenericEntity {

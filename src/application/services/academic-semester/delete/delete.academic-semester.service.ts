@@ -1,4 +1,4 @@
-import { AcademicSemesterInterface } from "src/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 
 export class DeleteAcademicSemesterService{
 

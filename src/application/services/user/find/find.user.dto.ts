@@ -1,4 +1,4 @@
-import { AccessType } from "src/domain/user/access.type";
+import { AccessType } from "@/domain/user/access.type";
 
 export class FindUserDto{
     id: string;

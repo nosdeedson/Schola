@@ -1,4 +1,4 @@
-import { ParentEntity } from 'src/infrastructure/entities/parent/parent.entity';
+import { ParentEntity } from '@/infrastructure/entities/parent/parent.entity';
 import { PeronRepositoryInterface } from '../@shared/repository/person.repository.interface';
 
 

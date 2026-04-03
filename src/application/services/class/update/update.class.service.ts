@@ -1,4 +1,4 @@
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { UpdateClassDto } from "./udpate.class.dto";
 import { SystemError } from "src/application/services/@shared/system-error";
 

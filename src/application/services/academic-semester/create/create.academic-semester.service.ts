@@ -1,7 +1,7 @@
-import { AcademicSemester } from 'src/domain/academc-semester/academic.semester';
+import { AcademicSemester } from '@/domain/academc-semester/academic.semester';
 import { AcademicSemesterInterface } from '../../../../domain/academc-semester/academic.semester.repository.interface';
 import { CreateAcademicSemesterUsecaseDto } from './semester/create-academic-semester-usecase.dto';
-import { AcademicSemesterEntity } from 'src/infrastructure/entities/academic-semester/academic.semester.entity';
+import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 import { SystemError } from 'src/application/services/@shared/system-error';
 
 

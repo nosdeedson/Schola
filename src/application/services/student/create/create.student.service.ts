@@ -1,9 +1,9 @@
 import { SystemError } from "src/application/services/@shared/system-error";
-import { NotificationErrorProps } from "src/domain/@shared/notification/notification";
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
-import { Student } from "src/domain/student/student";
-import { StudentRepositoryInterface } from "src/domain/student/student.repository.interface";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { NotificationErrorProps } from "@/domain/@shared/notification/notification";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
+import { Student } from "@/domain/student/student";
+import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { CreateStudentDto } from "./create.student.dto";
 import { CreateGenericService } from "src/application/services/@shared/create-generic-service";
 

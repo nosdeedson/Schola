@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "src/domain/user/user.repository.interface";
+import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { FindAllUserDto } from "./findAll.user.dto";
 
 export class FindAllUserService {

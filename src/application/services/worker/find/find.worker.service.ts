@@ -1,8 +1,8 @@
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
 import { InputFindWorkerDto, OutputFindWorkerDto } from "./find.worker.dto";
 import { FindGenericService } from "src/application/services/@shared/find-generic-service";
-import { FindUserOutPutDto } from "src/infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto";
+import { FindUserOutPutDto } from "@/infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto";
 import { SystemError } from "src/application/services/@shared/system-error";
 
 

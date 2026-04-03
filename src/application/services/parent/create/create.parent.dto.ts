@@ -1,5 +1,5 @@
-import { Parent } from "src/domain/parent/parent";
-import { Student } from "src/domain/student/student";
+import { Parent } from "@/domain/parent/parent";
+import { Student } from "@/domain/student/student";
 
 export class CreateParentDto {
     birthday: Date;

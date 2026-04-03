@@ -1,35 +1,22 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
 import { setEnv } from "../../../../infrastructure/__mocks__/env.mock";
-import { CreateSchoolgroupUseCase } from "./schoolgroup";
+import { CreateSchoolgroupUseCase } from "./create-schoolgroup-usecase";
 import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
 import { BadRequestException } from "@nestjs/common";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { MockSchoolgroupDto } from "../../../../infrastructure/__mocks__/mock-schoolgroup-dto";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { CreateSchoolgroupRequestDto } from "../../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateClassService } from "../../../services/class/create/create.class.service";
 import { CreateWorkerService } from "../../../services/worker/create/create.worker.service";
+import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 
 describe('CreateSchoolGroupUsecase', () => {
 
     let service: CreateSchoolgroupUseCase;
     let module: TestingModule;
-    let input: any;
-    beforeEach(async () => {
-        input = {
-            classCode: undefined,
-            nameBook: "book name",
-            name: "teste",
-            scheduleDto: {
-                dayOfWeeks: [
-                    "Monday",
-                    "Tuesday",
-                ],
-                times: { 'Monday': '08:00', 'Tuesday': '09:00' },
-            },
-        };
+    beforeAll(async () => {
         setEnv();
         module = await Test.createTestingModule({
             imports: [DataBaseConnectionModule],
@@ -41,50 +28,67 @@ describe('CreateSchoolGroupUsecase', () => {
 
     afterEach(async () => {
         jest.clearAllMocks();
-        module.close();
     });
+
+    afterAll(async () => {
+        await module.close()
+    })
 
     it('should be defined', () => {
         expect(service).toBeDefined();
     });
 
     it('should create a schoolgroup', async () => {
-        let dto = MockSchoolgroupDto.dtoToCreate();
-
+        const dto = mockCreateSchoolgroupUseCaseDto();
+        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const input = dto.toCreateClassDto(teacher);
+        const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
+            .mockImplementationOnce(() => Promise.resolve(teacher));
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve());
-        const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
-            .mockImplementationOnce(() => Promise.resolve(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true))));
-
-        const toInput = jest.spyOn(CreateSchoolgroupRequestDto.prototype, 'toInput')
-            .mockReturnValueOnce(input)
 
         expect(await service.create(dto)).toBe(void 0);
         expect(createClass).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledWith(input);
-        expect(toInput).toHaveBeenCalledTimes(1);
         expect(createTeacher).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw an error', async () => {
-        let dto = MockSchoolgroupDto.dtoToCreateCausingException();
-        const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
-            .mockImplementationOnce(() => Promise.resolve(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true))));
+    it('should throw an error while creating the worker', async () => {
+        const dto = mockCreateSchoolgroupUseCaseDto();
+        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const input = dto.toCreateClassDto(teacher);
 
+        const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
+            .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
-        const toInput = jest.spyOn(CreateSchoolgroupRequestDto.prototype, 'toInput')
-            .mockReturnValueOnce(input)
 
-        try {
-            await service.create(dto)
-        } catch (error) {
-            expect(error).toBeDefined();
-            expect(createClass).toHaveBeenCalledTimes(1);
-            expect(createClass).toHaveBeenCalledWith(input);
-            expect(toInput).toHaveBeenCalledTimes(1);
-            expect(createTeacher).toHaveBeenCalledTimes(1);
-        }
+        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+                .mockImplementation(() => { throw new BadRequestException('Test') });
+
+        await expect(service.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
+        expect(createClass).toHaveBeenCalledTimes(0);
+        expect(createTeacher).toHaveBeenCalledTimes(1);
+        expect(tratarError).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error while creating the class', async () => {
+        const dto = mockCreateSchoolgroupUseCaseDto();
+        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const input = dto.toCreateClassDto(teacher);
+
+        const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
+            .mockImplementationOnce(() => Promise.resolve(teacher));
+        const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
+            .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
+        const tratatError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+            .mockImplementation(() => {throw new BadRequestException('Test')});
+
+        await expect(service.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
+        expect(createClass).toHaveBeenCalledTimes(1);
+        expect(createClass).toHaveBeenCalledWith(input);
+        expect(createTeacher).toHaveBeenCalledTimes(1);
+        expect(tratatError).toHaveBeenCalledTimes(1);
     });
 
 })

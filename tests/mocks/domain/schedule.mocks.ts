@@ -1,4 +1,4 @@
-import { Schedule } from "../../../src/domain/schedule/schedule";
+import { Schedule } from "../../../@/domain/schedule/schedule";
 
 type ScheduleMock = {
     daysOfWeek?: string[];

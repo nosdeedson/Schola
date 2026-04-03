@@ -4,7 +4,7 @@ import { SystemError } from 'src/application/services/@shared/system-error';
 import { DeleteParentService } from 'src/application/services/parent/delete/delete.parent.service';
 import { DeleteStudentService } from 'src/application/services/student/delete/delete.student.service';
 import { DeleteWorkerService } from 'src/application/services/worker/delete/delete.worker.service';
-import { AccessType } from 'src/domain/user/access.type';
+import { AccessType } from '@/domain/user/access.type';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
 
 @Injectable()

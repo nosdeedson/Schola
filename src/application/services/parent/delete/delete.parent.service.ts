@@ -1,5 +1,5 @@
 import { DeleteGenericService } from "src/application/services/@shared/delete-generic-service";
-import { ParentReporitoryInterface } from "src/domain/parent/parent.repository.interface";
+import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.interface";
 
 export class DeleteParentService extends DeleteGenericService {
 

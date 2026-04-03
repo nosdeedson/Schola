@@ -1,10 +1,9 @@
-import { PersonEntity } from "src/infrastructure/entities/@shared/person.entity";
 import { Person } from "../@shared/person";
 import { Class } from "../class/class";
 import { RoleEnum } from "./roleEnum";
 import { WorkerValidator } from "./worker.validator";
 import { AccessType } from "../user/access.type";
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 
 export class Worker extends Person {
 

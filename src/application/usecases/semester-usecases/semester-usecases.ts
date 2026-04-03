@@ -4,10 +4,10 @@ import { DeleteAcademicSemesterService } from "src/application/services/academic
 import { FindAcademicSemesterService } from "src/application/services/academic-semester/find/find.academic-semester.service";
 import { FindAllAcademicSemesterDto } from "src/application/services/academic-semester/findAll/findAll.academic-semester.dto";
 import { FindAllAcademicSemesterService } from "src/application/services/academic-semester/findAll/findAll.academic-semester.service";
-import { AcademicSemesterRepository } from "src/infrastructure/repositories/academic-semester/academic-semester.repository";
-import { TrataErros } from "src/infrastructure/utils/trata-erros/trata-erros";
-import { RepositoryFactoryService } from "src/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "src/infrastructure/factory/repositiry-factory/type-repository";
+import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
+import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { UpdateAcademicSemesterService } from "src/application/services/academic-semester/update/update.academic-semester.service";
 import { UpdateAcademicSemesterDto } from "src/application/services/academic-semester/update/udpate.academic-semester.dto";
 

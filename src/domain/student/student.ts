@@ -3,7 +3,7 @@ import { Person } from "../@shared/person";
 import { StudentValidator } from "./student.validator";
 import { Rating } from "../rating/rating";
 import { Class } from "../class/class";
-import { StudentEntity } from "src/infrastructure/entities/student/student.entity";
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 
 export class Student extends Person {
    

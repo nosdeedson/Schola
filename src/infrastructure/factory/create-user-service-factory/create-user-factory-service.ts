@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGenericService } from 'src/application/services/@shared/create-generic-service';
 import { CreateWorkerService } from 'src/application/services/worker/create/create.worker.service';
-import { AccessType } from 'src/domain/user/access.type';
+import { AccessType } from '@/domain/user/access.type';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
 import { CreateParentStudentService } from 'src/application/services/parent-student/create/create.parent.student.service';
 

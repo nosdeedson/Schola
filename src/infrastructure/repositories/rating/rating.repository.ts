@@ -1,4 +1,4 @@
-import { Rating } from 'src/domain/rating/rating';
+import { Rating } from '@/domain/rating/rating';
 import { RatingRepositoryInterface } from '../../../domain/rating/rating.repository.interface'
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RatingEntity } from '../../../infrastructure/entities/rating/rating.entity';

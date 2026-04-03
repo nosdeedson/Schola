@@ -1,7 +1,7 @@
-import { WorkerEntity } from "src/infrastructure/entities/worker/worker.entity";
+import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { ScheduleDto } from "./schedule-dto";
 
-export class CreateClassUsecaseDto{
+export class CreateClassDto{
     
     classCode?: string;
     nameBook: string;

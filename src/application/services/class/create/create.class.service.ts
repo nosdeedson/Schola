@@ -1,9 +1,9 @@
 import { Class } from "../../../../domain/class/class";
-import { ClassRepositoryInterface } from "src/domain/class/class.repository.interface";
+import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { Schedule } from "../../../../domain/schedule/schedule";
 import { ClassCodeHelper } from "../../../../helpers/classCode/class-code.heper";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
-import { CreateClassUsecaseDto } from "./create.class.usecase.dto";
+import { CreateClassDto } from "./create.class.dto";
 import { SystemError } from "../../@shared/system-error";
 
 export class CreateClassService {
@@ -13,7 +13,7 @@ export class CreateClassService {
         this.classRepository = classRepository;
     }
 
-    async execute(dto: CreateClassUsecaseDto) {
+    async execute(dto: CreateClassDto) {
         try{
             dto.classCode = ClassCodeHelper.createClassCode();
             let schedule = new Schedule(dto?.scheduleDto?.dayOfWeeks, dto?.scheduleDto?.times);

@@ -1,4 +1,4 @@
-import { ClassesOfTeacherDto } from "src/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
+import { ClassesOfTeacherDto } from "@/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
 import { ClassRepositoryInterface } from "../../../domain/class/class.repository.interface";
 import { ClassEntity } from "../../../infrastructure/entities/class/class.entity";
 import { DataSource, QueryFailedError, Repository } from "typeorm";

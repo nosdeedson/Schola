@@ -4,21 +4,21 @@ import { DeleteClassService } from 'src/application/services/class/delete/delete
 import { FindClassService } from 'src/application/services/class/find/find.class.service';
 import { FindAllClassService } from 'src/application/services/class/findAll/findAll.class.service';
 import { UpdateClassService } from 'src/application/services/class/update/update.class.service';
-import { ClassEntity } from 'src/infrastructure/entities/class/class.entity';
-import { ClassRepository } from 'src/infrastructure/repositories/class/class.repository';
-import { TrataErros } from 'src/infrastructure/utils/trata-erros/trata-erros';
+import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
+import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
+import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { DataSource } from 'typeorm';
 import { CreateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto';
 import { UpdateSchoolgroupRequestDto } from '../../../infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto';
-import { RepositoryFactoryService } from 'src/infrastructure/factory/repositiry-factory/repository-factory.service';
-import { TypeRepository } from 'src/infrastructure/factory/repositiry-factory/type-repository';
-import { WorkerRepository } from 'src/infrastructure/repositories/worker/worker.repository';
-import { ClassRepositoryInterface } from 'src/domain/class/class.repository.interface';
-import { WorkerRepositoryInterface } from 'src/domain/worker/worker.repository.interface';
+import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
+import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
+import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
+import { ClassRepositoryInterface } from '@/domain/class/class.repository.interface';
+import { WorkerRepositoryInterface } from '@/domain/worker/worker.repository.interface';
 import { CreateWorkerService } from 'src/application/services/worker/create/create.worker.service';
 import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
-import { AccessType } from 'src/domain/user/access.type';
-import { WorkerEntity } from 'src/infrastructure/entities/worker/worker.entity';
+import { AccessType } from '@/domain/user/access.type';
+import { WorkerEntity } from '@/infrastructure/entities/worker/worker.entity';
 import { SystemError } from 'src/application/services/@shared/system-error';
 
 @Injectable()
