@@ -31,8 +31,8 @@ describe('CommentRepository unit test', () => {
     let parentModel: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
-    beforeAll( () => {
-    
+    beforeAll(() => {
+
         commentModel = TestDataSource.getRepository(CommentEntity);
         repository = new CommentRepository(commentModel, TestDataSource);
 
@@ -47,7 +47,7 @@ describe('CommentRepository unit test', () => {
 
         parentModel = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentModel, TestDataSource)
-        
+
     });
 
     it('commentRepository must be instantiated', async () => {
@@ -65,16 +65,16 @@ describe('CommentRepository unit test', () => {
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
@@ -91,88 +91,88 @@ describe('CommentRepository unit test', () => {
         expect(result.rating).toBeUndefined();
     });
 
-    it('should delete a comment', async () =>{
+    it('should delete a comment', async () => {
         let semester = mockSemester();
         let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
         //let entityBD = await ratingRepository.find(ratingEntity.id);
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
-        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId );
+        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         await repository.create(model);
 
-        expect( await repository.delete(wantedId)).toBe(void 0)
+        expect(await repository.delete(wantedId)).toBe(void 0)
     })
 
 
-    it('should not throw error when deleting a comment with a wrong id', async () =>{
+    it('should not throw error when deleting a comment with a wrong id', async () => {
         let semester = mockSemester();
         let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
         //let entityBD = await ratingRepository.find(ratingEntity.id);
         let wantedId = 'd70bc62e-a53d-4cef-8366-de63099ebf4d';
         let wantedComment = 'just a test';
-        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', '489f0126-e7ca-44d6-8b11-13b61adc35d6' );
+        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', '489f0126-e7ca-44d6-8b11-13b61adc35d6');
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         await repository.create(model);
 
-        expect( await repository.delete(wantedId)).toBe(void 0)
+        expect(await repository.delete(wantedId)).toBe(void 0)
     })
 
-    it('should find a comment', async () =>{
+    it('should find a comment', async () => {
         let semester = mockSemester();
         let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
         //let entityBD = await ratingRepository.find(ratingEntity.id);
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
-        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId );
+        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         await repository.create(model);
 
@@ -182,30 +182,30 @@ describe('CommentRepository unit test', () => {
         expect(result.comment).toEqual(wantedComment)
     })
 
-    it('should find all comments', async () =>{
+    it('should find all comments', async () => {
         let semester = mockSemester();
         let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
-        let comment = new Comment('just a comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' );
+        let comment = new Comment('just a comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         await repository.create(model);
 
-        let comment2 = new Comment('just another comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' );
+        let comment2 = new Comment('just another comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
         let model2 = CommentEntity.toCommentEntity(comment2, ratingEntity);
         await repository.create(model2);
 
@@ -218,28 +218,28 @@ describe('CommentRepository unit test', () => {
         expect(results[1].comment).toEqual(comment2.getComment())
     })
 
-    it('should update a comment', async () =>{
+    it('should update a comment', async () => {
         let semester = mockSemester();
         let academicSemester = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
-        let student = new Student({birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f'});
-        const parent = new Parent({birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6'});
+        let student = new Student({ birthday: new Date(), name: 'edson', enrolled: '123', nameParents: [], id: 'f07d183f-eb37-417e-8a58-ad9ed4b3910f' });
+        const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
-        
+
         let studentModel = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentModel);
-        
+
         parent.setStudents([student])
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         ratingEntity = RatingEntity.toRatingEntity(rating);
         await ratingRepository.create(ratingEntity);
 
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
-        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId );
+        let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         await repository.create(model);
 
