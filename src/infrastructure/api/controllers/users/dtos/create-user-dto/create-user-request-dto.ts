@@ -3,6 +3,7 @@ import { IsArray, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsO
 import { AccessType } from "@/domain/user/access.type";
 
 export class CreateUserRequestDto {
+
     @ApiProperty({
         description: 'Name of user',
         example: 'John Doe',

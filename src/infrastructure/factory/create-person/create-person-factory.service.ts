@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { SystemError } from 'src/application/services/@shared/system-error';
-import { CreateParentDto } from 'src/application/services/parent/create/create.parent.dto';
-import { CreateStudentDto } from 'src/application/services/student/create/create.student.dto';
-import { CreateWorkerDto } from 'src/application/services/worker/create/create.worker.dto';
+import { SystemError } from '@/application/services/@shared/system-error';
+import { CreateParentDto } from '@/application/services/parent/create/create.parent.dto';
+import { CreateStudentDto } from '@/application/services/student/create/create.student.dto';
+import { CreateWorkerDto } from '@/application/services/worker/create/create.worker.dto';
 import { AccessType } from '@/domain/user/access.type';
 import { CreateUserRequestDto } from '@/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 
-export type GenericPersonDto = 
- | CreateWorkerDto
- | CreateStudentDto
- | CreateParentDto;
+export type GenericPersonDto =
+    | CreateWorkerDto
+    | CreateStudentDto
+    | CreateParentDto;
 
 @Injectable()
 export class CreatePersonFactoryService {
