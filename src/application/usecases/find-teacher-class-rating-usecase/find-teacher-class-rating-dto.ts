@@ -1,4 +1,4 @@
-import { QuarterDto } from "src/application/services/academic-semester/create/quarter/quarter.dto";
+import { QuarterDto } from "@/application/services/academic-semester/create/quarter/quarter.dto";
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 

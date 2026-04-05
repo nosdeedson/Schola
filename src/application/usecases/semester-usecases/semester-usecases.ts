@@ -1,15 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { CreateAcademicSemesterService } from "src/application/services/academic-semester/create/create.academic-semester.service";
-import { DeleteAcademicSemesterService } from "src/application/services/academic-semester/delete/delete.academic-semester.service";
-import { FindAcademicSemesterService } from "src/application/services/academic-semester/find/find.academic-semester.service";
-import { FindAllAcademicSemesterDto } from "src/application/services/academic-semester/findAll/findAll.academic-semester.dto";
-import { FindAllAcademicSemesterService } from "src/application/services/academic-semester/findAll/findAll.academic-semester.service";
+import { DeleteAcademicSemesterService } from "@/application/services/academic-semester/delete/delete.academic-semester.service";
+import { FindAcademicSemesterService } from "@/application/services/academic-semester/find/find.academic-semester.service";
+import { FindAllAcademicSemesterDto } from "@/application/services/academic-semester/findAll/findAll.academic-semester.dto";
+import { FindAllAcademicSemesterService } from "@/application/services/academic-semester/findAll/findAll.academic-semester.service";
 import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
-import { UpdateAcademicSemesterService } from "src/application/services/academic-semester/update/update.academic-semester.service";
-import { UpdateAcademicSemesterDto } from "src/application/services/academic-semester/update/udpate.academic-semester.dto";
 
 @Injectable()
 export class SemesterUsecases {
@@ -18,16 +15,16 @@ export class SemesterUsecases {
 
     constructor(
         private repositoryFactory: RepositoryFactoryService
-    ){
+    ) {
         this.repository = this.repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER) as AcademicSemesterRepository;
-     }
+    }
 
-    async delete(id: string): Promise<void>{
+    async delete(id: string): Promise<void> {
         let deleteService = new DeleteAcademicSemesterService(this.repository);
         await deleteService.execute(id);
     }
 
-    async find(id: string): Promise<any>{
+    async find(id: string): Promise<any> {
         try {
             let findService = new FindAcademicSemesterService(this.repository);
             return await findService.execute(id);
@@ -36,12 +33,12 @@ export class SemesterUsecases {
         }
     }
 
-    async findAll(): Promise<FindAllAcademicSemesterDto>{
+    async findAll(): Promise<FindAllAcademicSemesterDto> {
         let all = new FindAllAcademicSemesterService(this.repository);
         return await all.execute();
     }
 
-    async update(id: string, actual: boolean): Promise<any>{
+    async update(id: string, actual: boolean): Promise<any> {
         // let updateService = new UpdateAcademicSemesterService(this.repository);
         // let input = new UpdateAcademicSemesterDto(id, actual);
         // updateService.execute(input);

@@ -1,9 +1,9 @@
-import { Grade } from "../../../@/domain/enum/grade/grade";
-import { Quarter } from "../../../@/domain/quarter/quarter";
-import { Rating } from "../../../@/domain/rating/rating";
-import { Student } from "../../../@/domain/student/student";
+import { Quarter } from "@/domain/quarter/quarter";
 import { mockQuarter } from "./quarter.mocks";
 import { mockStudent } from "./student.mocks";
+import { Student } from "@/domain/student/student";
+import { Grade } from "@/domain/enum/grade/grade";
+import { Rating } from "@/domain/rating/rating";
 
 type RatingMock = {
     comments?: Comment[];

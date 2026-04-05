@@ -1,6 +1,6 @@
-import { Quarter } from "../../../@/domain/quarter/quarter";
-import { AcademicSemester } from "../../../@/domain/academc-semester/academic.semester";
+import { Quarter } from "@/domain/quarter/quarter";
 import { mockQuarter } from "./quarter.mocks";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 
 type SemesterMock = {
     firstQuarter?: Quarter;
@@ -9,7 +9,7 @@ type SemesterMock = {
 }
 
 export function mockSemester(
-  overrides: SemesterMock = {}
+    overrides: SemesterMock = {}
 ): AcademicSemester {
     return new AcademicSemester(
         overrides.firstQuarter ?? mockQuarter(),

@@ -4,18 +4,8 @@ import { DataBaseConnectionModule } from '../../../infrastructure/data-base-conn
 import { setEnv } from '../../../infrastructure/__mocks__/env.mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { FindAcademicSemesterService } from '../../../application/services/academic-semester/find/find.academic-semester.service';
-import { FindAcademicSemesterDto } from '../../../application/services/academic-semester/find/find.academic-semester.dto';
-import { FindAllAcademicSemesterService } from '../../../application/services/academic-semester/findAll/findAll.academic-semester.service';
-import { FindAllAcademicSemesterDto } from '../../../application/services/academic-semester/findAll/findAll.academic-semester.dto';
-import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
 import { DeleteAcademicSemesterService } from '../../../application/services/academic-semester/delete/delete.academic-semester.service';
-import { UpdateAcademicSemesterService } from '../../../application/services/academic-semester/update/update.academic-semester.service';
 import { RepositoryFactoryService } from "../../../infrastructure/factory/repositiry-factory/repository-factory.service";
-import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
-import { mockQuarterDto } from '../../../../tests/mocks/domain-dto/quarter-dto.mocks';
-import { mockQuarter } from '../../../../tests/mocks/domain/quarter.mocks';
-import { Quarter } from '../../../domain/quarter/quarter';
-import { mockQuarterEntity } from '../../../../tests/mocks/entities/quarter-entity.mock';
 
 describe('SemesterUsecases', () => {
   let service: SemesterUsecases;

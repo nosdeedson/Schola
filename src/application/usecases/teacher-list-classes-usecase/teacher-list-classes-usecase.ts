@@ -1,4 +1,4 @@
-import { FindTeacherClassesService } from "src/application/services/class/find-teacher-classes/find.teacher-classes";
+import { FindTeacherClassesService } from "@/application/services/class/find-teacher-classes/find.teacher-classes";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";

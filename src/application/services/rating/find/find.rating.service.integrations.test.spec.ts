@@ -1,4 +1,3 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
@@ -60,8 +59,9 @@ describe('find rating integration tests', () => {
 
         let wantedid = 'b4145be7-0fed-4a64-8a45-24bdd594cd20';
         const service = new FindRatingService(ratingRepository);
-        await expect(service.execute(wantedid)).rejects.toMatchObject({errors:
-            [{ context: 'rating', message: 'Not found' }]
+        await expect(service.execute(wantedid)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'Not found' }]
         });
     });
 

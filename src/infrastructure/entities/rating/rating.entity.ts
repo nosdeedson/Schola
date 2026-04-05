@@ -119,17 +119,17 @@ export class RatingEntity extends GenericEntity {
     writing: Grade;
 
     @JoinColumn({
-        name: 'academic_semester_id',
-        foreignKeyConstraintName: 'fk_academic_semester',
+        name: 'quarter_id',
+        foreignKeyConstraintName: 'fk_quarter',
         referencedColumnName: 'id'
     })
     @ManyToOne(() => QuarterEntity, quarter => quarter.ratings)
-    academicSemester: AcademicSemesterEntity;
+    quarter: QuarterEntity;
 
     @OneToMany(() => CommentEntity, comment => comment.rating)
     comments: CommentEntity[];
 
-    @ManyToOne(() => StudentEntity, {cascade: true})
+    @ManyToOne(() => StudentEntity, { cascade: true })
     @JoinColumn({
         name: 'student_id',
         foreignKeyConstraintName: 'fk_student_id'
@@ -151,6 +151,7 @@ export class RatingEntity extends GenericEntity {
         model.updatedAt = rating.getUpdatedAt();
         model.vocabulary = rating.getVocabulary();
         model.writing = rating.getWriting();
+        model.quarter = QuarterEntity.toEntity(rating.getQuarter());
         // TODO FIX 
         // model.academicSemester = AcademicSemesterEntity.toAcademicSemester(rating.getAcademicSemester());
         return model;

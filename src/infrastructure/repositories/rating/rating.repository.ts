@@ -4,12 +4,12 @@ import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RatingEntity } from '../../../infrastructure/entities/rating/rating.entity';
 
 
-export class RatingRepositiry implements RatingRepositoryInterface{
+export class RatingRepositiry implements RatingRepositoryInterface {
 
     constructor(
         private ratingRepository: Repository<RatingEntity>,
         private dataSource: DataSource
-    ){}
+    ) { }
 
     async create(entity: RatingEntity): Promise<RatingEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -23,7 +23,7 @@ export class RatingRepositiry implements RatingRepositoryInterface{
             console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
-        } finally{
+        } finally {
             await queryRunner.release()
         }
     }
@@ -32,7 +32,7 @@ export class RatingRepositiry implements RatingRepositoryInterface{
         await this.dataSource.createQueryBuilder()
             .update(RatingEntity)
             .set({
-                deletedAt : new Date()
+                deletedAt: new Date()
             })
             .where('id= :id', { id: id })
             .execute();
@@ -40,7 +40,7 @@ export class RatingRepositiry implements RatingRepositoryInterface{
 
     async find(id: string): Promise<RatingEntity> {
         const model = await this.ratingRepository.findOne({
-            where: {id: id},
+            where: { id: id },
             relations: {
                 student: true
             }
@@ -51,6 +51,24 @@ export class RatingRepositiry implements RatingRepositoryInterface{
     async findAll(): Promise<RatingEntity[]> {
         const all = await this.ratingRepository.find();
         return all;
+    }
+
+    async findByStudentId(studentId: string): Promise<RatingEntity> {
+        return await this.ratingRepository.findOne({
+            where: {
+                student: {
+                    id: studentId
+                },
+                quarter: {
+                    currentQuarter: true
+                }
+            },
+            relations: {
+                student: true,
+                comments: true,
+                quarter: true
+            }
+        });
     }
 
     async update(entity: RatingEntity) {

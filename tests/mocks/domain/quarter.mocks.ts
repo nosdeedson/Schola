@@ -1,4 +1,4 @@
-import { Quarter } from '../../../@/domain/quarter/quarter';
+import { Quarter } from '@/domain/quarter/quarter';
 
 
 type QuarterMock = {

@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { FindTeacherClassRatingUsecase } from 'src/application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-usecase';
-import { TeacherListClassesUsecase } from 'src/application/usecases/teacher-list-classes-usecase/teacher-list-classes-usecase';
+import { FindTeacherClassRatingUsecase } from '@/application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-usecase';
+import { TeacherListClassesUsecase } from '@/application/usecases/teacher-list-classes-usecase/teacher-list-classes-usecase';
 
 @Controller('teacher')
 export class TeacherController {

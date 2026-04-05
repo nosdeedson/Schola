@@ -1,11 +1,4 @@
-import { Class } from "../../../@/domain/class/class";
-import { Parent } from "../../../@/domain/parent/parent";
-import { Rating } from "../../../@/domain/rating/rating";
-import { Student } from "../../../@/domain/student/student";
-import { mockClass } from "./class.mocks";
-import { mockParent } from "./parent.mocks";
-import { mockRating } from "./rating.mocks";
-
+import { Student } from "@/domain/student/student";
 
 type StudentMock = {
     enroller?: string;

@@ -9,8 +9,12 @@ import { RatingRepositiry } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
+import { mockQuarter } from "../../../../tests/mocks/domain/quarter.mocks";
+import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
+import { CommentRepository } from "../comment/comment.respository";
+import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 
-describe('RatingRepository unit tests', () =>{
+describe('RatingRepository unit tests', () => {
 
     let ratintModel;
     let ratingRepository: RatingRepositiry;
@@ -18,9 +22,11 @@ describe('RatingRepository unit tests', () =>{
     let semesterRepository: AcademicSemesterRepository;
     let studentModel;
     let studentRepository: StudentRepository;
+    let commentModel;
+    let commentRepository: CommentRepository;
 
     beforeAll(() => {
-        
+
         ratintModel = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepositiry(ratintModel, TestDataSource);
 
@@ -29,15 +35,19 @@ describe('RatingRepository unit tests', () =>{
 
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentModel, TestDataSource);
+
+        commentModel = TestDataSource.getRepository(CommentEntity);
+        commentRepository = new CommentRepository(commentModel, TestDataSource);
     });
 
-    it('ratingRepository should be instantiated', () =>{
+    it('ratingRepository should be instantiated', () => {
         expect(ratingRepository).toBeDefined();
         expect(semesterRepository).toBeDefined();
         expect(studentRepository).toBeDefined();
+        expect(commentRepository).toBeDefined();
     });
 
-    it('should save a rating on the BD', async () =>{
+    it('should save a rating on the BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
@@ -56,7 +66,7 @@ describe('RatingRepository unit tests', () =>{
         expect(result.id).toEqual(wantedId);
     });
 
-    it('should delete a rating on the BD', async () =>{
+    it('should delete a rating on the BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
@@ -72,9 +82,9 @@ describe('RatingRepository unit tests', () =>{
         let result = await ratingRepository.find(wantedId);
         expect(result).toBeDefined();
         expect(await ratingRepository.delete(wantedId)).toBe(void 0);
-    }); 
-    
-    it('should find a rating on the BD', async () =>{
+    });
+
+    it('should find a rating on the BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
@@ -91,9 +101,56 @@ describe('RatingRepository unit tests', () =>{
         expect(result).toBeDefined();
         expect(result.id).toEqual(wantedId);
         expect(result.writing).toEqual(Grade.BAD)
-    }); 
+    });
 
-    it('should find all rating on the BD', async () =>{
+    it('should find a rating by student', async () => {
+        const firstQuarter = mockQuarter({ currentQuarter: true })
+        let semester = mockSemester({ firstQuarter: firstQuarter });
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        await semesterRepository.create(semesterEntity);
+
+        let student = DomainMocks.mockStudent();
+        let studentEntity = StudentEntity.toStudentEntity(student);
+        await studentRepository.create(studentEntity);
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
+        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        const wantedStudentId = student.getId();
+
+        let result = await ratingRepository.findByStudentId(wantedStudentId);
+        expect(result).toBeDefined();
+        expect(result.student.id).toEqual(wantedStudentId);
+        expect(result.quarter.id).toEqual(semester.firstQuarter.getId());
+        expect(result.comments).toHaveLength(0);
+        expect(result.writing).toEqual(Grade.BAD);
+    });
+
+    it('should find a rating with comment by student', async () => {
+        const firstQuarter = mockQuarter({ currentQuarter: true })
+        let semester = mockSemester({ firstQuarter: firstQuarter });
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        await semesterRepository.create(semesterEntity);
+
+        let student = DomainMocks.mockStudent();
+        let studentEntity = StudentEntity.toStudentEntity(student);
+        await studentRepository.create(studentEntity);
+        let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
+        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        const comment = mockComment({ idPerson: student.getId() });
+        const commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
+        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
+        const wantedStudentId = student.getId();
+
+        let result = await ratingRepository.findByStudentId(wantedStudentId);
+        expect(result).toBeDefined();
+        expect(result.student.id).toEqual(wantedStudentId);
+        expect(result.quarter.id).toEqual(semester.firstQuarter.getId());
+        expect(result.comments).toHaveLength(1);
+        expect(result.writing).toEqual(Grade.BAD);
+    });
+
+    it('should find all rating on the BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
@@ -115,7 +172,7 @@ describe('RatingRepository unit tests', () =>{
         expect(results[1].id).toEqual(rating2.getId());
     });
 
-    it('should update a rating on the BD', async () =>{
+    it('should update a rating on the BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);

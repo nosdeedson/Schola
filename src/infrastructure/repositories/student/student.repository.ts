@@ -2,7 +2,6 @@ import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { StudentRepositoryInterface } from '../../../domain/student/student.repository.interface';
 import { StudentEntity } from '../../../infrastructure/entities/student/student.entity';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
-import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
 
 
 export class StudentRepository implements StudentRepositoryInterface {
