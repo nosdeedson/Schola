@@ -1,16 +1,16 @@
 import { Rating } from "../../../domain/rating/rating"
 import { RatingEntity } from "./rating.entity"
-import { DomainMocks } from "../../__mocks__/mocks";
+import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 
-describe('RatingModel test units', () =>{
+describe('RatingModel test units', () => {
 
-    let rating : Rating;
-    let rating1 : Rating;
-    let ratings : Rating[];
+    let rating: Rating;
+    let rating1: Rating;
+    let ratings: Rating[];
 
     beforeEach(() => {
-        rating = DomainMocks.mockRating();
-        rating1 = DomainMocks.mockRating();
+        rating = mockRating();
+        rating1 = mockRating();
         ratings = [];
         ratings.push(rating);
         ratings.push(rating1)
@@ -33,10 +33,10 @@ describe('RatingModel test units', () =>{
         expect(model.writing).toBeDefined();
         expect(model.comments).toBeUndefined();
         expect(model.student).toBeDefined();
-        expect(model.academicSemester).toBeDefined();
+        expect(model.quarter).toBeDefined();
     });
 
-    it('should convert an array of Rating to RatingModel', () =>{
+    it('should convert an array of Rating to RatingModel', () => {
         let models = RatingEntity.toRatingsEntity(ratings);
         expect(models).toBeDefined();
         expect(models.length).toBe(2);
