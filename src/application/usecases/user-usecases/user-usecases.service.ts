@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserService } from 'src/application/services/user/create/create.user.service';
-import { InputCreateUserDto } from 'src/application/services/user/create/input.create.user.dto';
-import { DeleteUserService } from 'src/application/services/user/delete/delete.user.service';
-import { FindUserService } from 'src/application/services/user/find/find.user.service';
+import { DeleteUserService } from '@/application/services/user/delete/delete.user.service';
+import { FindUserService } from '@/application/services/user/find/find.user.service';
 import { CreateUserFactoryService } from '@/infrastructure/factory/create-user-service-factory/create-user-factory-service';
 import { DeleteUserFactoryService } from '@/infrastructure/factory/delete-user-factory/delete-user-factory.service';
 import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
 import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
-import { CreateUserRequestDto } from '../../../infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto';
 import { FindUserOutPutDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto';
 import { FindUserFactoryService } from '@/infrastructure/factory/find-user-factory/find-user-factory.service';
-import { CreatePersonFactoryService } from '@/infrastructure/factory/create-person/create-person-factory.service';
+import { SystemError } from '@/application/services/@shared/system-error';
 
 @Injectable()
 export class UserUsecasesService {
@@ -36,7 +33,7 @@ export class UserUsecasesService {
             let deleteUserService = new DeleteUserService(this.userRepository);
             await deleteUserService.execute(id);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
+            TrataErros.tratarErrorsBadRequest(error as SystemError);
         }
     }
 
@@ -44,15 +41,15 @@ export class UserUsecasesService {
         try {
             let findUserService = new FindUserService(this.userRepository);
             let user = await findUserService.execute(id);
-            let findPersonService = await this.userFindFactory.findUserServiceFactory(user.accessType); 
+            let findPersonService = await this.userFindFactory.findUserServiceFactory(user.accessType);
             let person = await findPersonService.execute(user.personId);
             return new FindUserOutPutDto(user, person.name);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
+            TrataErros.tratarErrorsBadRequest(error as SystemError);
         }
     }
 
-    async findAll(): Promise<FindUserOutPutDto[]>{
+    async findAll(): Promise<FindUserOutPutDto[]> {
         // let findAllUserService = new FindAllUserService(this.userRepository);
         // const users = await findAllUserService.execute();
         // const usersOutput = [];

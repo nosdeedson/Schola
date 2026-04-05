@@ -1,4 +1,4 @@
-import { FindUserDto } from "src/application/services/user/find/find.user.dto";
+import { FindUserDto } from "@/application/services/user/find/find.user.dto";
 import { AccessType } from "@/domain/user/access.type";
 import { RoleEnum } from "@/domain/worker/roleEnum";
 
