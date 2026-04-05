@@ -1,13 +1,12 @@
 import { DateHelper } from '../../../../helpers/date/date.helper';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
-import { CreateClassUsecaseDto } from './create.class.usecase.dto';
 import { ScheduleDto } from './schedule-dto';
 import { CreateClassService } from './create.class.service';
 import { DataSource } from 'typeorm';
 import { Repository } from 'typeorm';
-import { AppDataSource } from '../../../../infrastructure/repositories/config-test/appDataSource';
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
+import { CreateClassDto } from './create.class.dto';
 
 describe('create class service integration test', () => {
 
@@ -22,9 +21,9 @@ describe('create class service integration test', () => {
     let times = new Map<string, string>();
     let scheduleDto: ScheduleDto;
 
-    beforeAll( async () => {
+    beforeAll(async () => {
         classEntity = TestDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, TestDataSource);  
+        classRepository = new ClassRepository(classEntity, TestDataSource);
         dayOfWeek1 = DateHelper.getDayOfweek(aValidDate1);
         dayOfWeek2 = DateHelper.getDayOfweek(aValidDate2);
         DateHelper.setTime(times, dayOfWeek1, '08:00');
@@ -32,17 +31,17 @@ describe('create class service integration test', () => {
         scheduleDto = new ScheduleDto([dayOfWeek1, dayOfWeek2], times);
     });
 
-    afterEach(async () =>{
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repository and entity should be instantiated', () =>{
+    it('repository and entity should be instantiated', () => {
         expect(classEntity).toBeDefined();
         expect(classRepository).toBeDefined();
     });
 
     it('should create a class on BD', async () => {
-        let classDto = new CreateClassUsecaseDto('a1', 'a1class1', scheduleDto);
+        let classDto = new CreateClassDto('a1', 'a1class1', scheduleDto);
         let service = new CreateClassService(classRepository);
         expect(await service.execute(classDto)).toBe(void 0);
         let results = await classRepository.findAll();

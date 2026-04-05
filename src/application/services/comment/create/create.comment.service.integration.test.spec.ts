@@ -72,8 +72,9 @@ describe('create comment service integration tests', () => {
     it('should throw a systemError', async () => {
         const dto = new CreateCommentDto('test a test', '0e2189bd-8f47-4665-90b3-53191b52e606', "55c63535-25f8-471e-8184-d1f1d44a042c");
         const service = new CreateCommentService(commentRepository, ratingRepository);
-        await expect(service.execute(dto)).rejects.toMatchObject({errors:
-            [{"context": "comment", "message": "Rating not found",}]
+        await expect(service.execute(dto)).rejects.toMatchObject({
+            errors:
+                [{ "context": "comment", "message": "Rating not found", }]
         });
     })
 
@@ -88,7 +89,7 @@ describe('create comment service integration tests', () => {
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);

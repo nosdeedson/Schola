@@ -15,14 +15,14 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
-describe('FindCommentService integration tests', () =>{
+describe('FindCommentService integration tests', () => {
 
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
-    
+
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
@@ -43,14 +43,14 @@ describe('FindCommentService integration tests', () =>{
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)
-        
+
     });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repositories and entities must be instantiated', () =>{
+    it('repositories and entities must be instantiated', () => {
         expect(parentEntity).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(semesterEntity).toBeDefined();
@@ -63,16 +63,16 @@ describe('FindCommentService integration tests', () =>{
         expect(commentRepository).toBeDefined();
     });
 
-    it('should throw an systemError with non-existent id', async () =>{
+    it('should throw an systemError with non-existent id', async () => {
         const nonExistentId = '2da72bf9-8a41-420a-be07-1ee16329a63a';
         const service = new FindCommentService(commentRepository);
 
         await expect(service.execute(nonExistentId)).rejects.toMatchObject(
-            {errors: [{"context": "comment", "message": "comment not found"}]}
+            { errors: [{ "context": "comment", "message": "comment not found" }] }
         );
     });
 
-    it('should a comment', async () =>{
+    it('should a comment', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
@@ -82,12 +82,12 @@ describe('FindCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
-        let comment = DomainMocks.mockComment(); 
+        let comment = DomainMocks.mockComment();
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         let wantedId = comment.getId();
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);

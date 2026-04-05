@@ -1,7 +1,7 @@
-import { DeleteGenericService } from "src/application/services/@shared/delete-generic-service";
+import { DeleteGenericService } from "@/application/services/@shared/delete-generic-service";
 import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
 
-export class DeleteWorkerService extends DeleteGenericService{
+export class DeleteWorkerService extends DeleteGenericService {
 
     private workerRepository: WorkerRepositoryInterface;
 

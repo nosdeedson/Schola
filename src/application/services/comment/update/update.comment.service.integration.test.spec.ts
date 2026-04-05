@@ -16,14 +16,14 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
-describe('UpdateCommentService integration tests', () =>{
-    
+describe('UpdateCommentService integration tests', () => {
+
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
     let ratingEntity: RatingEntity | Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
-    
+
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
@@ -48,14 +48,14 @@ describe('UpdateCommentService integration tests', () =>{
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)
-        
+
     });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repositories and entities must be instantiated', () =>{
+    it('repositories and entities must be instantiated', () => {
         expect(parentEntity).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(semesterEntity).toBeDefined();
@@ -69,7 +69,7 @@ describe('UpdateCommentService integration tests', () =>{
     });
 
 
-    it('given the wrong id should throw an SystemError', async () =>{
+    it('given the wrong id should throw an SystemError', async () => {
 
         let semester = mockSemester();
         let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
@@ -80,12 +80,13 @@ describe('UpdateCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
+
         let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
 
-        let comment = DomainMocks.mockComment(); 
+        let comment = DomainMocks.mockComment();
         let commentEntityToSave = CommentEntity.toCommentEntity(comment, ratingEntityToSave);
         expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
 
@@ -101,11 +102,11 @@ describe('UpdateCommentService integration tests', () =>{
             //@ts-ignore
             expect(error.errors).toBeDefined();
             //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'comment', message: 'comment not found'}]);
+            expect(error.errors).toMatchObject([{ context: 'comment', message: 'comment not found' }]);
         }
     });
 
-    it('given a valid id should update a comment', async () =>{
+    it('given a valid id should update a comment', async () => {
         let semester = mockSemester();
         let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
@@ -115,15 +116,15 @@ describe('UpdateCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
 
-        let comment = DomainMocks.mockComment(); 
+        let comment = DomainMocks.mockComment();
         let commentEntityToSave = CommentEntity.toCommentEntity(comment, ratingEntityToSave);
         expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
-        
+
         let wantedId = comment.getId();
         let currentComment = comment.getComment();
         let updatedComment = 'changed comment';
@@ -131,7 +132,7 @@ describe('UpdateCommentService integration tests', () =>{
         let result = await commentRepository.find(wantedId);
         expect(result.comment).toBe(currentComment);
         const service = new UpdateCommentService(commentRepository);
-        
+
         expect(await service.execute(dto)).toBe(void 0);
         result = await commentRepository.find(wantedId);
         expect(result.comment).toBe(updatedComment);

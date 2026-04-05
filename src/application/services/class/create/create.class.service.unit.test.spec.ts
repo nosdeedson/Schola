@@ -1,7 +1,7 @@
 import { DateHelper } from "../../../../helpers/date/date.helper";
 import { ClassCodeHelper } from "../../../../helpers/classCode/class-code.heper";
 import { ScheduleDto } from './schedule-dto';
-import { CreateClassUsecaseDto } from './create.class.usecase.dto';
+import { CreateClassDto } from './create.class.dto';
 import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
 import { CreateClassService } from './create.class.service';
 
@@ -14,7 +14,7 @@ describe('CreateClassUsecas unit test', () => {
     let times = new Map<string, string>();
 
     let scheduleDto: ScheduleDto;
-    let classDto: CreateClassUsecaseDto;
+    let classDto: CreateClassDto;
 
     beforeEach(() => {
         dayOfWeek1 = DateHelper.getDayOfweek(aValidDate1);
@@ -29,7 +29,7 @@ describe('CreateClassUsecas unit test', () => {
     });
 
     it('should create a class', async () => {
-        classDto = new CreateClassUsecaseDto('a1', 'a1class1', scheduleDto);
+        classDto = new CreateClassDto('a1', 'a1class1', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => {
                 return '123456';
@@ -43,7 +43,7 @@ describe('CreateClassUsecas unit test', () => {
 
     it('should throw erro namebook required', async () => {
         let nameBook = '';
-        classDto = new CreateClassUsecaseDto(nameBook, 'a1class1', scheduleDto);
+        classDto = new CreateClassDto(nameBook, 'a1class1', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => '123456')
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -57,7 +57,7 @@ describe('CreateClassUsecas unit test', () => {
 
     it('should throw erro name of class required', async () => {
         let nameOfClass = '';
-        classDto = new CreateClassUsecaseDto('a1', nameOfClass, scheduleDto);
+        classDto = new CreateClassDto('a1', nameOfClass, scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => {
                 return '123456';
@@ -73,7 +73,7 @@ describe('CreateClassUsecas unit test', () => {
 
     it('should throw erro classcode is required', async () => {
         let classCode = undefined as any;
-        classDto = new CreateClassUsecaseDto('a1', 'nameofclass', scheduleDto);
+        classDto = new CreateClassDto('a1', 'nameofclass', scheduleDto);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => classCode);
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -86,7 +86,7 @@ describe('CreateClassUsecas unit test', () => {
 
     it('should throw erro schedule is required', async () => {
         let schedule = undefined as any;
-        classDto = new CreateClassUsecaseDto('a1', 'nameofclass', schedule);
+        classDto = new CreateClassDto('a1', 'nameofclass', schedule);
         const classCodeHelper = jest.spyOn(ClassCodeHelper, 'createClassCode')
             .mockImplementationOnce(() => '123456')
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -96,7 +96,7 @@ describe('CreateClassUsecas unit test', () => {
                 [
                     {
                         context: 'class',
-                        message: 'schedule : days of week must be defined, schedule : times must be defined, '
+                        message: 'days of week must be defined,times must be defined'
                     }
                 ]
         });

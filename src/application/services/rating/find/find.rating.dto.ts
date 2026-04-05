@@ -1,7 +1,7 @@
 import { Grade } from "@/domain/enum/grade/grade";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
-export class FindRatingDto{
+export class FindRatingDto {
     id: string;
     ratingDate: Date;
     listing: Grade;
@@ -17,7 +17,7 @@ export class FindRatingDto{
 
     constructor(
         ratingEntity: RatingEntity
-    ){
+    ) {
         this.id = ratingEntity.id;
         this.ratingDate = ratingEntity.ratingDate;
         this.listing = ratingEntity.listing;
@@ -28,13 +28,13 @@ export class FindRatingDto{
         this.homework = ratingEntity.homework;
         this.vocabulary = ratingEntity.vocabulary;
         this.studentId = ratingEntity?.student?.id;
-        this.semesterId = ratingEntity?.academicSemester?.id;
-        if(ratingEntity?.comments){
+        this.semesterId = ratingEntity?.quarter?.id;
+        if (ratingEntity?.comments) {
             ratingEntity?.comments.forEach(it => {
                 this.comments.push(it.comment)
             })
         }
     }
 
-    
+
 }

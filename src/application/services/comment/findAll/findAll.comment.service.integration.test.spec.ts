@@ -1,7 +1,5 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { Comment } from "../../../../domain/comment/comment";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
@@ -18,14 +16,14 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
-describe('FindAllCommentService integration tests', () =>{
+describe('FindAllCommentService integration tests', () => {
 
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
-    
+
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
@@ -50,14 +48,14 @@ describe('FindAllCommentService integration tests', () =>{
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)
-        
+
     });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repositories and entities must be instantiated', () =>{
+    it('repositories and entities must be instantiated', () => {
         expect(parentEntity).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(semesterEntity).toBeDefined();
@@ -70,14 +68,14 @@ describe('FindAllCommentService integration tests', () =>{
         expect(commentRepository).toBeDefined();
     });
 
-    it('should return an empty array', async () =>{
+    it('should return an empty array', async () => {
         const service = new FindAllCommentService(commentRepository);
         const results = await service.execute();
         expect(results).toBeDefined();
         expect(results.all.length).toBe(0);
     });
 
-    it('should find all comments', async () =>{
+    it('should find all comments', async () => {
         let semester = mockSemester()
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
@@ -87,7 +85,7 @@ describe('FindAllCommentService integration tests', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
@@ -97,14 +95,14 @@ describe('FindAllCommentService integration tests', () =>{
         let results = await service.execute()
         expect(results.all.length).toBe(0);
 
-        let comment = DomainMocks.mockComment(); 
+        let comment = DomainMocks.mockComment();
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
 
         let comment1 = new Comment('another comment', comment.getIdPersonHadDone());
         const commentEntity1 = CommentEntity.toCommentEntity(comment1, ratingEntity);
         expect(await commentRepository.create(commentEntity1)).toBeInstanceOf(CommentEntity);
-        
+
         results = await service.execute();
 
         expect(results).toBeDefined()

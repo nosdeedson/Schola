@@ -18,7 +18,7 @@ import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 
-describe('DeleteCommentService integration test', () =>{
+describe('DeleteCommentService integration test', () => {
 
     let appDataSource: DataSource;
     let commentEntity: Repository<CommentEntity>;
@@ -26,7 +26,7 @@ describe('DeleteCommentService integration test', () =>{
 
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
-    
+
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
@@ -38,7 +38,7 @@ describe('DeleteCommentService integration test', () =>{
 
     beforeAll(async () => {
 
-        commentEntity = TestDataSource .getRepository(CommentEntity);
+        commentEntity = TestDataSource.getRepository(CommentEntity);
         commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
@@ -52,14 +52,14 @@ describe('DeleteCommentService integration test', () =>{
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)
-        
+
     });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repositories and entities must be instantiated', () =>{
+    it('repositories and entities must be instantiated', () => {
         expect(parentEntity).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(semesterEntity).toBeDefined();
@@ -72,13 +72,13 @@ describe('DeleteCommentService integration test', () =>{
         expect(commentRepository).toBeDefined();
     });
 
-    it('given an id that does not exist should not trhow error', async () =>{
+    it('given an id that does not exist should not trhow error', async () => {
         let wantedId = '2c1d88fb-462e-4e8b-bcb1-27119dac4317';
         const service = new DeleteCommentService(commentRepository);
         expect(await service.execute(wantedId)).toBe(void 0);
     })
 
-    it('given a valid comment should delete it on BD', async () =>{
+    it('given a valid comment should delete it on BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
@@ -88,16 +88,16 @@ describe('DeleteCommentService integration test', () =>{
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
-        let comment = DomainMocks.mockComment(); 
+        let comment = DomainMocks.mockComment();
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         let wantedId = comment.getId();
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
-        
+
         let result = await commentRepository.find(wantedId);
         expect(result).toBeDefined();
 

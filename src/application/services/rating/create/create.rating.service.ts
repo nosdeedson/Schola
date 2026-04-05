@@ -2,21 +2,21 @@ import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.int
 import { CreateRatingDto } from "./create.rating.dto";
 import { Rating } from "@/domain/rating/rating";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-import { SystemError } from "src/application/services/@shared/system-error";
+import { SystemError } from "@/application/services/@shared/system-error";
 
-export class CreateRatingService{
+export class CreateRatingService {
 
     private ratingRepository: RatingRepositoryInterface;
 
-    constructor(ratingRepository: RatingRepositoryInterface){
+    constructor(ratingRepository: RatingRepositoryInterface) {
         this.ratingRepository = ratingRepository;
     }
 
-    async execute(dto: CreateRatingDto){
+    async execute(dto: CreateRatingDto) {
 
         try {
             const rating = new Rating(
-                dto?.quarter, 
+                dto?.quarter,
                 dto.student,
                 new Date(),
                 dto.listing,
@@ -26,7 +26,7 @@ export class CreateRatingService{
                 dto.homework,
                 dto.vocabulary
             );
-            if(rating?.notification?.hasError()){
+            if (rating?.notification?.hasError()) {
                 throw new SystemError(rating?.notification?.getErrors());
             }
             const ratingEntity = RatingEntity.toRatingEntity(rating);
