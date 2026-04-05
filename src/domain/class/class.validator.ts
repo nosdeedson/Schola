@@ -23,17 +23,17 @@ export class ClassValidator implements Validator<Class> {
                         abortEarly: false
                     }
                 );
-            if(!entity.getSchecule()){
+            if (!entity.getSchecule()) {
                 entity.notification?.addError({ context: 'class', message: 'schedule is required' })
-            } else{
-                if(entity.getSchecule().notification.hasError()){
-                    let msg = "";
+            } else {
+                if (entity.getSchecule().notification.hasError()) {
+                    let msgs = [];
                     entity.getSchecule().notification.getErrors().forEach(it => {
-                        msg += `${it.context} : ${it.message}, `
+                        msgs.push(it.message)
                     });
-                    entity.notification?.addError({ context: 'class', message: msg })
+                    entity.notification?.addError({ context: 'class', message: msgs.join(',') })
                 }
-                if(entity.getSchecule().getDayOfWeek() && entity.getSchecule().getTimes()){
+                if (entity.getSchecule().getDayOfWeek() && entity.getSchecule().getTimes()) {
                     if (
                         entity.getSchecule().getDayOfWeek()[0] === entity.getSchecule().getDayOfWeek()[1]
                         && entity.getSchecule().getTimes()[0] === entity.getSchecule().getTimes()[1]

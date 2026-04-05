@@ -13,22 +13,22 @@ describe('Class tests units', () => {
     let aValidDate2: Date;
     let c: Class;
 
-    beforeEach(() =>{
-         // date of the year: august 9 2024 Friday
-         let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
-         let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
- 
-         let firstDay = DateHelper.getDayOfweek(aValidDate); 
-         let secondDay = DateHelper.getDayOfweek(aValidDate2); 
- 
-         let times = new Map();
-         DateHelper.setTime(times, firstDay, '08:00');
-         DateHelper.setTime(times, secondDay, '08:00');
- 
-         let schedule = new Schedule(
-             [firstDay, secondDay],
-             times
-         )
+    beforeEach(() => {
+        // date of the year: august 9 2024 Friday
+        let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
+        let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
+
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
+        let secondDay = DateHelper.getDayOfweek(aValidDate2);
+
+        let times = new Map();
+        DateHelper.setTime(times, firstDay, '08:00');
+        DateHelper.setTime(times, secondDay, '08:00');
+
+        let schedule = new Schedule(
+            [firstDay, secondDay],
+            times
+        )
 
         c = new Class(
             '123',
@@ -51,7 +51,7 @@ describe('Class tests units', () => {
     });
 
     it('Should instantiate a class', () => {
-        
+
         expect(c.getCreatedAt()).toBeDefined();
         expect(c.getUpdatedAt()).toBeDefined();
         expect(c.getId()).toBeDefined();
@@ -102,7 +102,7 @@ describe('Class tests units', () => {
 
     it('should have notification if class has schedule with one day', () => {
         aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
-        let firstDay =  DateHelper.getDayOfweek(aValidDate); 
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
         let times = new Map();
         DateHelper.setTime(times, firstDay, '08:00');
         DateHelper.setTime(times, firstDay, '08:00');
@@ -114,19 +114,19 @@ describe('Class tests units', () => {
         expect(c.notification).toBeDefined();
         expect(c.notification?.hasError()).toBeTruthy();
         expect(c.notification?.getErrors().length).toBe(1);
-        expect(c.notification?.messages()).toBe("class: schedule is invalid,");
+        expect(c.notification?.messages()).toBe("class: must inform two days for the lessons,times must be defined,");
     })
 
     it('should have notification if class has just one time', () => {
-       // date of the year: august 9 2024 Friday
-       let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
-       let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
+        // date of the year: august 9 2024 Friday
+        let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
+        let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
 
-       let firstDay = DateHelper.getDayOfweek(aValidDate); 
-       let secondDay = DateHelper.getDayOfweek(aValidDate2); 
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
+        let secondDay = DateHelper.getDayOfweek(aValidDate2);
 
-       let times = new Map();
-       DateHelper.setTime(times, firstDay, '08:00');
+        let times = new Map();
+        DateHelper.setTime(times, firstDay, '08:00');
 
         let s = new Schedule(
             [firstDay, secondDay],
@@ -137,7 +137,7 @@ describe('Class tests units', () => {
         expect(c.notification).toBeDefined();
         expect(c.notification?.hasError()).toBeTruthy();
         expect(c.notification?.getErrors().length).toBe(1);
-        expect(c.notification?.messages()).toBe("class: schedule is invalid,");
+        expect(c.notification?.messages()).toBe("class: times must be defined,");
     })
 
     it('should have six errors in notification', () => {
@@ -161,8 +161,8 @@ describe('Class tests units', () => {
         const expectedBirthDay = new Date();
         const expectedName = 'edson';
         const expectedRole = RoleEnum.TEACHER;
-        const teacher = new Worker({birthday: expectedBirthDay, name: expectedName, role: expectedRole});
-        
+        const teacher = new Worker({ birthday: expectedBirthDay, name: expectedName, role: expectedRole });
+
         c.setTeacher(teacher);
         expect(c).toBeDefined()
         expect(c.getTeacher()).toBeDefined()
@@ -178,13 +178,13 @@ describe('Class tests units', () => {
         let secondDay = DateHelper.getDayOfweek(aValidDate);
 
         let times = new Map();
-        DateHelper.setTime(times, firstDay, '08:00' );
-        DateHelper.setTime(times, secondDay, '08:00' );
+        DateHelper.setTime(times, firstDay, '08:00');
+        DateHelper.setTime(times, secondDay, '08:00');
 
         const schedule = new Schedule(
             [
-                DateHelper.getDayOfweek(inValidDate), 
-                DateHelper.getDayOfweek(aValidDate) 
+                DateHelper.getDayOfweek(inValidDate),
+                DateHelper.getDayOfweek(aValidDate)
             ],
             times
         )
@@ -197,16 +197,16 @@ describe('Class tests units', () => {
 
     it('should have a notification with one error time incorrect', () => {
         // date of the year: august 9 2024 Friday
-       let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
-       let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
+        let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
+        let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
 
-       let firstDay = DateHelper.getDayOfweek(aValidDate); 
-       let secondDay = DateHelper.getDayOfweek(aValidDate2); 
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
+        let secondDay = DateHelper.getDayOfweek(aValidDate2);
 
-       let times = new Map();
-       DateHelper.setTime(times, firstDay, '08:00');
+        let times = new Map();
+        DateHelper.setTime(times, firstDay, '08:00');
         const schedule = new Schedule(
-            [firstDay, secondDay ],
+            [firstDay, secondDay],
             times
         )
         c.setSchecule(null as any)
@@ -214,7 +214,6 @@ describe('Class tests units', () => {
         expect(c.notification?.getErrors().length).toBe(1)
         expect(c.notification?.messages()).toBe("class: Schedule of the class is required,")
     })
-
 
     it('Should get class code ', () => {
         expect(c.getClassCode()).toBe('123')
@@ -245,7 +244,7 @@ describe('Class tests units', () => {
     });
 
     it('should have at least one student', () => {
-        
+
         let birthday = new Date();
         let name = 'edson';
         let enrolled = '123'
@@ -254,7 +253,7 @@ describe('Class tests units', () => {
             name,
             enrolled,
         });
-        let students : Student[] = [];
+        let students: Student[] = [];
         students.push(student)
         c.setStudents(students);
         expect(c).toBeDefined()
@@ -262,23 +261,23 @@ describe('Class tests units', () => {
         expect(c.notification?.getErrors().length).toBe(0)
     })
 
-    it('should have errors in notification is days equals and times equals', () =>{
-         let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
-         let aValidDate2 = new Date(2024, 7, 9, 17, 5, 0, 0);
- 
-         let firstDay = DateHelper.getDayOfweek(aValidDate); 
-         let secondDay = DateHelper.getDayOfweek(aValidDate2); 
- 
-         let times = new Map();
-         DateHelper.setTime(times, firstDay, '08:00');
-         DateHelper.setTime(times, secondDay, '08:00');
- 
-         let schedule = new Schedule(
-             [firstDay, secondDay],
-             times
-         )
-         c.setSchecule(schedule);
-         expect(c.notification.hasError()).toBeTruthy();
+    it('should have errors in notification is days equals and times equals', () => {
+        let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
+        let aValidDate2 = new Date(2024, 7, 9, 17, 5, 0, 0);
+
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
+        let secondDay = DateHelper.getDayOfweek(aValidDate2);
+
+        let times = new Map();
+        DateHelper.setTime(times, firstDay, '08:00');
+        DateHelper.setTime(times, secondDay, '08:00');
+
+        let schedule = new Schedule(
+            [firstDay, secondDay],
+            times
+        )
+        c.setSchecule(schedule);
+        expect(c.notification.hasError()).toBeTruthy();
     });
 
     it('Should instantiate a class', () => {
@@ -287,8 +286,8 @@ describe('Class tests units', () => {
         let aValidDate = new Date(2024, 7, 9, 17, 5, 0, 0);
         let aValidDate2 = new Date(2024, 7, 8, 17, 5, 0, 0);
 
-        let firstDay = DateHelper.getDayOfweek(aValidDate); 
-        let secondDay = DateHelper.getDayOfweek(aValidDate2); 
+        let firstDay = DateHelper.getDayOfweek(aValidDate);
+        let secondDay = DateHelper.getDayOfweek(aValidDate2);
 
         let times = new Map();
         DateHelper.setTime(times, firstDay, '08:00');
