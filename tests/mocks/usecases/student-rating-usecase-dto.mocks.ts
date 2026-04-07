@@ -1,5 +1,5 @@
 import { Grade } from '../../../src/domain/enum/grade/grade';
-import { StudentRatingUsecaseDtoOut } from '../../../src/application/usecases/student-rating/stdent-rating-usecase-dto-out';
+import { StudentRatingUsecaseDtoOut } from '../../../src/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
 import { RatingEntity } from '../../../src/infrastructure/entities/rating/rating.entity';
 
 export function mockStudentRatingUsecaseDtoOut(

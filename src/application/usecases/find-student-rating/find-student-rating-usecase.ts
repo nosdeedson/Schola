@@ -1,12 +1,12 @@
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
-import { StudentRatingUsecaseDtoOut } from "./stdent-rating-usecase-dto-out";
+import { StudentRatingUsecaseDtoOut } from "./find-stdent-rating-usecase-dto-out";
 import { Injectable } from "@nestjs/common";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 
 @Injectable()
-export class StudentRantingUsecase {
+export class FindStudentRantingUsecase {
 
     private ratingRepository: RatingRepositoryInterface;
 

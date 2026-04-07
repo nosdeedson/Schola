@@ -1,15 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { StudentRantingUsecase } from "./student-rating-usecase";
+import { FindStudentRantingUsecase } from "./find-student-rating-usecase";
 import { setEnv } from "@/infrastructure/__mocks__/env.mock";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-import { StudentRatingUsecaseDtoOut } from "./stdent-rating-usecase-dto-out";
+import { StudentRatingUsecaseDtoOut } from "./find-stdent-rating-usecase-dto-out";
 
 describe('studentRatingUsecase', () => {
-    let usecase: StudentRantingUsecase;
+    let usecase: FindStudentRantingUsecase;
     let module: TestingModule;
 
     beforeAll(async () => {
@@ -17,11 +17,11 @@ describe('studentRatingUsecase', () => {
         module = await Test.createTestingModule({
             imports: [DataBaseConnectionModule],
             providers: [
-                StudentRantingUsecase,
+                FindStudentRantingUsecase,
                 RepositoryFactoryService
             ]
         }).compile();
-        usecase = module.get<StudentRantingUsecase>(StudentRantingUsecase);
+        usecase = module.get<FindStudentRantingUsecase>(FindStudentRantingUsecase);
     });
 
     afterEach(async () => {
