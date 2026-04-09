@@ -31,7 +31,7 @@ describe('FindStudentService unit tests', () =>{
         expect(result).toBeDefined();
         expect(result.id).toBe(student.getId());
         expect(result.createdAt).toEqual(student.getCreatedAt());
-        expect(result.name).toEqual(student.getName());        
+        expect(result.fullName).toEqual(student.getName());        
     });
 
 });

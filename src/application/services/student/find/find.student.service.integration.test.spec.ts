@@ -42,15 +42,7 @@ describe('FindStudentService integration tests', () => {
 
         let noExixtentId = 'ddb5186b-9a8d-4c5d-8086-2cccc0499c11';
         const service = new FindStudentService(studentRepository);
-        try {
-            await service.execute(noExixtentId);
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'student', message: 'student not found'}]);
-            //@ts-ignore
-            expect(error.errors.length).toBe(1);
-        }
+        await expect(service.execute(noExixtentId)).rejects.toMatchObject([{context: 'student', message: 'student not found'}]);
     })
 
     it('should find a student', async () =>{
@@ -63,7 +55,7 @@ describe('FindStudentService integration tests', () => {
         let result = await service.execute(wantedId)
         expect(result).toBeDefined();
         expect(result.id).toBe(wantedId);
-        expect(result.name).toBe(student.getName());
+        expect(result.fullName).toBe(student.getName());
         expect(result.enrolled).toBe(student.getEnrolled());
     });
 });

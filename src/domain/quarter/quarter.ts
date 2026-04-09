@@ -1,6 +1,7 @@
 import { Rating } from "../rating/rating";
 import { QuarterValidator } from "./quarter.validator";
 import { Entity } from "../@shared/entity";
+import { QuarterEntity } from "@/infrastructure/entities/quarter/quarter.entity";
 
 // equivalent to the school brazilian bimester
 export class Quarter extends Entity {
@@ -60,5 +61,14 @@ export class Quarter extends Entity {
 
     validate() {
         new QuarterValidator().validate(this);
+    }
+
+    static fromEntity(entity: QuarterEntity): Quarter{
+        const quarter = new Quarter({
+            beginningDate: entity.beginningDate,
+            currentQuarter: entity.currentQuarter,
+            endingDate: entity.endingDate,
+        });
+        return quarter;
     }
 }

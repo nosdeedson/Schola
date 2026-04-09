@@ -11,13 +11,12 @@ export class FindStudentService {
         this.studentRepository = studentRepository;
     }
 
-    async execute(id: string): Promise<FindStutendDto> {
+    async execute(id: string): Promise<StudentEntity> {
         const student = await this.studentRepository.find(id) as StudentEntity;
         if (!student) {
             throw new SystemError([{ context: 'student', message: 'student not found' }]);
         }
-        let result = new FindStutendDto(student);
-        return result
+        return student;
     }
 
 }
