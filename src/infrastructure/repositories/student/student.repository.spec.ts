@@ -151,7 +151,7 @@ describe('StudentRepository unit test', () => {
         expect(result.fullName).toEqual(wantedStudentName);
     });
 
-    it('should save all students', async () => {
+    it('should update all students', async () => {
         const student1 = mockStudent();
         const student2 = mockStudent({ name: "test 2" });
         const entity1 = StudentEntity.toStudentEntity(student1);
@@ -159,5 +159,19 @@ describe('StudentRepository unit test', () => {
         expect(await studentRepository.updateAll([entity1, entity2])).toBe(void 0);
         const students = await studentRepository.findAll();
         expect(students).toHaveLength(2);
-    })
+    });
+
+    it('findByIds test', async () => {
+        const student1 = mockStudent();
+        const student2 = mockStudent({ name: "test 2" });
+        const entity1 = StudentEntity.toStudentEntity(student1);
+        const entity2 = StudentEntity.toStudentEntity(student2);
+        const wantedIds = [entity1.id, entity2.id];
+        expect(await studentRepository.create(entity1)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(entity2)).toBeInstanceOf(StudentEntity);
+        const result = await studentRepository.findByIds(wantedIds);
+        expect(result).toHaveLength(2);
+        expect(wantedIds.includes(result[0].id)).toBeTruthy()
+        expect(wantedIds.includes(result[1].id)).toBeTruthy()
+    });
 });

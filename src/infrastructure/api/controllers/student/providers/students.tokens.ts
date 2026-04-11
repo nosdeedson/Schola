@@ -1,0 +1,4 @@
+
+export const STUDENT_REPOSITORY = Symbol('STUDENT_REPOSITORY');
+export const CLASS_REPOSITORY = Symbol('CLASS_REPOSITORY');
+export const RATING_REPOSITORY = Symbol('RATING_REPOSITORY');

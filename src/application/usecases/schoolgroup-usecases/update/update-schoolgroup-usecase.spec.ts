@@ -48,10 +48,11 @@ describe('UpdateSchoolgroupUsecase', () => {
 
     it('should throw an error', async () => {
         const id = "1";
-        const dto = new UpdateSchoolgroupUsecaseDto();
-        dto.id = id;
-        dto.nameBook = "bookName";
-        dto.teacherName = "new teacher";
+        const dto = new UpdateSchoolgroupUsecaseDto({
+            id: id,
+            nameBook: "bookName",
+            teacherName: "new teacher"
+        });
         const update = jest.spyOn(UpdateClassService.prototype, 'execute')
             .mockRejectedValue(new BadRequestException("Test"));
         const findTeacher = jest.spyOn(WorkerRepository.prototype, 'findByName')

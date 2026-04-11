@@ -8,6 +8,7 @@ import { UserAggregateResolverService } from '@/infrastructure/factory/user-aggr
 import { FindUserFactoryService } from '@/infrastructure/factory/find-user-factory/find-user-factory.service';
 import { CreateUserFactoryService } from '@/infrastructure/factory/create-user-service-factory/create-user-factory-service';
 import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
+import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-user/create-user-usecase';
 
 @Module({
     controllers: [
@@ -21,6 +22,7 @@ import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-
         FindUserFactoryService,
         UserAggregateResolverService,
         IsStrongPasswordConstraint,
+        CreateUserUsecase,
     ],
     exports: [
     ],
@@ -28,4 +30,4 @@ import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-
         DataBaseConnectionModule,
     ]
 })
-export class UsersModule {}
+export class UsersModule { }

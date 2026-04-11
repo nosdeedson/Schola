@@ -1,4 +1,4 @@
-import { DataSource, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
 import { StudentRepositoryInterface } from '../../../domain/student/student.repository.interface';
 import { StudentEntity } from '../../../infrastructure/entities/student/student.entity';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
@@ -40,6 +40,13 @@ export class StudentRepository implements StudentRepositoryInterface {
         });
     }
 
+    async findByIds(studentIds: string[]): Promise<StudentEntity[]> {
+        return await this.studentRepository.find({
+            where: {
+                id: In(studentIds)
+            }
+        })
+    }
 
     async findStudentByNameAndParentNames(studentName: string, parentNames: string[]): Promise<StudentEntity> {
         const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')

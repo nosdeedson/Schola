@@ -1,18 +1,10 @@
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { StudentRatingUsecaseDtoOut } from "./find-stdent-rating-usecase-dto-out";
-import { Injectable } from "@nestjs/common";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 
-@Injectable()
 export class FindStudentRantingUsecase {
 
-    private ratingRepository: RatingRepositoryInterface;
-
-    constructor(private repositoryFactory: RepositoryFactoryService) {
-        this.ratingRepository = repositoryFactory.createRepository(TypeRepository.RATING);
-    }
+    constructor(private readonly ratingRepository: RatingRepositoryInterface) { }
 
     async execute(studentId: string): Promise<any> {
         const service = new FindRatingByStudent(this.ratingRepository);

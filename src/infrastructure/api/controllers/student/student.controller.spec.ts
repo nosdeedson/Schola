@@ -7,6 +7,7 @@ import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/
 import { mockStudentRatingUsecaseDtoOut } from '../../../../../tests/mocks/usecases/student-rating-usecase-dto.mocks';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
+import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -17,8 +18,8 @@ describe('StudentController', () => {
     module = await Test.createTestingModule({
       controllers: [StudentController],
       providers: [
-        RepositoryFactoryService,
         FindStudentRantingUsecase,
+        TransferStudentsAnotherClassUsecase,
       ],
       imports: [
         DataBaseConnectionModule

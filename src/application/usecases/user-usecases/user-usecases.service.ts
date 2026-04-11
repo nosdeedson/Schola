@@ -42,7 +42,7 @@ export class UserUsecasesService {
             let findUserService = new FindUserService(this.userRepository);
             let user = await findUserService.execute(id);
             let findPersonService = await this.userFindFactory.findUserServiceFactory(user.accessType);
-            let person = await findPersonService.execute(user.personId);
+            let person = await findPersonService.execute(user.personId) as any;
             return new FindUserOutPutDto(user, person.name);
         } catch (error) {
             TrataErros.tratarErrorsBadRequest(error as SystemError);
