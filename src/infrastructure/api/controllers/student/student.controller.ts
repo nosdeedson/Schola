@@ -19,6 +19,6 @@ export class StudentController {
 
     @Patch("transfer-students")
     public async transferStudentsAnotherClass(@Body() dto: TransferStudendtsRequestDto) {
-        this.transferStudents.execute(dto.toUsecaseDto());
+        await this.transferStudents.execute(dto.toUsecaseDto());
     }
 }

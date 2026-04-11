@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StudentController } from './student.controller';
 import { setEnv } from '@/infrastructure/__mocks__/env.mock';
-import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { FindStudentRantingUsecase } from '@/application/usecases/find-student-rating/find-student-rating-usecase';
 import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { mockStudentRatingUsecaseDtoOut } from '../../../../../tests/mocks/usecases/student-rating-usecase-dto.mocks';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
+import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
+import { NotFoundException } from '@nestjs/common';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -62,4 +63,23 @@ describe('StudentController', () => {
     expect(ratingStudentUsecase).toHaveBeenCalledTimes(1);
     expect(ratingStudentUsecase).toHaveBeenCalledWith(wantedId);
   });
+
+  it('should throw an error if class not found', async () => {
+    const dto = mockTransferStudendtsRequestDto();
+    const usecase = jest.spyOn(TransferStudentsAnotherClassUsecase.prototype, 'execute')
+      .mockImplementation(async () => Promise.reject(new NotFoundException('class not found')));
+    await expect(controller.transferStudentsAnotherClass(dto))
+      .rejects.toThrow(NotFoundException);
+    expect(usecase).toHaveBeenCalledTimes(1);
+    expect(usecase).toHaveBeenCalledWith(dto.toUsecaseDto());
+  });
+
+  it('should update students', async () => {
+    const dto = mockTransferStudendtsRequestDto();
+    const usecase = jest.spyOn(TransferStudentsAnotherClassUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(void 0));
+    expect(await controller.transferStudentsAnotherClass(dto)).toBe(void 0);
+    expect(usecase).toHaveBeenCalledTimes(1);
+    expect(usecase).toHaveBeenCalledWith(dto.toUsecaseDto());
+  })
 });
