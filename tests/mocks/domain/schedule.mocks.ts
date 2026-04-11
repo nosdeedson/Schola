@@ -1,15 +1,15 @@
-import { Schedule } from "../../../@/domain/schedule/schedule";
+import { Schedule } from "../../../src/domain/schedule/schedule";
 
 type ScheduleMock = {
     daysOfWeek?: string[];
     times?: Map<string, string>;
 }
 
-export function mockSchedule (
+export function mockSchedule(
     overrides: ScheduleMock = {}
-) : Schedule {
+): Schedule {
     return new Schedule(
-        overrides.daysOfWeek || [],
+        overrides.daysOfWeek || ['Monday', 'tuesday'],
         overrides.times || new Map([['Monday', "08:00"], ['tuesday', "08:00"]])
     )
 }

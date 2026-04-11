@@ -1,6 +1,6 @@
-import { Class } from "../../../@/domain/class/class";
-import { Schedule } from "../../../@/domain/schedule/schedule";
 import { mockSchedule } from "./schedule.mocks";
+import { Schedule } from "../../../src/domain/schedule/schedule";
+import { Class } from "../../../src/domain/class/class";
 
 
 type ClassMock = {

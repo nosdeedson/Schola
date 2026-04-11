@@ -10,6 +10,7 @@ import { Class } from "../../../domain/class/class";
 import { Student } from "../../../domain/student/student";
 import { ParentEntity } from "../../entities/parent/parent.entity";
 import { TestDataSource } from "../config-test/test.datasource";
+import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 
 const MILISECONDS = 1000;
 
@@ -24,7 +25,7 @@ describe('StudentRepository unit test', () => {
     let parentStudentModel;
     let parentStudentRepository: ParentStudentRepository;
 
-    beforeAll( () => {
+    beforeAll(() => {
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentModel, TestDataSource);
         schoolGroupModel = TestDataSource.getRepository(ClassEntity);
@@ -85,14 +86,15 @@ describe('StudentRepository unit test', () => {
         expect(await studentRepository.create(model1)).toBeInstanceOf(StudentEntity);
 
         let student2 = new Student({
-            birthday: new Date, 
-            name: 'edson', 
-            enrolled: '123', 
-            nameParents: student1.getParents().map(it => it.getName()), 
-            id: '90be2abb-f2da-46c0-9fc8-520c988b34f9'});
+            birthday: new Date,
+            name: 'edson',
+            enrolled: '123',
+            nameParents: student1.getParents().map(it => it.getName()),
+            id: '90be2abb-f2da-46c0-9fc8-520c988b34f9'
+        });
         let model2 = StudentEntity.toStudentEntity(student2);
         expect(await studentRepository.create(model2)).toBeInstanceOf(StudentEntity);
-        
+
         let students = await studentRepository.findAll();
         expect(students).toHaveLength(2);
         expect(students[0].fullName).toEqual(model1.fullName);
@@ -148,4 +150,14 @@ describe('StudentRepository unit test', () => {
         expect(result).toBeDefined();
         expect(result.fullName).toEqual(wantedStudentName);
     });
+
+    it('should save all students', async () => {
+        const student1 = mockStudent();
+        const student2 = mockStudent({ name: "test 2" });
+        const entity1 = StudentEntity.toStudentEntity(student1);
+        const entity2 = StudentEntity.toStudentEntity(student2);
+        expect(await studentRepository.updateAll([entity1, entity2])).toBe(void 0);
+        const students = await studentRepository.findAll();
+        expect(students).toHaveLength(2);
+    })
 });

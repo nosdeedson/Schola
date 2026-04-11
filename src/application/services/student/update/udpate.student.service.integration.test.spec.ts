@@ -8,26 +8,19 @@ import { StudentEntity } from "../../../../infrastructure/entities/student/stude
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateStudentDto } from '../update/udpate.student.dto';
 import { UpdateStudentService } from '../update/udpate.student.service';
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 describe('UpdateStudentService integration tests', () => {
-    let appDataSource: DataSource;
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
 
-    beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+    beforeAll(async () => {
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(studentEntity, TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDataSource.destroy();
+        jest.clearAllMocks();
     });
 
     it('repositories must be instantiated', () => {

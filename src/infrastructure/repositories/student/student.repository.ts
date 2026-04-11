@@ -22,7 +22,7 @@ export class StudentRepository implements StudentRepositoryInterface {
         } catch (error) {
             console.log(error);
             await queryRunner.rollbackTransaction();
-            throw new QueryFailedError(null, null, error);
+            throw new QueryFailedError(null, null, error as any);
         }
     }
 
@@ -33,7 +33,7 @@ export class StudentRepository implements StudentRepositoryInterface {
 
     async find(id: string): Promise<StudentEntity> {
         return await this.studentRepository.findOne({
-            where: { id: id,  },
+            where: { id: id, },
             relations: {
                 schoolGroup: true,
             }
@@ -42,7 +42,7 @@ export class StudentRepository implements StudentRepositoryInterface {
 
 
     async findStudentByNameAndParentNames(studentName: string, parentNames: string[]): Promise<StudentEntity> {
-        const qb =  this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
+        const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
             .innerJoin('ps.student', 'student')
             .innerJoin('ps.parent', 'parent')
             .where('student.fullName = :studentName', { studentName })
@@ -55,11 +55,19 @@ export class StudentRepository implements StudentRepositoryInterface {
     }
 
     async findAll(): Promise<StudentEntity[]> {
-        return await this.studentRepository.find();
+        return await this.studentRepository.find({
+            relations: {
+                schoolGroup: true
+            }
+        });
     }
 
     async update(entity: StudentEntity) {
         await this.studentRepository.save(entity);
+    }
+
+    async updateAll(students: StudentEntity[]) {
+        await this.studentRepository.save(students);
     }
 
 }
