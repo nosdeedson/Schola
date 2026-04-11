@@ -22,11 +22,4 @@ afterEach(async () => {
       `TRUNCATE ${tableNames} RESTART IDENTITY CASCADE;`
     );
   }
-  // const entities = TestDataSource.entityMetadatas;
-
-  // for (const entity of entities) {
-  //   await TestDataSource.query(
-  //     `TRUNCATE TABLE "${entity.tableName}" RESTART IDENTITY CASCADE;`
-  //   );
-  // }
 });
