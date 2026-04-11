@@ -1,4 +1,3 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { Grade } from "../../../../domain/enum/grade/grade";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
@@ -17,7 +16,6 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 
 describe('update rating service integration tests', () => {
 
-    let appDataSource: DataSource;
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
 
@@ -58,7 +56,7 @@ describe('update rating service integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -66,13 +64,9 @@ describe('update rating service integration tests', () => {
 
         let input = new UpdateRatingDto(wantedid, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD);
         const service = new UpdateRatingService(ratingRepository);
-        try {
-            await service.execute(input)
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ context: 'rating', message: 'Not found' }]);
-        }
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors: [{ "context": "rating", "message": "Not found" }]
+        });
     })
 
     it('should update a rating', async () => {
@@ -84,7 +78,7 @@ describe('update rating service integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 

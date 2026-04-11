@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { DeleteRatingService } from "./delete.rating.service";
@@ -7,7 +6,6 @@ import { StudentEntity } from "../../../../infrastructure/entities/student/stude
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
@@ -15,7 +13,6 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 
 describe('Delete rating domain service integration tests', () => {
 
-    let appDataSource: DataSource;
     let ratingEntity: Repository<RatingEntity>;
     let ratingRepository: RatingRepositiry;
 
@@ -56,7 +53,7 @@ describe('Delete rating domain service integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -77,7 +74,7 @@ describe('Delete rating domain service integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 

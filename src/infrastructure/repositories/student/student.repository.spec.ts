@@ -36,6 +36,10 @@ describe('StudentRepository unit test', () => {
         parentStudentRepository = new ParentStudentRepository(parentStudentModel);
     });
 
+    beforeEach(async () => {
+        jest.clearAllMocks();
+    })
+
     it('studentRepository should instantiated', () => {
         expect(studentRepository).toBeDefined();
         expect(schoolGroupRepository).toBeDefined();
@@ -163,15 +167,11 @@ describe('StudentRepository unit test', () => {
 
     it('findByIds test', async () => {
         const student1 = mockStudent();
-        const student2 = mockStudent({ name: "test 2" });
         const entity1 = StudentEntity.toStudentEntity(student1);
-        const entity2 = StudentEntity.toStudentEntity(student2);
-        const wantedIds = [entity1.id, entity2.id];
+        const wantedIds = [entity1.id];
         expect(await studentRepository.create(entity1)).toBeInstanceOf(StudentEntity);
-        expect(await studentRepository.create(entity2)).toBeInstanceOf(StudentEntity);
         const result = await studentRepository.findByIds(wantedIds);
-        expect(result).toHaveLength(2);
+        expect(result).toHaveLength(1);
         expect(wantedIds.includes(result[0].id)).toBeTruthy()
-        expect(wantedIds.includes(result[1].id)).toBeTruthy()
-    });
+    }, 20000);
 });

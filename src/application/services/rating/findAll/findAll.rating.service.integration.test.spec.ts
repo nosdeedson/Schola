@@ -45,7 +45,7 @@ describe('find all rating integration tests', () => {
         expect(semesterRepository).toBeDefined();
     });
 
-    it('should find an empty array', async () =>{
+    it('should find an empty array', async () => {
         const service = new FindAllRatingService(ratingRepository);
         let results = await service.execute();
         expect(results.all.length).toBe(0)
@@ -60,7 +60,7 @@ describe('find all rating integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating();
+        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
