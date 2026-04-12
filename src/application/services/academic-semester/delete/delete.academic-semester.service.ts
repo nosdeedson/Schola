@@ -1,10 +1,10 @@
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 
-export class DeleteAcademicSemesterService{
+export class DeleteAcademicSemesterService {
 
-    private semesterRepository : AcademicSemesterInterface;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
-    constructor(semesterRepository: AcademicSemesterInterface){
+    constructor(semesterRepository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRepository;
     }
 

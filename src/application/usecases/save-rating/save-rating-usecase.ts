@@ -1,5 +1,5 @@
 import { CreateRatingService } from "@/application/services/rating/create/create.rating.service";
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { QuarterRepositoryInterface } from "@/domain/quarter/quarter.repository.interface";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
@@ -20,7 +20,7 @@ import { CreateRatingDto } from "@/application/services/rating/create/create.rat
 export class SaveRatingUsecase {
 
     private ratingRepository: RatingRepositoryInterface;
-    private semesterRespository: AcademicSemesterInterface;
+    private semesterRespository: AcademicSemesterRespositoryInterface;
     private studentRepository: StudentRepositoryInterface;
 
     constructor(private repositoryFactory: RepositoryFactoryService) {
@@ -35,8 +35,8 @@ export class SaveRatingUsecase {
             const semester = await semesterService.execute();
             const studentService = new FindStudentService(this.studentRepository);
             const studentEntity = await studentService.execute(dto.studentId);
-            if(!studentEntity){
-                throw new SystemError([{context: 'student', message: 'student not found'}])
+            if (!studentEntity) {
+                throw new SystemError([{ context: 'student', message: 'student not found' }])
             }
             let quarter: Quarter;
             if (semester.current) {
@@ -44,7 +44,7 @@ export class SaveRatingUsecase {
                 quarter = Quarter.fromEntity(quarterEntity);
                 const rating = new CreateRatingDto(
                     Student.toDomain(studentEntity),
-                    quarter, 
+                    quarter,
                     dto.listing,
                     dto.writing,
                     dto.reading,

@@ -1,10 +1,10 @@
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 
 export class FindCurrentSemesterService {
 
-    private semesterRepository: AcademicSemesterInterface;
-    constructor(semesterRepository: AcademicSemesterInterface){
+    private semesterRepository: AcademicSemesterRespositoryInterface;
+    constructor(semesterRepository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRepository;
     }
 

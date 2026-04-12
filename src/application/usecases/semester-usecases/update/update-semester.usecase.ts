@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UpdateAcademicSemesterDto } from "@/application/services/academic-semester/update/udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "@/application/services/academic-semester/update/update.academic-semester.service";
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
@@ -9,7 +9,7 @@ import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 @Injectable()
 export class UpdateSemesterUseCase {
 
-    private semesterRepository: AcademicSemesterInterface;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
     constructor(private repositoryFactory: RepositoryFactoryService) {
         this.semesterRepository = repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER);

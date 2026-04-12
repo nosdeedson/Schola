@@ -1,21 +1,21 @@
 import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { SystemError } from "../../@shared/system-error";
 
-export class UpdateAcademicSemesterService{
+export class UpdateAcademicSemesterService {
 
-    private semesterRepository: AcademicSemesterInterface;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
-    constructor(semesterRepository: AcademicSemesterInterface){
+    constructor(semesterRepository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRepository;
     }
 
     async execute(dto: UpdateAcademicSemesterDto) {
         try {
             let entity = await this.semesterRepository.find(dto.id);
-            if(entity){
-                if(dto.updatingQuarter) {
+            if (entity) {
+                if (dto.updatingQuarter) {
                     entity.quarters[0].quarterNumber == 1 ? entity.quarters[0].currentQuarter = false : entity.quarters[1].currentQuarter = false;
                     entity.quarters[1].quarterNumber == 2 ? entity.quarters[1].currentQuarter = true : entity.quarters[0].currentQuarter = false;
                     entity.updatedAt = new Date();
@@ -28,7 +28,7 @@ export class UpdateAcademicSemesterService{
                 }
                 await this.semesterRepository.update(entity);
             } else {
-                throw new SystemError([{context: 'semester', message: 'semester not found'}]);
+                throw new SystemError([{ context: 'semester', message: 'semester not found' }]);
             }
         } catch (error) {
             throw error;

@@ -5,19 +5,13 @@ import { FindAllAcademicSemesterDto } from "@/application/services/academic-seme
 import { FindAllAcademicSemesterService } from "@/application/services/academic-semester/findAll/findAll.academic-semester.service";
 import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
+import { SystemError } from "@/application/services/@shared/system-error";
 
-@Injectable()
 export class SemesterUsecases {
 
-    private repository: AcademicSemesterRepository;
-
     constructor(
-        private repositoryFactory: RepositoryFactoryService
-    ) {
-        this.repository = this.repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER) as AcademicSemesterRepository;
-    }
+        private repository: AcademicSemesterRepository,
+    ) { }
 
     async delete(id: string): Promise<void> {
         let deleteService = new DeleteAcademicSemesterService(this.repository);
@@ -29,7 +23,7 @@ export class SemesterUsecases {
             let findService = new FindAcademicSemesterService(this.repository);
             return await findService.execute(id);
         } catch (error) {
-            TrataErros.tratarErrorsNotFound(error);
+            TrataErros.tratarErrorsNotFound(error as SystemError);
         }
     }
 

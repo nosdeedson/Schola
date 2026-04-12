@@ -1,23 +1,14 @@
 import { CreateAcademicSemesterService } from "@/application/services/academic-semester/create/create.academic-semester.service";
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
-import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { CreateAcademicSemesterUsecaseDto } from "@/application/services/academic-semester/create/semester/create-academic-semester-usecase.dto";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
-import { Injectable } from "@nestjs/common";
 import { SystemError } from "@/application/services/@shared/system-error";
 
-@Injectable()
 export class CreateSemesterUsecase {
 
-    private repository: AcademicSemesterInterface;
-
     constructor(
-        private repositoryFactory: RepositoryFactoryService
-    ) {
-        this.repository = this.repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER) as AcademicSemesterRepository;
-    }
+        private repository: AcademicSemesterRespositoryInterface,
+    ) { }
 
     async create(dto: CreateAcademicSemesterUsecaseDto): Promise<void> {
         try {

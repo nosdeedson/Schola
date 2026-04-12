@@ -1,12 +1,12 @@
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { FindAcademicSemesterDto } from "./find.academic-semester.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
 
 export class FindAcademicSemesterService {
 
-    private semesterRepository: AcademicSemesterInterface;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
-    constructor(semesterRepository: AcademicSemesterInterface) {
+    constructor(semesterRepository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRepository;
     }
 

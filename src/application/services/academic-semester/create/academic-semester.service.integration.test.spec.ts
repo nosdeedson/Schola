@@ -1,4 +1,4 @@
-import { AcademicSemesterInterface } from "../../../../domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "../../../../domain/academc-semester/academic.semester.repository.interface";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from '../../../../infrastructure/repositories/academic-semester/academic-semester.repository';
 import { CreateAcademicSemesterUsecaseDto } from "./semester/create-academic-semester-usecase.dto";
@@ -10,7 +10,7 @@ import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dt
 describe('Academic semester integration test', () => {
 
     let semesterEntity: Repository<AcademicSemesterEntity>;
-    let semesterRepository: AcademicSemesterInterface;
+    let semesterRepository: AcademicSemesterRespositoryInterface;
 
     beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);

@@ -1,13 +1,13 @@
 import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
-import { AcademicSemesterInterface } from '../../../domain/academc-semester/academic.semester.repository.interface';
+import { AcademicSemesterRespositoryInterface } from '../../../domain/academc-semester/academic.semester.repository.interface';
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 
-export class AcademicSemesterRepository implements AcademicSemesterInterface{
-    
+export class AcademicSemesterRepository implements AcademicSemesterRespositoryInterface {
+
     constructor(
         private academicRepositoryRepository: Repository<AcademicSemesterEntity>,
         private dataSource: DataSource
-    ){}
+    ) { }
 
     async create(entity: AcademicSemesterEntity): Promise<AcademicSemesterEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -18,10 +18,9 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
             await queryRunner.commitTransaction();
             return result;
         } catch (error) {
-            console.log(error);
             await queryRunner.rollbackTransaction();
-            throw new QueryFailedError(null, null, error);
-        } finally{
+            throw new QueryFailedError(null, null, error as any);
+        } finally {
             await queryRunner.release();
         }
     }
@@ -32,13 +31,13 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
             .set({
                 deletedAt: new Date()
             })
-            .where('id= :id', {id: id})
+            .where('id= :id', { id: id })
             .execute()
     }
 
     async find(id: string): Promise<AcademicSemesterEntity> {
         const model = await this.academicRepositoryRepository.findOne({
-            where: {id: id},
+            where: { id: id },
             relations: {
                 quarters: true
             }
@@ -54,7 +53,7 @@ export class AcademicSemesterRepository implements AcademicSemesterInterface{
 
     async findCurrentSemester(): Promise<AcademicSemesterEntity> {
         return await this.academicRepositoryRepository.findOne({
-            where: {current: true},
+            where: { current: true },
         });
     }
 

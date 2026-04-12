@@ -1,6 +1,6 @@
 import { FindCurrentSemesterService } from "@/application/services/academic-semester/find-current/find-current-semester.service";
 import { FindTeacherClassRatingService } from "@/application/services/class/find-teacher-class-rating/find-teacher-class-rating";
-import { AcademicSemesterInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { TeacherClassRatingDto } from "./find-teacher-class-rating-dto";
 
@@ -8,7 +8,7 @@ export class FindTeacherClassRatingUsecase {
 
     constructor(
         private classRepository: ClassRepositoryInterface,
-        private semesterRepository: AcademicSemesterInterface,
+        private semesterRepository: AcademicSemesterRespositoryInterface,
     ) { }
 
     async execute(teacherId: string, classId: string): Promise<TeacherClassRatingDto> {

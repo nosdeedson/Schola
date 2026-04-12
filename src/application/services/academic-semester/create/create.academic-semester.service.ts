@@ -1,14 +1,14 @@
 import { AcademicSemester } from '@/domain/academc-semester/academic.semester';
-import { AcademicSemesterInterface } from '../../../../domain/academc-semester/academic.semester.repository.interface';
+import { AcademicSemesterRespositoryInterface } from '../../../../domain/academc-semester/academic.semester.repository.interface';
 import { CreateAcademicSemesterUsecaseDto } from './semester/create-academic-semester-usecase.dto';
 import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 import { SystemError } from '@/application/services/@shared/system-error';
 
 
 export class CreateAcademicSemesterService {
-    private semesterRepository: AcademicSemesterInterface;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
-    constructor(semesterRespository: AcademicSemesterInterface) {
+    constructor(semesterRespository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRespository;
     }
 
