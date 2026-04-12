@@ -9,6 +9,9 @@ import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-use
 import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
 import { mockCreateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/schoolgroup-request-dto-mock';
 import { mockUpdateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/update-schoolgroup-request-dto-mock';
+import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
+import { providers } from './providers/schoolgroups.providers';
+import { FindClassDtoResponseDto } from './dto/find/find-class-dto-response';
 
 describe('SchoolgroupController', () => {
   let controller: SchoolgroupController;
@@ -18,11 +21,11 @@ describe('SchoolgroupController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SchoolgroupController],
-      providers: [
-        SchoolgroupUseCases,
-        CreateSchoolgroupUseCase,
-        UpdateSchoolgroupUsecase,
-        RepositoryFactoryService,
+      providers: [...providers
+        // SchoolgroupUseCases,
+        // CreateSchoolgroupUseCase,
+        // UpdateSchoolgroupUsecase,
+        // FindSchoolgroupUsecase,
       ],
       imports: [DataBaseConnectionModule]
     }).compile();
@@ -72,8 +75,14 @@ describe('SchoolgroupController', () => {
     // expect(usecases).toHaveBeenCalledWith(wantedId);
   })
 
-  it('should return a schoolgroup', async () => {
-    expect(true).toBe(true)
+  it('should find a schoolgroup', async () => {
+    // TODO FIX THE Test
+    let wantedId = 'af9f033f-9719-4370-b542-407700ef23d5';
+    const dto = new FindClassDtoResponseDto();
+    const usecase = jest.spyOn(FindSchoolgroupUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(dto))
+    const result = await controller.find(wantedId);
+    expect(result).toBeDefined();
   })
 
   it('should return all schoolgroup', async () => {

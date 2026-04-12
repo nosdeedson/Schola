@@ -2,18 +2,18 @@ import { ClassRepositoryInterface } from "@/domain/class/class.repository.interf
 import { FindClassDto } from "./find.class.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
 
-export class FindClassService{
+export class FindClassService {
 
     private classRepository: ClassRepositoryInterface;
 
-    constructor(classRepository: ClassRepositoryInterface){
+    constructor(classRepository: ClassRepositoryInterface) {
         this.classRepository = classRepository;
     }
 
-    async execute(id: string): Promise<FindClassDto>{
+    async execute(id: string): Promise<FindClassDto> {
         let schoolgroup = await this.classRepository.find(id);
-        if(!schoolgroup){
-            throw new SystemError([{context: 'class', message: 'class not found'}])
+        if (!schoolgroup) {
+            throw new SystemError([{ context: 'class', message: 'class not found' }]);
         }
         let dto = FindClassDto.toDto(schoolgroup);
         return dto;

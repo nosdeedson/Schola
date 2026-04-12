@@ -1,22 +1,16 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateClassService } from '../../../application/services/class/create/create.class.service';
-import { CreateWorkerService } from '../../../application/services/worker/create/create.worker.service';
 import { DeleteClassService } from '../../../application/services/class/delete/delete.class.service';
 import { FindClassDto } from "../../../application/services/class/find/find.class.dto";
 import { FindClassService } from '../../../application/services/class/find/find.class.service';
 import { FindAllClassDto } from '../../../application/services/class/findAll/findAll.class.dto';
 import { FindAllClassService } from '../../../application/services/class/findAll/findAll.class.service';
-import { UpdateClassService } from '../../../application/services/class/update/update.class.service';
 import { RepositoryFactoryService } from '../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { setEnv } from '../../../infrastructure/__mocks__/env.mock';
-import { MockSchoolgroupDto } from '../../../infrastructure/__mocks__/mock-schoolgroup-dto';
 import { DomainMocks } from '../../../infrastructure/__mocks__/mocks';
 import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
 import { ClassEntity } from '../../../infrastructure/entities/class/class.entity';
 import { SchoolgroupUseCases } from './schoolgroup-usecases';
-import { WorkerEntity } from '../../../infrastructure/entities/worker/worker.entity';
-import { RoleEnum } from '../../../domain/worker/roleEnum';
 
 
 describe('SchoolgroupUsecaseService', () => {
@@ -73,10 +67,10 @@ describe('SchoolgroupUsecaseService', () => {
       const find = jest.spyOn(FindClassService.prototype, 'execute')
         .mockRejectedValue(new BadRequestException("Test"));
 
-      await expect( service.find(id)).rejects.toThrow();
+      await expect(service.find(id)).rejects.toThrow();
       expect(find).toHaveBeenCalledTimes(1);
       expect(find).toHaveBeenCalledWith(id);
-      
+
     });
 
   });
@@ -88,7 +82,7 @@ describe('SchoolgroupUsecaseService', () => {
       const classEntity1 = ClassEntity.toClassEntity(DomainMocks.mockSchoolGroup());
       const mockResults = new FindAllClassDto([classEntity, classEntity1]);
       const findAll = jest.spyOn(FindAllClassService.prototype, 'execute')
-        .mockResolvedValue( mockResults);
+        .mockResolvedValue(mockResults);
 
       const result = await service.findAll();
       expect(result).toEqual(mockResults);
@@ -113,7 +107,7 @@ describe('SchoolgroupUsecaseService', () => {
     it('should delete a schoolgroup', async () => {
       const id = "1";
       const deleteService = jest.spyOn(DeleteClassService.prototype, 'execute')
-        .mockImplementationOnce( async () => await Promise.resolve(void 0));
+        .mockImplementationOnce(async () => await Promise.resolve(void 0));
 
       await service.delete(id);
       expect(deleteService).toHaveBeenCalledTimes(1);

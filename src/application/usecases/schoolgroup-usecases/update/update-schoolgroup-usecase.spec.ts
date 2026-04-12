@@ -1,19 +1,14 @@
 
-import { Test, TestingModule } from '@nestjs/testing';
-import { setEnv } from '../../../../infrastructure/__mocks__/env.mock';
-import { DataBaseConnectionModule } from '../../../../infrastructure/data-base-connection/data-base-connection.module';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { RepositoryFactoryService } from '../../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { UpdateClassService } from '../../../services/class/update/update.class.service';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { RoleEnum } from '../../../../domain/worker/roleEnum';
-import { WorkerRepository } from '../../../../infrastructure/repositories/worker/worker.repository';
 import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
 import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
 import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/domain-dto/update-schoolgroup-usecase-dto.mocks';
 import { MockRepositoriesForUnitTest } from '@/infrastructure/__mocks__/mockRepositories';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
+import { NotFoundException } from '@nestjs/common';
 
 describe('UpdateSchoolgroupUsecase', () => {
 
@@ -55,7 +50,7 @@ describe('UpdateSchoolgroupUsecase', () => {
 
         const usecase = new UpdateSchoolgroupUsecase(classRepository, workerRepository);
         await expect(usecase.update(dto)).rejects.toMatchObject(new NotFoundException("teacher not found"))
-        // expect(tratarErros).toHaveBeenCalledTimes(1);
+        expect(tratarErros).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledWith(dto.teacherName);
     });
