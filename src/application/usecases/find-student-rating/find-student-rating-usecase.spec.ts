@@ -7,36 +7,21 @@ import { FindRatingByStudent } from "@/application/services/rating/find-rating-b
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { StudentRatingUsecaseDtoOut } from "./find-stdent-rating-usecase-dto-out";
+import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
 
 describe('studentRatingUsecase', () => {
-    let usecase: FindStudentRantingUsecase;
-    let module: TestingModule;
-
-    beforeAll(async () => {
-        setEnv();
-        module = await Test.createTestingModule({
-            imports: [DataBaseConnectionModule],
-            providers: [
-                FindStudentRantingUsecase,
-                RepositoryFactoryService
-            ]
-        }).compile();
-        usecase = module.get<FindStudentRantingUsecase>(FindStudentRantingUsecase);
-    });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it("should be defined", async () => {
-        expect(usecase).toBeDefined();
-    });
-
     it("should find a ranting of a student", async () => {
+        const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const id = "22ac66ab-fae4-4666-82b9-cf0c774f54ed";
         const ratingEntity = RatingEntity.toRatingEntity(mockRating());
         const studentRatingUsecase = jest.spyOn(FindRatingByStudent.prototype, 'findRatingByStudent')
             .mockResolvedValue(ratingEntity);
+        const usecase = new FindStudentRantingUsecase(ratingRepository);
         const result = await usecase.execute(id);
         expect(result).toBeInstanceOf(StudentRatingUsecaseDtoOut);
         expect(result).toBeDefined();
@@ -45,9 +30,11 @@ describe('studentRatingUsecase', () => {
     });
 
     it('should not find a rating of a student', async () => {
+        const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const id = 'a4b5d267-9f5e-4878-b2f2-f5d84746fc6e';
         const studentRatingUsecase = jest.spyOn(FindRatingByStudent.prototype, 'findRatingByStudent')
             .mockResolvedValue(null);
+        const usecase = new FindStudentRantingUsecase(ratingRepository);
         const result = await usecase.execute(id);
         expect(studentRatingUsecase).toHaveBeenCalledTimes(1);
         expect(studentRatingUsecase).toHaveBeenCalledWith(id);
