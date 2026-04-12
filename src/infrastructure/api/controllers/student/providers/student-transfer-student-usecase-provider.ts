@@ -1,7 +1,7 @@
 import { TransferStudentsAnotherClassUsecase } from "@/application/usecases/transfer-students/transfer-students-another-class.usecase";
-import { CLASS_REPOSITORY, STUDENT_REPOSITORY } from "./students.tokens";
 import { StudentRepository } from "@/infrastructure/repositories/student/student.repository";
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
+import { CLASS_REPOSITORY, STUDENT_REPOSITORY } from "../../controller-tokens/controller-tokens";
 
 export const transferStudentUsecaseProvider = [
     {

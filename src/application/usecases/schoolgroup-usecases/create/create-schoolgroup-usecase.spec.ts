@@ -11,34 +11,20 @@ import { CreateClassService } from "../../../services/class/create/create.class.
 import { CreateWorkerService } from "../../../services/worker/create/create.worker.service";
 import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
 
 describe('CreateSchoolGroupUsecase', () => {
 
     let service: CreateSchoolgroupUseCase;
     let module: TestingModule;
-    beforeAll(async () => {
-        setEnv();
-        module = await Test.createTestingModule({
-            imports: [DataBaseConnectionModule],
-            providers: [CreateSchoolgroupUseCase, RepositoryFactoryService],
-        }).compile();
-
-        service = module.get<CreateSchoolgroupUseCase>(CreateSchoolgroupUseCase);
-    });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    afterAll(async () => {
-        await module.close()
-    })
-
-    it('should be defined', () => {
-        expect(service).toBeDefined();
-    });
-
     it('should create a schoolgroup', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
         const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
         const input = dto.toCreateClassDto(teacher);
@@ -46,14 +32,16 @@ describe('CreateSchoolGroupUsecase', () => {
             .mockImplementationOnce(() => Promise.resolve(teacher));
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve());
-
-        expect(await service.create(dto)).toBe(void 0);
+        const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository);
+        expect(await usecase.create(dto)).toBe(void 0);
         expect(createClass).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledWith(input);
         expect(createTeacher).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error while creating the worker', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
         const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
         const input = dto.toCreateClassDto(teacher);
@@ -64,15 +52,17 @@ describe('CreateSchoolGroupUsecase', () => {
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
 
         const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
-                .mockImplementation(() => { throw new BadRequestException('Test') });
-
-        await expect(service.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
+            .mockImplementation(() => { throw new BadRequestException('Test') });
+        const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository);
+        await expect(usecase.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
         expect(createClass).toHaveBeenCalledTimes(0);
         expect(createTeacher).toHaveBeenCalledTimes(1);
         expect(tratarError).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error while creating the class', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
         const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
         const input = dto.toCreateClassDto(teacher);
@@ -82,13 +72,13 @@ describe('CreateSchoolGroupUsecase', () => {
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
         const tratatError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
-            .mockImplementation(() => {throw new BadRequestException('Test')});
-
-        await expect(service.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
+            .mockImplementation(() => { throw new BadRequestException('Test') });
+        const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository);
+        await expect(usecase.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
         expect(createClass).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledWith(input);
         expect(createTeacher).toHaveBeenCalledTimes(1);
         expect(tratatError).toHaveBeenCalledTimes(1);
     });
 
-})
+});

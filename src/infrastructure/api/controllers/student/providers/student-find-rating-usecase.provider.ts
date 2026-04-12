@@ -1,6 +1,6 @@
 import { FindStudentRantingUsecase } from "@/application/usecases/find-student-rating/find-student-rating-usecase";
 import { RatingRepositiry } from "@/infrastructure/repositories/rating/rating.repository";
-import { RATING_REPOSITORY } from "./students.tokens";
+import { RATING_REPOSITORY } from "../../controller-tokens/controller-tokens";
 
 
 export const findRatingUsecaseProvider = [

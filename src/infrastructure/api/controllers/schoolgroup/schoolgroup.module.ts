@@ -5,17 +5,13 @@ import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-fa
 import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
 import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
+import { providers } from './providers/schoolgroups.providers';
 
 @Module({
     controllers: [
         SchoolgroupController,
     ],
-    providers: [
-        SchoolgroupUseCases,
-        RepositoryFactoryService,
-        CreateSchoolgroupUseCase,
-        UpdateSchoolgroupUsecase,
-    ],
+    providers: [...providers],
     imports: [DataBaseConnectionModule]
 })
 export class SchoolgroupModule { }

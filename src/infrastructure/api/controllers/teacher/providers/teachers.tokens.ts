@@ -1,2 +1,0 @@
-export const CLASS_REPOSITORY = Symbol('CLASS_REPOSITORY');
-export const SEMESTER_REPOSITORY = Symbol('SEMESTER_REPOSITORY');
