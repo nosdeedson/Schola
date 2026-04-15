@@ -2,16 +2,14 @@ import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { setEnv } from '../../../__mocks__/env.mock';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
-import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { SchoolgroupController } from './schoolgroup.controller';
-import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service';
 import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
 import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
 import { mockCreateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/schoolgroup-request-dto-mock';
 import { mockUpdateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/update-schoolgroup-request-dto-mock';
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
 import { providers } from './providers/schoolgroups.providers';
-import { FindClassDtoResponseDto } from './dto/find/find-class-dto-response';
+import { mockFindClassDto } from '../../../../../tests/mocks/controller/find-class-dto-mock';
 
 describe('SchoolgroupController', () => {
   let controller: SchoolgroupController;
@@ -21,12 +19,7 @@ describe('SchoolgroupController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SchoolgroupController],
-      providers: [...providers
-        // SchoolgroupUseCases,
-        // CreateSchoolgroupUseCase,
-        // UpdateSchoolgroupUsecase,
-        // FindSchoolgroupUsecase,
-      ],
+      providers: [...providers ],
       imports: [DataBaseConnectionModule]
     }).compile();
 
@@ -76,13 +69,15 @@ describe('SchoolgroupController', () => {
   })
 
   it('should find a schoolgroup', async () => {
-    // TODO FIX THE Test
-    let wantedId = 'af9f033f-9719-4370-b542-407700ef23d5';
-    const dto = new FindClassDtoResponseDto();
+    const dto = mockFindClassDto();
+    let wantedId = dto.id;
     const usecase = jest.spyOn(FindSchoolgroupUsecase.prototype, 'execute')
       .mockImplementation(() => Promise.resolve(dto))
     const result = await controller.find(wantedId);
     expect(result).toBeDefined();
+    expect(result.id).toBe(dto.id);
+    expect(usecase).toHaveBeenCalledTimes(1);
+    expect(usecase).toHaveBeenCalledWith(wantedId);
   })
 
   it('should return all schoolgroup', async () => {

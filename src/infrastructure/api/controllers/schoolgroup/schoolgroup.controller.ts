@@ -7,6 +7,7 @@ import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-use
 import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/update/update-schoolgroup-usecase';
 import { CreateSchoolgroupUseCaseDto } from '@/application/usecases/schoolgroup-usecases/create/dto/create-schoolgroup-usecase.dto';
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
+import { FindClassResponseDto } from './dto/find/find-class-response-dto';
 
 @ApiTags('Class contoller')
 @Controller('classes')
@@ -45,7 +46,16 @@ export class SchoolgroupController {
     @ApiResponse({ status: 204, description: 'if schoolgroup does not exist do anything' })
     @Get(':id')
     async find(@Param('id') id: string) {
-        return await this.findSchoolgroup.execute(id);
+        const dto = await this.findSchoolgroup.execute(id);
+        return new FindClassResponseDto({
+            id: dto.id,
+            classCode: dto.classCode,
+            name: dto.name,
+            nameBook: dto.nameBook,
+            schedule: dto.schedule,
+            teacher: dto.teacher,
+            students: dto.students
+        });
     }
 
     @ApiOperation({ description: 'Find all schoolgroup' })

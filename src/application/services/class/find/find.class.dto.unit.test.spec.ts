@@ -4,7 +4,7 @@ import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
-import {ClassScheduleDto, FindClassDto, ClassTeacherDto, ClassStudentDto} from './find.class.dto'
+import {FindClassScheduleDto, FindClassDto, FindClassTeacherDto, FindClassStudentDto} from './find.class.dto'
 
 describe('find dto unit test', () => {
 
@@ -26,7 +26,7 @@ describe('find dto unit test', () => {
         expect(classDto.name).toEqual(entity.className);
         expect(classDto.nameBook).toEqual(entity.bookName);
         expect(classDto.schedule).toBeDefined();
-        expect(classDto.teacher).toStrictEqual(new ClassTeacherDto());
+        expect(classDto.teacher).toStrictEqual(new FindClassTeacherDto());
         expect(classDto.students.length).toBe(0);
     });
 
@@ -62,7 +62,7 @@ describe('find dto unit test', () => {
         let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         entity.setTeacher(workerEntity);
-        let teacher = ClassTeacherDto.toDto(entity.teacher);
+        let teacher = FindClassTeacherDto.toDto(entity.teacher);
         expect(teacher).toBeDefined();
         expect(teacher.id).toEqual(entity.teacher.id);
         expect(teacher.name).toEqual(entity.teacher.fullName);
@@ -70,7 +70,7 @@ describe('find dto unit test', () => {
 
     it('should return a dto of ClassTeacherDto with undefined attributes', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let teacher = ClassTeacherDto.toDto(entity.teacher);
+        let teacher = FindClassTeacherDto.toDto(entity.teacher);
         expect(teacher).toBeDefined();
         expect(teacher.id).toBeUndefined();
         expect(teacher.name).toBeUndefined();
@@ -81,7 +81,7 @@ describe('find dto unit test', () => {
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         entity.setStudents(studentEntity);
-        let students = ClassStudentDto.toDto(entity.students);
+        let students = FindClassStudentDto.toDto(entity.students);
         expect(students).toBeDefined();
         expect(students.length).toBe(1);
         expect(students[0].id).toEqual(student.getId());
@@ -90,7 +90,7 @@ describe('find dto unit test', () => {
 
     it('should return a dto of ClassStudentDto with undefined attributes', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let students = ClassStudentDto.toDto(entity.students);
+        let students = FindClassStudentDto.toDto(entity.students);
         expect(students).toBeDefined();
         expect(students.length).toBe(0);
         expect(students[0]).toBeUndefined();
@@ -98,7 +98,7 @@ describe('find dto unit test', () => {
 
     it('should return a dto of ClassScheduleDto', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let schedule = ClassScheduleDto.toDto(entity);
+        let schedule = FindClassScheduleDto.toDto(entity);
         expect(schedule).toBeDefined();
         expect(schedule.dayOfWeeks.length).toBe(2);
         expect(schedule.dayOfWeeks[0]).toEqual(entity.firstDayOfClassInWeek);

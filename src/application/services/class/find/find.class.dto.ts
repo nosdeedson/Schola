@@ -8,9 +8,9 @@ export class FindClassDto {
     classCode: string;
     nameBook: string;
     name: string;
-    schedule: ClassScheduleDto;
-    teacher: ClassTeacherDto;
-    students: ClassStudentDto[];
+    schedule: FindClassScheduleDto;
+    teacher: FindClassTeacherDto;
+    students: FindClassStudentDto[];
 
     static toDto(entity: ClassEntity): FindClassDto {
         let dto = new FindClassDto();
@@ -18,22 +18,22 @@ export class FindClassDto {
         dto.classCode = entity.classCode;
         dto.name = entity.className;
         dto.nameBook = entity.bookName;
-        dto.schedule = ClassScheduleDto.toDto(entity);
-        dto.students = ClassStudentDto.toDto(entity.students);
-        dto.teacher = ClassTeacherDto.toDto(entity.teacher);
+        dto.schedule = FindClassScheduleDto.toDto(entity);
+        dto.students = FindClassStudentDto.toDto(entity.students);
+        dto.teacher = FindClassTeacherDto.toDto(entity.teacher);
         return dto;
     }
 }
 
-export class ClassStudentDto {
+export class FindClassStudentDto {
     id: string;
     name: string;
 
-    static toDto(entities: StudentEntity[]): ClassStudentDto[]{
-        let dtos : ClassStudentDto[] = [];
+    static toDto(entities: StudentEntity[]): FindClassStudentDto[]{
+        let dtos : FindClassStudentDto[] = [];
         if(entities){
             entities.forEach(it =>{
-                let dto = new ClassStudentDto();
+                let dto = new FindClassStudentDto();
                 dto.id = it.id;
                 dto.name = it.fullName;
                 dtos.push(dto);
@@ -43,12 +43,12 @@ export class ClassStudentDto {
     }
 }
 
-export class ClassTeacherDto {
+export class FindClassTeacherDto {
     id: string;
     name: string;
 
-    static toDto(teacher: WorkerEntity): ClassTeacherDto{
-        let dto = new ClassTeacherDto();
+    static toDto(teacher: WorkerEntity): FindClassTeacherDto{
+        let dto = new FindClassTeacherDto();
         if(teacher){
             dto.id = teacher.id;
             dto.name = teacher.fullName;
@@ -57,13 +57,13 @@ export class ClassTeacherDto {
     }
 }
 
-export class  ClassScheduleDto {
+export class  FindClassScheduleDto {
 
     dayOfWeeks: string[] = [];
     times: Record<string, string> = {};
 
-    static toDto(entity: ClassEntity): ClassScheduleDto {
-        let dto = new ClassScheduleDto();
+    static toDto(entity: ClassEntity): FindClassScheduleDto {
+        let dto = new FindClassScheduleDto();
         dto.dayOfWeeks.push(entity.firstDayOfClassInWeek);
         dto.dayOfWeeks.push(entity.secondDayOfClassInWeek);
         let t = new Map();
