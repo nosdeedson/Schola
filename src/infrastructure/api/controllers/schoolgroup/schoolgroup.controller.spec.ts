@@ -10,6 +10,7 @@ import { mockUpdateSchoolgroupRequestDto } from '../../../../../tests/mocks/cont
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
 import { providers } from './providers/schoolgroups.providers';
 import { mockFindClassDto } from '../../../../../tests/mocks/controller/find-class-dto-mock';
+import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/delete/delete-schoolgroup-usecase';
 
 describe('SchoolgroupController', () => {
   let controller: SchoolgroupController;
@@ -27,10 +28,10 @@ describe('SchoolgroupController', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await module.close();
   });
 
@@ -60,12 +61,12 @@ describe('SchoolgroupController', () => {
 
   it('should delete a schoolgroup', async () => {
     // TODO FIX TEST
-    // let wantedId = '16efc675-a208-43fe-93dd-8b9a3eebe656';
-    // const usecases = jest.spyOn(SchoolgroupUseCases.prototype, 'delete')
-    //   .mockImplementationOnce(() => Promise.resolve());
-    // expect(await controller.delete(wantedId)).toBe(void 0);
-    // expect(usecases).toHaveBeenCalledTimes(1);
-    // expect(usecases).toHaveBeenCalledWith(wantedId);
+    let wantedId = '16efc675-a208-43fe-93dd-8b9a3eebe656';
+    const usecases = jest.spyOn(DeleteSchoolgroupUsecase.prototype, 'execute')
+      .mockImplementationOnce(() => Promise.resolve());
+    expect(await controller.delete(wantedId)).toBe(void 0);
+    expect(usecases).toHaveBeenCalledTimes(1);
+    expect(usecases).toHaveBeenCalledWith(wantedId);
   })
 
   it('should find a schoolgroup', async () => {

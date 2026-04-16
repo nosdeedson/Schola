@@ -8,6 +8,7 @@ import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-use
 import { CreateSchoolgroupUseCaseDto } from '@/application/usecases/schoolgroup-usecases/create/dto/create-schoolgroup-usecase.dto';
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
 import { FindClassResponseDto } from './dto/find/find-class-response-dto';
+import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/delete/delete-schoolgroup-usecase';
 
 @ApiTags('Class contoller')
 @Controller('classes')
@@ -18,6 +19,7 @@ export class SchoolgroupController {
         private createSchoolgroup: CreateSchoolgroupUseCase,
         private updateSchoolgroup: UpdateSchoolgroupUsecase,
         private findSchoolgroup: FindSchoolgroupUsecase,
+        private deleteSchoolgroup: DeleteSchoolgroupUsecase,
     ) { }
 
     @ApiOperation({ description: 'Create a schoolgroup' })
@@ -38,8 +40,7 @@ export class SchoolgroupController {
     @ApiResponse({ status: 204, description: 'if schoolgroup does not exist do anything', example: 'fcfca953-946f-40e9-a1ae-22775888583e' })
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<void> {
-        // TODO SPLIT METHODS OF THE USECASE
-        // await this.schoolgroupUseCase.delete(id);
+        await this.deleteSchoolgroup.execute(id);
     }
 
     @ApiOperation({ description: 'Find a schoolgroup' })
@@ -62,6 +63,7 @@ export class SchoolgroupController {
     @ApiResponse({ status: 204, description: 'If there is no schoolgroup return an empty array' })
     @Get()
     async findAll() {
+        // TODO CREATE THE USE CASE
         // return await this.schoolgroupUseCase.findAll();
     }
 

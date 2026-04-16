@@ -3,10 +3,12 @@ import { schoolgroupRepositoriesProviders } from "./schoolgroup-repositories-pro
 import { schoolgroupCreateUseCaseProvider } from "./schoolgroup-create-usecase.provider";
 import { schoolgroupUpdateUsecaseProvider } from "./schoolgroup-update-usecase.provider";
 import { schoolgroupFindUsecaseProvider } from "./schoolgroup-find-usecase.provider";
+import { schoolgroupDeleteProvider } from "./schoolgroup-delete-usecase.provider";
 
 export const providers: Provider[] = [
     ...schoolgroupRepositoriesProviders,
     ...schoolgroupCreateUseCaseProvider,
     ...schoolgroupUpdateUsecaseProvider,
     ...schoolgroupFindUsecaseProvider,
+    ...schoolgroupDeleteProvider,
 ]

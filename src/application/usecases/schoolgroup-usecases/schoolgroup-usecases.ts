@@ -11,20 +11,6 @@ export class SchoolgroupUseCases {
         private classRepository: ClassRepositoryInterface,
     ) { }
 
-    async delete(id: string): Promise<void> {
-        let deleteService = new DeleteClassService(this.classRepository);
-        deleteService.execute(id);
-    }
-
-    async find(id: string): Promise<any> {
-        try {
-            let findService = new FindClassService(this.classRepository);
-            return await findService.execute(id);
-        } catch (error) {
-            TrataErros.tratarErrorsNotFound(error as SystemError);
-        }
-    }
-
     async findAll(): Promise<any> {
         let allService = new FindAllClassService(this.classRepository);
         let result = await allService.execute();
