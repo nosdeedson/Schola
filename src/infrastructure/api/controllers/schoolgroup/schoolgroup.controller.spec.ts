@@ -11,6 +11,10 @@ import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-useca
 import { providers } from './providers/schoolgroups.providers';
 import { mockFindClassDto } from '../../../../../tests/mocks/controller/find-class-dto-mock';
 import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/delete/delete-schoolgroup-usecase';
+import { FindAllClassDto } from '@/application/services/class/findAll/findAll.class.dto';
+import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
+import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
+import { FindAllSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/findall/find-all-schoolgroup-usecase';
 
 describe('SchoolgroupController', () => {
   let controller: SchoolgroupController;
@@ -60,7 +64,6 @@ describe('SchoolgroupController', () => {
   });
 
   it('should delete a schoolgroup', async () => {
-    // TODO FIX TEST
     let wantedId = '16efc675-a208-43fe-93dd-8b9a3eebe656';
     const usecases = jest.spyOn(DeleteSchoolgroupUsecase.prototype, 'execute')
       .mockImplementationOnce(() => Promise.resolve());
@@ -82,8 +85,15 @@ describe('SchoolgroupController', () => {
   })
 
   it('should return all schoolgroup', async () => {
-    expect(true).toBe(true)
-
+    const entity1 = ClassEntity.toClassEntity(mockClass());
+    const entity2 = ClassEntity.toClassEntity(mockClass());
+    const entities = new FindAllClassDto([entity1, entity2]);
+    const usecase = jest.spyOn(FindAllSchoolgroupUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(entities));
+    const result = await controller.findAll();
+    expect(result).toBeDefined();
+    expect(result).toHaveLength(2);
+    expect(usecase).toHaveBeenCalledTimes(1)
   })
 
   describe('update class', () => {

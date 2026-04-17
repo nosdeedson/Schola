@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateSchoolgroupRequestDto } from './dto/create/create-schoolgroup-request-dto';
-import { SchoolgroupUseCases } from '../../../../application/usecases/schoolgroup-usecases/schoolgroup-usecases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateSchoolgroupRequestDto } from './dto/update/update-schoolgroup-request-dto';
 import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';
@@ -9,17 +8,19 @@ import { CreateSchoolgroupUseCaseDto } from '@/application/usecases/schoolgroup-
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
 import { FindClassResponseDto } from './dto/find/find-class-response-dto';
 import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/delete/delete-schoolgroup-usecase';
+import { FindAllSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/findall/find-all-schoolgroup-usecase';
+import { FindAllClassResponseDto } from './dto/find-all/find-all-class-response-dto';
 
 @ApiTags('Class contoller')
 @Controller('classes')
 export class SchoolgroupController {
 
     constructor(
-        //private schoolgroupUseCase: SchoolgroupUseCases,
         private createSchoolgroup: CreateSchoolgroupUseCase,
-        private updateSchoolgroup: UpdateSchoolgroupUsecase,
-        private findSchoolgroup: FindSchoolgroupUsecase,
         private deleteSchoolgroup: DeleteSchoolgroupUsecase,
+        private findSchoolgroup: FindSchoolgroupUsecase,
+        private findAllSchoolgroup: FindAllSchoolgroupUsecase,
+        private updateSchoolgroup: UpdateSchoolgroupUsecase,
     ) { }
 
     @ApiOperation({ description: 'Create a schoolgroup' })
@@ -62,9 +63,9 @@ export class SchoolgroupController {
     @ApiOperation({ description: 'Find all schoolgroup' })
     @ApiResponse({ status: 204, description: 'If there is no schoolgroup return an empty array' })
     @Get()
-    async findAll() {
-        // TODO CREATE THE USE CASE
-        // return await this.schoolgroupUseCase.findAll();
+    async findAll(): Promise<FindAllClassResponseDto> {
+        const result = await this.findAllSchoolgroup.execute();
+        return FindAllClassResponseDto.fromFindAllClassDto(result);
     }
 
     @ApiOperation({ description: 'Update schoolgroup' })

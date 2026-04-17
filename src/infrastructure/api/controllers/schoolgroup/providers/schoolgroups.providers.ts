@@ -4,6 +4,7 @@ import { schoolgroupCreateUseCaseProvider } from "./schoolgroup-create-usecase.p
 import { schoolgroupUpdateUsecaseProvider } from "./schoolgroup-update-usecase.provider";
 import { schoolgroupFindUsecaseProvider } from "./schoolgroup-find-usecase.provider";
 import { schoolgroupDeleteProvider } from "./schoolgroup-delete-usecase.provider";
+import { schoolgroupFindAllUsecaseProvider } from "./schoolgroup-find-all-usecase.provider";
 
 export const providers: Provider[] = [
     ...schoolgroupRepositoriesProviders,
@@ -11,4 +12,5 @@ export const providers: Provider[] = [
     ...schoolgroupUpdateUsecaseProvider,
     ...schoolgroupFindUsecaseProvider,
     ...schoolgroupDeleteProvider,
+    ...schoolgroupFindAllUsecaseProvider,
 ]
