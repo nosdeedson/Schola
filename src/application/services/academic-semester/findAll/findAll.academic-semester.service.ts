@@ -1,13 +1,13 @@
-import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 import { FindAllAcademicSemesterDto } from "./findAll.academic-semester.dto";
+import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 
 export class FindAllAcademicSemesterService {
 
-    private semesterRepository: AcademicSemesterRepository;
+    private semesterRepository: AcademicSemesterRespositoryInterface;
 
-    constructor(semesterRepository: AcademicSemesterRepository) {
+    constructor(semesterRepository: AcademicSemesterRespositoryInterface) {
         this.semesterRepository = semesterRepository;
-     }
+    }
 
     async execute(): Promise<FindAllAcademicSemesterDto> {
         try {

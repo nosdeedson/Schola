@@ -5,6 +5,7 @@ import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 @Injectable()
 export class UpdateSemesterUseCase {
@@ -20,7 +21,7 @@ export class UpdateSemesterUseCase {
             const updateSemesterService = new UpdateAcademicSemesterService(this.semesterRepository);
             await updateSemesterService.execute(updateSemester);
         } catch (error) {
-            TrataErros.tratarErrorsNotFound(error);
+            TrataErros.tratarErrorsNotFound(error as SystemError);
         }
     }
 }

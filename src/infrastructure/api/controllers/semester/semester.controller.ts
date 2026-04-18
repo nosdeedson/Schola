@@ -11,7 +11,6 @@ export class SemesterController {
 
     constructor(
         private createSemester: CreateSemesterUsecase,
-        // private semesterUseCases: SemesterUsecases
     ) { }
 
     @ApiOperation({ description: "Create a semester" })
