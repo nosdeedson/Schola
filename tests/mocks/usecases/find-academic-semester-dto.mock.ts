@@ -1,5 +1,6 @@
 import { FindAcademicSemesterDto } from '../../../src/application/services/academic-semester/find/find.academic-semester.dto';
 import { QuarterDto } from '../../../src/application/services/academic-semester/create/quarter/quarter.dto';
+import { mockQuarterEntity } from '../entities/quarter-entity.mock';
 
 type QuarterDtoMock = {
     beginningDate?: Date;
@@ -30,7 +31,7 @@ export function mockFindAcademicSemesterDto(
     return new FindAcademicSemesterDto({
         id: overrides.id ?? "",
         current: overrides.current ?? true,
-        firstQuarter: overrides.firstQuarter ?? mockQuarterDto(overrides.firstQuarter),
-        secondQuarter: overrides.secondQuarter ?? mockQuarterDto(overrides.secondQuarter)
+        firstQuarter: mockQuarterEntity(),
+        secondQuarter: mockQuarterEntity()
     });
 }

@@ -1,4 +1,4 @@
-import { SemesterRequestDto } from "@/infrastructure/api/controllers/semester/dto/semester-request-dto";
+import { SemesterRequestDto } from "@/infrastructure/api/controllers/semester/dto/create/semester-request-dto";
 import { mockQuarterRequestDto } from "./quarter-request-dto";
 
 export function mockSemesterRequestDto(

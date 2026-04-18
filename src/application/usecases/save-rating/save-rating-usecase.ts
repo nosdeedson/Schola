@@ -1,6 +1,5 @@
 import { CreateRatingService } from "@/application/services/rating/create/create.rating.service";
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
-import { QuarterRepositoryInterface } from "@/domain/quarter/quarter.repository.interface";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
@@ -12,7 +11,6 @@ import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { Quarter } from "@/domain/quarter/quarter";
 import { FindStudentService } from "@/application/services/student/find/find.student.service";
-import { Rating } from "@/domain/rating/rating";
 import { Student } from "@/domain/student/student";
 import { CreateRatingDto } from "@/application/services/rating/create/create.rating.dto";
 

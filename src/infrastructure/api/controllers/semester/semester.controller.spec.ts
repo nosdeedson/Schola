@@ -1,17 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SemesterController } from './semester.controller';
-import { SemesterUsecases } from '../../../../application/usecases/semester-usecases/semester-usecases';
 import { CreateSemesterUsecase } from '../../../../application/usecases/semester-usecases/create/create-semester-usecase';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../__mocks__/env.mock';
-import { MockSemesterDto } from '../../../__mocks__/mock-semester-dto';
-import { AcademicSemesterEntity } from "../../../entities/academic-semester/academic.semester.entity";
-import { BadRequestException } from '@nestjs/common';
-import { RepositoryFactoryService } from '../../../../infrastructure/factory/repositiry-factory/repository-factory.service';
-import { FindAllAcademicSemesterDto } from '../../../../application/services/academic-semester/findAll/findAll.academic-semester.dto';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto';
 import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto';
-
+import { providers } from './providers/semesters.providers';
+import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
+import { FindSemesterUsecase } from '@/application/usecases/semester-usecases/find/find-semester-usecase';
+import { mockFindAcademicSemesterDto } from '../../../../../tests/mocks/usecases/find-academic-semester-dto.mock';
+import { FindAllSemesterUsecase } from '@/application/usecases/semester-usecases/find-all/find-all-semester-usecase';
+import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
+import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
+import { FindAllAcademicSemesterDto } from '@/application/services/academic-semester/findAll/findAll.academic-semester.dto';
+import { FindSemesterResponseDto } from './dto/find/find-semester-response-dto';
+import { UpdateSemesterUseCase } from '@/application/usecases/semester-usecases/update/update-semester.usecase';
+import { mockUpdateAcademicSemesterRequestDto } from '../../../../../tests/mocks/controller/update-academic-semester-request-dto-mock';
+import { mockUpdateSemesterDto } from '../../../../../tests/mocks/domain-dto/update-semester-dto.mocks';
 
 
 describe('SemesterController', () => {
@@ -22,11 +28,7 @@ describe('SemesterController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SemesterController],
-      providers: [
-        SemesterUsecases,
-        CreateSemesterUsecase,
-        RepositoryFactoryService,
-      ],
+      providers: [...providers],
       imports: [DataBaseConnectionModule]
     }).compile();
 
@@ -43,7 +45,7 @@ describe('SemesterController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  }, 5000);
+  });
 
   it('should create a semester', async () => {
     let dto = mockSemesterRequestDto();
@@ -67,61 +69,67 @@ describe('SemesterController', () => {
   });
 
   it('should delete a semester', async () => {
-    // TODO FIX TEST
-    // let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
-    // const useCase = jest.spyOn(SemesterUsecases.prototype, 'delete')
-    //   .mockImplementation(() => Promise.resolve());
-    // expect(await controller.delete(id)).toBe(void 0);
-    // expect(useCase).toHaveBeenCalledTimes(1);
-    // expect(useCase).toHaveBeenCalledWith(id);
+    let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
+    const useCase = jest.spyOn(DelesteSemesterUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(void 0));
+    expect(await controller.delete(id)).toBe(void 0);
+    expect(useCase).toHaveBeenCalledTimes(1);
+    expect(useCase).toHaveBeenCalledWith(id);
   });
 
   it('should find a semester', async () => {
-    // TODO FIX TEST
-    // let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
-    // const mockResult = new FindAcademicSemesterDto(id, true, new Date(), new Date());
-    // mockResult.id = id;
-    // const useCase = jest.spyOn(SemesterUsecases.prototype, 'find')
-    //  .mockImplementation(async () => await Promise.resolve(mockResult));
-    // const result = await controller.find(id);
-    // expect(result).toBe(mockResult);
-    // expect(useCase).toHaveBeenCalledTimes(1);
-    // expect(useCase).toHaveBeenCalledWith(id);
+    let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
+    const mockResult = mockFindAcademicSemesterDto();
+    mockResult.id = id;
+    const useCase = jest.spyOn(FindSemesterUsecase.prototype, 'execute')
+      .mockImplementation(async () => Promise.resolve(mockResult));
+    const result = await controller.find(id);
+    expect(result.id).toBe(mockResult.id);
+    expect(result.firstQuarter.beginningDate.getTime()).toBe(mockResult.firstQuarter.beginningDate.getTime());
+    expect(useCase).toHaveBeenCalledTimes(1);
+    expect(useCase).toHaveBeenCalledWith(id);
   });
 
   it('should find all semester', async () => {
-    // TODO FIX TEST
-    // const semester = AcademicSemesterEntity.toAcademicSemester(DomainMocks.mockAcademicSemester());
-    // const semester1 = AcademicSemesterEntity.toAcademicSemester(DomainMocks.mockAcademicSemester());
-    // const entities : AcademicSemesterEntity[] = [semester, semester1];
-    // const mockResult = new FindAllAcademicSemesterDto(entities);
-    // const useCase = jest.spyOn(SemesterUsecases.prototype, 'findAll')
-    //  .mockImplementation(async () => await Promise.resolve(mockResult));
-    // const result = await controller.findAll();
-    // expect(result).toBe(mockResult);
-    // expect(useCase).toHaveBeenCalledTimes(1);
-    // expect(result.all).toHaveLength(2);
+    const entity1 = AcademicSemesterEntity.toEntity(mockSemester());
+    const entity2 = AcademicSemesterEntity.toEntity(mockSemester());
+    const useCase = jest.spyOn(FindAllSemesterUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(new FindAllAcademicSemesterDto([entity1, entity2])))
+
+    const result = await controller.findAll();
+    expect(result).toBeDefined();
+    expect(result).toHaveLength(2);
+    expect([entity1.id, entity2.id].includes(result[0].id)).toBeTruthy();
+    expect([entity1.id, entity2.id].includes(result[1].id)).toBeTruthy();
+    expect(useCase).toHaveBeenCalledTimes(1);
   });
 
   it('should not find any semester', async () => {
-    // TODO FIX TEST
-    // const entities : AcademicSemesterEntity[] = [];
-    // const mockResult = new FindAllAcademicSemesterDto(entities);
-    // const useCase = jest.spyOn(SemesterUsecases.prototype, 'findAll')
-    //  .mockImplementation(async () => await Promise.resolve(mockResult));
-    // const result = await controller.findAll();
-    // expect(result).toEqual(mockResult);
-    // expect(useCase).toHaveBeenCalledTimes(1);
+    const entities: AcademicSemesterEntity[] = [];
+    const mockResult = new FindAllAcademicSemesterDto(entities);
+    const useCase = jest.spyOn(FindAllSemesterUsecase.prototype, 'execute')
+      .mockImplementation(async () => await Promise.resolve(mockResult));
+    const result = await controller.findAll();
+    expect(result).toHaveLength(0);
+    expect(useCase).toHaveBeenCalledTimes(1);
   });
 
   it('should update a semester', async () => {
-    // TODO FIX TEST
-    // let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
-    // const useCase = jest.spyOn(SemesterUsecases.prototype, 'update')
-    //  .mockImplementation(() => Promise.resolve());
-    // expect(await controller.update(id, true)).toBe(void 0);
-    // expect(useCase).toHaveBeenCalledTimes(1);
-    // expect(useCase).toHaveBeenCalledWith(id, true);
-  })
+    let id = 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6';
+    const useCase = jest.spyOn(UpdateSemesterUseCase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(void 0));
+    const dto = mockUpdateAcademicSemesterRequestDto();
+    expect(await controller.update(dto)).toBe(void 0);
+    expect(useCase).toHaveBeenCalledTimes(1);
+    expect(useCase).toHaveBeenCalledWith(dto);
+  });
+
+  it('should throw an error semester not found', async () => {
+    let id = '123';
+    const useCase = jest.spyOn(UpdateSemesterUseCase.prototype, 'execute')
+      .mockImplementation(() => { throw new NotFoundException("Semester not found") });
+    const dto = mockUpdateAcademicSemesterRequestDto();
+    await expect(controller.update(dto)).rejects.toMatchObject(new NotFoundException("Semester not found"));
+  });
 
 });
