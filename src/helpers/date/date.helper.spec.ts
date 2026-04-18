@@ -1,20 +1,19 @@
 
 import * as dateFns from 'date-fns';
 import * as helper from '../date/date.helper';
-import { timeInterval } from 'rxjs';
 
 // day of the year: Saturday August 10 2024
 const today = new Date(2024, 7, 10, 16, 26, 0, 0);
 
-describe('Date helper unit tests', () =>{
+describe('Date helper unit tests', () => {
 
-    it('should return Sunday', () =>{
+    it('should return Sunday', () => {
         const result = helper.DateHelper.getDayOfweek(today);
         expect(result).toBe('Saturday')
     })
-    
 
-    it('should return Sunday', () =>{
+
+    it('should return Sunday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -25,13 +24,13 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Sunday')
-        
+
     })
 
-    it('should return Monday', () =>{
+    it('should return Monday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -42,13 +41,13 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Monday')
-        
+
     })
 
-    it('should return Tuesday', () =>{
+    it('should return Tuesday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -59,13 +58,13 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Tuesday')
-        
+
     })
 
-    it('should return Wednesday', () =>{
+    it('should return Wednesday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -76,13 +75,13 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Wednesday')
-        
+
     })
 
-    it('should return Thursday', () =>{
+    it('should return Thursday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -93,13 +92,13 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Thursday')
-        
+
     })
-    
-    it('should return Friday', () =>{
+
+    it('should return Friday', () => {
 
         const sunday = dateFns.add(today, {
             years: 0,
@@ -110,10 +109,10 @@ describe('Date helper unit tests', () =>{
             minutes: 0,
             seconds: 0,
         });
-        
+
         const result = helper.DateHelper.getDayOfweek(sunday);
         expect(result).toBe('Friday')
-        
+
     })
 
     it('should set a Map', () => {

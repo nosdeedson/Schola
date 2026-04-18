@@ -1,6 +1,5 @@
 import { AccessType } from "../../../../domain/user/access.type";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { PersonEntity } from "../../../../infrastructure/entities/@shared/person.entity";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
@@ -12,45 +11,36 @@ import { WorkerRepository } from "../../../../infrastructure/repositories/worker
 import { CreateUserService } from "./create.user.service";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
-describe('create user service integration tests', () =>{
+describe('create user service integration tests', () => {
 
-    let appDataSource: DataSource;
     let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
 
     let personEntity: Repository<any>;
     let personRepository: any;
 
-    beforeEach( async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-        
-        userEntity = appDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, appDataSource);
-
-        personEntity = appDataSource.getRepository(PersonEntity);
+    beforeAll(async () => {
+        userEntity = TestDataSource.getRepository(UserEntity);
+        userRepository = new UserRepository(userEntity, TestDataSource);
+        personEntity = TestDataSource.getRepository(PersonEntity);
     });
 
-    afterEach(async () =>{
-        await appDataSource.createQueryBuilder().delete().from(UserEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(PersonEntity).execute();
-        await appDataSource.destroy();
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('user entity and repository should be instantiated', async () =>{
+    it('user entity and repository should be instantiated', async () => {
         expect(userEntity).toBeDefined();
         expect(userRepository).toBeDefined();
         expect(personEntity).toBeDefined();
     })
 
-    it('should create an user of type teacher', async () =>{
+    it('should create an user of type teacher', async () => {
 
-        personRepository = new WorkerRepository(personEntity, appDataSource); 
+        personRepository = new WorkerRepository(personEntity, TestDataSource);
         let person = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let teacherEntity = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -71,9 +61,9 @@ describe('create user service integration tests', () =>{
         expect(results[0].id).toBeDefined();
     });
 
-    it('should create an user of type admin', async () =>{
+    it('should create an user of type admin', async () => {
 
-        personRepository = new WorkerRepository(personEntity, appDataSource); 
+        personRepository = new WorkerRepository(personEntity, TestDataSource);
         let person = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
         let workerAdmin = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
@@ -94,9 +84,9 @@ describe('create user service integration tests', () =>{
         expect(results[0].id).toBeDefined();
     });
 
-    it('should create an user of type student', async () =>{
+    it('should create an user of type student', async () => {
 
-        let studentRepository = new StudentRepository(personEntity, appDataSource); 
+        let studentRepository = new StudentRepository(personEntity, TestDataSource);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
@@ -119,9 +109,9 @@ describe('create user service integration tests', () =>{
         expect(results[0].id).toBeDefined();
     });
 
-    it('should create an user of type parent', async () =>{
+    it('should create an user of type parent', async () => {
 
-        let parentRepository = new ParentRepository(personEntity, appDataSource); 
+        let parentRepository = new ParentRepository(personEntity, TestDataSource);
 
         let parent = DomainMocks.mockParent();
         let parentEntity = ParentEntity.toParentEntity(parent);
