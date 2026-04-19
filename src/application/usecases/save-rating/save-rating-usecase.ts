@@ -2,8 +2,6 @@ import { CreateRatingService } from "@/application/services/rating/create/create
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { SaveRatingUsecaseDto } from "./save-rating-usecase-dto";
 import { FindCurrentSemesterService } from "@/application/services/academic-semester/find-current/find-current-semester.service";
@@ -14,18 +12,13 @@ import { FindStudentService } from "@/application/services/student/find/find.stu
 import { Student } from "@/domain/student/student";
 import { CreateRatingDto } from "@/application/services/rating/create/create.rating.dto";
 
-@Injectable()
 export class SaveRatingUsecase {
 
-    private ratingRepository: RatingRepositoryInterface;
-    private semesterRespository: AcademicSemesterRespositoryInterface;
-    private studentRepository: StudentRepositoryInterface;
-
-    constructor(private repositoryFactory: RepositoryFactoryService) {
-        this.ratingRepository = repositoryFactory.createRepository(TypeRepository.RATING);
-        this.semesterRespository = repositoryFactory.createRepository(TypeRepository.ACADEMIC_SEMESTER);
-        this.studentRepository = repositoryFactory.createRepository(TypeRepository.STUDENT);
-    }
+    constructor(
+        private ratingRepository: RatingRepositoryInterface,
+        private semesterRespository: AcademicSemesterRespositoryInterface,
+        private studentRepository: StudentRepositoryInterface,
+    ) { }
 
     async execute(dto: SaveRatingUsecaseDto): Promise<void> {
         try {

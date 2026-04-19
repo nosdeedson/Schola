@@ -11,7 +11,7 @@ import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-use
 import { FindAllSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/findall/find-all-schoolgroup-usecase';
 import { FindAllClassResponseDto } from './dto/find-all/find-all-class-response-dto';
 
-@ApiTags('Class contoller')
+@ApiTags('Class')
 @Controller('classes')
 export class SchoolgroupController {
 

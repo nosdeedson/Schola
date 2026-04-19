@@ -7,11 +7,10 @@ import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases
 import { FindSemesterUsecase } from '@/application/usecases/semester-usecases/find/find-semester-usecase';
 import { FindAllSemesterUsecase } from '@/application/usecases/semester-usecases/find-all/find-all-semester-usecase';
 import { UpdateSemesterUseCase } from '@/application/usecases/semester-usecases/update/update-semester.usecase';
-import { UpdateAcademicSemesterDto } from '@/application/services/academic-semester/update/udpate.academic-semester.dto';
 import { FindSemesterResponseDto } from './dto/find/find-semester-response-dto';
 import { UpdateAcademicSemesterRequestDto } from './dto/update/update-academic-semester-request-dto';
 
-@ApiTags('Semester controller')
+@ApiTags('Semester')
 @Controller('semesters')
 export class SemesterController {
 

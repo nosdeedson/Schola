@@ -1,4 +1,4 @@
-import { TransferStudendtsRequestDto } from '../../../src/infrastructure/api/controllers/student/dtos/transfer-students-request-dto';
+import { TransferStudendtsRequestDto } from '../../../src/infrastructure/api/controllers/student/dto/transfer-students-request-dto';
 
 type TransferStudendtsRequestDtoMock = {
     studentIds?: string[];

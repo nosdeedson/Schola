@@ -3,7 +3,7 @@ import { StudentRepository } from "@/infrastructure/repositories/student/student
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { CLASS_REPOSITORY, STUDENT_REPOSITORY } from "../../controller-tokens/controller-tokens";
 
-export const transferStudentUsecaseProvider = [
+export const studentTransferUsecaseProvider = [
     {
         provide: TransferStudentsAnotherClassUsecase,
         useFactory: (

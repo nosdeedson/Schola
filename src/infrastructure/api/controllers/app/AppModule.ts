@@ -7,14 +7,16 @@ import { SemesterModule } from "../semester/semester.module";
 import { UsersModule } from "../users/users.module";
 import { AppController } from "./AppController";
 import { TeacherModule } from "../teacher/teacher.module";
+import { StudentModule } from "../student/student.module";
 
 @Global()
 @Module({
     imports: [
-        UsersModule,
         SchoolgroupModule,
         SemesterModule,
+        StudentModule,
         TeacherModule,
+        UsersModule,
         ConfigModule.forRoot({
             envFilePath: `.env.${process.env.NODE_ENV}`,
             //isGlobal: true
@@ -26,4 +28,4 @@ import { TeacherModule } from "../teacher/teacher.module";
         // IsStrongPasswordConstraint
     ]
 })
-export class AppModule{}
+export class AppModule { }

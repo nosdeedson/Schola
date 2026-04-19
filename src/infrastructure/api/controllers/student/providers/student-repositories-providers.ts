@@ -2,7 +2,8 @@ import { StudentRepository } from "@/infrastructure/repositories/student/student
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { Provider } from "@nestjs/common";
 import { RatingRepositiry } from "@/infrastructure/repositories/rating/rating.repository";
-import { CLASS_REPOSITORY, RATING_REPOSITORY, STUDENT_REPOSITORY } from "../../controller-tokens/controller-tokens";
+import { CLASS_REPOSITORY, RATING_REPOSITORY, SEMESTER_REPOSITORY, STUDENT_REPOSITORY } from "../../controller-tokens/controller-tokens";
+import { AcademicSemesterRepository } from "@/infrastructure/repositories/academic-semester/academic-semester.repository";
 
 export const studentsRepositoriesProviders: Provider[] = [
     {
@@ -16,5 +17,9 @@ export const studentsRepositoriesProviders: Provider[] = [
     {
         provide: RATING_REPOSITORY,
         useClass: RatingRepositiry,
+    },
+    {
+        provide: SEMESTER_REPOSITORY,
+        useClass: AcademicSemesterRepository,
     }
 ]

@@ -4,7 +4,7 @@ import { UserUsecasesService } from '../../../../application/usecases/user-useca
 import { CreateUserRequestDto } from './dtos/create-user-dto/create-user-request-dto';
 import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-user/create-user-usecase';
 
-@ApiTags('Users Workers')
+@ApiTags('User')
 @Controller('users')
 export class UsersController {
 
