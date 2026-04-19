@@ -9,20 +9,15 @@ import { FindUserFactoryService } from '@/infrastructure/factory/find-user-facto
 import { CreateUserFactoryService } from '@/infrastructure/factory/create-user-service-factory/create-user-factory-service';
 import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
 import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-user/create-user-usecase';
+import { userProviders } from './providers/user-provider';
 
 @Module({
     controllers: [
         UsersController,
     ],
     providers: [
-        UserUsecasesService,
-        CreateUserFactoryService,
-        RepositoryFactoryService,
-        DeleteUserFactoryService,
-        FindUserFactoryService,
-        UserAggregateResolverService,
+        ...userProviders,
         IsStrongPasswordConstraint,
-        CreateUserUsecase,
     ],
     exports: [
     ],
