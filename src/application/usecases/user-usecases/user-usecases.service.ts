@@ -10,10 +10,12 @@ import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { FindUserOutPutDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto';
 import { FindUserFactoryService } from '@/infrastructure/factory/find-user-factory/find-user-factory.service';
 import { SystemError } from '@/application/services/@shared/system-error';
+import { UserRepositoryInterface } from '@/domain/user/user.repository.interface';
 
 @Injectable()
 export class UserUsecasesService {
-    private userRepository: UserRepository;
+
+    private userRepository: UserRepositoryInterface;
 
     constructor(
         private userServiceFactory: CreateUserFactoryService,
@@ -24,18 +26,7 @@ export class UserUsecasesService {
         this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
     }
 
-    async delete(id: string): Promise<void> {
-        try {
-            let userFindService = new FindUserService(this.userRepository);
-            let userToDelete = await userFindService.execute(id);
-            let deletePerson = await this.userDeleteFactory.deleteUserServiceFactory(userToDelete.accessType);
-            await deletePerson.execute(userToDelete.personId);
-            let deleteUserService = new DeleteUserService(this.userRepository);
-            await deleteUserService.execute(id);
-        } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
-        }
-    }
+
 
     async find(id: string): Promise<FindUserOutPutDto> {
         try {
