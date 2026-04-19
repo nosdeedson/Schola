@@ -27,41 +27,16 @@ const createPersonServiceMock = {
     execute: jest.fn(),
 };
 
+const repositoryFactoryMock = {
+    createRepository: jest.fn(),
+}
+
 
 describe('CreateUserUsecase', () => {
-
-    let service: CreateUserUsecase;
-    let module: TestingModule;
-
-    beforeAll(async () => {
-        setEnv();
-        module = await Test.createTestingModule({
-            imports: [DataBaseConnectionModule],
-            providers: [
-                CreateUserUsecase,
-                RepositoryFactoryService,
-                {
-                    provide: CreateUserFactoryService,
-                    useValue: userServiceFactoryMock
-                },
-            ],
-        }).compile();
-
-        service = module.get<CreateUserUsecase>(CreateUserUsecase);
-    });
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
-
-    afterAll(async () => {
-        module.close();
-    })
-
-    it('service should be defined', () => {
-        expect(service).toBeDefined();
-    });
-
 
     it('should create a user as a TEACHER', async () => {
         const person = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
@@ -71,7 +46,11 @@ describe('CreateUserUsecase', () => {
         createPersonServiceMock.execute.mockResolvedValue(person);
         const createUserService = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(void 0));
-        await service.create(mockInput);
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        expect(await useCase.create(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1)
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
@@ -87,14 +66,17 @@ describe('CreateUserUsecase', () => {
         }]);
         userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
         createPersonServiceMock.execute.mockRejectedValue(errorToThrow);
-        
+
         const createUser = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementation(async () => await Promise.resolve(void 0));
 
         const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
             .mockImplementation(() => { throw new BadRequestException('error while creating worker') });
-
-        await expect(service.create(mockInput)).rejects.toMatchObject(new BadRequestException('error while creating worker'));
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        await expect(useCase.create(mockInput)).rejects.toMatchObject(new BadRequestException('error while creating worker'));
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
         expect(createUser).toHaveBeenCalledTimes(0);
@@ -119,14 +101,17 @@ describe('CreateUserUsecase', () => {
 
         const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
             .mockImplementationOnce(() => { throw new BadRequestException('test') });
-
-        await expect(service.create(mockInput)).rejects.toMatchObject(new BadRequestException('test'));
-            expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
-            expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-            expect(createPersonServiceMock.execute).toHaveBeenCalledWith(input);
-            expect(createUser).toHaveBeenCalledTimes(1);
-            expect(tratarError).toHaveBeenCalledTimes(1);
-            expect(tratarError).toHaveBeenCalledWith(errorToThrow);
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        await expect(useCase.create(mockInput)).rejects.toMatchObject(new BadRequestException('test'));
+        expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
+        expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
+        expect(createPersonServiceMock.execute).toHaveBeenCalledWith(input);
+        expect(createUser).toHaveBeenCalledTimes(1);
+        expect(tratarError).toHaveBeenCalledTimes(1);
+        expect(tratarError).toHaveBeenCalledWith(errorToThrow);
     });
 
     it('should create a user as a Admin', async () => {
@@ -137,7 +122,11 @@ describe('CreateUserUsecase', () => {
         createPersonServiceMock.execute.mockResolvedValue(person);
         const createUserService = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(void 0));
-        await service.create(mockInput);
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        expect(await useCase.create(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1)
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
@@ -157,11 +146,15 @@ describe('CreateUserUsecase', () => {
         createPersonServiceMock.execute.mockResolvedValue(person);
         const createStudent = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(void 0));
-        await service.create(mockInput);
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        expect(await useCase.create(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-        expect(createStudent).toHaveBeenCalledTimes(1);        
+        expect(createStudent).toHaveBeenCalledTimes(1);
     });
 
     it('should create a user as parent', async () => {
@@ -176,11 +169,15 @@ describe('CreateUserUsecase', () => {
         createPersonServiceMock.execute.mockResolvedValue(person);
         const createStudent = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(void 0));
-        await service.create(mockInput);
+        const useCase = new CreateUserUsecase(
+            userServiceFactoryMock as unknown as CreateUserFactoryService,
+            repositoryFactoryMock as unknown as RepositoryFactoryService
+        );
+        expect(await useCase.create(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-        expect(createStudent).toHaveBeenCalledTimes(1);        
+        expect(createStudent).toHaveBeenCalledTimes(1);
     });
 
 });

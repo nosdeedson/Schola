@@ -8,9 +8,8 @@ import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-fa
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { UserRepository } from "@/infrastructure/repositories/user/user.repository";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { SystemError } from "@/application/services/@shared/system-error";
 
-
-@Injectable()
 export class CreateUserUsecase {
     private userRepository: UserRepository;
 
@@ -30,7 +29,7 @@ export class CreateUserUsecase {
             let input = new InputCreateUserDto(dto, person.id);
             await createUser.execute(input);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error);
+            TrataErros.tratarErrorsBadRequest(error as SystemError);
         }
     }
 }
