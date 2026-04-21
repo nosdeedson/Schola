@@ -9,7 +9,7 @@ import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-u
 export class UsersController {
 
     constructor(
-        private userUsecase: UserUsecasesService,
+        //private userUsecase: UserUsecasesService,
         private createUser: CreateUserUsecase
     ) { }
 
@@ -18,6 +18,6 @@ export class UsersController {
     @ApiResponse({ status: '4XX', description: 'Retun when error if request has invalid information' })
     @Post()
     async create(@Body() dto: CreateUserRequestDto): Promise<void> {
-        return await this.createUser.create(dto);
+        return await this.createUser.execute(dto);
     }
 }
