@@ -6,9 +6,10 @@ import { DeleteStudentService } from '@/application/services/student/delete/dele
 import { DeleteWorkerService } from '@/application/services/worker/delete/delete.worker.service';
 import { AccessType } from '@/domain/user/access.type';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
+import { DeleteUserFactoryInterface } from '@/interfaces/factory/delete-user-factory.interface';
 
 @Injectable()
-export class DeleteUserFactoryService {
+export class DeleteUserFactoryService implements DeleteUserFactoryInterface {
 
     constructor(private userAggregateContext: UserAggregateResolverService) { }
 

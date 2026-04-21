@@ -4,7 +4,7 @@ import { CreateWorkerService } from '@/application/services/worker/create/create
 import { AccessType } from '@/domain/user/access.type';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
 import { CreateParentStudentService } from '@/application/services/parent-student/create/create.parent.student.service';
-import { CreateUserFactotyInterface } from '@/interfaces/create-user-factory.interface';
+import { CreateUserFactotyInterface } from '@/interfaces/factory/create-user-factory.interface';
 
 export class CreateUserFactoryService implements CreateUserFactotyInterface {
 

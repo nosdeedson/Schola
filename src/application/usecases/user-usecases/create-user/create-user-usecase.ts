@@ -7,8 +7,8 @@ import { UserRepository } from "@/infrastructure/repositories/user/user.reposito
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
-import { CreateUserFactotyInterface } from "@/interfaces/create-user-factory.interface";
-import { RepositoryFactoryInterface } from "@/interfaces/repository-factory.interface";
+import { CreateUserFactotyInterface } from "@/interfaces/factory/create-user-factory.interface";
+import { RepositoryFactoryInterface } from "@/interfaces/factory/repository-factory.interface";
 
 export class CreateUserUsecase {
     private userRepository: UserRepositoryInterface;
@@ -17,11 +17,11 @@ export class CreateUserUsecase {
         private userServiceFactory: CreateUserFactotyInterface, 
         private repositoryFactory: RepositoryFactoryInterface,
     ) {
-        this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
     }
-
+    
     async execute(dto: CreateUserRequestDto): Promise<void> {
         try {
+            this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
             let createPerson = CreatePersonFactoryService.createDTOPersonFactory(dto);
             let createperson = this.userServiceFactory.createUserServiceFactory(dto.accessType);
             const person = await createperson.execute(createPerson);

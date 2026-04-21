@@ -20,6 +20,7 @@ import { userProviders } from './providers/user-provider';
         IsStrongPasswordConstraint,
         RepositoryFactoryService,
         CreateUserFactoryService,
+        DeleteUserFactoryService,
         UserAggregateResolverService,
     ],
     exports: [

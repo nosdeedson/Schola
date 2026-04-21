@@ -50,7 +50,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        expect(await useCase.create(mockInput)).toBe(void 0);
+        expect(await useCase.execute(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1)
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
@@ -76,7 +76,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        await expect(useCase.create(mockInput)).rejects.toMatchObject(new BadRequestException('error while creating worker'));
+        await expect(useCase.execute(mockInput)).rejects.toMatchObject(new BadRequestException('error while creating worker'));
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
         expect(createUser).toHaveBeenCalledTimes(0);
@@ -105,7 +105,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        await expect(useCase.create(mockInput)).rejects.toMatchObject(new BadRequestException('test'));
+        await expect(useCase.execute(mockInput)).rejects.toMatchObject(new BadRequestException('test'));
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
         expect(createPersonServiceMock.execute).toHaveBeenCalledWith(input);
@@ -126,7 +126,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        expect(await useCase.create(mockInput)).toBe(void 0);
+        expect(await useCase.execute(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1)
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
@@ -150,7 +150,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        expect(await useCase.create(mockInput)).toBe(void 0);
+        expect(await useCase.execute(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
@@ -173,7 +173,7 @@ describe('CreateUserUsecase', () => {
             userServiceFactoryMock as unknown as CreateUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        expect(await useCase.create(mockInput)).toBe(void 0);
+        expect(await useCase.execute(mockInput)).toBe(void 0);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledTimes(1);
         expect(userServiceFactoryMock.createUserServiceFactory).toHaveBeenCalledWith(mockInput.accessType);
         expect(createPersonServiceMock.execute).toHaveBeenCalledTimes(1);
