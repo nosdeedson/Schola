@@ -7,11 +7,9 @@ import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindUserService } from "./find.user.service";
-
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 describe('find user integration unit test', () =>{
-
-    let appDataSource: DataSource;
 
     let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
@@ -19,22 +17,15 @@ describe('find user integration unit test', () =>{
     let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
-    beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
+    beforeAll(async () =>{
+        userEntity = TestDataSource.getRepository(UserEntity);
+        userRepository = new UserRepository(userEntity, TestDataSource);
 
-        userEntity = appDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, appDataSource);
-
-        workerEntity = appDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerEntity, appDataSource);
+        workerEntity = TestDataSource.getRepository(WorkerEntity);
+        workerRepository = new WorkerRepository(workerEntity, TestDataSource);
     });
 
     afterEach(async () =>{
-        await appDataSource.createQueryBuilder().delete().from(UserEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(PersonEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 

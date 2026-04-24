@@ -1,5 +1,5 @@
-import { OutputFindWorkerDto } from "../find/find.worker.dto";
+import { FindWorkerDto } from "../find/find.worker.dto";
 
 export interface OutputFindAllWorkerDto{
-    all: OutputFindWorkerDto[];
+    all: FindWorkerDto[];
 }

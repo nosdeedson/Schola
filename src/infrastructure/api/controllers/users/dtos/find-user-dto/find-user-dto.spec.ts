@@ -1,4 +1,4 @@
-import { FindUserOutPutDto } from './find-user-outPut-dto';
+import { FindUserResponseDto } from './find-user-response-dto';
 
 describe('FindUserDto', () => {
   it('should be defined', () => {

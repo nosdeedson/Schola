@@ -1,6 +1,6 @@
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
-import { OutputFindWorkerDto } from "../find/find.worker.dto";
+import { FindWorkerDto } from "../find/find.worker.dto";
 import { OutputFindAllWorkerDto } from "./list.worker.dto";
 
 export class FindAllWorkerService {
@@ -16,7 +16,7 @@ export class FindAllWorkerService {
         
         let results : OutputFindAllWorkerDto =  { 
             all: workers.map((it: WorkerEntity) =>{
-                let output: OutputFindWorkerDto = {
+                let output: FindWorkerDto = {
                     birthday: it.birthday,
                     createdAt: it.createdAt,
                     id: it.id,

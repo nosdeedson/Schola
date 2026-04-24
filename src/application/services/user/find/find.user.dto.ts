@@ -5,6 +5,7 @@ export class FindUserDto{
     personId: string;
     email: string;
     nickname: string;
+    name: string;
     accessType: AccessType;
 
     constructor(
@@ -12,12 +13,14 @@ export class FindUserDto{
         personId: string,
         email: string,
         nickname: string,
+        name: string,
         accessType: AccessType
     ) {
         this.id = id;
         this.personId = personId;
         this.email = email;
         this.nickname = nickname;
+        this.name = name;
         this.accessType = accessType;
     }
 }

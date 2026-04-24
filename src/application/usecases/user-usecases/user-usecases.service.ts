@@ -7,7 +7,7 @@ import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-fa
 import { TypeRepository } from '@/infrastructure/factory/repositiry-factory/type-repository';
 import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
-import { FindUserOutPutDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto';
+import { FindUserResponseDto } from '../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-response-dto';
 import { FindUserFactoryService } from '@/infrastructure/factory/find-user-factory/find-user-factory.service';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { UserRepositoryInterface } from '@/domain/user/user.repository.interface';
@@ -28,19 +28,9 @@ export class UserUsecasesService {
 
 
 
-    async find(id: string): Promise<FindUserOutPutDto> {
-        try {
-            let findUserService = new FindUserService(this.userRepository);
-            let user = await findUserService.execute(id);
-            let findPersonService = await this.userFindFactory.findUserServiceFactory(user.accessType);
-            let person = await findPersonService.execute(user.personId) as any;
-            return new FindUserOutPutDto(user, person.name);
-        } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
-        }
-    }
 
-    async findAll(): Promise<FindUserOutPutDto[]> {
+
+    async findAll(): Promise<FindUserResponseDto[]> {
         // let findAllUserService = new FindAllUserService(this.userRepository);
         // const users = await findAllUserService.execute();
         // const usersOutput = [];

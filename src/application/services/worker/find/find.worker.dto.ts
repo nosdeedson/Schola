@@ -2,7 +2,7 @@ export interface InputFindWorkerDto{
     id: string
 }
 
-export interface OutputFindWorkerDto{
+export interface FindWorkerDto{
     id?: string;
     createdAt?: Date;
     udpatedAt?: Date;

@@ -1,22 +1,22 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { setEnv } from '../../../__mocks__/env.mock';
-import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
-import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service';
-import { DeleteUserFactoryService } from '../../../factory/delete-user-factory/delete-user-factory.service';
-import { UserAggregateResolverService } from '../../../factory/user-aggregate-resolver/user-aggregate-resolver.service';
-import { CreateUserFactoryService } from '../../../factory/create-user-service-factory/create-user-factory-service';
-import { FindUserFactoryService } from '../../../factory/find-user-factory/find-user-factory.service';
-import { mockCreateUsersDto } from '../../../__mocks__/mock-dtos/mock-dtos';
+import { DeleteUserUsecase } from '@/application/usecases/user-usecases/delete/delete-user-usecase';
+import { FindUserUsecase } from '@/application/usecases/user-usecases/find/find-user-usecase';
 import { BadRequestException } from '@nestjs/common';
-import { UserUsecasesService } from '../../../../application/usecases/user-usecases/user-usecases.service';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUsecase } from '../../../../application/usecases/user-usecases/create-user/create-user-usecase';
 import { AccessType } from '../../../../domain/user/access.type';
+import { setEnv } from '../../../__mocks__/env.mock';
+import { mockCreateUsersDto, mockFindUserDto } from '../../../__mocks__/mock-dtos/mock-dtos';
+import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
+import { CreateUserFactoryService } from '../../../factory/create-user-service-factory/create-user-factory-service';
+import { DeleteUserFactoryService } from '../../../factory/delete-user-factory/delete-user-factory.service';
+import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service';
+import { UserAggregateResolverService } from '../../../factory/user-aggregate-resolver/user-aggregate-resolver.service';
 import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
-import { userProviders } from './providers/user-provider';
 import { userDeleteUsecaseProvider } from './providers/user-delete-usecase-providers';
-import { DeleteUserUsecase } from '@/application/usecases/user-usecases/delete/delete-user-usecase';
-
+import { userProviders } from './providers/user-provider';
+import { UsersController } from './users.controller';
+import { SystemError } from '@/application/services/@shared/system-error';
+import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -110,6 +110,29 @@ describe('UsersController', () => {
       expect(await controller.delete(wantedId)).toBe(void 0);
       expect(deleteUsecase).toHaveBeenCalledTimes(1);
       expect(deleteUsecase).toHaveBeenCalledWith(wantedId);
+    });
+  });
+
+  describe('find user', () => {
+    it('should find a user', async () => {
+      const dto = mockFindUserDto();
+      const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
+        .mockImplementation(() => Promise.resolve(dto));
+      const result = await controller.find(dto.id);
+      expect(result).toBeDefined();
+      expect(result.id).toStrictEqual(dto.id);
+      expect(result.accessType).toStrictEqual(dto.accessType);
+      expect(usecase).toHaveBeenCalledTimes(1);
+      expect(usecase).toHaveBeenCalledWith(dto.id);
+    });
+
+    it('should throw an error if user not found', async () => {
+      const error = new SystemError([{ context: 'user', message: 'user not found' }]);
+      const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
+        .mockImplementation(() => {throw error});
+      await expect(controller.find("123")).rejects.toMatchObject(error);
+      expect(usecase).toHaveBeenCalledTimes(1);
+      expect(usecase).toHaveBeenCalledWith('123');
     });
   });
 });

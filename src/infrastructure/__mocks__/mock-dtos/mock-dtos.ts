@@ -1,6 +1,6 @@
 import { FindUserDto } from "../../../application/services/user/find/find.user.dto";
 import { AccessType } from "../../../domain/user/access.type";
-import { OutputFindWorkerDto } from '../../../application/services/worker/find/find.worker.dto'
+import { FindWorkerDto } from '../../../application/services/worker/find/find.worker.dto'
 import { RoleEnum } from "../../../domain/worker/roleEnum";
 import { CreateUserRequestDto } from "../../api/controllers/users/dtos/create-user-dto/create-user-request-dto";
 import { ClassesOfTeacherDto } from "../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
@@ -15,14 +15,15 @@ export function mockFindUserDto(
         personId: '8204a6ee-b80b-4ace-9b32-92a11195cda4',
         email: 'john.doe@example.com',
         nickname: 'johndoe',
+        name: 'john doe',
         accessType: AccessType.TEACHER,
         ...overrides,
-    }
+    } as FindUserDto;
 }
 
 export function mockOutputFindWorkerDto(
-    overrides: Partial<OutputFindWorkerDto> = {},
-): OutputFindWorkerDto {
+    overrides: Partial<FindWorkerDto> = {},
+): FindWorkerDto {
     return {
         id: '6956c177-6bf8-8326-afdf-61bafe1207d1',
         createdAt: new Date(),

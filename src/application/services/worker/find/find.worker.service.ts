@@ -1,6 +1,6 @@
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
-import { OutputFindWorkerDto } from "./find.worker.dto";
+import { FindWorkerDto } from "./find.worker.dto";
 import { FindGenericService } from "@/application/services/@shared/find-generic-service";
 import { SystemError } from "@/application/services/@shared/system-error";
 
@@ -12,12 +12,12 @@ export class FindWorkerService extends FindGenericService {
         this.workerRepository = workerRepository;
     }
 
-    public async execute(id: string): Promise<OutputFindWorkerDto> {
+    public async execute(id: string): Promise<FindWorkerDto> {
         let worker = await this.workerRepository.find(id) as WorkerEntity;
         if (!worker) {
             throw new SystemError([{ context: "find user", message: "Failed to find the user" }]);
         }
-        let output = {} as OutputFindWorkerDto;
+        let output = {} as FindWorkerDto;
         output = {
             birthday: worker.birthday,
             name: worker.fullName,

@@ -13,7 +13,7 @@ import { mockFindUserDto, mockOutputFindWorkerDto } from "../../../infrastructur
 import { BadRequestException } from "@nestjs/common";
 import { SystemError } from "../../services/@shared/system-error";
 import { TrataErros } from "../../../infrastructure/utils/trata-erros/trata-erros";
-import { FindUserOutPutDto } from "../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-outPut-dto";
+import { FindUserResponseDto } from "../../../infrastructure/api/controllers/users/dtos/find-user-dto/find-user-response-dto";
 
 
 const userServiceFactoryMock = {
@@ -82,26 +82,7 @@ describe('UserUsecasesService', () => {
 
   describe('find', () => {
 
-    it('should find a user which role is teacher', async () => {
-      const foundUser = mockFindUserDto();
-      const wantedId = foundUser.id;
-      const person = mockOutputFindWorkerDto();
-      const findUserService = jest.spyOn(FindUserService.prototype, 'execute')
-        .mockImplementation(async () => await Promise.resolve(foundUser));
 
-      userServiceFindFactory.findUserServiceFactory.mockReturnValue(findPersonServiceMock);
-      findPersonServiceMock.execute.mockReturnValue(async () => await Promise.resolve(person));
-
-      const result = await service.find(wantedId);
-      expect(result).toBeInstanceOf(FindUserOutPutDto);
-      expect(result).toHaveProperty('role', RoleEnum.TEACHER);
-      expect(findUserService).toHaveBeenCalledTimes(1)
-      expect(findUserService).toHaveBeenCalledWith(wantedId);
-      expect(userServiceFindFactory.findUserServiceFactory).toHaveBeenCalledTimes(1);
-      expect(userServiceFindFactory.findUserServiceFactory).toHaveBeenCalledWith(foundUser.accessType);
-      expect(findPersonServiceMock.execute).toHaveBeenCalledTimes(1);
-      expect(findPersonServiceMock.execute).toHaveBeenCalledWith(foundUser.personId);
-    });
 
     it('when trying to find a user should fail', async () => {
       const person = mockOutputFindWorkerDto();
