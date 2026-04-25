@@ -7,28 +7,28 @@ import { UserRepository } from '../user/user.repository';
 import { WorkerRepository } from "../worker/worker.repository";
 import { TestDataSource } from '../config-test/test.datasource';
 
-describe('UserRepository unit test', () =>{
+describe('UserRepository unit test', () => {
 
     let userModel: Repository<UserEntity>;
     let userRepository: UserRepository;
     let workerModel: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
-    beforeAll(async () =>{
+    beforeAll(async () => {
         userModel = TestDataSource.getRepository(UserEntity);
         userRepository = new UserRepository(userModel, TestDataSource);
         workerModel = TestDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerModel, TestDataSource); 
+        workerRepository = new WorkerRepository(workerModel, TestDataSource);
     });
 
-    it('models e repositories must be instantiated', async () =>{
+    it('models e repositories must be instantiated', async () => {
         expect(workerModel).toBeDefined();
         expect(workerRepository).toBeDefined();
         expect(userModel).toBeDefined();
         expect(userRepository).toBeDefined();
     });
 
-    it('should save a user in BD', async () =>{
+    it('should save a user in BD', async () => {
         let user = DomainMocks.mockUserTeacher();
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
@@ -42,7 +42,7 @@ describe('UserRepository unit test', () =>{
         expect(result.id).toBe(wantedid);
     });
 
-    it('should delete a user in BD', async () =>{
+    it('should delete a user in BD', async () => {
         let user = DomainMocks.mockUserTeacher();
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
@@ -61,7 +61,7 @@ describe('UserRepository unit test', () =>{
         expect(result).toBeNull();
     });
 
-    it('should find a user in BD', async () =>{
+    it('should find a user in BD', async () => {
         let user = DomainMocks.mockUserTeacher();
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
@@ -78,7 +78,7 @@ describe('UserRepository unit test', () =>{
 
     })
 
-    it('should find all users in BD', async () =>{
+    it('should find all users in BD', async () => {
         let user = DomainMocks.mockUserAdmin();
         let user1 = DomainMocks.mockUserTeacher();
 
@@ -97,10 +97,12 @@ describe('UserRepository unit test', () =>{
 
         let results = await userRepository.findAll();
         expect(results).toBeDefined();
-        expect(results.length).toBe(2)
+        expect(results.length).toBe(2);
+        expect(results[0].person).toBeDefined();
+        expect(results[1].person).toBeDefined();
     });
 
-    it('should update an user in BD', async () =>{
+    it('should update an user in BD', async () => {
         let user = DomainMocks.mockUserTeacher();
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);

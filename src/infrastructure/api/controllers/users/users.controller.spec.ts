@@ -16,7 +16,11 @@ import { userDeleteUsecaseProvider } from './providers/user-delete-usecase-provi
 import { userProviders } from './providers/user-provider';
 import { UsersController } from './users.controller';
 import { SystemError } from '@/application/services/@shared/system-error';
-import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
+import { FindAllUserUsecase } from '@/application/usecases/user-usecases/find-all/find-all-user-usecase';
+import { FindAllUserDto } from '@/application/services/user/findAll/findAll.user.dto';
+import { FindUserResponseDto } from './dtos/find-user-dto/find-user-response-dto';
+import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
+import { UserEntity } from '@/infrastructure/entities/user/user.entity';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -95,7 +99,7 @@ describe('UsersController', () => {
   describe("Delete user", () => {
     it('should throw an error while deleting an user', async () => {
       const deleteUseCase = jest.spyOn(DeleteUserUsecase.prototype, 'execute')
-        .mockImplementation(() => {throw new BadRequestException("User not found.")});
+        .mockImplementation(() => { throw new BadRequestException("User not found.") });
       const wantedId = '123456';
       await expect(controller.delete(wantedId)).rejects
         .toMatchObject(new BadRequestException("User not found."));
@@ -129,10 +133,37 @@ describe('UsersController', () => {
     it('should throw an error if user not found', async () => {
       const error = new SystemError([{ context: 'user', message: 'user not found' }]);
       const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
-        .mockImplementation(() => {throw error});
+        .mockImplementation(() => { throw error });
       await expect(controller.find("123")).rejects.toMatchObject(error);
       expect(usecase).toHaveBeenCalledTimes(1);
       expect(usecase).toHaveBeenCalledWith('123');
     });
+  });
+
+  describe('findAll', () => {
+    it('should return an empty array', async () => {
+      const users = new FindAllUserDto([]);
+      const usecase = jest.spyOn(FindAllUserUsecase.prototype, 'execute')
+        .mockImplementation(() => Promise.resolve(users));
+      const result = await controller.findAll();
+      expect(result).toHaveLength(0);
+      expect(usecase).toHaveBeenCalledTimes(1);
+    });
+
+    it('should find users', async () => {
+      const user1 = mockUser(AccessType.ADMIN);
+      const user2 = mockUser(AccessType.TEACHER);
+      const userEntity1 = UserEntity.toUserEntity(user1);
+      const userEntity2 = UserEntity.toUserEntity(user2);
+      const dto = new FindAllUserDto([userEntity1, userEntity2]);
+      const usecase = jest.spyOn(FindAllUserUsecase.prototype, 'execute')
+        .mockImplementation(() => Promise.resolve(dto));
+      const result = await controller.findAll();
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(2);
+      expect([result[0].id, result[1].id].includes(userEntity1.id)).toBeTruthy();
+      expect([result[0].id, result[1].id].includes(userEntity2.id)).toBeTruthy();
+      expect(usecase).toHaveBeenCalledTimes(1);
+    })
   });
 });
