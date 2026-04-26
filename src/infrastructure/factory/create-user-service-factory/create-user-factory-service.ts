@@ -6,6 +6,7 @@ import { UserAggregateResolverService } from '../user-aggregate-resolver/user-ag
 import { CreateParentStudentService } from '@/application/services/parent-student/create/create.parent.student.service';
 import { CreateUserFactotyInterface } from '@/interfaces/factory/create-user-factory.interface';
 
+@Injectable()
 export class CreateUserFactoryService implements CreateUserFactotyInterface {
 
     constructor(private readonly userAggregateContext: UserAggregateResolverService) { }

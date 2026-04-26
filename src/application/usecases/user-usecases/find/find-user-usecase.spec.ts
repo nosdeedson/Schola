@@ -27,6 +27,10 @@ const findPersonServiceMock = {
 
 describe('FindUserUsecase', () => {
 
+    afterEach(async () => {
+        jest.clearAllMocks();
+    });
+
     it('should throw an exception while finding an user', async () => {
         const error = new SystemError([{ context: 'user', message: 'user not found' }]);
         const findUserService = jest.spyOn(FindUserService.prototype, 'execute')

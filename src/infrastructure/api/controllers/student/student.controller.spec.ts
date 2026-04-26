@@ -9,19 +9,17 @@ import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
 import { NotFoundException } from '@nestjs/common';
+import { providers } from './providers/students.providers';
 
 describe('StudentController', () => {
   let controller: StudentController;
   let module: TestingModule;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [StudentController],
-      providers: [
-        FindStudentRantingUsecase,
-        TransferStudentsAnotherClassUsecase,
-      ],
+      providers: [...providers],
       imports: [
         DataBaseConnectionModule
       ]

@@ -21,9 +21,8 @@ describe('FindSemesterUsecase', () => {
 
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         const usecase = new FindSemesterUsecase(repository);
-        const result = await expect(usecase.execute(notExist)).rejects
+        await expect(usecase.execute(notExist)).rejects
             .toMatchObject(new NotFoundException('Academic Semester not found'));
-        expect(result).toBeNull();
         expect(findSemesterServive).toHaveBeenCalledTimes(1);
         expect(findSemesterServive).toHaveBeenCalledWith(notExist);
         expect(tratarErros).toHaveBeenCalledTimes(1);
@@ -33,7 +32,7 @@ describe('FindSemesterUsecase', () => {
         const semesterDto = mockFindAcademicSemesterDto();
         const wantedId = semesterDto.id;
         const findSemesterServive = jest.spyOn(FindAcademicSemesterService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(null));
+            .mockImplementation(() => Promise.resolve(semesterDto));
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         const usecase = new FindAcademicSemesterService(repository);
         const result = await usecase.execute(wantedId);
