@@ -18,7 +18,7 @@ describe('UpdateAllStudentsService integration tests', () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         classEntity = TestDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, TestDataSource);
+        classRepository = new ClassRepository(TestDataSource);
     });
 
     afterEach(async () => {

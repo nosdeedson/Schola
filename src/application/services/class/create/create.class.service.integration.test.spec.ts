@@ -23,7 +23,7 @@ describe('create class service integration test', () => {
 
     beforeAll(async () => {
         classEntity = TestDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, TestDataSource);
+        classRepository = new ClassRepository(TestDataSource);
         dayOfWeek1 = DateHelper.getDayOfweek(aValidDate1);
         dayOfWeek2 = DateHelper.getDayOfweek(aValidDate2);
         DateHelper.setTime(times, dayOfWeek1, '08:00');

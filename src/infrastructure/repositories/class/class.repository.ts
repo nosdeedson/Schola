@@ -2,14 +2,18 @@ import { ClassesOfTeacherDto } from "@/application/usecases/teacher-list-classes
 import { ClassRepositoryInterface } from "../../../domain/class/class.repository.interface";
 import { ClassEntity } from "../../../infrastructure/entities/class/class.entity";
 import { DataSource, QueryFailedError, Repository } from "typeorm";
+import { Inject, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
-
+@Injectable()
 export class ClassRepository implements ClassRepositoryInterface {
-
+    private classRepository: Repository<ClassEntity>;
     constructor(
-        private classRepository: Repository<ClassEntity>,
+        @Inject('DATA_SOURCE')
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.classRepository = this.dataSource.getRepository(ClassEntity)
+    }
 
     async create(entity: ClassEntity, relation?: ClassEntity): Promise<ClassEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -20,7 +24,7 @@ export class ClassRepository implements ClassRepositoryInterface {
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -48,10 +52,10 @@ export class ClassRepository implements ClassRepositoryInterface {
         return model;
     }
 
-    async findByClassCode(classCode: string): Promise<ClassEntity>{
+    async findByClassCode(classCode: string): Promise<ClassEntity> {
         const model = this.classRepository.findOne({
-            where: {classCode: classCode},
-            relations:{
+            where: { classCode: classCode },
+            relations: {
                 students: true,
                 teacher: true
             }
@@ -67,8 +71,8 @@ export class ClassRepository implements ClassRepositoryInterface {
             }
         })
         return all;
-    }   
-    
+    }
+
     async findByTeacherId(teacherId: string): Promise<ClassEntity[]> {
         const myClasses = await this.classRepository.find({
             where: {

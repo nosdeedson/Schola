@@ -26,12 +26,12 @@ export class RepositoryFactoryService {
 
     constructor(@Inject("DATA_SOURCE") private readonly dataSource: DataSource) { }
 
-    public createRepository(whichRepository: TypeRepository): any{
+    public createRepository(whichRepository: TypeRepository): any {
         switch (whichRepository) {
             case TypeRepository.ACADEMIC_SEMESTER:
                 return new AcademicSemesterRepository(this.dataSource.getRepository(AcademicSemesterEntity), this.dataSource);
             case TypeRepository.CLASS:
-                return new ClassRepository(this.dataSource.getRepository(ClassEntity), this.dataSource) as ClassRepository;
+                return new ClassRepository(this.dataSource) as ClassRepository;
             case TypeRepository.COMMENT:
                 return new CommentRepository(this.dataSource.getRepository(CommentEntity), this.dataSource);
             case TypeRepository.PARENT:
@@ -44,10 +44,10 @@ export class RepositoryFactoryService {
                 return new StudentRepository(this.dataSource.getRepository(StudentEntity), this.dataSource);
             case TypeRepository.USER:
                 return new UserRepository(this.dataSource.getRepository(UserEntity), this.dataSource);
-                case TypeRepository.WORKER:
+            case TypeRepository.WORKER:
                 return new WorkerRepository(this.dataSource.getRepository(WorkerEntity), this.dataSource);
             default:
-                throw new SystemError([{context: 'RepositoryFactory', message: "Erro while creating repository."}])
+                throw new SystemError([{ context: 'RepositoryFactory', message: "Erro while creating repository." }])
         }
     }
 }

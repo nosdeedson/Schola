@@ -11,27 +11,27 @@ import { CreateWorkerDto } from "./create.worker.dto";
 import { CreateWorkerService } from "./create.worker.service";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 
-describe("CreateWorkerService integration test", () =>{
+describe("CreateWorkerService integration test", () => {
     let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepositoryInterface;
     let schoolGroupEntity: Repository<ClassEntity>;
-    let schoolGroupRepository: ClassRepositoryInterface; 
+    let schoolGroupRepository: ClassRepositoryInterface;
 
     beforeAll(async () => {
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(workerEntity, TestDataSource);
         schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
-        schoolGroupRepository = new ClassRepository(schoolGroupEntity, TestDataSource) as ClassRepository;
+        schoolGroupRepository = new ClassRepository(TestDataSource) as ClassRepository;
     });
-            
-    it("repositories must be instantiated", async () =>{
+
+    it("repositories must be instantiated", async () => {
         expect(workerRepository).toBeDefined();
         expect(schoolGroupRepository).toBeDefined();
     })
 
-    it('create a worker', async () =>{
+    it('create a worker', async () => {
         let service = new CreateWorkerService(workerRepository, schoolGroupRepository);
-        let worker =  {
+        let worker = {
             name: 'edson',
             birthday: new Date(),
             role: RoleEnum.TEACHER,

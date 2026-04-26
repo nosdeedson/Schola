@@ -25,7 +25,7 @@ describe('FindTeacherClassRatingService integration test', () => {
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         wordRepository = new WorkerRepository(workerEntity, TestDataSource);
         classEntity = TestDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classEntity, TestDataSource);
+        classRepository = new ClassRepository(TestDataSource);
     });
 
     it('all entities should be instantiated', async () => {

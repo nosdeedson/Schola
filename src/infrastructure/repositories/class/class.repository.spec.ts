@@ -23,7 +23,7 @@ describe('ClassRepository unit test', () => {
 
     beforeAll(() => {
         classModel = TestDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(classModel, TestDataSource);
+        classRepository = new ClassRepository(TestDataSource);
         teacherModel = TestDataSource.getRepository(WorkerEntity);
         teacherRepository = new WorkerRepository(teacherModel, TestDataSource);
         studentModel = TestDataSource.getRepository(StudentEntity);

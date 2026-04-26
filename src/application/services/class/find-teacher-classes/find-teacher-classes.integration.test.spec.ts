@@ -24,8 +24,8 @@ describe('FindTeacherClass integration test', () => {
         studentRepository = new StudentRepository(studendtEntity, TestDataSource);
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         wordRepository = new WorkerRepository(workerEntity, TestDataSource);
-        classEntity = TestDataSource.getRepository(ClassEntity);    
-        classRepository = new ClassRepository(classEntity, TestDataSource);
+        classEntity = TestDataSource.getRepository(ClassEntity);
+        classRepository = new ClassRepository(TestDataSource);
     });
 
     it('all variables must be instantiated', () => {
@@ -47,8 +47,8 @@ describe('FindTeacherClass integration test', () => {
         const studentEntity = StudentEntity.toStudentEntity(student1);
         const student2 = DomainMocks.mockStudentWithoutParent();
         const studentEntity2 = StudentEntity.toStudentEntity(student2);
-        expect( await studentRepository.create(studentEntity));
-        expect( await studentRepository.create(studentEntity2));
+        expect(await studentRepository.create(studentEntity));
+        expect(await studentRepository.create(studentEntity2));
 
         const worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
         const workerEntity = WorkerEntity.toWorkerEntity(worker);
@@ -68,7 +68,7 @@ describe('FindTeacherClass integration test', () => {
         expect(result[0].students).toHaveLength(2);
         expect(result[0].students[0].idStudent).toBe(student1.getId());
         expect(result[0].students[1].idStudent).toBe(student2.getId());
-        expect(result[0].classId).toBe(classModel.getId());    
+        expect(result[0].classId).toBe(classModel.getId());
     });
 
 });
