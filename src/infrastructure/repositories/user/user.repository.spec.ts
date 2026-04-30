@@ -18,7 +18,7 @@ describe('UserRepository unit test', () => {
         userModel = TestDataSource.getRepository(UserEntity);
         userRepository = new UserRepository(userModel, TestDataSource);
         workerModel = TestDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerModel, TestDataSource);
+        workerRepository = new WorkerRepository(TestDataSource);
     });
 
     it('models e repositories must be instantiated', async () => {

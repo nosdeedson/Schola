@@ -23,7 +23,7 @@ describe('FindTeacherClassRatingService integration test', () => {
         studendtEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studendtEntity, TestDataSource);
         workerEntity = TestDataSource.getRepository(WorkerEntity);
-        wordRepository = new WorkerRepository(workerEntity, TestDataSource);
+        wordRepository = new WorkerRepository(TestDataSource);
         classEntity = TestDataSource.getRepository(ClassEntity);
         classRepository = new ClassRepository(TestDataSource);
     });

@@ -40,7 +40,7 @@ describe('create user service integration tests', () => {
 
     it('should create an user of type teacher', async () => {
 
-        personRepository = new WorkerRepository(personEntity, TestDataSource);
+        personRepository = new WorkerRepository(TestDataSource);
         let person = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let teacherEntity = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -63,7 +63,7 @@ describe('create user service integration tests', () => {
 
     it('should create an user of type admin', async () => {
 
-        personRepository = new WorkerRepository(personEntity, TestDataSource);
+        personRepository = new WorkerRepository(TestDataSource);
         let person = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
         let workerAdmin = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);

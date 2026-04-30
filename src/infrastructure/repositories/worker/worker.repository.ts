@@ -1,14 +1,19 @@
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { WorkerRepositoryInterface } from "../../../domain/worker/worker.repository.interface";
 import { WorkerEntity } from "../../entities/worker/worker.entity";
+import { Inject, Injectable } from "@nestjs/common";
 
-
+@Injectable()
 export class WorkerRepository implements WorkerRepositoryInterface {
 
+    private workerRespository: Repository<WorkerEntity>;
+    
     constructor(
-        private workerRespository: Repository<WorkerEntity>,
+        @Inject("DATA_SOURCE")
         private dataSource: DataSource
-    ) { }
+    ) { 
+        this.workerRespository = this.dataSource.getRepository(WorkerEntity);
+    }
 
     async create(entity: WorkerEntity): Promise<WorkerEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -18,7 +23,7 @@ export class WorkerRepository implements WorkerRepositoryInterface {
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);

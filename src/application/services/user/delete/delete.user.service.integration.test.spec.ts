@@ -1,6 +1,4 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
@@ -8,11 +6,10 @@ import { UserRepository } from "../../../../infrastructure/repositories/user/use
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { DeleteUserService } from './delete.user.service';
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 
 describe('service delete user integration tests', () => {
-
-    let appDataSource: DataSource;
 
     let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
@@ -20,22 +17,16 @@ describe('service delete user integration tests', () => {
     let personEntity: Repository<WorkerEntity>;
     let personRepository: WorkerRepository;
 
-    beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
+    beforeAll(async () =>{
         
-        userEntity = appDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, appDataSource);
+        userEntity = TestDataSource.getRepository(UserEntity);
+        userRepository = new UserRepository(userEntity, TestDataSource);
 
-        personEntity = appDataSource.getRepository(WorkerEntity);
-        personRepository = new WorkerRepository(personEntity, appDataSource);
+        personEntity = TestDataSource.getRepository(WorkerEntity);
+        personRepository = new WorkerRepository(TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(UserEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(WorkerEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
@@ -47,7 +38,7 @@ describe('service delete user integration tests', () => {
     });
 
     it('should delete an user', async () =>{
-        personRepository = new WorkerRepository(personEntity, appDataSource); 
+        personRepository = new WorkerRepository(TestDataSource); 
         let person = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let teacherEntity = WorkerEntity.toWorkerEntity(person);
         let userInput = DomainMocks.mockUserTeacher();
@@ -65,7 +56,7 @@ describe('service delete user integration tests', () => {
    
 
     it('should not delete an user', async () =>{
-        personRepository = new WorkerRepository(personEntity, appDataSource); 
+        personRepository = new WorkerRepository(TestDataSource); 
         let person = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let teacherEntity = WorkerEntity.toWorkerEntity(person);
         let userInput = DomainMocks.mockUserTeacher();

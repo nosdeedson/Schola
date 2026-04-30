@@ -13,7 +13,7 @@ describe('DeleteWorkerService integration test', () => {
 
     beforeAll(() => {
         workerModel = TestDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerModel, TestDataSource);
+        workerRepository = new WorkerRepository(TestDataSource);
     });
 
     it('repository must be instantiated', async () =>{

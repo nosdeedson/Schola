@@ -25,7 +25,7 @@ describe('ClassRepository unit test', () => {
         classModel = TestDataSource.getRepository(ClassEntity);
         classRepository = new ClassRepository(TestDataSource);
         teacherModel = TestDataSource.getRepository(WorkerEntity);
-        teacherRepository = new WorkerRepository(teacherModel, TestDataSource);
+        teacherRepository = new WorkerRepository(TestDataSource);
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentModel, TestDataSource);
     });

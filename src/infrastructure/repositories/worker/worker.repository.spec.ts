@@ -14,7 +14,7 @@ describe("WorkerRepository unit tets", () =>{
     let repository: WorkerRepository;
     beforeAll( () => {
         workerModel = TestDataSource.getRepository(WorkerEntity);
-        repository = new WorkerRepository(workerModel, TestDataSource);
+        repository = new WorkerRepository(TestDataSource);
     });
 
     it('should instantiate a workerRepository', () =>{

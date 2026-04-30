@@ -1,31 +1,22 @@
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { Worker } from "../../../../domain/worker/worker";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
-import { PersonEntity } from "../../../../infrastructure/entities/@shared/person.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { UpdateWorkerService } from "../../../../application/services/worker/update/udpate.worker.service";
-import { DataSource } from "typeorm";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 describe('UpdateWorkerService integration test', () => {
 
-    let appDataSource: DataSource;
     let workerModel;
     let workerRepository: WorkerRepository;
 
     beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-        .catch(error => console.log(error))
-
-        workerModel = appDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerModel, appDataSource);
+        workerModel = TestDataSource.getRepository(WorkerEntity);
+        workerRepository = new WorkerRepository(TestDataSource);
     });
 
     afterEach( async () =>{
-        // await workerModel.query('delete from person cascade');
-        await appDataSource.createQueryBuilder().delete().from(PersonEntity).execute();
-        await appDataSource.destroy();
+        jest.clearAllMocks();
     });
 
     it('repository must be instatiated', async () =>{

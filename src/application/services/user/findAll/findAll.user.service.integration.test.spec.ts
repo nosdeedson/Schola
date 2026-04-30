@@ -1,16 +1,13 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindAllUserService } from './findAll.user.service';
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 describe('FindAllUserService integration tests', () =>{
-
-    let appDataSource: DataSource;
     
     let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
@@ -18,22 +15,15 @@ describe('FindAllUserService integration tests', () =>{
     let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
-    beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-        
-        userEntity = appDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, appDataSource);
+    beforeAll(async () =>{
+        userEntity = TestDataSource.getRepository(UserEntity);
+        userRepository = new UserRepository(userEntity, TestDataSource);
 
-        workerEntity = appDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerEntity, appDataSource);
+        workerEntity = TestDataSource.getRepository(WorkerEntity);
+        workerRepository = new WorkerRepository(TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(UserEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(WorkerEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     })
 

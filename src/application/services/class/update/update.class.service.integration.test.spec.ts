@@ -20,7 +20,7 @@ describe('update class integration test', () => {
         classEntity = TestDataSource.getRepository(ClassEntity);
         classRepository = new ClassRepository(TestDataSource);
         teacherEntity = TestDataSource.getRepository(WorkerEntity);
-        teacherRepository = new WorkerRepository(teacherEntity, TestDataSource);
+        teacherRepository = new WorkerRepository(TestDataSource);
     });
 
     afterEach(async () => {

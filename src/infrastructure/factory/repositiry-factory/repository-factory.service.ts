@@ -3,7 +3,6 @@ import { AcademicSemesterRepository } from '@/infrastructure/repositories/academ
 import { DataSource } from 'typeorm';
 import { TypeRepository } from './type-repository';
 import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
-import { ClassEntity } from '@/infrastructure/entities/class/class.entity';
 import { StudentRepository } from '@/infrastructure/repositories/student/student.repository';
 import { StudentEntity } from '@/infrastructure/entities/student/student.entity';
 import { CommentRepository } from '@/infrastructure/repositories/comment/comment.respository';
@@ -15,7 +14,6 @@ import { RatingRepositiry } from '@/infrastructure/repositories/rating/rating.re
 import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
 import { UserEntity } from '@/infrastructure/entities/user/user.entity';
 import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
-import { WorkerEntity } from '@/infrastructure/entities/worker/worker.entity';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
@@ -45,7 +43,7 @@ export class RepositoryFactoryService {
             case TypeRepository.USER:
                 return new UserRepository(this.dataSource.getRepository(UserEntity), this.dataSource);
             case TypeRepository.WORKER:
-                return new WorkerRepository(this.dataSource.getRepository(WorkerEntity), this.dataSource);
+                return new WorkerRepository(this.dataSource);
             default:
                 throw new SystemError([{ context: 'RepositoryFactory', message: "Erro while creating repository." }])
         }

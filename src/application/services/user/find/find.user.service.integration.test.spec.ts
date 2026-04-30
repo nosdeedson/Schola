@@ -1,7 +1,5 @@
-import { DataSource, Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { Repository } from "typeorm";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { PersonEntity } from "../../../../infrastructure/entities/@shared/person.entity";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
@@ -22,7 +20,7 @@ describe('find user integration unit test', () =>{
         userRepository = new UserRepository(userEntity, TestDataSource);
 
         workerEntity = TestDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerEntity, TestDataSource);
+        workerRepository = new WorkerRepository(TestDataSource);
     });
 
     afterEach(async () =>{

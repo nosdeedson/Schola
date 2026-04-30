@@ -19,7 +19,7 @@ describe("CreateWorkerService integration test", () => {
 
     beforeAll(async () => {
         workerEntity = TestDataSource.getRepository(WorkerEntity);
-        workerRepository = new WorkerRepository(workerEntity, TestDataSource);
+        workerRepository = new WorkerRepository(TestDataSource);
         schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource) as ClassRepository;
     });
