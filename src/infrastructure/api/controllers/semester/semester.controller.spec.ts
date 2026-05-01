@@ -14,10 +14,8 @@ import { FindAllSemesterUsecase } from '@/application/usecases/semester-usecases
 import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
 import { FindAllAcademicSemesterDto } from '@/application/services/academic-semester/findAll/findAll.academic-semester.dto';
-import { FindSemesterResponseDto } from './dto/find/find-semester-response-dto';
 import { UpdateSemesterUseCase } from '@/application/usecases/semester-usecases/update/update-semester.usecase';
 import { mockUpdateAcademicSemesterRequestDto } from '../../../../../tests/mocks/controller/update-academic-semester-request-dto-mock';
-import { mockUpdateSemesterDto } from '../../../../../tests/mocks/domain-dto/update-semester-dto.mocks';
 
 
 describe('SemesterController', () => {
@@ -49,7 +47,7 @@ describe('SemesterController', () => {
 
   it('should create a semester', async () => {
     let dto = mockSemesterRequestDto();
-    const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'create')
+    const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'execute')
       .mockImplementation(() => Promise.resolve());
     expect(await controller.create(dto)).toBe(void 0);
     expect(useCase).toHaveBeenCalledTimes(1);
@@ -61,7 +59,7 @@ describe('SemesterController', () => {
     let dto = mockSemesterRequestDto(
       { firstQuarter: quarter, secondQuarter: quarter }
     );
-    const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'create')
+    const useCase = jest.spyOn(CreateSemesterUsecase.prototype, 'execute')
       .mockImplementationOnce(() => Promise.reject(new BadRequestException('test')));
     await expect(controller.create(dto)).rejects.toMatchObject(new BadRequestException('test'));
     expect(useCase).toHaveBeenCalledTimes(1);

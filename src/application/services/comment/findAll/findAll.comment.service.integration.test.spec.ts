@@ -38,7 +38,7 @@ describe('FindAllCommentService integration tests', () => {
         commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
 
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);

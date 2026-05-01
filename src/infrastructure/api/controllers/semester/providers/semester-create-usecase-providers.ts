@@ -7,9 +7,7 @@ export const semesterCreateUsecaseProvider = [
         provide: CreateSemesterUsecase,
         useFactory: (
             semesterRepo: AcademicSemesterRepository
-        ) => {
-            return new CreateSemesterUsecase(semesterRepo);
-        },
+        ) =>  new CreateSemesterUsecase(semesterRepo),
         inject: [SEMESTER_REPOSITORY]
     }
 ]

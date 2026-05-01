@@ -28,7 +28,7 @@ describe('Delete rating domain service integration tests', () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
 
     afterEach(async () => {

@@ -23,7 +23,7 @@ describe('CreateSemesterUsecase', () => {
         const executeSpy = jest.spyOn(CreateAcademicSemesterService.prototype, 'execute')
             .mockResolvedValue(void 0);
         const createSemesterUsecase = new CreateSemesterUsecase(semesterRepository);
-        expect(await createSemesterUsecase.create(dto)).toBe(void 0);
+        expect(await createSemesterUsecase.execute(dto)).toBe(void 0);
         expect(executeSpy).toHaveBeenCalledWith(dto);
     });
 
@@ -40,7 +40,7 @@ describe('CreateSemesterUsecase', () => {
         const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
             .mockImplementation(async () => Promise.resolve(new BadRequestException('Academic Semester not found')));
         const createSemesterUsecase = new CreateSemesterUsecase(semesterRepository);
-        await createSemesterUsecase.create(dto);
+        await createSemesterUsecase.execute(dto);
         expect(executeSpy).toHaveBeenCalledWith(dto);
         expect(tratarErros).toHaveBeenCalled();
     });

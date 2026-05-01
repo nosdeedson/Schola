@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FindAllAcademicSemesterDto } from '@/application/services/academic-semester/findAll/findAll.academic-semester.dto';
 import { CreateSemesterUsecase } from '@/application/usecases/semester-usecases/create/create-semester-usecase';
 import { SemesterRequestDto } from './dto/create/semester-request-dto';
 import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
@@ -27,7 +26,7 @@ export class SemesterController {
     @ApiResponse({ status: '4XX', description: 'Return exception of 400 status if request has incorrect information' })
     @Post()
     async create(@Body() dto: SemesterRequestDto): Promise<void> {
-        await this.createSemester.create(dto.toSemester());
+        await this.createSemester.execute(dto.toSemester());
     }
 
     @ApiOperation({ description: "Delete academic semester", })
@@ -37,6 +36,7 @@ export class SemesterController {
         this.deleteSemester.execute(id);
     }
 
+    @ApiOperation({description: "Find a semester by id"})
     @ApiResponse({ status: 200, description: 'if Academic Semester exist return it', example: 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6' })
     @ApiResponse({ status: '4XX', description: 'if Academic Semester does not exist return not found exception', example: 'd90c017a-eabe-4cd5-9dd3-ea8e6c037bd6' })
     @Get('/:id')
@@ -45,6 +45,7 @@ export class SemesterController {
         return FindSemesterResponseDto.fromFindAcademicSemesterDto(dto);
     }
 
+    @ApiOperation({description: "Find all semester"})
     @ApiResponse({ status: 200, description: 'Return all Academic semester', })
     @ApiResponse({ status: '4XX', description: 'If there is no Academic semester return empty array', })
     @Get()
@@ -53,7 +54,9 @@ export class SemesterController {
         return FindSemesterResponseDto.fromFindAllAcademicSemesterDto(dto);
     }
 
-    @ApiResponse({ status: 200, description: 'Return if exist or do anything if academic sementer does not exist', example: "d90c017a-eabe-4cd5-9dd3-ea8e6c037bd6" })
+    @ApiOperation({description: "Update a semester"})
+    @ApiResponse({ status: 200, description: 'If semester is updated', })
+    @ApiResponse({ status: '4XX', description: 'Return an error if not possíble to update', })
     @Put()
     async update(@Body() dto: UpdateAcademicSemesterRequestDto) {
         this.updateSemester.execute(dto.toUsecaseDto());

@@ -37,7 +37,7 @@ describe('CommentRepository unit test', () => {
         repository = new CommentRepository(commentModel, TestDataSource);
 
         semesterModel = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterModel, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
 
         ratingModel = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepositiry(ratingModel, TestDataSource);

@@ -1,12 +1,8 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { AcademicSemester } from "../../../../domain/academc-semester/academic.semester";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { FindAcademicSemesterService } from "./find.academic-semester.service";
-import { SystemError } from "../../../../application/services/@shared/system-error";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 
@@ -19,7 +15,7 @@ describe('Academic semester find integrations tests', () => {
 
     beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
 
     afterEach(async () =>{

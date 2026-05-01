@@ -5,7 +5,9 @@ import { SEMESTER_REPOSITORY } from "../../controller-tokens/controller-tokens";
 export const semesterUpdateUsecasProvider = [
     {
         provide: UpdateSemesterUseCase,
-        useFactory: (semesterRepo: AcademicSemesterRepository) => new UpdateSemesterUseCase(semesterRepo),
-        injest: [SEMESTER_REPOSITORY]
+        useFactory: (
+            semesterRepo: AcademicSemesterRepository
+        ) => new UpdateSemesterUseCase(semesterRepo),
+        inject: [SEMESTER_REPOSITORY]
     }
 ]

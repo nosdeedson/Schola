@@ -10,7 +10,7 @@ describe('AcademicSemesterRepository unit tests', () => {
 
     beforeAll(() => {
         const academicSemesterModel = TestDataSource.getRepository(AcademicSemesterEntity);
-        repository = new AcademicSemesterRepository(academicSemesterModel, TestDataSource);
+        repository = new AcademicSemesterRepository(TestDataSource);
     });
 
     it('acacemicSemester should be instantiated', () => {

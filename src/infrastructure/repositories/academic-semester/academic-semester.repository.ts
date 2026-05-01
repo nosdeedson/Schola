@@ -1,13 +1,18 @@
 import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
 import { AcademicSemesterRespositoryInterface } from '../../../domain/academc-semester/academic.semester.repository.interface';
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AcademicSemesterRepository implements AcademicSemesterRespositoryInterface {
+    private academicRepositoryRepository: Repository<AcademicSemesterEntity>;
 
     constructor(
-        private academicRepositoryRepository: Repository<AcademicSemesterEntity>,
+        @Inject("DATA_SOURCE")
         private dataSource: DataSource
-    ) { }
+    ) { 
+        this.academicRepositoryRepository = this.dataSource.getRepository(AcademicSemesterEntity);
+    }
 
     async create(entity: AcademicSemesterEntity): Promise<AcademicSemesterEntity> {
         const queryRunner = this.dataSource.createQueryRunner();

@@ -1,4 +1,3 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
@@ -29,7 +28,7 @@ describe('find all rating integration tests', () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
 
     afterEach(async () => {

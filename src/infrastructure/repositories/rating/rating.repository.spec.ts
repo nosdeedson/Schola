@@ -31,7 +31,7 @@ describe('RatingRepository unit tests', () => {
         ratingRepository = new RatingRepositiry(ratintModel, TestDataSource);
 
         semesterModel = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterModel, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
 
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentModel, TestDataSource);

@@ -10,7 +10,7 @@ export class CreateSemesterUsecase {
         private repository: AcademicSemesterRespositoryInterface,
     ) { }
 
-    async create(dto: CreateAcademicSemesterUsecaseDto): Promise<void> {
+    async execute(dto: CreateAcademicSemesterUsecaseDto): Promise<void> {
         try {
             let createServive = new CreateAcademicSemesterService(this.repository);
             await createServive.execute(dto);

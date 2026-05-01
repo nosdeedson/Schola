@@ -16,7 +16,7 @@ describe('academic semester integration test', () => {
 
     beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
 
     afterEach(async () => {

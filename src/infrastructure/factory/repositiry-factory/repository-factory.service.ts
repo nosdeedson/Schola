@@ -17,7 +17,6 @@ import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.re
 import { SystemError } from '@/application/services/@shared/system-error';
 import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
-import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 
 @Injectable()
 export class RepositoryFactoryService {
@@ -27,7 +26,7 @@ export class RepositoryFactoryService {
     public createRepository(whichRepository: TypeRepository): any {
         switch (whichRepository) {
             case TypeRepository.ACADEMIC_SEMESTER:
-                return new AcademicSemesterRepository(this.dataSource.getRepository(AcademicSemesterEntity), this.dataSource);
+                return new AcademicSemesterRepository(this.dataSource);
             case TypeRepository.CLASS:
                 return new ClassRepository(this.dataSource) as ClassRepository;
             case TypeRepository.COMMENT:

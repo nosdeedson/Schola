@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
 import { CommentRepository } from "../../../../infrastructure/repositories/comment/comment.respository";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
@@ -42,7 +41,7 @@ describe('DeleteCommentService integration test', () => {
         commentRepository = new CommentRepository(commentEntity, TestDataSource);
 
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
-        semesterRepository = new AcademicSemesterRepository(semesterEntity, TestDataSource);
+        semesterRepository = new AcademicSemesterRepository(TestDataSource);
 
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
