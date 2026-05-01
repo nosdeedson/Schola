@@ -8,3 +8,4 @@ export const SEMESTER_REPOSITORY = Symbol('SEMESTER_REPOSITORY'); // academic-se
 export const STUDENT_REPOSITORY = Symbol('STUDENT_REPOSITORY');
 export const USER_REPOSITORY = Symbol('USER_REPOSITORY');
 export const WORKER_REPOSITORY = Symbol('WORKER_REPOSITORY');
+export const TRANSACTION_SERVICE = Symbol('TRANSACTION_SERVICE');

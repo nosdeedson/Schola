@@ -8,27 +8,35 @@ import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.int
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { CreateSchoolgroupUseCaseDto } from "./dto/create-schoolgroup-usecase.dto";
+import { TransactionService } from "@/infrastructure/transaction-service/transaction-service";
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
+import { WorkerRepository } from "@/infrastructure/repositories/worker/worker.repository";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 
 
 export class CreateSchoolgroupUseCase {
 
     constructor(
         private classRepository: ClassRepositoryInterface,
-        private teacherReposittory: WorkerRepositoryInterface
+        private teacherReposittory: WorkerRepositoryInterface,
+        private transactionService: TransactionService,
     ) { }
 
     async create(dto: CreateSchoolgroupUseCaseDto): Promise<void> {
         try {
-            const teacherService = new CreateWorkerService(this.teacherReposittory, this.classRepository);
-            const teacherDto = new CreateWorkerDto({
-                name: dto.teacherName,
-                accessType: AccessType.TEACHER,
-                classCode: null,
-            })
-            const teacher = await teacherService.execute(teacherDto) as WorkerEntity;
-            let createService = new CreateClassService(this.classRepository);
-            let input = dto.toCreateClassDto(teacher);
-            await createService.execute(input);
+            await this.transactionService.runInTransaction(async (manager) => {
+                const teacherService = new CreateWorkerService(
+                    manager.getRepository(WorkerEntity) as any);
+                const teacherDto = new CreateWorkerDto({
+                    name: dto.teacherName,
+                    accessType: AccessType.TEACHER,
+                    classCode: null,
+                })
+                const teacher = await teacherService.execute(teacherDto) as WorkerEntity;
+                let createService = new CreateClassService(manager.getRepository(ClassEntity) as any);
+                let input = dto.toCreateClassDto(teacher);
+                await createService.execute(input);
+            });
         } catch (error) {
             TrataErros.tratarErrorsBadRequest(error as SystemError);
         }

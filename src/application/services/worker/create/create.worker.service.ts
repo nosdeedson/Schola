@@ -10,15 +10,12 @@ import { CreateWorkerDto } from './create.worker.dto';
 export class CreateWorkerService extends CreateGenericService {
 
     private workerRepository: WorkerRepositoryInterface
-    private schoolGroupRepository: ClassRepositoryInterface;
 
     constructor(
         workerRepository: WorkerRepositoryInterface,
-        schoolGroupRepository: ClassRepositoryInterface,
     ){
         super(workerRepository);
         this.workerRepository = workerRepository;
-        this.schoolGroupRepository = schoolGroupRepository;
     }
 
     public async execute(input: CreateWorkerDto): Promise<WorkerEntity>{
@@ -34,11 +31,7 @@ export class CreateWorkerService extends CreateGenericService {
                 throw new SystemError(worker.notification.getErrors());
             }
             let model = WorkerEntity.toWorkerEntity(worker);
-            let schoolGroup = await this.schoolGroupRepository.findByClassCode(input.classCode);
-            model.classes = [];
-            model.classes.push(schoolGroup);
             return await this.workerRepository.create(model) as WorkerEntity;
-            // TODO CREATE THE USER FOR WORKER, WHICH MUST BE DONE IN THE SERVICE THAT WOULD BE CALLED BY THE CONTROLLER
         } catch (error) {
             throw error;
         }

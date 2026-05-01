@@ -8,10 +8,12 @@ import { UsersModule } from "../users/users.module";
 import { AppController } from "./AppController";
 import { TeacherModule } from "../teacher/teacher.module";
 import { StudentModule } from "../student/student.module";
+import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
 
 @Global()
 @Module({
     imports: [
+        DataBaseConnectionModule,
         SchoolgroupModule,
         SemesterModule,
         StudentModule,

@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
+export const DATA_SOURCE = 'DATA_SOURCE';
+
+@Global()
 @Module({
     providers:[
         {
-            provide: 'DATA_SOURCE',
+            provide: DATA_SOURCE,
             useFactory: async () =>{
                 const dataSource = new DataSource({
                     type: 'postgres',
@@ -20,9 +23,7 @@ import { DataSource } from 'typeorm';
             }
         }
     ],
-    exports: [
-        'DATA_SOURCE'
-    ],
+    exports: [DATA_SOURCE],
     imports: [ ]
 })
 export class DataBaseConnectionModule {}

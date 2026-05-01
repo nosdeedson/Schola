@@ -1,4 +1,5 @@
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
+import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
@@ -8,7 +9,7 @@ export class UserRepository implements UserRepositoryInterface {
     private userRespository: Repository<UserEntity>;
 
     constructor(
-        @Inject("DATA_SOURCE")
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
     ) {
         this.userRespository = this.dataSource.getRepository(UserEntity);

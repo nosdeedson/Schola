@@ -4,12 +4,13 @@ import { ClassEntity } from "../../../infrastructure/entities/class/class.entity
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 
 @Injectable()
 export class ClassRepository implements ClassRepositoryInterface {
     private classRepository: Repository<ClassEntity>;
     constructor(
-        @Inject('DATA_SOURCE')
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
     ) {
         this.classRepository = this.dataSource.getRepository(ClassEntity)

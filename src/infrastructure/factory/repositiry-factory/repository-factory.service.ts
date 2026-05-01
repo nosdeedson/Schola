@@ -17,11 +17,12 @@ import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.re
 import { SystemError } from '@/application/services/@shared/system-error';
 import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
+import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 
 @Injectable()
 export class RepositoryFactoryService {
 
-    constructor(@Inject("DATA_SOURCE") private readonly dataSource: DataSource) { }
+    constructor(@Inject(DATA_SOURCE) private readonly dataSource: DataSource) { }
 
     public createRepository(whichRepository: TypeRepository): any {
         switch (whichRepository) {

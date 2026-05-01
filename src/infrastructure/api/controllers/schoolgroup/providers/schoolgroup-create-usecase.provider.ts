@@ -2,6 +2,7 @@ import { CreateSchoolgroupUseCase } from "@/application/usecases/schoolgroup-use
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { WorkerRepository } from "@/infrastructure/repositories/worker/worker.repository";
 import { CLASS_REPOSITORY, WORKER_REPOSITORY } from "../../controller-tokens/controller-tokens";
+import { TransactionService } from "@/infrastructure/transaction-service/transaction-service";
 
 export const schoolgroupCreateUseCaseProvider = [
     {
@@ -9,9 +10,10 @@ export const schoolgroupCreateUseCaseProvider = [
         useFactory: (
             classRepo: ClassRepository,
             workerRepo: WorkerRepository,
+            transactionService: TransactionService,
         ) => {
             return new CreateSchoolgroupUseCase(
-                classRepo, workerRepo
+                classRepo, workerRepo, transactionService
             );
         },
         inject: [CLASS_REPOSITORY, WORKER_REPOSITORY]

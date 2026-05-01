@@ -2,6 +2,7 @@ import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { WorkerRepositoryInterface } from "../../../domain/worker/worker.repository.interface";
 import { WorkerEntity } from "../../entities/worker/worker.entity";
 import { Inject, Injectable } from "@nestjs/common";
+import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 
 @Injectable()
 export class WorkerRepository implements WorkerRepositoryInterface {
@@ -9,7 +10,7 @@ export class WorkerRepository implements WorkerRepositoryInterface {
     private workerRespository: Repository<WorkerEntity>;
     
     constructor(
-        @Inject("DATA_SOURCE")
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
     ) { 
         this.workerRespository = this.dataSource.getRepository(WorkerEntity);

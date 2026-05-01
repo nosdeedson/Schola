@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { UsersController } from './users.controller';
 import { RepositoryFactoryService } from '@/infrastructure/factory/repositiry-factory/repository-factory.service';
 import { DeleteUserFactoryService } from '@/infrastructure/factory/delete-user-factory/delete-user-factory.service';
@@ -22,8 +21,6 @@ import { userProviders } from './providers/user-provider';
     ],
     exports: [
     ],
-    imports: [
-        DataBaseConnectionModule,
-    ]
+    imports: []
 })
 export class UsersModule { }

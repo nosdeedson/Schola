@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TeacherController } from './teacher.controller';
-import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { teacherProviders } from './providers/teacher-providers';
 
 @Module({
@@ -8,8 +7,6 @@ import { teacherProviders } from './providers/teacher-providers';
         TeacherController
     ],
     providers: [...teacherProviders],
-    imports: [
-        DataBaseConnectionModule,
-    ]
+    imports: []
 })
 export class TeacherModule { }
