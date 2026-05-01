@@ -24,7 +24,7 @@ describe('create user service integration tests', () => {
 
     beforeAll(async () => {
         userEntity = TestDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, TestDataSource);
+        userRepository = new UserRepository(TestDataSource);
         personEntity = TestDataSource.getRepository(PersonEntity);
     });
 
@@ -46,7 +46,7 @@ describe('create user service integration tests', () => {
         expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         let input = {
-            personId: person.getId(),
+            person: teacherEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
@@ -69,7 +69,7 @@ describe('create user service integration tests', () => {
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
 
         let input = {
-            personId: person.getId(),
+            person: workerAdmin,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
@@ -94,7 +94,7 @@ describe('create user service integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let input = {
-            personId: student.getId(),
+            person: studentEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
@@ -119,7 +119,7 @@ describe('create user service integration tests', () => {
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
         let input = {
-            personId: parent.getId(),
+            person: parentEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',

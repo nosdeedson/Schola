@@ -12,7 +12,7 @@ import { WorkerUserconverter } from "../worker/worker.user.converter";
 import { ClassEntity } from "../class/class.entity";
 
 
-@Entity('user')
+@Entity('users')
 export class UserEntity extends GenericEntity {
 
     @Column({

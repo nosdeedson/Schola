@@ -1,13 +1,18 @@
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { UserEntity } from "@/infrastructure/entities/user/user.entity";
+import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 
+@Injectable()
 export class UserRepository implements UserRepositoryInterface {
+    private userRespository: Repository<UserEntity>;
 
     constructor(
-        private userRespository: Repository<UserEntity>,
+        @Inject("DATA_SOURCE")
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.userRespository = this.dataSource.getRepository(UserEntity);
+     }
 
     async create(entity: UserEntity): Promise<UserEntity> {
         try {
@@ -46,7 +51,7 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async update(entity: UserEntity): Promise<void> {
-        this.userRespository.save(entity);
+        await this.userRespository.save(entity);
     }
 
 }

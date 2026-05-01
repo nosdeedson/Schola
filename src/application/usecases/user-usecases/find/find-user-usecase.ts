@@ -6,13 +6,9 @@ import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 
 export class FindUserUsecase {
 
-    private userRepository: UserRepositoryInterface;
-
     constructor(
-        userRepository: UserRepositoryInterface
-    ) {
-        this.userRepository = userRepository;
-    }
+        private userRepository: UserRepositoryInterface
+    ) {    }
 
     async execute(id: string): Promise<FindUserDto> {
         try {

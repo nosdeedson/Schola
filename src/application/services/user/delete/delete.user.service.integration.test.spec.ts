@@ -20,7 +20,7 @@ describe('service delete user integration tests', () => {
     beforeAll(async () =>{
         
         userEntity = TestDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, TestDataSource);
+        userRepository = new UserRepository(TestDataSource);
 
         personEntity = TestDataSource.getRepository(WorkerEntity);
         personRepository = new WorkerRepository(TestDataSource);

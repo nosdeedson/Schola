@@ -22,11 +22,11 @@ export class CreateUserUsecase {
     async execute(dto: CreateUserRequestDto): Promise<void> {
         try {
             this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
-            let createPerson = CreatePersonFactoryService.createDTOPersonFactory(dto);
-            let createperson = this.userServiceFactory.createUserServiceFactory(dto.accessType);
-            const person = await createperson.execute(createPerson);
-            let createUser = new CreateUserService(this.userRepository, createperson.personRepository);
-            let input = new InputCreateUserDto(dto, person.id);
+            let createPersonDto = CreatePersonFactoryService.createDTOPersonFactory(dto);
+            let service = this.userServiceFactory.createUserServiceFactory(dto.accessType);
+            const person = await service.execute(createPersonDto);
+            let createUser = new CreateUserService(this.userRepository, service.personRepository);
+            let input = new InputCreateUserDto(dto, person);
             await createUser.execute(input);
         } catch (error) {
             TrataErros.tratarErrorsBadRequest(error as SystemError);

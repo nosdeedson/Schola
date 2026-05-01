@@ -12,23 +12,21 @@ import { InputCreateUserDto } from "./input.create.user.dto";
 describe('create user service unit test', () =>{
 
     let input: InputCreateUserDto;
-    let personEntity: any;
-    let person: any;
 
     afterEach(() =>{
         jest.clearAllMocks()
     })
 
     it('should create an user of type teacher', async () =>{
+        const person = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        const personEntity = WorkerEntity.toWorkerEntity(person);
         input = {
-            personId: "1234567890",
+            person: personEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
             accesstype: AccessType.TEACHER
         };
-        person = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        personEntity = WorkerEntity.toWorkerEntity(person);
         const createUserservice = jest.spyOn(CreateUserService.prototype, 'typePerson')
             .mockImplementationOnce(() => { return person});
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -40,15 +38,15 @@ describe('create user service unit test', () =>{
     });
 
     it('should create an user of type admin', async () =>{
+        const person = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
+        const personEntity = WorkerEntity.toWorkerEntity(person);
         input = {
-            personId: "1234567890",
+            person: personEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
             accesstype: AccessType.ADMIN
         };
-        person = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
-        personEntity = WorkerEntity.toWorkerEntity(person);
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
             .mockImplementationOnce(() => { return person});
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -60,16 +58,16 @@ describe('create user service unit test', () =>{
     });
 
     it('should create an user of type student', async () =>{
+        const person = DomainMocks.mockStudent();
+        const personEntity = StudentEntity.toStudentEntity(person);
         input = {
-            personId: "1234567890",
+            person: personEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
             accesstype: AccessType.STUDENT
         };
 
-        person = DomainMocks.mockStudent();
-        personEntity = StudentEntity.toStudentEntity(person);
 
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
             .mockImplementationOnce(() => { return person});
@@ -86,17 +84,15 @@ describe('create user service unit test', () =>{
     });
 
     it('should create an user of type parent', async () =>{
+        const person = DomainMocks.mockParent();
+        const personEntity = ParentEntity.toParentEntity(person);
         input = {
-            personId: "1234567890",
+            person: personEntity,
             email: 'teste@teste',
             password: '1234',
             nickname: 'teste',
             accesstype: AccessType.PARENT
         };
-
-        person = DomainMocks.mockParent();
-        personEntity = ParentEntity.toParentEntity(person);
-
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
             .mockImplementationOnce(() => { return person});
 
@@ -109,6 +105,6 @@ describe('create user service unit test', () =>{
         
         expect(await service.execute(input)).toBe(void 0);
         expect(typePerson).toHaveBeenCalled();
-    })
+    });
     
-})
+});

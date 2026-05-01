@@ -12,6 +12,7 @@ import { CreateStudentDto } from "../../student/create/create.student.dto";
 import { CreateStudentService } from "../../student/create/create.student.service";
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
 import { Parent } from "@/domain/parent/parent";
+import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
 
 export class CreateParentStudentService extends CreateGenericService {
 
@@ -34,30 +35,36 @@ export class CreateParentStudentService extends CreateGenericService {
         this.classRepository = params.classRepository;
     }
 
-    public async execute(dto: any): Promise<any> {
+    public async execute(dto: any): Promise<PersonEntity> {
         try {
             if (dto instanceof CreateParentDto) {
                 const input = dto as CreateParentDto;
                 const parentService = new CreateParentService(this.parentRepository);
                 const parentEntity = await parentService.execute(input) as ParentEntity;;
                 for (const studentName of input.students) {
+                    const existStudent = await this.studentRepository.findStudentByNameAndParentNames(studentName, [dto.name]);
+                    if(existStudent) continue;
                     const student = new Student({name: studentName});
                     const studentEntity = StudentEntity.toStudentEntity(student);
                     const savedStudent = await this.studentRepository.create(studentEntity) as StudentEntity;
                     const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, savedStudent);
                     await this.parentStudentRepository.create(parentStudent);
                 }
+                return parentEntity;
             } else {
                 const input = dto as CreateStudentDto;
                 const studentService = new CreateStudentService(this.studentRepository, this.classRepository);
                 const studentEntity = await studentService.execute(input) as StudentEntity;
                 for(const parentName of input.parentsName){
+                    const parentExist = await this.parentRepository.findByParentNameAndStudentNames(parentName, [dto.name]);
+                    if(parentExist) continue;
                     const parent = new Parent({name: parentName});
                     const parentEntity = ParentEntity.toParentEntity(parent);
                     const savedParent = await this.parentRepository.create(parentEntity) as ParentEntity;
                     const parentStudent = ParentStudentEntity.toParentStudentEntity(savedParent, studentEntity);
                     await this.parentStudentRepository.create(parentStudent);
                 }
+                return studentEntity;
             }
         } catch (error) {
             throw error;

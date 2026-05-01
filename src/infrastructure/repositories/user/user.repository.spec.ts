@@ -16,7 +16,7 @@ describe('UserRepository unit test', () => {
 
     beforeAll(async () => {
         userModel = TestDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userModel, TestDataSource);
+        userRepository = new UserRepository(TestDataSource);
         workerModel = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
     });

@@ -17,7 +17,7 @@ describe('FindAllUserService integration tests', () =>{
 
     beforeAll(async () =>{
         userEntity = TestDataSource.getRepository(UserEntity);
-        userRepository = new UserRepository(userEntity, TestDataSource);
+        userRepository = new UserRepository(TestDataSource);
 
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);

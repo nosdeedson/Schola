@@ -40,7 +40,7 @@ export class RepositoryFactoryService {
             case TypeRepository.STUDENT:
                 return new StudentRepository(this.dataSource.getRepository(StudentEntity), this.dataSource);
             case TypeRepository.USER:
-                return new UserRepository(this.dataSource.getRepository(UserEntity), this.dataSource);
+                return new UserRepository( this.dataSource);
             case TypeRepository.WORKER:
                 return new WorkerRepository(this.dataSource);
             default:

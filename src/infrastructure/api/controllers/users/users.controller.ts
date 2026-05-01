@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserRequestDto } from './dtos/create-user-dto/create-user-request-dto';
 import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-user/create-user-usecase';
@@ -30,7 +30,7 @@ export class UsersController {
     @ApiResponse({ status: 204, description: 'When user is deleted the status will be 204' })
     @ApiResponse({ status: '4XX', description: 'Throw an exception when is not possible to delete.' })
     @Delete(":id")
-    async delete(idUser: string) {
+    async delete(@Param("idUser") idUser: string) {
         await this.deleteUser.execute(idUser);
     }
 
@@ -38,7 +38,7 @@ export class UsersController {
     @ApiResponse({ status: 200, description: 'Return the user information' })
     @ApiResponse({ status: '4XX', description: 'Throw an exception when is not possible to find.' })
     @Get(":id")
-    async find(idUser: string): Promise<FindUserResponseDto> {
+    async find(@Param("idUser") idUser: string): Promise<FindUserResponseDto> {
         const dto = await this.findUser.execute(idUser);
         return FindUserResponseDto.from(dto);
     }

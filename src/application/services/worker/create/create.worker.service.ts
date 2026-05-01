@@ -29,7 +29,6 @@ export class CreateWorkerService extends CreateGenericService {
                 teacherExist.updatedAt = new Date();
                 return await this.workerRepository.create(teacherExist) as WorkerEntity;
             }
-            // TODO NEED TO VERIFY IF TEACHER ALREADY EXIST, YES UPDATE OTHERWISE CREATE
             let worker = new Worker({birthday: input.birthday, name: input.name, role: input.role});
             if(worker.notification?.hasError()){
                 throw new SystemError(worker.notification.getErrors());

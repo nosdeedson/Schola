@@ -8,6 +8,7 @@ import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { CreateStudentService } from "../../student/create/create.student.service";
 import { CreateStudentDto } from "../../student/create/create.student.dto";
+import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
 
 describe('CreateParentStudentService', () => {
 
@@ -42,7 +43,7 @@ describe('CreateParentStudentService', () => {
             parentStudentRepository
         });
 
-        expect(await service.execute(dto)).toBe(void 0);
+        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
         expect(parentStudentRepository.create).toHaveBeenCalled();
         expect(parentService).toHaveBeenCalled();
         expect(studentRepository.create).toHaveBeenCalled();
@@ -75,7 +76,7 @@ describe('CreateParentStudentService', () => {
             classRepository: classRepository,
         });
 
-        expect(await service.execute(dto)).toBe(void 0);
+        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
         expect(parentStudentRepository.create).toHaveBeenCalled();
         expect(studentService).toHaveBeenCalled();
         expect(parentRepository.create).toHaveBeenCalled();

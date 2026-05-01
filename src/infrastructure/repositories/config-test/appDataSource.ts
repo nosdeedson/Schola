@@ -20,7 +20,7 @@ export class AppDataSource {
             port: 5432,
             username: "postgres",
             password: "root",
-            database: "schola",
+            database: "test_schola",
             entities: [
                 WorkerEntity,
                 PersonEntity,

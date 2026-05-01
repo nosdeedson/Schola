@@ -30,8 +30,7 @@ export class CreateUserService {
 
     async execute(dto: InputCreateUserDto) {
         try {
-            let personEntity = await this.personRepository.find(dto.personId);
-            let person = this.typePerson(dto.accesstype, personEntity);
+            let person = this.typePerson(dto.accesstype, dto.person);
             let hashedPassword = PasswordHasher.encryptPassword(dto.password);
             let user = new User(person, dto.email, dto.nickname, hashedPassword, dto.accesstype);
             let entity = UserEntity.toUserEntity(user);
