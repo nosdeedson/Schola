@@ -7,9 +7,10 @@ import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
-import { CreateWorkerDto } from "./create.worker.dto";
-import { CreateWorkerService } from "./create.worker.service";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
+import { CreateGetWorkerService } from "./create-get-worker.service";
+import { AccessType } from "@/domain/user/access.type";
+import { CreateWorkerDto } from "../create/create.worker.dto";
 
 describe("CreateWorkerService integration test", () => {
     let workerEntity: Repository<WorkerEntity>;
@@ -30,48 +31,25 @@ describe("CreateWorkerService integration test", () => {
     })
 
     it('create a worker', async () => {
-        let service = new CreateWorkerService(workerRepository);
-        let worker = {
-            name: 'edson',
-            birthday: new Date(),
-            role: RoleEnum.TEACHER,
-            classCode: null as any,
-        } as CreateWorkerDto;
-        const entity = await service.execute(worker);
+        let service = new CreateGetWorkerService(workerRepository);
+        const dto = new CreateWorkerDto({ classCode: '113', name: "Mary Doe", birthday: new Date(), accessType: AccessType.TEACHER }); 
+        const entity = await service.execute(dto);
         expect(entity).toBeInstanceOf(WorkerEntity);
         const validation = workerRepository.find(entity.id);
         expect(validation).toBeDefined();
     });
 
-    it('should create a teacher with just a name', async () => {
-        let service = new CreateWorkerService(workerRepository);
-        let teacher = {
-            name: 'just name',
-            role: RoleEnum.TEACHER
-        } as CreateWorkerDto;
-        const entity = await service.execute(teacher) as WorkerEntity;
-        expect(entity).toBeInstanceOf(WorkerEntity);
-        const validation = workerRepository.find(entity.id);
-        expect(validation).toBeDefined();
-    });
-
-    it('should create a worker with class code', async () => {
-        let service = new CreateWorkerService(workerRepository);
+    it('should find a worker and return it', async () => {
+        let service = new CreateGetWorkerService(workerRepository);
         let worker = DomainMocks.mockWorker(RoleEnum.TEACHER, true);
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(workerEntity)).toBeInstanceOf(WorkerEntity);
         const wantedBirthday = new Date();
-        let dto = {
-            name: worker.getName(),
-            role: RoleEnum.TEACHER,
-            classCode: '123456',
-            birthday: wantedBirthday,
-        } as CreateWorkerDto;
+        const dto = new CreateWorkerDto({ classCode: '113', name: worker.getName()}); 
         const entity = await service.execute(dto);
         expect(entity).toBeInstanceOf(WorkerEntity);
         const validation = await workerRepository.find(entity.id);
         expect(validation).toBeDefined();
         expect(validation.fullName).toBe(worker.getName());
-        expect(validation.birthday.getTime()).toBe(wantedBirthday.getTime());
     });
 });

@@ -70,7 +70,7 @@ describe('CreateWorkerService test unit', () => {
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
         workerRepository.create = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
         const service = new CreateWorkerService(workerRepository);
-        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER})
+        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER});
         expect(await service.execute(dto)).toBeInstanceOf(WorkerEntity);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);

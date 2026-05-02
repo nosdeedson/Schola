@@ -32,6 +32,7 @@ export class CreateSchoolgroupUseCase {
                     accessType: AccessType.TEACHER,
                     classCode: null,
                 })
+                // TODO CHANGE THE SERVICE TO CREATE TEACHER USE ONE SPECIFIC
                 const teacher = await teacherService.execute(teacherDto) as WorkerEntity;
                 let createService = new CreateClassService(manager.getRepository(ClassEntity) as any);
                 let input = dto.toCreateClassDto(teacher);
