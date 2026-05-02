@@ -9,18 +9,23 @@ import { SystemError } from "@/application/services/@shared/system-error";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { CreateUserFactotyInterface } from "@/interfaces/factory/create-user-factory.interface";
 import { RepositoryFactoryInterface } from "@/interfaces/factory/repository-factory.interface";
+import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
+import { WorkerValidation } from "@/domain/service/worker-validation";
 
 export class CreateUserUsecase {
     private userRepository: UserRepositoryInterface;
 
     constructor(
-        private userServiceFactory: CreateUserFactotyInterface, 
+        private userServiceFactory: CreateUserFactotyInterface,
         private repositoryFactory: RepositoryFactoryInterface,
     ) {
     }
-    
+
     async execute(dto: CreateUserRequestDto): Promise<void> {
         try {
+            const classRepository = this.repositoryFactory.createRepository(TypeRepository.CLASS) as ClassRepository;
+            const workerValidation = new WorkerValidation(classRepository);
+            await workerValidation.validateWorker(dto.classCode, dto.name);
             this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
             let createPersonDto = CreatePersonFactoryService.createDTOPersonFactory(dto);
             let service = this.userServiceFactory.createUserServiceFactory(dto.accessType);
