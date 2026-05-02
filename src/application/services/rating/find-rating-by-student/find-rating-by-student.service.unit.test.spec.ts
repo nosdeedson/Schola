@@ -10,10 +10,10 @@ describe('findRatingByStudent', () => {
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         ratingRepository.findByStudentId = jest.fn()
-            .mockImplementation(() => Promise.resolve(ratingEntity));
+            .mockImplementation(() => Promise.resolve([ratingEntity]));
         const findRatingByStudent = new FindRatingByStudent(ratingRepository);
         const result = await findRatingByStudent.findRatingByStudent('123');
         expect(result).toBeDefined();
-        expect(result.id).toBe(ratingEntity.id);
+        expect(result[0].id).toBe(ratingEntity.id);
     });
 })

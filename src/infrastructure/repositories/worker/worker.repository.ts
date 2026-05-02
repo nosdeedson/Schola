@@ -34,7 +34,7 @@ export class WorkerRepository implements WorkerRepositoryInterface {
     }
 
     async delete(id: string): Promise<void> {
-        this.dataSource.createQueryBuilder()
+        await this.dataSource.createQueryBuilder()
             .update(WorkerEntity)
             .set({ deletedAt: new Date() })
             .where("id= :id", { id: id })

@@ -11,6 +11,6 @@ export class DeleteWorkerService extends DeleteGenericService {
     }
 
     async execute(id: string) {
-        this.workerRepository.delete(id);
+        await this.workerRepository.delete(id);
     }
 }

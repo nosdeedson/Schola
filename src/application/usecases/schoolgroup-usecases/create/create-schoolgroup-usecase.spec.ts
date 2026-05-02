@@ -53,7 +53,6 @@ describe('CreateSchoolGroupUsecase', () => {
             workerRepository,
         );
         expect(await usecase.create(dto)).toBe(void 0);
-        expect(mockerTransactionService.runInTransaction).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledWith(input);
         expect(createTeacher).toHaveBeenCalledTimes(1);

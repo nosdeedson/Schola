@@ -1,10 +1,10 @@
 import { Grade } from '../../../src/domain/enum/grade/grade';
-import { StudentRatingUsecaseDtoOut } from '../../../src/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
+import { StudentRatingUsecaseResponseDto } from '../../../src/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
 import { RatingEntity } from '../../../src/infrastructure/entities/rating/rating.entity';
 
 export function mockStudentRatingUsecaseDtoOut(
     overrides: RatingEntity
-): StudentRatingUsecaseDtoOut {
+): StudentRatingUsecaseResponseDto {
     return {
         id: overrides.id ?? "22ac66ab-fae4-4666-82b9-cf0c774f54ed",
         ratingDate: overrides.ratingDate ?? new Date(),

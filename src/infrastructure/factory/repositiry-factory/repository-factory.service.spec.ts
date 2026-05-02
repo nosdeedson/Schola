@@ -6,7 +6,7 @@ import { AcademicSemesterRepository } from '../../repositories/academic-semester
 import { ClassRepository } from '../../repositories/class/class.repository';
 import { CommentRepository } from '../../repositories/comment/comment.respository';
 import { ParentRepository } from '../../repositories/parent/parent.repository';
-import { RatingRepositiry } from '../../repositories/rating/rating.repository';
+import { RatingRepository } from '../../repositories/rating/rating.repository';
 import { StudentRepository } from '../../repositories/student/student.repository';
 import { UserRepository } from '../../repositories/user/user.repository';
 import { WorkerRepository } from '../../repositories/worker/worker.repository';
@@ -17,7 +17,7 @@ import { RepositoryFactoryService } from './repository-factory.service';
 
 describe('RepositiryFactoryService', () => {
   let service: RepositoryFactoryService
-  ;
+    ;
   let module: TestingModule;
 
   beforeEach(async () => {
@@ -60,7 +60,7 @@ describe('RepositiryFactoryService', () => {
 
   it('should create a RatingRepositiry', () => {
     const repository = service.createRepository(TypeRepository.RATING);
-    expect(repository).toBeInstanceOf(RatingRepositiry)
+    expect(repository).toBeInstanceOf(RatingRepository)
   });
 
   it('should create a StudentRepository', () => {
@@ -80,7 +80,7 @@ describe('RepositiryFactoryService', () => {
 
   it('should throw an SystemError', () => {
     try {
-      service.createRepository('NO_EXIST' as TypeRepository);      
+      service.createRepository('NO_EXIST' as TypeRepository);
     } catch (error) {
       expect(error).toBeInstanceOf(SystemError);
       //@ts-ignore

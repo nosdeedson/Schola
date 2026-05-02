@@ -5,7 +5,7 @@ import { AcademicSemesterEntity } from "../../entities/academic-semester/academi
 import { RatingEntity } from "../../entities/rating/rating.entity";
 import { StudentEntity } from "../../entities/student/student.entity";
 import { AcademicSemesterRepository } from '../academic-semester/academic-semester.repository';
-import { RatingRepositiry } from '../rating/rating.repository';
+import { RatingRepository } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
@@ -17,7 +17,7 @@ import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity"
 describe('RatingRepository unit tests', () => {
 
     let ratintModel;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
     let semesterModel;
     let semesterRepository: AcademicSemesterRepository;
     let studentModel;
@@ -25,10 +25,10 @@ describe('RatingRepository unit tests', () => {
     let commentModel;
     let commentRepository: CommentRepository;
 
-    beforeAll(() => {
+    beforeAll(async () => {
 
         ratintModel = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratintModel, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
 
         semesterModel = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
@@ -119,10 +119,10 @@ describe('RatingRepository unit tests', () => {
 
         let result = await ratingRepository.findByStudentId(wantedStudentId);
         expect(result).toBeDefined();
-        expect(result.student.id).toEqual(wantedStudentId);
-        expect(result.quarter.id).toEqual(semester.firstQuarter.getId());
-        expect(result.comments).toHaveLength(0);
-        expect(result.writing).toEqual(Grade.BAD);
+        expect(result[0].student.id).toEqual(wantedStudentId);
+        expect(result[0].quarter.id).toEqual(semester.firstQuarter.getId());
+        expect(result[0].comments).toHaveLength(0);
+        expect(result[0].writing).toEqual(Grade.BAD);
     });
 
     it('should find a rating with comment by student', async () => {
@@ -144,10 +144,10 @@ describe('RatingRepository unit tests', () => {
 
         let result = await ratingRepository.findByStudentId(wantedStudentId);
         expect(result).toBeDefined();
-        expect(result.student.id).toEqual(wantedStudentId);
-        expect(result.quarter.id).toEqual(semester.firstQuarter.getId());
-        expect(result.comments).toHaveLength(1);
-        expect(result.writing).toEqual(Grade.BAD);
+        expect(result[0].student.id).toEqual(wantedStudentId);
+        expect(result[0].quarter.id).toEqual(semester.firstQuarter.getId());
+        expect(result[0].comments).toHaveLength(1);
+        expect(result[0].writing).toEqual(Grade.BAD);
     });
 
     it('should find all rating on the BD', async () => {

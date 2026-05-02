@@ -47,7 +47,7 @@ export class ParentRepository implements ParentReporitoryInterface {
         const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
             .innerJoin('ps.parent', 'parent')
             .innerJoin('ps.student', 'student')
-            .where('UPPER(parent.fullName) = :nameParent', { nameParent: nameParent.toUpperCase() })
+            .where('UPPER(parent.fullName) = :nameParent', { nameParent: nameParent?.toUpperCase() })
             .andWhere('UPPER(student.fullName) IN (:...studentNames)', { studentNames: studentNames.map(n => n.toUpperCase()) })
             .select('parent')
             .distinct(true);

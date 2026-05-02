@@ -10,7 +10,7 @@ import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity'
 import { ParentRepository } from '@/infrastructure/repositories/parent/parent.repository';
 import { ParentEntity } from '@/infrastructure/entities/parent/parent.entity';
 import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
-import { RatingRepositiry } from '@/infrastructure/repositories/rating/rating.repository';
+import { RatingRepository } from '@/infrastructure/repositories/rating/rating.repository';
 import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
 import { UserEntity } from '@/infrastructure/entities/user/user.entity';
 import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
@@ -37,11 +37,11 @@ export class RepositoryFactoryService {
             case TypeRepository.PARENT_STUDENT:
                 return new ParentStudentRepository(this.dataSource.getRepository(ParentStudentEntity));
             case TypeRepository.RATING:
-                return new RatingRepositiry(this.dataSource.getRepository(RatingEntity), this.dataSource);
+                return new RatingRepository(this.dataSource);
             case TypeRepository.STUDENT:
                 return new StudentRepository(this.dataSource.getRepository(StudentEntity), this.dataSource);
             case TypeRepository.USER:
-                return new UserRepository( this.dataSource);
+                return new UserRepository(this.dataSource);
             case TypeRepository.WORKER:
                 return new WorkerRepository(this.dataSource);
             default:

@@ -1,15 +1,18 @@
-import { Rating } from '@/domain/rating/rating';
 import { RatingRepositoryInterface } from '../../../domain/rating/rating.repository.interface'
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RatingEntity } from '../../../infrastructure/entities/rating/rating.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 
-
-export class RatingRepositiry implements RatingRepositoryInterface {
-
+@Injectable()
+export class RatingRepository implements RatingRepositoryInterface {
+    private ratingRepository: Repository<RatingEntity>;
     constructor(
-        private ratingRepository: Repository<RatingEntity>,
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.ratingRepository = this.dataSource.getRepository(RatingEntity);
+    }
 
     async create(entity: RatingEntity): Promise<RatingEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -19,7 +22,7 @@ export class RatingRepositiry implements RatingRepositoryInterface {
             let result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -53,8 +56,8 @@ export class RatingRepositiry implements RatingRepositoryInterface {
         return all;
     }
 
-    async findByStudentId(studentId: string): Promise<RatingEntity> {
-        return await this.ratingRepository.findOne({
+    async findByStudentId(studentId: string): Promise<RatingEntity[]> {
+        return await this.ratingRepository.find({
             where: {
                 student: {
                     id: studentId

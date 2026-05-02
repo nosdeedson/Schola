@@ -8,12 +8,11 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
-    
+
     const config = new DocumentBuilder()
         .setTitle('Schola')
         .setDescription('The Schola API description')
         .setVersion('1.0')
-        .addTag('Schola')
         .build();
     const documentFactory = () => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-swagger', app, documentFactory);

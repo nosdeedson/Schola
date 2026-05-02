@@ -11,16 +11,20 @@ describe('DeleteWorkerService integration test', () => {
     let workerModel;
     let workerRepository: WorkerRepository;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         workerModel = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
     });
 
-    it('repository must be instantiated', async () =>{
+    afterEach(async () => {
+        jest.clearAllMocks();
+    })
+
+    it('repository must be instantiated', async () => {
         expect(workerRepository).toBeDefined();
     });
 
-    it('should delete a worker', async () =>{
+    it('should delete a worker', async () => {
 
         let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let workerModel = WorkerEntity.toWorkerEntity(worker);
@@ -31,15 +35,14 @@ describe('DeleteWorkerService integration test', () => {
 
         let results = await workerRepository.findAll();
         expect(results.length).toBe(1);
-        let service =  new DeleteWorkerService(workerRepository);
+        let service = new DeleteWorkerService(workerRepository);
 
         await service.execute(wantedId);
         results = await workerRepository.findAll();
-        expect(results.length).toBe(1);
-        expect(results[0].deletedAt).toBeDefined();
+        expect(results).toHaveLength(0);
     })
 
-    it('should no anything if worker does not exist', async () =>{
+    it('should do nothing if worker does not exist', async () => {
 
         let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
         let workerModel = WorkerEntity.toWorkerEntity(worker);
@@ -50,7 +53,7 @@ describe('DeleteWorkerService integration test', () => {
 
         let result = await workerRepository.find(worker.getId());
         expect(result).toBeDefined();
-        let service =  new DeleteWorkerService(workerRepository);
+        let service = new DeleteWorkerService(workerRepository);
 
         await service.execute(wantedId);
         result = await workerRepository.find(worker.getId());

@@ -1,7 +1,7 @@
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { DeleteRatingService } from "./delete.rating.service";
-import { RatingRepositiry } from "../../../../infrastructure/repositories/rating/rating.repository";
+import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
@@ -14,7 +14,7 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 describe('Delete rating domain service integration tests', () => {
 
     let ratingEntity: Repository<RatingEntity>;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
 
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
@@ -24,7 +24,7 @@ describe('Delete rating domain service integration tests', () => {
 
     beforeAll(async () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);

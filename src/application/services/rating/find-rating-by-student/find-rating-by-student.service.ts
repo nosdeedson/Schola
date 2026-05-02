@@ -9,7 +9,8 @@ export class FindRatingByStudent {
         this.ratingRepository = ratingRepository;
     }
 
-    async findRatingByStudent(studentId: string): Promise<RatingEntity> {
-        return await this.ratingRepository.findByStudentId(studentId);
+    async findRatingByStudent(studentId: string): Promise<RatingEntity[]> {
+        const result = await this.ratingRepository.findByStudentId(studentId);
+        return result;
     }
 }

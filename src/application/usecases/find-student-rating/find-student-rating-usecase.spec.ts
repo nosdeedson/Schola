@@ -6,7 +6,7 @@ import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-fa
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-import { StudentRatingUsecaseDtoOut } from "./find-stdent-rating-usecase-dto-out";
+import { StudentRatingUsecaseResponseDto } from "./find-stdent-rating-usecase-dto-out";
 import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
 
 describe('studentRatingUsecase', () => {
@@ -20,24 +20,24 @@ describe('studentRatingUsecase', () => {
         const id = "22ac66ab-fae4-4666-82b9-cf0c774f54ed";
         const ratingEntity = RatingEntity.toRatingEntity(mockRating());
         const studentRatingUsecase = jest.spyOn(FindRatingByStudent.prototype, 'findRatingByStudent')
-            .mockResolvedValue(ratingEntity);
+            .mockResolvedValue([ratingEntity]);
         const usecase = new FindStudentRantingUsecase(ratingRepository);
         const result = await usecase.execute(id);
-        expect(result).toBeInstanceOf(StudentRatingUsecaseDtoOut);
+        expect(result).toHaveLength(1)
         expect(result).toBeDefined();
         expect(studentRatingUsecase).toHaveBeenCalledTimes(1);
         expect(studentRatingUsecase).toHaveBeenCalledWith(id);
     });
 
-    it('should not find a rating of a student', async () => {
+    it('should find an empty array', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const id = 'a4b5d267-9f5e-4878-b2f2-f5d84746fc6e';
         const studentRatingUsecase = jest.spyOn(FindRatingByStudent.prototype, 'findRatingByStudent')
-            .mockResolvedValue(null);
+            .mockResolvedValue([]);
         const usecase = new FindStudentRantingUsecase(ratingRepository);
         const result = await usecase.execute(id);
         expect(studentRatingUsecase).toHaveBeenCalledTimes(1);
         expect(studentRatingUsecase).toHaveBeenCalledWith(id);
-        expect(result).toBeNull();
+        expect(result).toHaveLength(0);
     });
 });

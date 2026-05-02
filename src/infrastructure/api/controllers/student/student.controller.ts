@@ -1,4 +1,4 @@
-import { StudentRatingUsecaseDtoOut } from '@/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
+import { StudentRatingUsecaseResponseDto } from '@/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
 import { FindStudentRantingUsecase } from '@/application/usecases/find-student-rating/find-student-rating-usecase';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto';
@@ -17,8 +17,8 @@ export class StudentController {
         private saveRatingUsecase: SaveRatingUsecase
     ) { }
 
-    @Get(":studentId")
-    public async findRatingStudent(@Param('studentId') studentId: string): Promise<StudentRatingUsecaseDtoOut> {
+    @Get("find-raintgs/:studentId")
+    public async findRatingStudent(@Param('studentId') studentId: string): Promise<StudentRatingUsecaseResponseDto[]> {
         return await this.studentRating.execute(studentId);
     }
 

@@ -5,7 +5,7 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
-import { RatingRepositiry } from "../../../../infrastructure/repositories/rating/rating.repository";
+import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindRatingService } from './find.rating.service';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
@@ -14,7 +14,7 @@ import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 describe('find rating integration tests', () => {
 
     let ratingEntity: Repository<RatingEntity>;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
 
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
@@ -24,7 +24,7 @@ describe('find rating integration tests', () => {
 
     beforeEach(async () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);

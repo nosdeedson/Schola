@@ -1,7 +1,7 @@
 import { Grade } from "@/domain/enum/grade/grade";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
-export class StudentRatingUsecaseDtoOut {
+export class StudentRatingUsecaseResponseDto {
         id: string;
         ratingDate: Date;
         listing: Grade;
@@ -37,8 +37,12 @@ export class StudentRatingUsecaseDtoOut {
                 }
         }
 
-        static toDto(rating: RatingEntity): StudentRatingUsecaseDtoOut {
-                if (!rating) return null;
-                return new StudentRatingUsecaseDtoOut(rating);
+        static toDto(ratings: RatingEntity[]): StudentRatingUsecaseResponseDto[] {
+                if (!ratings) return [];
+                const response: StudentRatingUsecaseResponseDto[] = [];
+                for (let rating of ratings) {
+                        response.push(new StudentRatingUsecaseResponseDto(rating));
+                }
+                return response;
         }
 }

@@ -6,7 +6,7 @@ import { StudentEntity } from "../../../../infrastructure/entities/student/stude
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { CommentRepository } from "../../../../infrastructure/repositories/comment/comment.respository";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
-import { RatingRepositiry } from "../../../../infrastructure/repositories/rating/rating.repository";
+import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindCommentService } from './find.comment.service';
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
@@ -21,7 +21,7 @@ describe('FindCommentService integration tests', () => {
     let commentRepository: CommentRepository;
 
     let ratingEntity: Repository<RatingEntity>;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
 
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
@@ -38,7 +38,7 @@ describe('FindCommentService integration tests', () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
         ratingEntity = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         parentEntity = TestDataSource.getRepository(ParentEntity);

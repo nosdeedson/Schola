@@ -51,13 +51,13 @@ describe('StudentController', () => {
     const wantedId = ratingEntity.id;
     const out = mockStudentRatingUsecaseDtoOut(ratingEntity);
     const ratingStudentUsecase = jest.spyOn(FindStudentRantingUsecase.prototype, 'execute')
-      .mockResolvedValue(out);
+      .mockResolvedValue([out]);
     const result = await controller.findRatingStudent(wantedId);
     expect(result).toBeDefined();
-    expect(result.id).toBe(ratingEntity.id);
-    expect(result.studentId).toBe(out.studentId);
-    expect(result.comments).toBe(out.comments);
-    expect(result.studentId).toBe(out.studentId);
+    expect(result[0].id).toBe(ratingEntity.id);
+    expect(result[0].studentId).toBe(out.studentId);
+    expect(result[0].comments).toBe(out.comments);
+    expect(result[0].studentId).toBe(out.studentId);
     expect(ratingStudentUsecase).toHaveBeenCalledTimes(1);
     expect(ratingStudentUsecase).toHaveBeenCalledWith(wantedId);
   });

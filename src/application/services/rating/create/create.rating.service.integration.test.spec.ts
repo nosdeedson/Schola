@@ -4,7 +4,7 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
-import { RatingRepositiry } from "../../../../infrastructure/repositories/rating/rating.repository";
+import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { CreateRatingService } from './create.rating.service';
 import { CreateRatingDto } from './create.rating.dto';
@@ -15,7 +15,7 @@ import { Repository } from "typeorm";
 describe('create rating integration tests', () => {
 
     let ratingEntity: Repository<RatingEntity>;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
 
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
@@ -25,7 +25,7 @@ describe('create rating integration tests', () => {
 
     beforeEach(async () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingEntity, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentEntity, TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
@@ -79,8 +79,9 @@ describe('create rating integration tests', () => {
 
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors: 
-            [{ context: 'rating', message: 'student receiving rating must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'student receiving rating must be informed' }]
         });
     });
 
@@ -95,8 +96,9 @@ describe('create rating integration tests', () => {
         let listing;
         let input = new CreateRatingDto(student, semester.firstQuarter, listing, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors: 
-            [{ context: 'rating', message: 'the listining skill must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'the listining skill must be informed' }]
         });
     });
 
@@ -112,8 +114,9 @@ describe('create rating integration tests', () => {
         let writing;
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, writing, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors:
-            [{ context: 'rating', message: 'the writing skill must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'the writing skill must be informed' }]
         });
     });
 
@@ -130,8 +133,9 @@ describe('create rating integration tests', () => {
         let reading;
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, reading, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors: 
-            [{ context: 'rating', message: 'the reading skill must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'the reading skill must be informed' }]
         });
     });
 
@@ -147,8 +151,9 @@ describe('create rating integration tests', () => {
         let speaking;
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, speaking, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors: 
-            [{ context: 'rating', message: 'the speaking skill must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'the speaking skill must be informed' }]
         });
     });
 
@@ -164,8 +169,9 @@ describe('create rating integration tests', () => {
         let grammar;
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, grammar, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        await expect(service.execute(input)).rejects.toMatchObject({errors: 
-            [{ context: 'rating', message: 'the grammar skill must be informed' }]
+        await expect(service.execute(input)).rejects.toMatchObject({
+            errors:
+                [{ context: 'rating', message: 'the grammar skill must be informed' }]
         });
     });
 

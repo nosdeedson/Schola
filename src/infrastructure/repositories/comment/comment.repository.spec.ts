@@ -11,7 +11,7 @@ import { StudentEntity } from "../../entities/student/student.entity";
 import { ParentRepository } from '../../repositories/parent/parent.repository';
 import { AcademicSemesterRepository } from '../academic-semester/academic-semester.repository';
 import { CommentRepository } from '../comment/comment.respository';
-import { RatingRepositiry } from '../rating/rating.repository';
+import { RatingRepository } from '../rating/rating.repository';
 import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
@@ -22,7 +22,7 @@ describe('CommentRepository unit test', () => {
     let commentModel: Repository<CommentEntity>;
     let repository: CommentRepository;
     let ratingModel: Repository<RatingEntity>;
-    let ratingRepository: RatingRepositiry;
+    let ratingRepository: RatingRepository;
     let ratingEntity;
     let semesterModel;
     let semesterRepository: AcademicSemesterRepository;
@@ -40,7 +40,7 @@ describe('CommentRepository unit test', () => {
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
 
         ratingModel = TestDataSource.getRepository(RatingEntity);
-        ratingRepository = new RatingRepositiry(ratingModel, TestDataSource);
+        ratingRepository = new RatingRepository(TestDataSource);
 
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(studentModel, TestDataSource);
