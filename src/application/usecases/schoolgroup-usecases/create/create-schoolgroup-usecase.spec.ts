@@ -15,19 +15,18 @@ import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepo
 
 
 const mockManager = {
-    getRepository: jest.fn()
+    getRepository: jest.fn().mockReturnValue({
+        save: jest.fn()
+    })
 }
 
 const mockerTransactionService = {
-    runInTransaction: jest.fn(async (callback) => {
-        return mockManager
-    })
+    runInTransaction: jest.fn(async (callback) => await callback(mockManager))
 }
 
 describe('CreateSchoolGroupUsecase', () => {
 
     let service: CreateSchoolgroupUseCase;
-    let module: TestingModule;
 
     afterEach(async () => {
         jest.clearAllMocks();
@@ -46,10 +45,15 @@ describe('CreateSchoolGroupUsecase', () => {
             .mockImplementationOnce(() => Promise.resolve(teacher));
 
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
-            .mockImplementationOnce(() => Promise.resolve());
+            .mockImplementationOnce(() => Promise.resolve(void 0));
             
-        const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository, mockerTransactionService as any);
+        const usecase = new CreateSchoolgroupUseCase(
+            classRepository, 
+            workerRepository, 
+            mockerTransactionService as any
+        );
         expect(await usecase.create(dto)).toBe(void 0);
+        expect(mockerTransactionService.runInTransaction).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledTimes(1);
         expect(createClass).toHaveBeenCalledWith(input);
         expect(createTeacher).toHaveBeenCalledTimes(1);
@@ -60,7 +64,6 @@ describe('CreateSchoolGroupUsecase', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
         const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
-        const input = dto.toCreateClassDto(teacher);
 
         const createTeacher = jest.spyOn(CreateWorkerService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
