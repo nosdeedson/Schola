@@ -12,7 +12,7 @@ export class CreateWorkerDto {
         birthday?: Date,
         accessType?: AccessType,
         classCode: string,
-    }){
+    }) {
         this.name = params.name;
         this.birthday = params.birthday ? new Date(params.birthday) : undefined;
         this.role = params.accessType === AccessType.ADMIN ? RoleEnum.ADMINISTRATOR : RoleEnum.TEACHER;

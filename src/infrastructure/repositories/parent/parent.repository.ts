@@ -2,16 +2,14 @@ import { ParentEntity } from '../../../infrastructure/entities/parent/parent.ent
 import { ParentReporitoryInterface } from '../../../domain/parent/parent.repository.interface';
 import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
-import { Parent } from '@/domain/parent/parent';
-import { from } from 'rxjs';
 
 
-export class ParentRepository implements ParentReporitoryInterface{
+export class ParentRepository implements ParentReporitoryInterface {
 
     constructor(
         private parentRepository: Repository<ParentEntity>,
         private dataSource: DataSource
-    ){}
+    ) { }
 
     async create(entity: ParentEntity): Promise<ParentEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -21,7 +19,7 @@ export class ParentRepository implements ParentReporitoryInterface{
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -32,7 +30,7 @@ export class ParentRepository implements ParentReporitoryInterface{
         await this.dataSource.createQueryBuilder()
             .update(ParentEntity)
             .set({
-                deletedAt : new Date()
+                deletedAt: new Date()
             })
             .where('id= :id', { id: id })
             .execute();
@@ -40,7 +38,7 @@ export class ParentRepository implements ParentReporitoryInterface{
 
     async find(id: string): Promise<ParentEntity> {
         const model = await this.parentRepository.findOne({
-            where: {id: id},
+            where: { id: id },
         })
         return model;
     }
@@ -49,8 +47,8 @@ export class ParentRepository implements ParentReporitoryInterface{
         const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
             .innerJoin('ps.parent', 'parent')
             .innerJoin('ps.student', 'student')
-            .where('parent.fullName = :nameParent', { nameParent })
-            .andWhere('student.fullName IN (:...studentNames)', { studentNames })
+            .where('UPPER(parent.fullName) = :nameParent', { nameParent: nameParent.toUpperCase() })
+            .andWhere('UPPER(student.fullName) IN (:...studentNames)', { studentNames: studentNames.map(n => n.toUpperCase()) })
             .select('parent')
             .distinct(true);
         const p = await qb.getRawOne();
@@ -64,6 +62,6 @@ export class ParentRepository implements ParentReporitoryInterface{
     async update(entity: ParentEntity) {
         await this.parentRepository.save(entity)
     }
-    
+
 }
 

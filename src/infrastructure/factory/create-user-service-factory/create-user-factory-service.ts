@@ -25,7 +25,7 @@ export class CreateUserFactoryService implements CreateUserFactotyInterface {
                     });
                 case AccessType.TEACHER:
                 case AccessType.ADMIN:
-                    return new CreateWorkerService(context.workerRepository, context.classRepository);
+                    return new CreateWorkerService(context.workerRepository);
                 default:
                     throw new Error('Invalid access type');
             }

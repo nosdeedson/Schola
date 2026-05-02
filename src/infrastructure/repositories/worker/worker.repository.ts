@@ -8,11 +8,11 @@ import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-con
 export class WorkerRepository implements WorkerRepositoryInterface {
 
     private workerRespository: Repository<WorkerEntity>;
-    
+
     constructor(
         @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { 
+    ) {
         this.workerRespository = this.dataSource.getRepository(WorkerEntity);
     }
 
@@ -57,9 +57,9 @@ export class WorkerRepository implements WorkerRepositoryInterface {
     }
 
     async findByName(name: string): Promise<WorkerEntity> {
-        return this.workerRespository.findOne({
-            where: { fullName: name }
-        })
+        return this.workerRespository.createQueryBuilder('worker')
+            .where('UPPER(worker.fullName) = :name', { name: name.toUpperCase() })
+            .getOne();
     }
 
     async update(entity: WorkerEntity) {

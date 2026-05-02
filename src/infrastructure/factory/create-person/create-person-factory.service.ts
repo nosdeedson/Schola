@@ -22,7 +22,12 @@ export class CreatePersonFactoryService {
                 return new CreateStudentDto(new Date(dto.birthDate), dto.name, dto.classCode, dto.parents);
             case AccessType.ADMIN:
             case AccessType.TEACHER:
-                return new CreateWorkerDto(dto);
+                return new CreateWorkerDto({
+                    classCode: dto.classCode,
+                    name: dto.name,
+                    accessType: dto.accessType,
+                    birthday: new Date(dto.birthDate)
+                });
             default:
                 throw new SystemError([{ context: 'CreatePersonFactoryService', message: 'Invalid access type' }]);
         }

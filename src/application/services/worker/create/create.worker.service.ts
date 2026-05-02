@@ -13,21 +13,21 @@ export class CreateWorkerService extends CreateGenericService {
 
     constructor(
         workerRepository: WorkerRepositoryInterface,
-    ){
+    ) {
         super(workerRepository);
         this.workerRepository = workerRepository;
     }
 
-    public async execute(input: CreateWorkerDto): Promise<WorkerEntity>{
+    public async execute(input: CreateWorkerDto): Promise<WorkerEntity> {
         try {
             const teacherExist = await this.workerRepository.findByName(input.name);
-            if(teacherExist){
-                teacherExist.birthday = input.birthday;
+            if (teacherExist) {
+                teacherExist.birthday = new Date(input.birthday);
                 teacherExist.updatedAt = new Date();
                 return await this.workerRepository.create(teacherExist) as WorkerEntity;
             }
-            let worker = new Worker({birthday: input.birthday, name: input.name, role: input.role});
-            if(worker.notification?.hasError()){
+            let worker = new Worker({ birthday: input.birthday, name: input.name, role: input.role });
+            if (worker.notification?.hasError()) {
                 throw new SystemError(worker.notification.getErrors());
             }
             let model = WorkerEntity.toWorkerEntity(worker);

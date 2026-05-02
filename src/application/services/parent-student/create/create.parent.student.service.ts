@@ -21,7 +21,7 @@ export class CreateParentStudentService extends CreateGenericService {
     private parentStudentRepository: ParentStudentRepository;
     private classRepository: ClassRepository;
 
-    constructor( params: {
+    constructor(params: {
         parentRepository: ParentReporitoryInterface,
         studentRepository: StudentRepositoryInterface,
         parentStudentRepository: ParentStudentRepository,
@@ -43,8 +43,8 @@ export class CreateParentStudentService extends CreateGenericService {
                 const parentEntity = await parentService.execute(input) as ParentEntity;;
                 for (const studentName of input.students) {
                     const existStudent = await this.studentRepository.findStudentByNameAndParentNames(studentName, [dto.name]);
-                    if(existStudent) continue;
-                    const student = new Student({name: studentName});
+                    if (existStudent) continue;
+                    const student = new Student({ name: studentName });
                     const studentEntity = StudentEntity.toStudentEntity(student);
                     const savedStudent = await this.studentRepository.create(studentEntity) as StudentEntity;
                     const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, savedStudent);
@@ -55,10 +55,10 @@ export class CreateParentStudentService extends CreateGenericService {
                 const input = dto as CreateStudentDto;
                 const studentService = new CreateStudentService(this.studentRepository, this.classRepository);
                 const studentEntity = await studentService.execute(input) as StudentEntity;
-                for(const parentName of input.parentsName){
+                for (const parentName of input.parentsName) {
                     const parentExist = await this.parentRepository.findByParentNameAndStudentNames(parentName, [dto.name]);
-                    if(parentExist) continue;
-                    const parent = new Parent({name: parentName});
+                    if (parentExist) continue;
+                    const parent = new Parent({ name: parentName });
                     const parentEntity = ParentEntity.toParentEntity(parent);
                     const savedParent = await this.parentRepository.create(parentEntity) as ParentEntity;
                     const parentStudent = ParentStudentEntity.toParentStudentEntity(savedParent, studentEntity);
