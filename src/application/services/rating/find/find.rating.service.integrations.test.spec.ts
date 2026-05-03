@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
@@ -26,7 +25,7 @@ describe('find rating integration tests', () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
@@ -45,15 +44,15 @@ describe('find rating integration tests', () => {
     });
 
     it('should throw a systemError', async () => {
-        let student = DomainMocks.mockStudent();
+        let semester = mockSemester();
+        let rating = mockRating({ quarter: semester.firstQuarter });
+        let student = rating.getStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -66,15 +65,15 @@ describe('find rating integration tests', () => {
     });
 
     it('should find a rating', async () => {
-        let student = DomainMocks.mockStudent();
+        let semester = mockSemester();
+        let rating = mockRating({ quarter: semester.firstQuarter });
+        let student = rating.getStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -83,5 +82,5 @@ describe('find rating integration tests', () => {
         let result = await service.execute(wantedid);
         expect(result).toBeDefined();
         expect(result.id).toBe(rating.getId());
-    })
+    });
 });

@@ -1,17 +1,13 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { Student } from "../../../../domain/student/student";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateParentService } from "./update.parent.service";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 describe('UpdateParentService integration tests', () => {
-
-    let appDataSource: DataSource;
 
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
@@ -20,21 +16,14 @@ describe('UpdateParentService integration tests', () => {
     let studentRepository: StudentRepository;
 
     beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource);
 
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource);
-
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 
@@ -60,7 +49,7 @@ describe('UpdateParentService integration tests', () => {
     });
 
     it('should update a parent with birthday', async () => {
-        const parent = DomainMocks.mockParent();    
+        const parent = DomainMocks.mockParent();
         const parentEntity = ParentEntity.toParentEntity(parent);
         parentEntity.birthday = null as any;
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);

@@ -2,6 +2,7 @@ import { Grade } from "@/domain/enum/grade/grade";
 
 export class SaveRatingUsecaseDto {
     studentId: string;
+    teacherId: string;
     listing: Grade;
     writing: Grade;
     reading: Grade;
@@ -9,4 +10,5 @@ export class SaveRatingUsecaseDto {
     grammar: Grade;
     homework: Grade;
     vocabulary: Grade;
+    comment: string;
 }

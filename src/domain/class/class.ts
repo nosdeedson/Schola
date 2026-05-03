@@ -1,3 +1,4 @@
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { Entity } from "../@shared/entity";
 import { Schedule } from "../schedule/schedule";
 import { Student } from "../student/student";
@@ -5,7 +6,7 @@ import { Worker } from '../worker/worker';
 import { ClassValidator } from './class.validator';
 
 export class Class extends Entity {
-    
+
     private classCode: string;
     private nameBook: string;
     private name: string;
@@ -32,7 +33,7 @@ export class Class extends Entity {
         this.validate();
     }
 
-    validate(){
+    validate() {
         new ClassValidator().validate(this);
     }
 
@@ -63,32 +64,53 @@ export class Class extends Entity {
         this.validate();
     }
 
-    getTeacher(): Worker{
+    getTeacher(): Worker {
         return this.teacher;
     }
 
-    setTeacher(teacher: Worker){
+    setTeacher(teacher: Worker) {
         this.teacher = teacher;
     }
 
-    getStudents(): Student[]{
+    getStudents(): Student[] {
         return this.students;
     }
 
-    setStudent(student: Student){
+    setStudent(student: Student) {
         this.students.push(student);
     }
 
-    setStudents(students: Student[]){
+    setStudents(students: Student[]) {
         students.forEach(it => this.setStudent(it));
     }
 
-    getSchecule(): Schedule{
+    getSchecule(): Schedule {
         return this.schedule;
     }
 
-    setSchecule(schedule: Schedule){
+    setSchecule(schedule: Schedule) {
         this.schedule = schedule;
         this.validate();
+    }
+
+    static from(entity: ClassEntity): Class {
+        const schedule = Schedule.from({
+            dayOfWeeks: [entity.firstDayOfClassInWeek, entity.secondDayOfClassInWeek],
+            times: new Map([
+                [entity.firstDayOfClassInWeek, entity.timeFirstDay],
+                [entity.secondDayOfClassInWeek, entity.timeSecondDay]
+            ])
+        })
+        const c = new Class(
+            entity.classCode,
+            entity.bookName,
+            entity.className,
+            schedule,
+            entity.id,
+            entity.createdAt,
+            entity.updatedAt,
+            entity.deletedAt,
+        );
+        return c;
     }
 }

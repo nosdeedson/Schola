@@ -1,14 +1,17 @@
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { CommentRepositoryInterface } from '../../../domain/comment/comment.repository.interface';
 import { CommentEntity } from '../../../infrastructure/entities/comment/comment.entity';
+import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
+import { Inject } from '@nestjs/common';
 
 
-export class CommentRepository implements CommentRepositoryInterface{
+export class CommentRepository implements CommentRepositoryInterface {
+    private commentRepository: Repository<CommentEntity>;
 
     constructor(
-        private commentRepository: Repository<CommentEntity>,
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ){    }
+    ) { }
 
     async create(entity: CommentEntity): Promise<CommentEntity> {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -18,11 +21,11 @@ export class CommentRepository implements CommentRepositoryInterface{
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
-        } finally{
+        } finally {
             await queryRunner.release();
         }
     }
@@ -39,7 +42,7 @@ export class CommentRepository implements CommentRepositoryInterface{
 
     async find(id: string): Promise<CommentEntity> {
         const model = await this.commentRepository.findOne({
-            where: {id: id}
+            where: { id: id }
         })
         return model;
     }
@@ -49,7 +52,7 @@ export class CommentRepository implements CommentRepositoryInterface{
     }
 
     async update(entity: CommentEntity) {
-       await this.commentRepository.save(entity);
+        await this.commentRepository.save(entity);
     }
-    
+
 }

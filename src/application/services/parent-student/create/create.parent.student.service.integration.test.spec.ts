@@ -9,22 +9,22 @@ import { TestDataSource } from "@/infrastructure/repositories/config-test/test.d
 import { Repository } from "typeorm";
 
 describe('CreateParentStudentService Integration Test', () => {
-    
+
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
-    
+
     let parentStudentEntity: Repository<ParentStudentEntity>;
     let parentStudentRepository: ParentStudentRepository;
 
-    beforeAll(async () =>{
+    beforeAll(async () => {
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource);
 
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
 
         parentStudentEntity = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(parentStudentEntity);
@@ -38,7 +38,7 @@ describe('CreateParentStudentService Integration Test', () => {
     it('all entities should be instantiated', async () => {
         expect(parentEntity).toBeDefined();
         expect(parentRepository).toBeDefined();
-        expect(studentEntity).toBeDefined();    
+        expect(studentEntity).toBeDefined();
         expect(studentRepository).toBeDefined();
         expect(parentStudentEntity).toBeDefined();
         expect(parentStudentRepository).toBeDefined();
@@ -50,7 +50,7 @@ describe('CreateParentStudentService Integration Test', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         const parent = DomainMocks.mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);   
+        const parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
         const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);

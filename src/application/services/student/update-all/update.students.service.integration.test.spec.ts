@@ -16,7 +16,7 @@ describe('UpdateAllStudentsService integration tests', () => {
 
     beforeAll(async () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         classEntity = TestDataSource.getRepository(ClassEntity);
         classRepository = new ClassRepository(TestDataSource);
     });

@@ -12,7 +12,7 @@ export class CreateRatingService {
         this.ratingRepository = ratingRepository;
     }
 
-    async execute(dto: CreateRatingDto) {
+    async execute(dto: CreateRatingDto): Promise<RatingEntity> {
 
         try {
             const rating = new Rating(
@@ -30,7 +30,7 @@ export class CreateRatingService {
                 throw new SystemError(rating?.notification?.getErrors());
             }
             const ratingEntity = RatingEntity.toRatingEntity(rating);
-            await this.ratingRepository.create(ratingEntity);
+            return await this.ratingRepository.create(ratingEntity);
         } catch (error) {
             throw error;
         }

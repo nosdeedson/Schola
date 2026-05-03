@@ -1,16 +1,13 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DeleteParentService } from "./delete.parent.service";
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
-describe('DeleteParentService integration tests', () =>{
-
-    let appDataSource: DataSource;
+describe('DeleteParentService integration tests', () => {
 
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
@@ -18,33 +15,26 @@ describe('DeleteParentService integration tests', () =>{
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
 
-    beforeEach( async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-        
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource);
-        
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+    beforeEach(async () => {
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
-    afterEach(async () =>{
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.destroy();
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('entitites and repositories must be instantiated', async () =>{
+    it('entitites and repositories must be instantiated', async () => {
         expect(parentEntity).toBeDefined();
         expect(parentRepository).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(studentRepository).toBeDefined();
     });
 
-    it('should not delete a parent with invalid id', async () =>{
+    it('should not delete a parent with invalid id', async () => {
         // TODO FIX THE TEST
         let parent = DomainMocks.mockParent()
         let students = parent.getStudents()
@@ -61,11 +51,11 @@ describe('DeleteParentService integration tests', () =>{
         let wantedId = 'e9c826b0-2fb4-41a7-aae8-8eed8fa999e8';
         const service = new DeleteParentService(parentRepository);
         expect(await service.execute(wantedId)).toBe(void 0);
-         result = await parentRepository.findAll();
+        result = await parentRepository.findAll();
         expect(result.length).toBe(1);
     })
 
-    it('should delete a parent', async () =>{
+    it('should delete a parent', async () => {
         let parent = DomainMocks.mockParentWithoutStudent()
         let students = [DomainMocks.mockStudentWithoutParent()];
         parent.setStudents(students);

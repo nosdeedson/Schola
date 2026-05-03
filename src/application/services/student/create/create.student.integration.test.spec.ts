@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
@@ -8,11 +7,11 @@ import { CreateStudentDto } from '../create/create.student.dto';
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { DataSource } from "typeorm";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+
 describe('CreateStudentService integration tests', () => {
-    let appDataSource: DataSource;
     let studentEntity;
     let studentRepository: StudentRepository;
     let schoolGroupEntity;
@@ -23,26 +22,18 @@ describe('CreateStudentService integration tests', () => {
     let parentStudentRepository: ParentStudentRepository;
 
     beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
-        schoolGroupEntity = appDataSource.getRepository(ClassEntity);
-        schoolGroupRepository = new ClassRepository(appDataSource);
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource);
-        parentStudentyEntity = appDataSource.getRepository(ParentStudentEntity);
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(TestDataSource);
+        schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
+        schoolGroupRepository = new ClassRepository(TestDataSource);
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentStudentyEntity = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(parentStudentyEntity);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(ParentStudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDataSource.destroy();
+        jest.clearAllMocks();
     });
 
     it('repositories must be instantiated', () => {

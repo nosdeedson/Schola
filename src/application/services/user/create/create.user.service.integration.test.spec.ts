@@ -86,7 +86,7 @@ describe('create user service integration tests', () => {
 
     it('should create an user of type student', async () => {
 
-        let studentRepository = new StudentRepository(personEntity, TestDataSource);
+        let studentRepository = new StudentRepository(TestDataSource);
 
         let student = DomainMocks.mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);

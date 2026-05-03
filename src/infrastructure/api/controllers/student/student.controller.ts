@@ -29,6 +29,7 @@ export class StudentController {
 
     @Post('save-rating')
     public async saveRating(@Body() dto: SaveRatingRequestDto) {
+        // TODO WHEN SAVE RATING STUDENT LOST THE CLASS ID
         this.saveRatingUsecase.execute(dto.toUseCaseDto());
     }
 }

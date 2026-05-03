@@ -25,7 +25,7 @@ export class CreateUserUsecase {
         try {
             const classRepository = this.repositoryFactory.createRepository(TypeRepository.CLASS) as ClassRepository;
             const workerValidation = new WorkerValidation(classRepository);
-            await workerValidation.validateWorker(dto.classCode, dto.name);
+            await workerValidation.validateWorker(dto.classCode, dto.name, dto.accessType);
             this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER) as UserRepository;
             let createPersonDto = CreatePersonFactoryService.createDTOPersonFactory(dto);
             let service = this.userServiceFactory.createUserServiceFactory(dto.accessType);

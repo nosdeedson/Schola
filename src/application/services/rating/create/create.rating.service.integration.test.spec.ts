@@ -27,7 +27,7 @@ describe('create rating integration tests', () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
@@ -56,7 +56,7 @@ describe('create rating integration tests', () => {
 
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
         const service = new CreateRatingService(ratingRepository);
-        expect(await service.execute(input)).toBe(void 0);
+        expect(await service.execute(input)).toBeInstanceOf(RatingEntity);
     });
 
     it('should throw a systemError if semester is null', async () => {

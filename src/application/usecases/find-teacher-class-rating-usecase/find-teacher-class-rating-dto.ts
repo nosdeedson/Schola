@@ -11,8 +11,8 @@ export class TeacherClassRatingDto {
     daysOfClass: ClassInfoDto[] = [];
     semester: SemesterInfoDto;
 
-    constructor(classEntity: ClassEntity, semester: AcademicSemesterEntity){
-        if(!classEntity || !semester){
+    constructor(classEntity: ClassEntity, semester: AcademicSemesterEntity) {
+        if (!classEntity || !semester) {
             return this;
         }
         classEntity.students.forEach(it => {
@@ -32,31 +32,31 @@ export class TeacherClassRatingDto {
 
 }
 
-class StudentInfoDto{
+class StudentInfoDto {
     name: string;
     idStudent: string;
-    constructor(name: string, idStudent: string){
+    constructor(name: string, idStudent: string) {
         this.name = name;
         this.idStudent = idStudent;
     }
 }
 
-class ClassInfoDto{
+class ClassInfoDto {
     dayOfClass: string;
     timeOfClass: string;
-    constructor(dayOfClass: string, timeOfClass: string){
+    constructor(dayOfClass: string, timeOfClass: string) {
         this.dayOfClass = dayOfClass;
         this.timeOfClass = timeOfClass;
     }
 }
 
-class SemesterInfoDto{
+class SemesterInfoDto {
     firstQuarter: QuarterDto;
     secondQuarter: QuarterDto;
     current: boolean;
-    constructor(semester: AcademicSemesterEntity){
+    constructor(semester: AcademicSemesterEntity) {
         const first = semester.quarters[0].quarterNumber == 1 ? semester.quarters[0] : semester.quarters[1];
-        const second = semester.quarters[1].quarterNumber == 1 ? semester.quarters[1] : semester.quarters[0];
+        const second = semester.quarters[1].quarterNumber == 1 ? semester.quarters[0] : semester.quarters[1];
         this.firstQuarter = QuarterDto.fromDomain(first);
         this.secondQuarter = QuarterDto.fromDomain(second);
         this.current = semester?.current;

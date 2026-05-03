@@ -19,8 +19,9 @@ export class TeacherController {
     }
 
     @ApiOperation({ description: "find teacher's class to rate" })
-    @Get(':teacherId/class/:classid')
-    async findTeacherClassRating(@Param('teacherId', new ParseUUIDPipe()) teacherId: string,
+    @Get(':teacherId/classes/:classId')
+    async findTeacherClassRating(
+        @Param('teacherId', new ParseUUIDPipe()) teacherId: string,
         @Param('classId', new ParseUUIDPipe()) classId: string) {
         return this.teacherClassRating.execute(teacherId, classId);
     }

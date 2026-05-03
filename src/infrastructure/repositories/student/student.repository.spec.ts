@@ -27,7 +27,7 @@ describe('StudentRepository unit test', () => {
 
     beforeAll(() => {
         studentModel = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentModel, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         schoolGroupModel = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource);
         parentModel = TestDataSource.getRepository(ParentEntity);

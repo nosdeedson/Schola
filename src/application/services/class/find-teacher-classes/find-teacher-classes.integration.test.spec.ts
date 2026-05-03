@@ -21,12 +21,16 @@ describe('FindTeacherClass integration test', () => {
 
     beforeAll(async () => {
         studendtEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studendtEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         wordRepository = new WorkerRepository(TestDataSource);
         classEntity = TestDataSource.getRepository(ClassEntity);
         classRepository = new ClassRepository(TestDataSource);
     });
+
+    afterEach(async () => {
+        jest.clearAllMocks();
+    })
 
     it('all variables must be instantiated', () => {
         expect(studentRepository).toBeDefined();

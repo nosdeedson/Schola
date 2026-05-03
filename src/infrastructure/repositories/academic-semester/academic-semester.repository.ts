@@ -11,7 +11,7 @@ export class AcademicSemesterRepository implements AcademicSemesterRespositoryIn
     constructor(
         @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { 
+    ) {
         this.academicRepositoryRepository = this.dataSource.getRepository(AcademicSemesterEntity);
     }
 
@@ -60,6 +60,9 @@ export class AcademicSemesterRepository implements AcademicSemesterRespositoryIn
     async findCurrentSemester(): Promise<AcademicSemesterEntity> {
         return await this.academicRepositoryRepository.findOne({
             where: { current: true },
+            relations: {
+                quarters: true
+            },
         });
     }
 

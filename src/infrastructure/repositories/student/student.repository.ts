@@ -2,14 +2,19 @@ import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
 import { StudentRepositoryInterface } from '../../../domain/student/student.repository.interface';
 import { StudentEntity } from '../../../infrastructure/entities/student/student.entity';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 
-
+@Injectable()
 export class StudentRepository implements StudentRepositoryInterface {
+    private studentRepository: Repository<StudentEntity>;
 
     constructor(
-        private studentRepository: Repository<StudentEntity>,
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.studentRepository = this.dataSource.getRepository(StudentEntity);
+    }
 
     async create(entity: StudentEntity): Promise<StudentEntity> {
         const queryRunner = this.dataSource.createQueryRunner();

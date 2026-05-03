@@ -6,6 +6,7 @@ import { StudentRepositoryInterface } from "@/domain/student/student.repository.
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { CreateStudentDto } from "./create.student.dto";
 import { CreateGenericService } from "@/application/services/@shared/create-generic-service";
+import { Class } from "@/domain/class/class";
 
 export class CreateStudentService extends CreateGenericService {
 
@@ -34,10 +35,12 @@ export class CreateStudentService extends CreateGenericService {
                 fromBD.birthday = dto.birthday;
                 fromBD.enrolled = dto.enrolled;
                 fromBD.updatedAt = new Date();
+                fromBD.schoolGroup = fromBD.schoolGroup ? fromBD.schoolGroup : schoolGroup;
                 await this.studentRepository.create(fromBD);
                 return fromBD;
             } else {
                 let student = new Student({ birthday: dto.birthday, name: dto.name, enrolled: dto.enrolled });
+                student.setSchoolGroup(Class.from(schoolGroup));
                 if (student?.notification?.hasError()) {
                     throw new SystemError(student.notification.errors);
                 }

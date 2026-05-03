@@ -28,7 +28,7 @@ describe('FindRatingByStudent', () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });

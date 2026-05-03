@@ -20,10 +20,10 @@ describe('ParentStudentRepository', () => {
     let parentStudentRepository: ParentStudentRepository;
 
     beforeAll(() => {
-              parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         parentStudentEntity = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(parentStudentEntity);
     });

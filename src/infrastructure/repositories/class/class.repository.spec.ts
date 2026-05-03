@@ -27,7 +27,7 @@ describe('ClassRepository unit test', () => {
         teacherModel = TestDataSource.getRepository(WorkerEntity);
         teacherRepository = new WorkerRepository(TestDataSource);
         studentModel = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentModel, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
     it('classRepository must be instantiate', async () => {

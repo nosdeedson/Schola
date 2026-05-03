@@ -1,5 +1,3 @@
-import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
-import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
@@ -14,7 +12,7 @@ describe('FindStudentService integration tests', () => {
 
     beforeAll(async () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
     afterEach(async () => {

@@ -23,7 +23,7 @@ export class StudentEntity extends PersonEntity {
     @OneToMany(() => ParentStudentEntity, ps => ps.student)
     parentStudents: ParentStudentEntity[];
 
-    @ManyToOne(() => ClassEntity, schoolGroup => schoolGroup.students, {eager: false, onUpdate: 'CASCADE'})
+    @ManyToOne(() => ClassEntity, schoolGroup => schoolGroup.students, { eager: false, onUpdate: 'CASCADE' })
     @JoinColumn({
         name: 'class_id',
         foreignKeyConstraintName: 'student_class_fk',
@@ -31,7 +31,7 @@ export class StudentEntity extends PersonEntity {
     })
     schoolGroup: ClassEntity;
 
-    static toStudentEntity(student: Student): StudentEntity{
+    static toStudentEntity(student: Student): StudentEntity {
         let model = new StudentEntity();
         model.birthday = student.getBirthday();
         model.createdAt = student.getCreatedAt();
@@ -44,9 +44,9 @@ export class StudentEntity extends PersonEntity {
         return model;
     }
 
-    static toStudentsEntities(students: Student[]): StudentEntity[]{
-        let models : StudentEntity[] = [];
-        students.forEach(it =>{
+    static toStudentsEntities(students: Student[]): StudentEntity[] {
+        let models: StudentEntity[] = [];
+        students.forEach(it => {
             let s = this.toStudentEntity(it);
             models.push(s);
         })

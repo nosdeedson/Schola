@@ -27,7 +27,7 @@ describe('CreateParentService integration tests', () => {
         parentRepository = new ParentRepository(parentEntity, TestDataSource);
 
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
 
         parentStudentEntity = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(parentStudentEntity);

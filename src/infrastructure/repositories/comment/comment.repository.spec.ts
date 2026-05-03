@@ -34,7 +34,7 @@ describe('CommentRepository unit test', () => {
     beforeAll(() => {
 
         commentModel = TestDataSource.getRepository(CommentEntity);
-        repository = new CommentRepository(commentModel, TestDataSource);
+        repository = new CommentRepository(TestDataSource);
 
         semesterModel = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
@@ -43,7 +43,7 @@ describe('CommentRepository unit test', () => {
         ratingRepository = new RatingRepository(TestDataSource);
 
         studentModel = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentModel, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
 
         parentModel = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentModel, TestDataSource)

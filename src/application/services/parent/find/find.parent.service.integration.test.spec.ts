@@ -1,16 +1,14 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindParentService } from './find.parent.service';
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
-describe('FindParentService integration tests ', () =>{
+describe('FindParentService integration tests ', () => {
 
-    let appDataSource: DataSource;
 
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
@@ -18,33 +16,26 @@ describe('FindParentService integration tests ', () =>{
     let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
 
-    beforeEach(async () =>{
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-        
-        parentEntity = appDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, appDataSource);
-        
-        studentEntity = appDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, appDataSource);
+    beforeEach(async () => {
+        parentEntity = TestDataSource.getRepository(ParentEntity);
+        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+
+        studentEntity = TestDataSource.getRepository(StudentEntity);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
-    afterEach(async () =>{
-        await appDataSource.createQueryBuilder().delete().from(ParentEntity).execute();
-        await appDataSource.createQueryBuilder().delete().from(StudentEntity).execute();
-        await appDataSource.destroy();
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('entitites and repositories must be instantiated', async () =>{
+    it('entitites and repositories must be instantiated', async () => {
         expect(parentEntity).toBeDefined();
         expect(parentRepository).toBeDefined();
         expect(studentEntity).toBeDefined();
         expect(studentRepository).toBeDefined();
     })
 
-    it('should not find a parent passing a non-existent id', async () =>{
+    it('should not find a parent passing a non-existent id', async () => {
         let parent = DomainMocks.mockParent()
         let students = parent.getStudents();
 
@@ -63,11 +54,11 @@ describe('FindParentService integration tests ', () =>{
             //@ts-ignore
             expect(error.errors).toBeDefined();
             //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'parent', message: 'Parent not found'}])
+            expect(error.errors).toMatchObject([{ context: 'parent', message: 'Parent not found' }])
         }
     })
 
-    it('should find a parent', async () =>{
+    it('should find a parent', async () => {
         let parent = DomainMocks.mockParentWithoutStudent()
         let students = [DomainMocks.mockStudentWithoutParent()];
         parent.setStudents(students);

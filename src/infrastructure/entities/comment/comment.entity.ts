@@ -24,9 +24,6 @@ export class CommentEntity extends GenericEntity {
     })
     idPersonHaveDone: string;
 
-    @JoinColumn({
-        name: 'rating_id'
-    })
     @ManyToOne(() => RatingEntity, rating => rating.comments)
     @JoinColumn({
         name: 'rating_id',
@@ -47,7 +44,7 @@ export class CommentEntity extends GenericEntity {
     }
 
     static toCommentsEntity(comments: Comment[], rating: RatingEntity): CommentEntity[] {
-        let models : CommentEntity[] = []
+        let models: CommentEntity[] = []
         comments.forEach(it => {
             models.push(this.toCommentEntity(it, rating));
         })

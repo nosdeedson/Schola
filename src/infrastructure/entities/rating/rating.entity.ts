@@ -1,13 +1,13 @@
 import { Rating } from "@/domain/rating/rating";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
 import { Grade } from "../../../domain/enum/grade/grade";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
-import { AcademicSemesterEntity } from "../academic-semester/academic.semester.entity";
 import { CommentEntity } from "../comment/comment.entity";
 import { StudentEntity } from "../student/student.entity";
 import { QuarterEntity } from "../quarter/quarter.entity";
 
 
+@Unique("unique_rating_by_quarter", ["quarter", "student"])
 @Entity('rating')
 export class RatingEntity extends GenericEntity {
 
@@ -129,7 +129,7 @@ export class RatingEntity extends GenericEntity {
     @OneToMany(() => CommentEntity, comment => comment.rating)
     comments: CommentEntity[];
 
-    @ManyToOne(() => StudentEntity, { cascade: true })
+    @ManyToOne(() => StudentEntity)
     @JoinColumn({
         name: 'student_id',
         foreignKeyConstraintName: 'fk_student_id'
@@ -152,8 +152,6 @@ export class RatingEntity extends GenericEntity {
         model.vocabulary = rating.getVocabulary();
         model.writing = rating.getWriting();
         model.quarter = QuarterEntity.toEntity(rating.getQuarter());
-        // TODO FIX 
-        // model.academicSemester = AcademicSemesterEntity.toAcademicSemester(rating.getAcademicSemester());
         return model;
     }
 

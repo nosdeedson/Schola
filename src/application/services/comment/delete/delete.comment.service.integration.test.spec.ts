@@ -9,7 +9,6 @@ import { ParentRepository } from "../../../../infrastructure/repositories/parent
 import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
 import { DeleteCommentService } from "./delete.comment.service";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
@@ -19,7 +18,6 @@ import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 
 describe('DeleteCommentService integration test', () => {
 
-    let appDataSource: DataSource;
     let commentEntity: Repository<CommentEntity>;
     let commentRepository: CommentRepository;
 
@@ -38,7 +36,7 @@ describe('DeleteCommentService integration test', () => {
     beforeAll(async () => {
 
         commentEntity = TestDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, TestDataSource);
+        commentRepository = new CommentRepository(TestDataSource);
 
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
@@ -47,7 +45,7 @@ describe('DeleteCommentService integration test', () => {
         ratingRepository = new RatingRepository(TestDataSource);
 
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)

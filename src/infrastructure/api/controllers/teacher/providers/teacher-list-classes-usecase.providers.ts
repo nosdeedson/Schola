@@ -10,6 +10,6 @@ export const teacherListClassesUsecaseProvider = [
         ) => {
             return new TeacherListClassesUsecase(classRepo);
         },
-        injest: [CLASS_REPOSITORY]
+        inject: [CLASS_REPOSITORY]
     }
 ]

@@ -1,10 +1,12 @@
 import { SystemError } from "@/application/services/@shared/system-error";
 import { ClassRepository } from "@/infrastructure/repositories/class/class.repository";
+import { AccessType } from "../user/access.type";
 
 export class WorkerValidation {
     constructor(private classRepository: ClassRepository) { }
 
-    async validateWorker(classCode: string, teacherName: string) {
+    async validateWorker(classCode: string, teacherName: string, accessType: AccessType) {
+        if (accessType != AccessType.TEACHER) return;
         const schoolGroup = await this.classRepository.findByClassCode(classCode);
         if (!schoolGroup) {
             throw new SystemError([{ context: 'user', message: 'class not found' }]);

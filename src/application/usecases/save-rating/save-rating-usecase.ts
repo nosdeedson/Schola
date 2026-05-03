@@ -11,6 +11,10 @@ import { Quarter } from "@/domain/quarter/quarter";
 import { FindStudentService } from "@/application/services/student/find/find.student.service";
 import { Student } from "@/domain/student/student";
 import { CreateRatingDto } from "@/application/services/rating/create/create.rating.dto";
+import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
+import { CreateCommentService } from "@/application/services/comment/create/create.comment.service";
+import { CreateCommentDto } from "@/application/services/comment/create/create.comment.dto";
+import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
 
 export class SaveRatingUsecase {
 
@@ -18,6 +22,7 @@ export class SaveRatingUsecase {
         private ratingRepository: RatingRepositoryInterface,
         private semesterRespository: AcademicSemesterRespositoryInterface,
         private studentRepository: StudentRepositoryInterface,
+        private commentRepository: CommentRepositoryInterface,
     ) { }
 
     async execute(dto: SaveRatingUsecaseDto): Promise<void> {
@@ -45,7 +50,10 @@ export class SaveRatingUsecase {
                     dto.vocabulary
                 );
                 const ratingCreate = new CreateRatingService(this.ratingRepository);
-                ratingCreate.execute(rating)
+                const ratingEntity = await ratingCreate.execute(rating);
+                const commentService = new CreateCommentService(this.commentRepository, this.ratingRepository);
+                const commentDto = new CreateCommentDto(dto.comment, dto.teacherId, ratingEntity.id);
+                await commentService.execute(commentDto);
             } else {
                 throw new BadRequestException("Current semester was not found");
             }

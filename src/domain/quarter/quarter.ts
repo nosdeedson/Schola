@@ -15,9 +15,18 @@ export class Quarter extends Entity {
         currentQuarter: boolean,
         beginningDate: Date,
         endingDate: Date,
+        id?: string
+        createdAt?: Date
+        updatedAt?: Date
+        deletedAt?: Date
     }
     ) {
-        super();
+        super(
+            params.id,
+            params.createdAt,
+            params.updatedAt,
+            params.deletedAt,
+        );
         this._currentQuarter = params.currentQuarter;
         this._beginningDate = params.beginningDate;
         this._endingDate = params.endingDate;
@@ -63,11 +72,15 @@ export class Quarter extends Entity {
         new QuarterValidator().validate(this);
     }
 
-    static fromEntity(entity: QuarterEntity): Quarter{
+    static fromEntity(entity: QuarterEntity): Quarter {
         const quarter = new Quarter({
             beginningDate: entity.beginningDate,
             currentQuarter: entity.currentQuarter,
             endingDate: entity.endingDate,
+            createdAt: entity.createdAt,
+            deletedAt: entity.deletedAt,
+            id: entity.id,
+            updatedAt: entity.updatedAt
         });
         return quarter;
     }

@@ -1,9 +1,5 @@
-import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
-import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
-import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateStudentDto } from '../update/udpate.student.dto';
@@ -16,7 +12,7 @@ describe('UpdateStudentService integration tests', () => {
 
     beforeAll(async () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
     });
 
     afterEach(async () => {

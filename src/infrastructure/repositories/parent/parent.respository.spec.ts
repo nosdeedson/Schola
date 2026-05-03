@@ -9,7 +9,7 @@ import { ParentStudentRepository } from "../../repositories/parent-student/paren
 import { TestDataSource } from "../config-test/test.datasource";
 
 
-describe('ParentRepository unit test', () =>{
+describe('ParentRepository unit test', () => {
 
     let appDataSource: DataSource;
     let parentModel;
@@ -20,11 +20,11 @@ describe('ParentRepository unit test', () =>{
     let parentStudentModel;
     let parentStudentRepository: ParentStudentRepository;
 
-    beforeEach(async () =>{        
+    beforeEach(async () => {
         parentModel = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentModel, TestDataSource);
         studentModel = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentModel, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         parentStudentModel = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(parentStudentModel);
     });
@@ -54,7 +54,7 @@ describe('ParentRepository unit test', () =>{
 
         let result = await parentRepository.find(wantedId);
         expect(result).toBeDefined();
-        
+
         expect(await parentRepository.delete(wantedId)).toBe(void 0);
         result = await parentRepository.find(wantedId);
         expect(result).toBeNull();
@@ -94,14 +94,14 @@ describe('ParentRepository unit test', () =>{
         let student = DomainMocks.mockStudentWithoutParent();
         const wantedStudetName = student.getName();
         let studentEntity = StudentEntity.toStudentEntity(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);    
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let parenteStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);
         expect(await parentStudentRepository.create(parenteStudent)).toBeInstanceOf(ParentStudentEntity);
 
         let result = await parentRepository.findByParentNameAndStudentNames(wantedParentName, [wantedStudetName]);
         expect(result).toBeDefined();
-        expect(result.fullName).toBe(parent.getName());        
+        expect(result.fullName).toBe(parent.getName());
     });
 
     it('should find all parent', async () => {

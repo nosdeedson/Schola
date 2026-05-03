@@ -10,7 +10,7 @@ export class FindCurrentSemesterService {
 
     async execute(): Promise<AcademicSemesterEntity> {
         try {
-            return this.semesterRepository.findCurrentSemester();
+            return await this.semesterRepository.findCurrentSemester();
         } catch (error) {
             throw error;
         }

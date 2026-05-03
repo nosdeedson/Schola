@@ -29,7 +29,7 @@ describe('update rating service integration tests', () => {
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
@@ -48,15 +48,16 @@ describe('update rating service integration tests', () => {
     });
 
     it('should throw a SystemError if rating not found', async () => {
-        let student = DomainMocks.mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let semester = mockSemester();
+        let rating = mockRating({ quarter: semester.firstQuarter });
+
+        let studentEntity = StudentEntity.toStudentEntity(rating.getStudent());
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating({ quarter: semester.firstQuarter });
+        rating.getStudent
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -70,15 +71,16 @@ describe('update rating service integration tests', () => {
     })
 
     it('should update a rating', async () => {
-        let student = DomainMocks.mockStudent();
+        let semester = mockSemester();
+        let rating = mockRating({ quarter: semester.firstQuarter });
+        let student = rating.getStudent();
+
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semester = mockSemester();
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let rating = mockRating({ quarter: semester.firstQuarter });
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 

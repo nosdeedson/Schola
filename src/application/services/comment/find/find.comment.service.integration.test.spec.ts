@@ -34,13 +34,13 @@ describe('FindCommentService integration tests', () => {
 
     beforeAll(async () => {
         commentEntity = TestDataSource.getRepository(CommentEntity);
-        commentRepository = new CommentRepository(commentEntity, TestDataSource);
+        commentRepository = new CommentRepository(TestDataSource);
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
         ratingEntity = TestDataSource.getRepository(RatingEntity);
         ratingRepository = new RatingRepository(TestDataSource);
         studentEntity = TestDataSource.getRepository(StudentEntity);
-        studentRepository = new StudentRepository(studentEntity, TestDataSource);
+        studentRepository = new StudentRepository(TestDataSource);
         parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(parentEntity, TestDataSource)
 

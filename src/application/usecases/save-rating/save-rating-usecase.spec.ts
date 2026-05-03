@@ -10,6 +10,9 @@ import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { CreateCommentService } from "@/application/services/comment/create/create.comment.service";
+import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
+import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 
 describe('SaveRatingUsecase', () => {
 
@@ -26,12 +29,15 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => Promise.resolve(null));
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
+        const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
+            .mockImplementation(() => Promise.resolve(void 0));
         const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
             .mockImplementation(() => { throw new BadRequestException("student not found.") });
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const usecase = new SaveRatingUsecase(ratingRepository, semesterRepository, studentRepository);
+        const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const usecase = new SaveRatingUsecase(ratingRepository, semesterRepository, studentRepository, commentRepository);
         await expect(usecase.execute(dto)).rejects.toMatchObject(
             new BadRequestException("student not found.")
         );
@@ -39,26 +45,32 @@ describe('SaveRatingUsecase', () => {
         expect(findStudentService).toHaveBeenCalledTimes(1);
         expect(findStudentService).toHaveBeenCalledWith(dto.studentId);
         expect(saveRating).toHaveBeenCalledTimes(0);
+        expect(commentService).toHaveBeenCalledTimes(0);
         expect(tratarErros).toHaveBeenCalledTimes(1);
     });
 
     it('should save a rating', async () => {
         const dto = saveRatingUsecaseDtoMock();
+        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
         const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(semesterEntity));
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
+            .mockImplementation(() => Promise.resolve(ratingEntity));
+        const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const usecase = new SaveRatingUsecase(ratingRepository, semesterRepository, studentRepository);
+        const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const usecase = new SaveRatingUsecase(ratingRepository, semesterRepository, studentRepository, commentRepository);
         expect(await usecase.execute(dto)).toBe(void 0);
         expect(semesterService).toHaveBeenCalledTimes(1);
         expect(findStudentService).toHaveBeenCalledTimes(1);
         expect(findStudentService).toHaveBeenCalledWith(dto.studentId);
         expect(saveRating).toHaveBeenCalledTimes(1);
+        expect(commentService).toHaveBeenCalledTimes(1);
     });
 })
