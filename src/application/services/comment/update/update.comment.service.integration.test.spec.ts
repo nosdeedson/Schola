@@ -91,19 +91,13 @@ describe('UpdateCommentService integration tests', () => {
         expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
 
         const wrongId = 'df488d38-4890-4e32-a443-ff0ba9ad86eb';
-        const currentComment = comment.getComment();
         const dto = new UpdateCommentDto(wrongId, 'changing comment');
 
         const service = new UpdateCommentService(commentRepository);
 
-        try {
-            await service.execute(dto);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ context: 'comment', message: 'comment not found' }]);
-        }
+        await expect(service.execute(dto)).rejects.toMatchObject({
+            errors:[{ context: 'comment', message: 'comment not found' }]
+        });
     });
 
     it('given a valid id should update a comment', async () => {

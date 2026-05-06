@@ -11,7 +11,9 @@ export class CommentRepository implements CommentRepositoryInterface {
     constructor(
         @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.commentRepository = this.dataSource.getRepository(CommentEntity)
+     }
 
     async create(entity: CommentEntity): Promise<CommentEntity> {
         const queryRunner = this.dataSource.createQueryRunner();

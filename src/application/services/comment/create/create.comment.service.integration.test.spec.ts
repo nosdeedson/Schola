@@ -108,6 +108,6 @@ describe('create comment service integration tests', () => {
         expect(results[0].id).toBeDefined();
         expect(results[0].idPersonHaveDone).toBe(idPersonHaveDone);
         expect(results[0].comment).toBe('test a test');
-    })
+    });
 
-})
+});
