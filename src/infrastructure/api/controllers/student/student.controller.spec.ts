@@ -8,8 +8,10 @@ import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { providers } from './providers/students.providers';
+import { StudentCommentRatingRequestDto } from './dto/student-comment-rating-request.dto';
+import { StudentCommentRatingUsecase } from '@/application/usecases/student-comment-rating/student-comment-rating-usecase';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -79,5 +81,24 @@ describe('StudentController', () => {
     expect(await controller.transferStudentsAnotherClass(dto)).toBe(void 0);
     expect(usecase).toHaveBeenCalledTimes(1);
     expect(usecase).toHaveBeenCalledWith(dto.toUsecaseDto());
+  });
+
+  it('should save a comment of a rating', async () => {
+    const dto = new StudentCommentRatingRequestDto("test", '63481037-98dc-40d8-8dc9-733dbadffec4', "94c57e73-d3bd-4522-ab5b-0039af00339e");
+    const studentCommentRating = jest.spyOn(StudentCommentRatingUsecase.prototype, 'execute')
+      .mockImplementation(() => Promise.resolve(void 0));
+    expect(await controller.commentingRating(dto)).toBe(void 0);
+    expect(studentCommentRating).toHaveBeenCalledTimes(1);
+    expect(studentCommentRating).toHaveBeenCalledWith(dto.toStudentCommentRatingUsecaseDto());
+  });
+
+  it('shoulg throw a badrequest rating not found', async () => {
+    const dto = new StudentCommentRatingRequestDto("test", '63481037-98dc-40d8-8dc9-733dbadffec4', "94c57e73-d3bd-4522-ab5b-0039af00339e");
+    const studentCommentRating = jest.spyOn(StudentCommentRatingUsecase.prototype, 'execute')
+      .mockImplementation(() => {throw new BadRequestException("Rating not found")});
+    await expect(controller.commentingRating(dto)).rejects
+      .toMatchObject(new BadRequestException("Rating not found"));
+    expect(studentCommentRating).toHaveBeenCalledTimes(1);
+    expect(studentCommentRating).toHaveBeenCalledWith(dto.toStudentCommentRatingUsecaseDto());
   })
 });

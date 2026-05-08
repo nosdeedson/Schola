@@ -86,7 +86,7 @@ export class ClassRepository implements ClassRepositoryInterface {
                 teacher: true
             }
         });
-        return myClasses
+        return myClasses;
     }
 
     async findByTeacherIdAndClassId(teacherId: string, classId: string): Promise<ClassEntity> {

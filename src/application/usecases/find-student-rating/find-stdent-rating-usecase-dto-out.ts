@@ -13,7 +13,7 @@ export class StudentRatingUsecaseResponseDto {
         vocabulary: Grade;
         studentId: string;
         studentName: string;
-        ratingId: string;
+        quarterId: string;
         comments?: string[];
 
         private constructor(rating: RatingEntity) {
@@ -29,7 +29,7 @@ export class StudentRatingUsecaseResponseDto {
                         this.vocabulary = rating.vocabulary;
                         this.studentId = rating.student.id;
                         this.studentName = rating.student.fullName;
-                        this.ratingId = rating.quarter.id;
+                        this.quarterId = rating.quarter.id;
                         if (rating?.comments) {
                                 this.comments = [];
                                 rating?.comments.forEach(it => this.comments.push(it?.comment))

@@ -51,8 +51,8 @@ export class SaveRatingUsecase {
                 );
                 const ratingCreate = new CreateRatingService(this.ratingRepository);
                 const ratingEntity = await ratingCreate.execute(rating);
-                const commentService = new CreateCommentService(this.commentRepository, this.ratingRepository);
-                const commentDto = new CreateCommentDto(dto.comment, dto.teacherId, ratingEntity.id);
+                const commentService = new CreateCommentService(this.commentRepository);
+                const commentDto = new CreateCommentDto(dto.comment, dto.teacherId, ratingEntity);
                 await commentService.execute(commentDto);
             } else {
                 throw new BadRequestException("Current semester was not found");

@@ -1,19 +1,15 @@
-import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-
-export class CreateCommentDto{
-
+export class StudentCommentRatingUsecaseDto {
     comment: string;
     idPersonHaveDone: string;
-    rating: RatingEntity;
-    
+    ratingId: string;
+
     constructor(
         comment: string,
         idPersonHaveDone: string,
-        rating: RatingEntity
-    ){
+        ratingId: string
+    ) {
         this.comment = comment;
         this.idPersonHaveDone = idPersonHaveDone;
-        this.rating = rating;
+        this.ratingId = ratingId;
     }
-
 }

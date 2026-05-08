@@ -69,15 +69,6 @@ describe('create comment service integration tests', () => {
         expect(commentRepository).toBeDefined();
     });
 
-    it('should throw a systemError', async () => {
-        const dto = new CreateCommentDto('test a test', '0e2189bd-8f47-4665-90b3-53191b52e606', "55c63535-25f8-471e-8184-d1f1d44a042c");
-        const service = new CreateCommentService(commentRepository, ratingRepository);
-        await expect(service.execute(dto)).rejects.toMatchObject({
-            errors:
-                [{ "context": "comment", "message": "Rating not found", }]
-        });
-    })
-
     it('should save a comment', async () => {
 
         let semester = mockSemester()
@@ -95,10 +86,9 @@ describe('create comment service integration tests', () => {
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
         let idPersonHaveDone = student.getId();
-        let idRating = rating.getId();
 
-        const dto = new CreateCommentDto('test a test', idPersonHaveDone, idRating);
-        const service = new CreateCommentService(commentRepository, ratingRepository);
+        const dto = new CreateCommentDto('test a test', idPersonHaveDone, ratingEntity);
+        const service = new CreateCommentService(commentRepository);
         let results = await commentRepository.findAll();
         expect(results.length).toBe(0);
 
