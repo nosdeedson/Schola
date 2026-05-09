@@ -6,7 +6,7 @@ import { Class } from "@/domain/class/class";
 
 @Entity('class')
 export class ClassEntity extends GenericEntity {
-    
+
     @Column({
         nullable: false,
         name: 'class_code'
@@ -49,7 +49,7 @@ export class ClassEntity extends GenericEntity {
     })
     timeSecondDay: string;
 
-    @OneToMany(() => StudentEntity, student => student.schoolGroup)
+    @OneToMany(() => StudentEntity, student => student.schoolGroup, { eager: true })
     students: StudentEntity[];
 
     @ManyToOne(() => WorkerEntity, (teacher) => teacher.classes)
@@ -75,23 +75,23 @@ export class ClassEntity extends GenericEntity {
         model.timeFirstDay = schoolGroup.getSchecule().getTimes().get(model.firstDayOfClassInWeek);
         model.timeSecondDay = schoolGroup.getSchecule().getTimes().get(model.secondDayOfClassInWeek);
         model.updatedAt = schoolGroup.getUpdatedAt();
-        if(schoolGroup.getStudents()){
+        if (schoolGroup.getStudents()) {
             model.students = StudentEntity.toStudentsEntities(schoolGroup.getStudents());
         }
-        if(schoolGroup.getTeacher()){
+        if (schoolGroup.getTeacher()) {
             model.setTeacher(WorkerEntity.toWorkerEntity(schoolGroup.getTeacher()));
         }
         return model;
     }
 
-    setStudents(student: StudentEntity){
-        if(!this.students){
+    setStudents(student: StudentEntity) {
+        if (!this.students) {
             this.students = [];
         }
         this.students.push(student);
     }
 
-    setTeacher(teacher: WorkerEntity){
+    setTeacher(teacher: WorkerEntity) {
         this.teacher = teacher;
     }
 }

@@ -7,7 +7,7 @@ export class FindClassResponseDto {
     name: string;
     schedule: FindClassScheduleDto;
     teacher: FindClassTeacherDto;
-    students: FindClassStudentDto[];
+    students: FindClassStudentDto[] = [];
 
     constructor(params: {
         id: string,
@@ -26,12 +26,13 @@ export class FindClassResponseDto {
             dayOfWeeks: params.schedule.dayOfWeeks, times: params.schedule.times
         });
         this.teacher = new FindClassTeacherResponseDto(
-            {id: params.teacher.id, name: params.teacher.name}
+            { id: params.teacher.id, name: params.teacher.name }
         );
         params.students.forEach(it => {
             const studentResponse = new FindClassStudentResponseDto({
                 id: it.id, name: it.name
             })
+            this.students.push(studentResponse);
         });
     }
 }
