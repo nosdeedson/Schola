@@ -42,11 +42,20 @@ describe('RatingController', () => {
 
   it('should throw an error', async () => {
     const request = mockSaveRatingRequest();
-    const expectedError = new SystemError([{ context: 'student', message: 'student not found' }]);
     const usecase = jest.spyOn(SaveRatingUsecase.prototype, 'execute')
       .mockImplementation(() => { throw new BadRequestException("student not found") });
     await expect(controller.saveRating(request)).rejects
       .toMatchObject(new BadRequestException("student not found"));
+    expect(usecase).toHaveBeenCalledTimes(1);
+    expect(usecase).toHaveBeenCalledWith(request.toUseCaseDto());
+  });
+
+  it('should throw an error current semester not found', async () => {
+    const request = mockSaveRatingRequest();
+    const usecase = jest.spyOn(SaveRatingUsecase.prototype, 'execute')
+      .mockImplementation(() => { throw new BadRequestException("Current semester was not found") });
+    await expect(controller.saveRating(request)).rejects
+      .toMatchObject(new BadRequestException("Current semester was not found"));
     expect(usecase).toHaveBeenCalledTimes(1);
     expect(usecase).toHaveBeenCalledWith(request.toUseCaseDto());
   });
