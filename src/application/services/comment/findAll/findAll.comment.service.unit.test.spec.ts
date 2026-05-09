@@ -7,9 +7,9 @@ import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 
 describe('FindAllCommentService unit tests', () => {
 
-    it('should return an empty array of comments', async () =>{
+    it('should return an empty array of comments', async () => {
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        commentRepository.findAll = jest.fn().mockReturnValueOnce( null)
+        commentRepository.findAll = jest.fn().mockReturnValueOnce(null)
         const service = new FindAllCommentService(commentRepository);
 
         const results = await service.execute();
@@ -17,13 +17,13 @@ describe('FindAllCommentService unit tests', () => {
         expect(commentRepository.findAll).toHaveBeenCalledTimes(1);
     });
 
-    it('should find all comments', async () =>{
+    it('should find all comments', async () => {
         const comment = DomainMocks.mockComment();
         const rating = mockRating();
         const ratingEntity = RatingEntity.toRatingEntity(rating);
         const entities = CommentEntity.toCommentEntity(comment, ratingEntity);
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        commentRepository.findAll = jest.fn().mockImplementationOnce(() =>{
+        commentRepository.findAll = jest.fn().mockImplementationOnce(() => {
             return [entities]
         });
         const service = new FindAllCommentService(commentRepository);
@@ -32,7 +32,7 @@ describe('FindAllCommentService unit tests', () => {
         expect(results.all[0].comment).toEqual(entities.comment)
         expect(results.all[0].createdAt).toEqual(entities.createdAt)
         expect(results.all[0].idComment).toEqual(entities.id)
-        expect(results.all[0].idPersonHadDone).toEqual(entities.idPersonHaveDone)
+        expect(results.all[0].namePersonHadDone).toEqual(entities.namePersonHaveDone)
     });
 
 });

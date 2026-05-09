@@ -19,10 +19,11 @@ export class CommentEntity extends GenericEntity {
 
     @Column({
         nullable: false,
-        name: 'id_person_have_done',
-        type: 'uuid',
+        name: 'name_person_have_done',
+        type: 'varchar',
+        length: 100
     })
-    idPersonHaveDone: string;
+    namePersonHaveDone: string;
 
     @ManyToOne(() => RatingEntity, rating => rating.comments)
     @JoinColumn({
@@ -38,7 +39,7 @@ export class CommentEntity extends GenericEntity {
         model.deletedAt = comment.getDeletedAt();
         model.updatedAt = comment.getUpdatedAt();
         model.id = comment.getId();
-        model.idPersonHaveDone = comment.getIdPersonHadDone();
+        model.namePersonHaveDone = comment.getNamePersonHaveDone();
         model.rating = rating ? rating : null;
         return model;
     }

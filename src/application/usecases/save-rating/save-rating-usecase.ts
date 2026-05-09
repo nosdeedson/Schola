@@ -15,6 +15,7 @@ import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.
 import { CreateCommentService } from "@/application/services/comment/create/create.comment.service";
 import { CreateCommentDto } from "@/application/services/comment/create/create.comment.dto";
 import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
+import { FindWorkerService } from "@/application/services/worker/find/find.worker.service";
 
 export class SaveRatingUsecase {
 
@@ -23,6 +24,7 @@ export class SaveRatingUsecase {
         private semesterRespository: AcademicSemesterRespositoryInterface,
         private studentRepository: StudentRepositoryInterface,
         private commentRepository: CommentRepositoryInterface,
+        private workerRepo: WorkerRepositoryInterface,
     ) { }
 
     async execute(dto: SaveRatingUsecaseDto): Promise<void> {
@@ -30,10 +32,11 @@ export class SaveRatingUsecase {
             const semesterService = new FindCurrentSemesterService(this.semesterRespository);
             const semester = await semesterService.execute();
             const studentService = new FindStudentService(this.studentRepository);
-            const studentEntity = await studentService.execute(dto.studentId);
-            if (!studentEntity) {
-                throw new SystemError([{ context: 'student', message: 'student not found' }])
-            }
+            const studentEntity = await studentService.execute(dto.studentBeingEvaluatedId);
+            if (!studentEntity) throw new SystemError([{ context: 'student', message: 'student not found' }]);
+            const workerService = new FindWorkerService(this.workerRepo);
+            const teacher = await workerService.execute(dto.teacherId);
+            if (!teacher) throw new SystemError([{ context: 'teacher', message: 'teacher not found' }]);
             let quarter: Quarter;
             if (semester.current) {
                 const quarterEntity = semester.quarters[0].currentQuarter ? semester.quarters[0] : semester.quarters[1];
@@ -52,7 +55,7 @@ export class SaveRatingUsecase {
                 const ratingCreate = new CreateRatingService(this.ratingRepository);
                 const ratingEntity = await ratingCreate.execute(rating);
                 const commentService = new CreateCommentService(this.commentRepository);
-                const commentDto = new CreateCommentDto(dto.comment, dto.teacherId, ratingEntity);
+                const commentDto = new CreateCommentDto(dto.comment, teacher.name, ratingEntity);
                 await commentService.execute(commentDto);
             } else {
                 throw new BadRequestException("Current semester was not found");

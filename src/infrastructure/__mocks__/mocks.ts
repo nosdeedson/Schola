@@ -23,7 +23,7 @@ times.set('Tuesday', '08:00');
 
 const parent = new Parent({ name: "jose", nameStudents: ['edson'], birthday: new Date(), });
 const student = new Student({ birthday: new Date, name: 'robert', enrolled: '123', nameParents: [parent.getName()] });
-const studentWitJustName = new Student({name: "justin"});
+const studentWitJustName = new Student({ name: "justin" });
 
 
 const studentWithoutParent = new Student({ birthday: new Date(), name: 'julio', enrolled: '123', nameParents: [] });
@@ -42,7 +42,7 @@ const userAdmin = new User(admin, 'teste@teste', 'edson', '123', AccessType.ADMI
 const userParent = new User(parent, 'teste@teste', 'edson', '123', AccessType.PARENT);
 const userStudent = new User(student, 'teste@teste', 'edson', '123', AccessType.STUDENT);
 const userTeacher = new User(teacher, 'teste@teste', 'edson', '123', AccessType.TEACHER);
-const comment = new Comment("just a comment", '85e71875-289c-48b1-82b1-8c4f9ae16104');
+const comment = new Comment("just a comment", 'name Person Have Done');
 
 const user1 = new User(teacher, 'teste@email', 'jose', '123', AccessType.TEACHER);
 const user2 = new User(student, 'teste@email', 'jose', '123', AccessType.TEACHER);

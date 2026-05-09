@@ -2,19 +2,19 @@ import { Validator } from '../@shared/validation/validator.interface'
 import * as yup from 'yup'
 import { Comment } from './comment';
 
-export class CommentValidator implements Validator<Comment>{
+export class CommentValidator implements Validator<Comment> {
 
     validate(entity: Comment): void {
         try {
             yup.object()
                 .shape({
                     comment: yup.string().required('add a comment'),
-                    idPersonHadDone: yup.number().required('id of the person that have done the comment'),
+                    namePersonHaveDone: yup.string().required('name of person has done is requered'),
                 })
                 .validateSync({
                     comment: entity.getComment(),
-                    idPersonHadDone: entity.getIdPersonHadDone(),
-                },{
+                    namePersonHaveDone: entity.getNamePersonHaveDone(),
+                }, {
                     abortEarly: false
                 })
         } catch (error) {
@@ -24,8 +24,8 @@ export class CommentValidator implements Validator<Comment>{
                     context: 'comment',
                     message: it
                 })
-            }) 
+            })
         }
     }
-    
+
 }

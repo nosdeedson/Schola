@@ -1,6 +1,7 @@
 import { Grade } from '../../../src/domain/enum/grade/grade';
 import { StudentRatingUsecaseResponseDto } from '../../../src/application/usecases/find-student-rating/find-stdent-rating-usecase-dto-out';
 import { RatingEntity } from '../../../src/infrastructure/entities/rating/rating.entity';
+import { QuarterResponseDto } from '@/infrastructure/api/controllers/semester/dto/find/quarter-response-dto';
 
 export function mockStudentRatingUsecaseDtoOut(
     overrides: RatingEntity
@@ -17,7 +18,7 @@ export function mockStudentRatingUsecaseDtoOut(
         vocabulary: Grade.EXCELENT,
         studentId: overrides.student.id ?? 'f33b56e7-3e23-487d-85c0-1d4b6dad3e34',
         studentName: overrides.student.fullName ?? 'student name',
-        quarterId: overrides.quarter.id ?? '4474e59a-9ffc-4de7-94f9-cc8ea2b5cd80',
+        quarter: overrides.quarter ? QuarterResponseDto.fromQuarterEntity(overrides.quarter) : null,
         comments: ['test']
     }
 }

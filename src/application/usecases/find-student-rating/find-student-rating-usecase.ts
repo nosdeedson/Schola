@@ -4,12 +4,14 @@ import { StudentRatingUsecaseResponseDto } from "./find-stdent-rating-usecase-dt
 
 export class FindStudentRantingUsecase {
 
-    constructor(private readonly ratingRepository: RatingRepositoryInterface) { }
+    constructor(
+        private readonly ratingRepository: RatingRepositoryInterface,
+    ) { }
 
     async execute(studentId: string): Promise<StudentRatingUsecaseResponseDto[]> {
         const service = new FindRatingByStudent(this.ratingRepository);
-        const result = await service.findRatingByStudent(studentId);
-        return StudentRatingUsecaseResponseDto.toDto(result);
+        const ratings = await service.findRatingByStudent(studentId);
+        return StudentRatingUsecaseResponseDto.toDto(ratings);
     }
 
 }

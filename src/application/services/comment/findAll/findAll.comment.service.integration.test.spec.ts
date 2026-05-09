@@ -99,7 +99,7 @@ describe('FindAllCommentService integration tests', () => {
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
 
-        let comment1 = new Comment('another comment', comment.getIdPersonHadDone());
+        let comment1 = new Comment('another comment', comment.getNamePersonHaveDone());
         const commentEntity1 = CommentEntity.toCommentEntity(comment1, ratingEntity);
         expect(await commentRepository.create(commentEntity1)).toBeInstanceOf(CommentEntity);
 

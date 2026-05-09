@@ -1,12 +1,12 @@
 import { StudentCommentRatingUsecaseDto } from "@/application/usecases/comment-rating/comment-rating-usecase-dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsUUID, Length } from "class-validator";
+import { IsNotEmpty, IsUUID, Length, MaxLength } from "class-validator";
 
 export class SaveCommentRatingRequestDto {
 
     @ApiProperty({ description: "A comment about a rating" })
     @IsNotEmpty()
-    @Length(500)
+    @MaxLength(500)
     readonly comment: string;
 
     @ApiProperty({ description: "Id of the person doing the comment" })

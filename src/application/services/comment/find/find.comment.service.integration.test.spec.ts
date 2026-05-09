@@ -97,7 +97,7 @@ describe('FindCommentService integration tests', () => {
         expect(result).toBeDefined();
         expect(result.comment).toBe(comment.getComment());
         expect(result.createdAt).toEqual(comment.getCreatedAt());
-        expect(result.idPersonHadDone).toBe(comment.getIdPersonHadDone());
+        expect(result.namePersonHadDone).toBe(comment.getNamePersonHaveDone());
         expect(result.idComment).toBe(comment.getId());
     });
 

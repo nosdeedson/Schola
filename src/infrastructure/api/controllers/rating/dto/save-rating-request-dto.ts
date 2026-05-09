@@ -7,7 +7,7 @@ export class SaveRatingRequestDto {
 
     @ApiProperty({ description: 'Id of student' })
     @IsUUID()
-    studentId: string;
+    studentBeingEvaluatedId: string;
 
     @ApiProperty({ description: 'Id of teacher made the avaliaiton' })
     @IsUUID()
@@ -56,7 +56,7 @@ export class SaveRatingRequestDto {
         dto.vocabulary = this.vocabulary;
         dto.writing = this.writing;
         dto.comment = this.comment;
-        dto.studentId = this.studentId;
+        dto.studentBeingEvaluatedId = this.studentBeingEvaluatedId;
         dto.teacherId = this.teacherId;
         return dto;
     }

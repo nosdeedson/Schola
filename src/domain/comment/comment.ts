@@ -3,40 +3,40 @@ import { CommentValidator } from "./comment.validator";
 
 export class Comment extends Entity {
     private comment: string;
-    private idPersonHadDone: string;
+    private namePersonHaveDone: string;
 
     constructor(
         comment: string,
-        idPersonHadDone: string,
-        id?: string, 
-        createdAt?: Date, 
-        updatedAt?: Date, 
+        namePersonHaveDone: string,
+        id?: string,
+        createdAt?: Date,
+        updatedAt?: Date,
         deletedAt?: Date
     ) {
         super(id, createdAt, updatedAt, deletedAt);
         this.comment = comment;
-        this.idPersonHadDone = idPersonHadDone;
+        this.namePersonHaveDone = namePersonHaveDone;
         this.validate();
     }
 
-    validate(){
+    validate() {
         new CommentValidator().validate(this);
     }
 
-    getComment(): string{
+    getComment(): string {
         return this.comment;
     }
 
-    setComment(comment: string){
+    setComment(comment: string) {
         this.comment = comment;
     }
 
-    getIdPersonHadDone(): string{
-        return this.idPersonHadDone
+    getNamePersonHaveDone(): string {
+        return this.namePersonHaveDone
     }
 
-    setIdPersonHadDone(id: string){
-       this.idPersonHadDone = id;
+    setIdPersonHaveDone(id: string) {
+        this.namePersonHaveDone = id;
     }
 
     // getRating(): Rating{

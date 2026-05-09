@@ -1,7 +1,7 @@
 import { Grade } from "@/domain/enum/grade/grade";
 
 export class SaveRatingUsecaseDto {
-    studentId: string;
+    studentBeingEvaluatedId: string;
     teacherId: string;
     listing: Grade;
     writing: Grade;

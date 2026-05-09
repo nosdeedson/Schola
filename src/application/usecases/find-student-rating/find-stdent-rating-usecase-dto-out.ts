@@ -1,4 +1,5 @@
 import { Grade } from "@/domain/enum/grade/grade";
+import { QuarterResponseDto } from "@/infrastructure/api/controllers/semester/dto/find/quarter-response-dto";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
 export class StudentRatingUsecaseResponseDto {
@@ -13,7 +14,7 @@ export class StudentRatingUsecaseResponseDto {
         vocabulary: Grade;
         studentId: string;
         studentName: string;
-        quarterId: string;
+        quarter: QuarterResponseDto;
         comments?: string[];
 
         private constructor(rating: RatingEntity) {
@@ -29,7 +30,7 @@ export class StudentRatingUsecaseResponseDto {
                         this.vocabulary = rating.vocabulary;
                         this.studentId = rating.student.id;
                         this.studentName = rating.student.fullName;
-                        this.quarterId = rating.quarter.id;
+                        this.quarter = QuarterResponseDto.fromQuarterEntity(rating.quarter);
                         if (rating?.comments) {
                                 this.comments = [];
                                 rating?.comments.forEach(it => this.comments.push(it?.comment))

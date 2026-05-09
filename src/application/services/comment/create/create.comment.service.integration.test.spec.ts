@@ -85,9 +85,9 @@ describe('create comment service integration tests', () => {
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
-        let idPersonHaveDone = student.getId();
+        let namePersonHaveDone = student.getName();
 
-        const dto = new CreateCommentDto('test a test', idPersonHaveDone, ratingEntity);
+        const dto = new CreateCommentDto('test a test', namePersonHaveDone, ratingEntity);
         const service = new CreateCommentService(commentRepository);
         let results = await commentRepository.findAll();
         expect(results.length).toBe(0);
@@ -96,7 +96,7 @@ describe('create comment service integration tests', () => {
         results = await commentRepository.findAll();
         expect(results.length).toBe(1);
         expect(results[0].id).toBeDefined();
-        expect(results[0].idPersonHaveDone).toBe(idPersonHaveDone);
+        expect(results[0].namePersonHaveDone).toBe(namePersonHaveDone);
         expect(results[0].comment).toBe('test a test');
     });
 

@@ -4,8 +4,6 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SaveCommentRatingRequestDto } from '../comment/dto/save-comment-rating-request.dto';
-import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
 
 @ApiTags("Student")
 @Controller('students')
@@ -14,7 +12,6 @@ export class StudentController {
     constructor(
         private studentRating: FindStudentRantingUsecase,
         private transferStudents: TransferStudentsAnotherClassUsecase,
-        private studentCommentRating: CommentRatingUsecase
     ) { }
 
     @ApiOperation({ description: "Find the student rating", })
