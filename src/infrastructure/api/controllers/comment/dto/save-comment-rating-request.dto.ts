@@ -1,20 +1,20 @@
-import { StudentCommentRatingUsecaseDto } from "@/application/usecases/student-comment-rating/student-comment-rating-usecase-dto";
+import { StudentCommentRatingUsecaseDto } from "@/application/usecases/comment-rating/comment-rating-usecase-dto";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsUUID, Length } from "class-validator";
 
-export class StudentCommentRatingRequestDto {
+export class SaveCommentRatingRequestDto {
 
-    @ApiProperty({description: "A comment about a rating"})
+    @ApiProperty({ description: "A comment about a rating" })
     @IsNotEmpty()
     @Length(500)
     readonly comment: string;
-    
-    @ApiProperty({description: "Id of the person doing the comment"})
+
+    @ApiProperty({ description: "Id of the person doing the comment" })
     @IsUUID()
     @IsNotEmpty()
     readonly idPersonHaveDone: string;
-    
-    @ApiProperty({description: "Id of the rating"})
+
+    @ApiProperty({ description: "Id of the rating" })
     @IsUUID()
     @IsNotEmpty()
     readonly ratingId: string;
@@ -29,7 +29,7 @@ export class StudentCommentRatingRequestDto {
         this.ratingId = ratingId;
     }
 
-    toStudentCommentRatingUsecaseDto(): StudentCommentRatingUsecaseDto{
+    toStudentCommentRatingUsecaseDto(): StudentCommentRatingUsecaseDto {
         const dto = new StudentCommentRatingUsecaseDto(this.comment, this.idPersonHaveDone, this.ratingId);
         return dto;
     }
