@@ -15,7 +15,7 @@ export class CreateCommentService {
 
     async execute(dto: CreateCommentDto) {
         try {
-            let comment = new Comment(dto.comment, dto.idPersonHaveDone);
+            let comment = new Comment(dto.comment, dto.namePersonHaveDone);
             let entity = CommentEntity.toCommentEntity(comment, dto.rating);
             await this.commentRepository.create(entity);
         } catch (error) {

@@ -1,6 +1,6 @@
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
-import { StudentRatingUsecaseResponseDto } from "./find-stdent-rating-usecase-dto-out";
+import { StudentRatingUsecaseResponseDto } from "./student-rating-usecase-response-dto";
 
 export class FindStudentRantingUsecase {
 

@@ -13,32 +13,32 @@ export class SaveRatingRequestDto {
     @IsUUID()
     teacherId: string;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     listing: Grade;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     writing: Grade;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     reading: Grade;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     speaking: Grade;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     grammar: Grade;
 
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     @IsEnum(Grade)
     homework: Grade;
 
     @IsEnum(Grade)
-    @ApiProperty({ description: 'Id of student' })
+    @ApiProperty({ description: 'Id of student', example: "BAD" })
     vocabulary: Grade;
 
     @ApiProperty({ description: "Comment of the teacher" })

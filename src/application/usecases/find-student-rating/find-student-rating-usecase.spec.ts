@@ -6,7 +6,7 @@ import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-fa
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-import { StudentRatingUsecaseResponseDto } from "./find-stdent-rating-usecase-dto-out";
+import { StudentRatingUsecaseResponseDto } from "./student-rating-usecase-response-dto";
 import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
 
 describe('studentRatingUsecase', () => {

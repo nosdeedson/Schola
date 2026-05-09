@@ -6,7 +6,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Name of user',
-        example: 'John Doe',
+        example: 'Amelia Teacher',
         required: true,
     })
     @IsNotEmpty()
@@ -14,7 +14,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Birthdate of user',
-        example: '2025-02-03T12:00:00Z',
+        example: '1990-02-03T12:00:00Z',
         required: true,
     })
     @IsDateString()
@@ -22,7 +22,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Email of user',
-        example: 'johndoe@gmail.com',
+        example: 'amelia.teacher@gmail.com',
         required: true,
     })
     @IsNotEmpty()
@@ -40,7 +40,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Access type of user',
-        example: 'student',
+        example: 'teacher',
         required: true,
     })
     @IsNotEmpty()
@@ -59,7 +59,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Nickname of user',
-        example: 'johndoe',
+        example: 'amelia.teacher',
         required: true,
     })
     @IsNotEmpty()
@@ -68,7 +68,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Parents of user',
-        example: ['John Doe', 'Mary Doe'],
+        example: ['John Father', 'Mary Mother'],
         required: false,
     })
     @IsOptional()
@@ -77,7 +77,7 @@ export class CreateUserRequestDto {
 
     @ApiProperty({
         description: 'Children of user',
-        example: ['John Doe', 'Mary Doe'],
+        example: ['John Student', 'Mary Student'],
         required: false,
     })
     @IsOptional()

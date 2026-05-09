@@ -1,15 +1,15 @@
 export class StudentCommentRatingUsecaseDto {
     comment: string;
-    idPersonHaveDone: string;
+    namePersonHaveDone: string;
     ratingId: string;
 
     constructor(
         comment: string,
-        idPersonHaveDone: string,
+        namePersonHaveDone: string,
         ratingId: string
     ) {
         this.comment = comment;
-        this.idPersonHaveDone = idPersonHaveDone;
+        this.namePersonHaveDone = namePersonHaveDone;
         this.ratingId = ratingId;
     }
 }

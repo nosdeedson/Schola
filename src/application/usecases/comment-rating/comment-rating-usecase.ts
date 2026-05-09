@@ -18,7 +18,7 @@ export class CommentRatingUsecase {
             const ratingEntity = await this.ratingRepository.find(dto.ratingId);
             if (!ratingEntity) throw new SystemError([{ context: "rating", message: 'rating not found' }])
             const createCommentService = new CreateCommentService(this.commentRepository);
-            const commentDto = new CreateCommentDto(dto.comment, dto.idPersonHaveDone, ratingEntity);
+            const commentDto = new CreateCommentDto(dto.comment, dto.namePersonHaveDone, ratingEntity);
             await createCommentService.execute(commentDto);
         } catch (error: any) {
             TrataErros.tratarErrorsNotFound(error);

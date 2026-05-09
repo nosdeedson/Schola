@@ -1,6 +1,22 @@
 import { Grade } from "@/domain/enum/grade/grade";
 import { QuarterResponseDto } from "@/infrastructure/api/controllers/semester/dto/find/quarter-response-dto";
+import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
+
+export class RatingCommentResponseDto {
+        namePersonHaveDone: string;
+        comment: string;
+        commentId: string;
+        private constructor() { }
+
+        static from(comment: CommentEntity): RatingCommentResponseDto {
+                const dto = new RatingCommentResponseDto();
+                dto.comment = comment.comment;
+                dto.commentId = comment.id;
+                dto.namePersonHaveDone = comment.namePersonHaveDone;
+                return dto;
+        }
+}
 
 export class StudentRatingUsecaseResponseDto {
         id: string;
@@ -15,7 +31,7 @@ export class StudentRatingUsecaseResponseDto {
         studentId: string;
         studentName: string;
         quarter: QuarterResponseDto;
-        comments?: string[];
+        comments?: RatingCommentResponseDto[] = [];
 
         private constructor(rating: RatingEntity) {
                 if (rating) {
@@ -32,8 +48,9 @@ export class StudentRatingUsecaseResponseDto {
                         this.studentName = rating.student.fullName;
                         this.quarter = QuarterResponseDto.fromQuarterEntity(rating.quarter);
                         if (rating?.comments) {
-                                this.comments = [];
-                                rating?.comments.forEach(it => this.comments.push(it?.comment))
+                                rating?.comments.forEach(
+                                        it => this.comments.push(RatingCommentResponseDto.from(it))
+                                );
                         }
                 }
         }
