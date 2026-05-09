@@ -9,11 +9,13 @@ import { AppController } from "./AppController";
 import { TeacherModule } from "../teacher/teacher.module";
 import { StudentModule } from "../student/student.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
+import { RatingModule } from "../rating/rating.module";
 
 @Global()
 @Module({
     imports: [
         DataBaseConnectionModule,
+        RatingModule,
         SchoolgroupModule,
         SemesterModule,
         StudentModule,

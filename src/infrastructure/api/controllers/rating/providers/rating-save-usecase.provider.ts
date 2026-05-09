@@ -5,7 +5,7 @@ import { StudentRepository } from "@/infrastructure/repositories/student/student
 import { COMMENT_REPOSITORY, RATING_REPOSITORY, SEMESTER_REPOSITORY, STUDENT_REPOSITORY } from "../../controller-tokens/controller-tokens";
 import { CommentRepository } from "@/infrastructure/repositories/comment/comment.respository";
 
-export const studentSaveRatingUsecaseProvider = [
+export const ratingSaveUsecaseProvider = [
     {
         provide: SaveRatingUsecase,
         useFactory: (
