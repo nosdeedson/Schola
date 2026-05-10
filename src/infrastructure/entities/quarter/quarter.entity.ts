@@ -1,14 +1,22 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { GenericEntity } from "../@shared/generic.entity/generic.entity";
 import { AcademicSemesterEntity } from "../academic-semester/academic.semester.entity";
 import { Quarter } from "@/domain/quarter/quarter";
 import { RatingEntity } from "../rating/rating.entity";
 
+@Index(
+    'unique_current_quarter',
+    ['currentQuarter'],
+    {
+        unique: true,
+        where: '"current_quarter" = true'
+    }
+)
 @Entity('quarter')
 export class QuarterEntity extends GenericEntity {
 
     @Column({
-        name: 'beggining_date',
+        name: 'begining_date',
         type: 'timestamp with time zone',
         nullable: false,
     })

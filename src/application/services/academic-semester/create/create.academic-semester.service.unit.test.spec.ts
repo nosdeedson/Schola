@@ -35,11 +35,11 @@ describe('Academic semester service unit test', () => {
         })
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateAcademicSemesterService(semesterRepository);
-        await expect( service.execute(createSemesterDto)).rejects.toMatchObject({
+        await expect(service.execute(createSemesterDto)).rejects.toMatchObject({
             errors: [
                 {
                     "context": "academicSemester",
-                    "message": "the end of the first Quarter must be before the start of the beggining of the secondQuarter",
+                    "message": "the end of the first Quarter must be before the start of the begining of the secondQuarter",
                 },
             ]
         });

@@ -8,7 +8,7 @@ describe('Quarter unit test', () => {
         expect(quarter.currentQuarter).toBeFalsy();
     });
 
-    it('should have two error with beggining and ending are undefined', () => {
+    it('should have two error with begining and ending are undefined', () => {
         const quarter = mockQuarter({ beginningDate: undefined, endingDate: undefined });
         expect(quarter.notification?.getErrors().length).toBe(2);
         expect(quarter.notification?.getErrors()).toMatchObject(
@@ -19,12 +19,12 @@ describe('Quarter unit test', () => {
         );
     });
 
-    it('should have an error if beggining is after endind', () => {
+    it('should have an error if begining is after endind', () => {
         const quarter = mockQuarter({ beginningDate: new Date(2026, 3, 30), endingDate: new Date(2026, 0, 1) });
         expect(quarter.notification?.getErrors().length).toBe(1);
         expect(quarter.notification?.getErrors()).toMatchObject(
             [
-                { context: "quarter", message: "the beggining of the quarter must before the end" },
+                { context: "quarter", message: "the begining of the quarter must before the end" },
             ]
         );
     });
