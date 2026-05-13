@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories'
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { DeleteAcademicSemesterService } from '../../academic-semester/delete/delete.academic-semester.service';
 
 describe('delete academic semester unit test', () =>{

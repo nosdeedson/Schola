@@ -9,7 +9,7 @@ import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semes
 import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateCommentService } from "@/application/services/comment/create/create.comment.service";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";

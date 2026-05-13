@@ -1,6 +1,6 @@
 import { FindAllUserDto } from "@/application/services/user/findAll/findAll.user.dto";
 import { FindAllUserService } from "@/application/services/user/findAll/findAll.user.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories"
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories"
 import { FindAllUserUsecase } from "./find-all-user-usecase";
 import { AccessType } from "@/domain/user/access.type";
 import { mockUser } from '../../../../../tests/mocks/domain/user.mock';

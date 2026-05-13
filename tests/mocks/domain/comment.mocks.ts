@@ -3,7 +3,7 @@ import { Comment } from '../../../src/domain/comment/comment';
 
 type CommentMock = {
     comment?: string;
-    idPerson?: string;
+    namePersoHaveDone?: string;
 }
 
 export function mockComment(
@@ -11,6 +11,6 @@ export function mockComment(
 ): Comment {
     return new Comment(
         overrides.comment ?? "just a comment",
-        overrides.idPerson ?? "1213"
+        overrides.namePersoHaveDone ?? "1213"
     );
 }

@@ -1,5 +1,5 @@
 import { RoleEnum } from "../../../../domain/worker/roleEnum"
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { CreateWorkerDto } from "./create.worker.dto"
 import { CreateWorkerService }  from "./create.worker.service"

@@ -137,7 +137,7 @@ describe('RatingRepository unit tests', () => {
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
         let ratingEntity = RatingEntity.toRatingEntity(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
-        const comment = mockComment({ idPerson: student.getId() });
+        const comment = mockComment({ namePersoHaveDone: student.getName() });
         const commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
         const wantedStudentId = student.getId();

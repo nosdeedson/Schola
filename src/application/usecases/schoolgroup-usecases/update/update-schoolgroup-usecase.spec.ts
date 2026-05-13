@@ -6,7 +6,7 @@ import { RoleEnum } from '../../../../domain/worker/roleEnum';
 import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
 import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
 import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/domain-dto/update-schoolgroup-usecase-dto.mocks';
-import { MockRepositoriesForUnitTest } from '@/infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { NotFoundException } from '@nestjs/common';
 

@@ -28,7 +28,7 @@ export class SaveCommentRatingRequestDto {
         this.ratingId = ratingId;
     }
 
-    toStudentCommentRatingUsecaseDto(): StudentCommentRatingUsecaseDto {
+    toCommentRatingUsecaseDto(): StudentCommentRatingUsecaseDto {
         const dto = new StudentCommentRatingUsecaseDto(this.comment, this.namePersonHaveDone, this.ratingId);
         return dto;
     }

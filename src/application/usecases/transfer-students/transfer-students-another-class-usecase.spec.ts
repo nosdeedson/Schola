@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 import { TransferStudentsAnotherClassUsecase } from "./transfer-students-another-class.usecase";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { NotFoundException } from "@nestjs/common";

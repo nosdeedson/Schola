@@ -1,5 +1,5 @@
 import { DeleteStudentService } from '../delete/delete.student.service';
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 
 
 describe('DeleteStudentService unit test', () =>{

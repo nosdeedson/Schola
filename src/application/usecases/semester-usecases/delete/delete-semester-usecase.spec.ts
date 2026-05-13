@@ -1,5 +1,5 @@
 import { DeleteAcademicSemesterService } from "@/application/services/academic-semester/delete/delete.academic-semester.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { DelesteSemesterUsecase } from "./delete-semester-usecase";
 
 describe('DeleteSemesterUsecase', () => {

@@ -1,6 +1,6 @@
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindRatingByStudent } from "./find-rating-by-student.service";
 
 describe('findRatingByStudent', () => {

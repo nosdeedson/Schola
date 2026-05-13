@@ -1,6 +1,6 @@
 import { UpdateCommentService } from './update.comment.service';
 import { UpdateCommentDto } from './update.comment.dto';
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories'
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity} from '../../../../infrastructure/entities/comment/comment.entity';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';

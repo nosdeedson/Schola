@@ -2,7 +2,7 @@ import { DateHelper } from "../../../../helpers/date/date.helper";
 import { ClassCodeHelper } from "../../../../helpers/classCode/class-code.heper";
 import { ScheduleDto } from './schedule-dto';
 import { CreateClassDto } from './create.class.dto';
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateClassService } from './create.class.service';
 
 describe('CreateClassUsecas unit test', () => {

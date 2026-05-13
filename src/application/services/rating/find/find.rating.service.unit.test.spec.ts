@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindRatingService } from "./find.rating.service";
 import { RatingEntity} from '../../../../infrastructure/entities/rating/rating.entity';
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";

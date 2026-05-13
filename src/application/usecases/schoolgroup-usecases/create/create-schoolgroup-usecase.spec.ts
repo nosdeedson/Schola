@@ -11,7 +11,7 @@ import { CreateClassService } from "../../../services/class/create/create.class.
 import { CreateWorkerService } from "../../../services/worker/create/create.worker.service";
 import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
 
 

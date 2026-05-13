@@ -1,6 +1,6 @@
 import { UpdateClassDto } from './udpate.class.dto';
 import { UpdateClassService } from './update.class.service';
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';

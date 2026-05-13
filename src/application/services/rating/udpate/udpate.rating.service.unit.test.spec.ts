@@ -1,5 +1,5 @@
 import { Grade } from '../../../../domain/enum/grade/grade';
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { UpdateRatingDto } from './udpate.rating.dto';
 import { UpdateRatingService } from './update.rating.service';

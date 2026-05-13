@@ -1,5 +1,5 @@
 import { FindAcademicSemesterService } from "@/application/services/academic-semester/find/find.academic-semester.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindSemesterUsecase } from "./find-semester-usecase";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";

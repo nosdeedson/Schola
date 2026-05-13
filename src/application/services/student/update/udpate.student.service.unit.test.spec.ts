@@ -1,7 +1,7 @@
 import { UpdateStudentDto } from './udpate.student.dto';
 import { UpdateStudentService } from './udpate.student.service';
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 
 describe('UpdateStudentService unit test', () =>{

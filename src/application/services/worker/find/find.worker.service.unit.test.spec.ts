@@ -1,6 +1,6 @@
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { Worker } from "../../../../domain/worker/worker";
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { FindWorkerService } from './find.worker.service';
 import { SystemError } from "../../@shared/system-error";

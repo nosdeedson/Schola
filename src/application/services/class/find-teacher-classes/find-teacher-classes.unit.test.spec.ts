@@ -1,6 +1,6 @@
 import { FindTeacherClassesService } from "./find.teacher-classes";
 import { ClassesOfTeacherDto } from '../../../usecases/teacher-list-classes-usecase/classes-of-teacher-dto';
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { mockClassesOfTeacherDto } from "../../../../infrastructure/__mocks__/mock-dtos/mock-dtos";

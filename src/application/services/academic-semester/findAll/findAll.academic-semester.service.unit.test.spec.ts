@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindAllAcademicSemesterService } from './findAll.academic-semester.service';
 import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
 import { mockQuarter } from '../../../../../tests/mocks/domain/quarter.mocks';

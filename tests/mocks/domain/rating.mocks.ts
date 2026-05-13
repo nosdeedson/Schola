@@ -4,6 +4,7 @@ import { mockStudent } from "./student.mocks";
 import { Student } from "@/domain/student/student";
 import { Grade } from "@/domain/enum/grade/grade";
 import { Rating } from "@/domain/rating/rating";
+import { mockComment } from "./comment.mocks";
 
 type RatingMock = {
     comments?: Comment[];

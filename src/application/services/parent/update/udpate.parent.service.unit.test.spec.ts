@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories';
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { UpdateParentService } from './update.parent.service';
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';

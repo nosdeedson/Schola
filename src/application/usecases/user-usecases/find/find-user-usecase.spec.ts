@@ -1,6 +1,6 @@
 import { SystemError } from "@/application/services/@shared/system-error";
 import { FindUserService } from "@/application/services/user/find/find.user.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { FindUserUsecase } from "./find-user-usecase";

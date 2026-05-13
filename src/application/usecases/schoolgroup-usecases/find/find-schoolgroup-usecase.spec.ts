@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { FindSchoolgroupUsecase } from "./find-schoolgroup-usecase";

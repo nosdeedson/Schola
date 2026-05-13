@@ -1,6 +1,6 @@
 import { FindAllAcademicSemesterDto } from "@/application/services/academic-semester/findAll/findAll.academic-semester.dto";
 import { FindAllAcademicSemesterService } from "@/application/services/academic-semester/findAll/findAll.academic-semester.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindAllSemesterUsecase } from "./find-all-semester-usecase";
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";

@@ -3,7 +3,7 @@ import { mockFindClassDto } from "../../../../../tests/mocks/controller/find-cla
 import { FindAllClassDto } from "@/application/services/class/findAll/findAll.class.dto";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 
 describe('FindAllSchoolgroupUsecase', () => {
 

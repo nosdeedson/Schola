@@ -7,7 +7,7 @@ import { FindRatingByStudent } from "@/application/services/rating/find-rating-b
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { StudentRatingUsecaseResponseDto } from "./student-rating-usecase-response-dto";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 
 describe('studentRatingUsecase', () => {
 

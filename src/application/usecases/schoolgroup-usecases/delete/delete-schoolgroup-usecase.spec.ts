@@ -1,5 +1,5 @@
 import { DeleteClassService } from "@/application/services/class/delete/delete.class.service";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories"
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories"
 import { DeleteSchoolgroupUsecase } from "./delete-schoolgroup-usecase";
 import { mockFindClassDto } from "../../../../../tests/mocks/controller/find-class-dto-mock";
 

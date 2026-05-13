@@ -1,4 +1,4 @@
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories"
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories"
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";

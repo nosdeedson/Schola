@@ -9,7 +9,7 @@ import { SystemError } from '../../../services/@shared/system-error';
 import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
 import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";
 import { BadRequestException } from "@nestjs/common";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 
 describe('CreateSemesterUsecase', () => {
 

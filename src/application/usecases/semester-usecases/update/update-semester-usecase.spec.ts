@@ -8,7 +8,7 @@ import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-e
 import { SystemError } from "../../../services/@shared/system-error";
 import { UpdateAcademicSemesterService } from "../../../services/academic-semester/update/update.academic-semester.service";
 import { UpdateSemesterUseCase } from "./update-semester.usecase";
-import { MockRepositoriesForUnitTest } from "@/infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 
 describe('UpdateSemesterUserCase', () => {
 

@@ -1,5 +1,5 @@
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
-import { MockRepositoriesForUnitTest } from "../../../../infrastructure/__mocks__/mockRepositories";
+import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { FindAcademicSemesterService } from "../find/find.academic-semester.service"
 

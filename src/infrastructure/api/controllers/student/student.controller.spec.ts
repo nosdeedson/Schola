@@ -12,6 +12,8 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { providers } from './providers/students.providers';
 import { SaveCommentRatingRequestDto } from '../comment/dto/save-comment-rating-request.dto';
 import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
+import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
+import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -49,7 +51,9 @@ describe('StudentController', () => {
   });
 
   it('should find a rating', async () => {
-    const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+    const rating = mockRating();
+    const ratingEntity = RatingEntity.toRatingEntity(rating);
+    ratingEntity.comments = CommentEntity.toCommentsEntity([mockComment()], ratingEntity);
     const wantedId = ratingEntity.id;
     const out = mockStudentRatingUsecaseDtoOut(ratingEntity);
     const ratingStudentUsecase = jest.spyOn(FindStudentRantingUsecase.prototype, 'execute')

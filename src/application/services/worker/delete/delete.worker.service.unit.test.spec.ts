@@ -1,6 +1,6 @@
 import { Worker } from '../../../../domain/worker/worker'
 import { RoleEnum } from '../../../../domain/worker/roleEnum'
-import { MockRepositoriesForUnitTest } from '../../../../infrastructure/__mocks__/mockRepositories'
+import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { DeleteWorkerService } from './delete.worker.service';
 
 describe('DeleteWorkerService unit test', () => {
