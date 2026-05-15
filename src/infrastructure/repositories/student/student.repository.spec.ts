@@ -1,4 +1,3 @@
-import { DomainMocks } from "../../__mocks__/mocks";
 import { ClassEntity } from "../../entities/class/class.entity";
 import { StudentEntity } from "../../entities/student/student.entity";
 import { ParentStudentEntity } from "../../entities/parent-student/parent.student.entity";
@@ -11,6 +10,9 @@ import { Student } from "../../../domain/student/student";
 import { ParentEntity } from "../../entities/parent/parent.entity";
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
+import { mockClass } from "../../../../tests/mocks/domain/class.mocks";
+import { mockSchedule } from "../../../../tests/mocks/domain/schedule.mocks";
+import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 
 const MILISECONDS = 1000;
 
@@ -48,7 +50,7 @@ describe('StudentRepository unit test', () => {
     });
 
     it('should save a student in BD', async () => {
-        let student = DomainMocks.mockStudentWithoutParent();
+        let student = mockStudent();
         let model = StudentEntity.toStudentEntity(student);
         let wantedId = student.getId();
         expect(await studentRepository.create(model)).toBeInstanceOf(StudentEntity);
@@ -59,7 +61,7 @@ describe('StudentRepository unit test', () => {
     });
 
     it('should delete a student in BD', async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let model = StudentEntity.toStudentEntity(student);
         let wantedId = student.getId();
         expect(await studentRepository.create(model)).toBeInstanceOf(StudentEntity);
@@ -74,7 +76,7 @@ describe('StudentRepository unit test', () => {
     });
 
     it('should find a student in BD', async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let model = StudentEntity.toStudentEntity(student);
         let wantedId = student.getId();
         expect(await studentRepository.create(model)).toBeInstanceOf(StudentEntity);
@@ -85,7 +87,7 @@ describe('StudentRepository unit test', () => {
     });
 
     it('should find all students by ids in BD', async () => {
-        let student1 = DomainMocks.mockStudent();
+        let student1 = mockStudent();
         let model1 = StudentEntity.toStudentEntity(student1);
         expect(await studentRepository.create(model1)).toBeInstanceOf(StudentEntity);
 
@@ -107,12 +109,12 @@ describe('StudentRepository unit test', () => {
 
     it('should update a student in BD', async () => {
         // schoogroup to student
-        let schoolGroup = DomainMocks.mockSchoolGroup();
+        let schoolGroup = mockClass();
         let schoolGroupModel = ClassEntity.toClassEntity(schoolGroup);
         await schoolGroupRepository.create(schoolGroupModel);
 
         // create student
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         student.setSchoolGroup(schoolGroup);
         let wantedId = student.getId();
         let model = StudentEntity.toStudentEntity(student);
@@ -122,7 +124,7 @@ describe('StudentRepository unit test', () => {
         let result = await studentRepository.find(wantedId);
         expect(result).toBeDefined();
 
-        let schedule = DomainMocks.mockSchedule();
+        let schedule = mockSchedule();
         let schoolGroup1 = new Class('4321', 'b1', 'b1', schedule, '6f76562a-b91f-43e7-89fd-60151436371c')
         let wantedSchoolGroupId = '6f76562a-b91f-43e7-89fd-60151436371c';
         let schoolGroupModel1 = ClassEntity.toClassEntity(schoolGroup1);
@@ -138,12 +140,12 @@ describe('StudentRepository unit test', () => {
     });
 
     it('should find a student by name and parents name', async () => {
-        const student = DomainMocks.mockStudentWithoutParent();
+        const student = mockStudent();
         const wantedStudentName = student.getName();
         const studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         const wantedParentName = parent.getName();
         const parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);

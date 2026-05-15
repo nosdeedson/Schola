@@ -2,7 +2,6 @@ import { Repository } from "typeorm";
 import { Comment } from "../../../domain/comment/comment";
 import { Parent } from "../../../domain/parent/parent";
 import { Student } from "../../../domain/student/student";
-import { DomainMocks } from "../../__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../entities/academic-semester/academic.semester.entity";
 import { CommentEntity } from "../../entities/comment/comment.entity";
 import { ParentEntity } from "../../entities/parent/parent.entity";
@@ -16,6 +15,7 @@ import { StudentRepository } from '../student/student.repository';
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
 import { mockRating } from '../../../../tests/mocks/domain/rating.mocks';
+import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 
 describe('CommentRepository unit test', () => {
 
@@ -80,7 +80,7 @@ describe('CommentRepository unit test', () => {
 
         //let entityBD = await ratingRepository.find(ratingEntity.id);
 
-        let comment = DomainMocks.mockComment();
+        let comment = mockComment();
         let model = CommentEntity.toCommentEntity(comment, ratingEntity);
         let wantedId = comment.getId();
         expect(await repository.create(model)).toBeInstanceOf(CommentEntity);

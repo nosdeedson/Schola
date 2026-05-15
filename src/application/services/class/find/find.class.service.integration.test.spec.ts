@@ -1,4 +1,3 @@
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
 import { FindClassService } from './find.class.service';
@@ -7,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ClassRepositoryInterface } from '../../../../domain/class/class.repository.interface';
 import { Class } from '../../../../domain/class/class';
 import { AppDataSource } from '../../../../infrastructure/repositories/config-test/appDataSource';
+import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
 
 
 describe('find class service integration test', () => {
@@ -18,7 +18,7 @@ describe('find class service integration test', () => {
     let schoolgroup: Class;
 
     beforeEach(async () => {
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
         appDataSource = AppDataSource.getAppDataSource();
         await appDataSource.initialize()
             .catch((error: any) => console.log(error))
@@ -33,7 +33,7 @@ describe('find class service integration test', () => {
     });
 
     it('should not find a class on BD with wrong id', async () => {
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
         const service = new FindClassService(classRepository);
@@ -55,7 +55,7 @@ describe('find class service integration test', () => {
     })
 
     it('should find a class on BD', async () => {
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
         const service = new FindClassService(classRepository);

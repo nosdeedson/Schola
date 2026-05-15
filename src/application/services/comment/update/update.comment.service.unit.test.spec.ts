@@ -1,10 +1,10 @@
 import { UpdateCommentService } from './update.comment.service';
 import { UpdateCommentDto } from './update.comment.dto';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { CommentEntity} from '../../../../infrastructure/entities/comment/comment.entity';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
+import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
 
 describe('UpdateCommentService unit tests', () =>{
 
@@ -33,7 +33,7 @@ describe('UpdateCommentService unit tests', () =>{
     });
 
     it('should update a comment', async () =>{
-        const comment = DomainMocks.mockComment();
+        const comment = mockComment();
         const rating = mockRating();
         const ratingEntity = RatingEntity.toRatingEntity(rating);
         const entity = CommentEntity.toCommentEntity(comment, ratingEntity);

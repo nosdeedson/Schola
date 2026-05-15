@@ -7,10 +7,10 @@ import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { CreateGetWorkerService } from "./create-get-worker.service";
 import { AccessType } from "@/domain/user/access.type";
 import { CreateWorkerDto } from "../create/create.worker.dto";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 describe("CreateWorkerService integration test", () => {
     let workerEntity: Repository<WorkerEntity>;
@@ -41,7 +41,7 @@ describe("CreateWorkerService integration test", () => {
 
     it('should find a worker and return it', async () => {
         let service = new CreateGetWorkerService(workerRepository);
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER, true);
+        let worker = mockWorker();
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(workerEntity)).toBeInstanceOf(WorkerEntity);
         const wantedBirthday = new Date();

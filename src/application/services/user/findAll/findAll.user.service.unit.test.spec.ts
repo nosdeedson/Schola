@@ -1,5 +1,6 @@
+import { AccessType } from "@/domain/user/access.type";
+import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { FindAllUserService } from './findAll.user.service';
 
@@ -23,8 +24,8 @@ describe('FindAllUserService unit test', () =>{
     });
 
     it('should find two users', async () =>{
-        let admin = DomainMocks.mockUserAdmin();
-        let teacher = DomainMocks.mockUserTeacher();
+        let admin = mockUser(AccessType.ADMIN);
+        let teacher = mockUser(AccessType.TEACHER);
         let adminEntity = UserEntity.toUserEntity(admin)
         let teacherEntity = UserEntity.toUserEntity(teacher);
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();

@@ -1,6 +1,5 @@
 import { Grade } from "../../../domain/enum/grade/grade";
 import { Rating } from "../../../domain/rating/rating";
-import { DomainMocks } from '../../__mocks__/mocks';
 import { AcademicSemesterEntity } from "../../entities/academic-semester/academic.semester.entity";
 import { RatingEntity } from "../../entities/rating/rating.entity";
 import { StudentEntity } from "../../entities/student/student.entity";
@@ -13,6 +12,7 @@ import { mockQuarter } from "../../../../tests/mocks/domain/quarter.mocks";
 import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 import { CommentRepository } from "../comment/comment.respository";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
+import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 
 describe('RatingRepository unit tests', () => {
 
@@ -52,7 +52,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
@@ -71,7 +71,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
@@ -89,7 +89,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
@@ -109,7 +109,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
@@ -131,7 +131,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
@@ -155,7 +155,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 
@@ -177,7 +177,7 @@ describe('RatingRepository unit tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         await semesterRepository.create(semesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         await studentRepository.create(studentEntity);
 

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RatingController } from './rating.controller';
 import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
-import { setEnv } from '@/infrastructure/__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { providers } from './providers/ratings.providers';
 import { mockSaveRatingRequest } from "../../../../../tests/mocks/controller/save-rating-request-dto-mock";
 import { SaveRatingUsecase } from '@/application/usecases/save-rating/save-rating-usecase';

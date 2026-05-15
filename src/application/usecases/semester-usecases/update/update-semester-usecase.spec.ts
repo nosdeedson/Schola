@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { mockUpdateSemesterDto } from "../../../../../tests/mocks/domain-dto/update-semester-dto.mocks";
-import { setEnv } from "../../../../infrastructure/__mocks__/env.mock";
+import { setEnv } from "../../../../../tests/mocks/env/env.mock";
 import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
 import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";

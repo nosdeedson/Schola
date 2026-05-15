@@ -1,4 +1,3 @@
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { DeleteRatingService } from "./delete.rating.service";
 import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";

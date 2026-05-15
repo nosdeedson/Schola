@@ -1,5 +1,4 @@
 import { Repository } from 'typeorm';
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
@@ -7,6 +6,8 @@ import { WorkerRepository } from "../../../../infrastructure/repositories/worker
 import { UpdateUserDto } from './update.user.dto';
 import { UpdateUserService } from './update.user.service';
 import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
+import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
+import { AccessType } from '@/domain/user/access.type';
 
 
 describe('UpdateUserService integration test', () =>{
@@ -36,7 +37,7 @@ describe('UpdateUserService integration test', () =>{
     });
 
     it('should thorw an error with id not passed', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
@@ -55,7 +56,7 @@ describe('UpdateUserService integration test', () =>{
     });
 
     it('should throw error if input does not have attributes but id', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
@@ -76,7 +77,7 @@ describe('UpdateUserService integration test', () =>{
     });
 
     it('should update an user', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
@@ -100,7 +101,7 @@ describe('UpdateUserService integration test', () =>{
     });
 
     it('should not update an user ', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);

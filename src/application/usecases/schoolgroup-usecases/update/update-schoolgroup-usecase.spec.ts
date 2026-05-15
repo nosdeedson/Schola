@@ -1,7 +1,6 @@
 
 import { UpdateClassService } from '../../../services/class/update/update.class.service';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { RoleEnum } from '../../../../domain/worker/roleEnum';
 import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
 import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
@@ -9,6 +8,7 @@ import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/doma
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { NotFoundException } from '@nestjs/common';
+import { mockWorker } from '../../../../../tests/mocks/domain/worker.mock';
 
 describe('UpdateSchoolgroupUsecase', () => {
 
@@ -17,7 +17,7 @@ describe('UpdateSchoolgroupUsecase', () => {
     });
 
     it('should update a schoolgroup', async () => {
-        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        const teacher = WorkerEntity.toWorkerEntity(mockWorker());
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();

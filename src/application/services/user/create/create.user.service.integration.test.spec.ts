@@ -1,6 +1,4 @@
 import { AccessType } from "../../../../domain/user/access.type";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { PersonEntity } from "../../../../infrastructure/entities/@shared/person.entity";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
@@ -13,6 +11,10 @@ import { StudentRepository } from "../../../../infrastructure/repositories/stude
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { RoleEnum } from "@/domain/worker/roleEnum";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 
 describe('create user service integration tests', () => {
 
@@ -41,7 +43,7 @@ describe('create user service integration tests', () => {
     it('should create an user of type teacher', async () => {
 
         personRepository = new WorkerRepository(TestDataSource);
-        let person = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let person = mockWorker();
         let teacherEntity = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
@@ -64,7 +66,7 @@ describe('create user service integration tests', () => {
     it('should create an user of type admin', async () => {
 
         personRepository = new WorkerRepository(TestDataSource);
-        let person = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
+        let person = mockWorker({role: RoleEnum.ADMINISTRATOR});
         let workerAdmin = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
 
@@ -88,7 +90,7 @@ describe('create user service integration tests', () => {
 
         let studentRepository = new StudentRepository(TestDataSource);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
@@ -113,7 +115,7 @@ describe('create user service integration tests', () => {
 
         let parentRepository = new ParentRepository(personEntity, TestDataSource);
 
-        let parent = DomainMocks.mockParent();
+        let parent = mockParent();
         let parentEntity = ParentEntity.toParentEntity(parent);
 
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);

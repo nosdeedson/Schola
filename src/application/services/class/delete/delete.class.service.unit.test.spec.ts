@@ -1,12 +1,12 @@
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks"
 import { DeleteClassService } from './delete.class.service';
 
 
 describe('delete class service unit test', () =>{
     
     it('should delete a class', async () => {
-        let schoolGroup = DomainMocks.mockSchoolGroup();
+        let schoolGroup = mockClass();
         let classRepository = await MockRepositoriesForUnitTest.mockRepositories();
         const service = new DeleteClassService(classRepository);
         expect(await service.execute(schoolGroup.getId())).toBe(void 0);

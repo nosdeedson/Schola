@@ -1,8 +1,7 @@
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { UpdateParentService } from './update.parent.service';
-import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
+import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
 
 describe('UpdateParentService unit test', () => {
 
@@ -21,7 +20,7 @@ describe('UpdateParentService unit test', () => {
 
     it('should update the parent', async () => {
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const parent = DomainMocks.mockParent();
+        const parent = mockParent();
         const parentEntity = ParentEntity.toParentEntity(parent);
         parentRepository.find = jest.fn().mockImplementationOnce(() => parentEntity);
         const wantedName = 'Marcus';

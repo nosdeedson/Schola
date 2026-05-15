@@ -1,6 +1,4 @@
-import { Parent } from "../../../@/domain/parent/parent";
-import { Student } from "../../../@/domain/student/student"
-import { mockStudent } from "./student.mocks";
+import { Parent } from "../../../src/domain/parent/parent";
 
 type ParentMock = {
     nameStudents?: string[];

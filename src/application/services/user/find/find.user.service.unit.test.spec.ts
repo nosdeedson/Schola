@@ -1,5 +1,6 @@
+import { AccessType } from "@/domain/user/access.type";
+import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { FindUserService } from './find.user.service';
 
 
@@ -10,7 +11,7 @@ describe('FindUserService tests unit', () =>{
     })
 
     it('should find an user', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         const userRepository = await MockRepositoriesForUnitTest.mockRepositories();
         userRepository.find = jest.fn().mockImplementationOnce(() =>{
             return user;
@@ -25,7 +26,7 @@ describe('FindUserService tests unit', () =>{
     });
 
     it('should not find an user', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         const userRepository = await MockRepositoriesForUnitTest.mockRepositories();
         userRepository.find = jest.fn().mockImplementationOnce(() =>{
             return null;

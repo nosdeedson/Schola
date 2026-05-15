@@ -1,9 +1,9 @@
 import { RoleEnum } from "../../../domain/worker/roleEnum";
 import { Worker } from "../../../domain/worker/worker";
-import { DomainMocks } from '../../__mocks__/mocks';
 import { WorkerEntity } from "../../entities/worker/worker.entity";
 import { WorkerRepository } from "./worker.repository";
 import { TestDataSource } from "../config-test/test.datasource";
+import { mockWorker } from "../../../../tests/mocks/domain/worker.mock";
 
 
 const MILISECONDS = 1000;
@@ -30,7 +30,7 @@ describe("WorkerRepository unit tets", () =>{
     })
 
     it('should create a worker entity in the database', async () =>{
-        let worker = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
+        let worker = mockWorker({role: RoleEnum.ADMINISTRATOR});
         let model = WorkerEntity.toWorkerEntity(worker);
         let id = worker.getId();
         await repository.create(model);
@@ -55,9 +55,9 @@ describe("WorkerRepository unit tets", () =>{
 
 
     it('should find all workers entity in the database', async () =>{
-        let worker1 = DomainMocks.mockWorker(RoleEnum.ADMINISTRATOR);
+        let worker1 = mockWorker({role: RoleEnum.ADMINISTRATOR});
         let model = WorkerEntity.toWorkerEntity(worker1);
-        let worker2 = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker2 = mockWorker({role: RoleEnum.TEACHER});
         let model2 = WorkerEntity.toWorkerEntity(worker2);
         await repository.create(model);
         await repository.create(model2);
@@ -73,7 +73,7 @@ describe("WorkerRepository unit tets", () =>{
         const expectedId = '27543f8f-11bd-464c-96af-c7cb09adeccf';
         const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR, id: expectedId});
         let model = WorkerEntity.toWorkerEntity(admin);
-        let worker2 = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker2 = mockWorker();
         let model2 = WorkerEntity.toWorkerEntity(worker2);
         await repository.create(model);
         expect(await repository.update(model2)).toBe(void 0);
@@ -83,7 +83,7 @@ describe("WorkerRepository unit tets", () =>{
     });
 
     it('should find teacher entity by name', async () =>{
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker();
         let model = WorkerEntity.toWorkerEntity(worker);
         expect(await repository.create(model)).toBeInstanceOf(WorkerEntity);
         let entity = await repository.findByName(model.fullName);

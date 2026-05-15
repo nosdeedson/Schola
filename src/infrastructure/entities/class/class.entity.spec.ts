@@ -3,11 +3,12 @@ import { Class } from "../../../domain/class/class";
 import { Schedule } from "../../../domain/schedule/schedule";
 import { DateHelper } from "../../../helpers/date/date.helper";
 import { ClassEntity } from "./class.entity";
-import { DomainMocks } from "../../../infrastructure/__mocks__/mocks";
 import { StudentEntity } from "../student/student.entity";
 import { Worker } from "../../../domain/worker/worker";
 import { RoleEnum } from "../../../domain/worker/roleEnum";
 import { WorkerEntity } from "../worker/worker.entity";
+import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
+import { mockWorker } from "../../../../tests/mocks/domain/worker.mock";
 
 describe('Classmodel unit tests', () => {
 
@@ -49,8 +50,8 @@ describe('Classmodel unit tests', () => {
             schedule,
         );
 
-        student = DomainMocks.mockStudent();
-        teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        student = mockStudent();
+        teacher = mockWorker();
     })
 
     it('should instantiate a ClassEntity from a domain Class', () => {
@@ -89,6 +90,6 @@ describe('Classmodel unit tests', () => {
         expect(model).toBeDefined();
         expect(model.students.length).toBe(1)
         expect(model.students).toStrictEqual([studentModel]);
-    })
+    });
 
-})
+});

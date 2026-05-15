@@ -2,11 +2,11 @@ import { Repository } from "typeorm"
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { FindAllStudentService } from "../../../../application/services/student/findAll/findAll.student.service";
 import { FindAllStudentDto } from "../../../../application/services/student/findAll/findAll.student.dto";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 
 describe('FindAllStudents', () => {
@@ -33,7 +33,7 @@ describe('FindAllStudents', () => {
     });
 
     it("should find all students", async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         const service = new FindAllStudentService(studentRepository);

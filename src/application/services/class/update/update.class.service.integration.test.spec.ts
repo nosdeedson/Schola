@@ -1,13 +1,13 @@
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UpdateClassDto } from './udpate.class.dto'
 import { UpdateClassService } from './update.class.service';
 import { Repository } from "typeorm";
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 describe('update class integration test', () => {
 
@@ -35,13 +35,13 @@ describe('update class integration test', () => {
     })
 
     it('should throw an error while updating class if id does not exist', async () => {
-        let schoolgroup = DomainMocks.mockSchoolGroup();
+        let schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
 
         let wantedId = 'ea224f51-5404-4228-8a77-2795b900702d';
         let wantedBookName = 'new book';
-        let wantedTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        let wantedTeacher = WorkerEntity.toWorkerEntity(mockWorker());
         let input: UpdateClassDto = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
         const service = new UpdateClassService(classRepository);
         try {
@@ -54,16 +54,16 @@ describe('update class integration test', () => {
     });
 
     it('should update a class', async () => {
-        let teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        let teacher = WorkerEntity.toWorkerEntity(mockWorker());
         expect(await teacherRepository.create(teacher)).toBeInstanceOf(WorkerEntity);
-        let schoolgroup = DomainMocks.mockSchoolGroup();
+        let schoolgroup = mockClass();
         let classEntity = ClassEntity.toClassEntity(schoolgroup);
         classEntity.teacher = teacher;
         expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
         let wantedId = classEntity.id;
         let oldTeacherName = classEntity.teacher.fullName;
         let wantedBookName = 'new book';
-        let wantedTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        let wantedTeacher = WorkerEntity.toWorkerEntity(mockWorker({name: 'Emily'}));
         expect(await teacherRepository.create(wantedTeacher)).toBeInstanceOf(WorkerEntity);
         let input = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
 

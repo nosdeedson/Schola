@@ -1,5 +1,6 @@
+import { AccessType } from "@/domain/user/access.type";
+import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { UpdateUserDto } from './update.user.dto';
 import { UpdateUserService } from './update.user.service';
@@ -13,7 +14,7 @@ describe('UpdateUserService unit tests', () => {
     let userRepository: any;
 
     beforeEach(() => {
-        user = DomainMocks.mockUserTeacher();
+        user = mockUser(AccessType.TEACHER);
         userEntity = UserEntity.toUserEntity(user);
         updateUserDto = { id: userEntity.id, email: 'test@test', nickname: 'test', password: '4321'};
         userRepository = MockRepositoriesForUnitTest.mockRepositories();

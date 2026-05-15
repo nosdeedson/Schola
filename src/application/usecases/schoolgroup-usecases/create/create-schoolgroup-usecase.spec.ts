@@ -1,18 +1,13 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
-import { setEnv } from "../../../../infrastructure/__mocks__/env.mock";
 import { CreateSchoolgroupUseCase } from "./create-schoolgroup-usecase";
-import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
 import { BadRequestException } from "@nestjs/common";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateClassService } from "../../../services/class/create/create.class.service";
-import { CreateWorkerService } from "../../../services/worker/create/create.worker.service";
 import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 
 const mockManager = {
@@ -39,7 +34,7 @@ describe('CreateSchoolGroupUsecase', () => {
 
         const dto = mockCreateSchoolgroupUseCaseDto();
 
-        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const teacher = WorkerEntity.toWorkerEntity(mockWorker());
         const input = dto.toCreateClassDto(teacher);
 
         const createTeacher = jest.spyOn(CreateGetWorkerService.prototype, 'execute')
@@ -62,7 +57,7 @@ describe('CreateSchoolGroupUsecase', () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
-        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const teacher = WorkerEntity.toWorkerEntity(mockWorker());
 
         const createTeacher = jest.spyOn(CreateGetWorkerService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
@@ -82,7 +77,7 @@ describe('CreateSchoolGroupUsecase', () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
-        const teacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER, true));
+        const teacher = WorkerEntity.toWorkerEntity(mockWorker());
         const input = dto.toCreateClassDto(teacher);
 
         const createTeacher = jest.spyOn(CreateGetWorkerService.prototype, 'execute')

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataBaseConnectionModule } from '../../data-base-connection/data-base-connection.module';
-import { setEnv } from '../../__mocks__/env.mock';
+import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { TypeRepository } from './type-repository';
 import { AcademicSemesterRepository } from '../../repositories/academic-semester/academic-semester.repository';
 import { ClassRepository } from '../../repositories/class/class.repository';

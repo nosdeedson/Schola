@@ -1,11 +1,11 @@
 import { RoleEnum } from "../../../../domain/worker/roleEnum"
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { CreateWorkerDto } from "./create.worker.dto"
 import { CreateWorkerService }  from "./create.worker.service"
 import { SystemError } from '../../@shared/system-error'
 import { AccessType } from "../../../../domain/user/access.type";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 describe('CreateWorkerService test unit', () => {
     let worker: CreateWorkerDto;
@@ -23,7 +23,7 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
-        workerRepository.create = jest.fn().mockResolvedValue(WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER)));
+        workerRepository.create = jest.fn().mockResolvedValue(WorkerEntity.toWorkerEntity(mockWorker()));
         const service = new CreateWorkerService(workerRepository);
         expect(await service.execute(worker)).toBeInstanceOf(WorkerEntity);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
@@ -64,7 +64,7 @@ describe('CreateWorkerService test unit', () => {
     });
 
     it('should update an existing teacher', async () => {
-        const worker = DomainMocks.mockWorker(RoleEnum.TEACHER, true);
+        const worker = mockWorker();
         const entity = WorkerEntity.toWorkerEntity(worker);
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));

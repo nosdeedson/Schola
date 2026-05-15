@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ParentStudentAggregateContext, UserAggregateResolverService } from './user-aggregate-resolver.service';
-import { setEnv } from '../../__mocks__/env.mock';
+import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { DataBaseConnectionModule } from '../../data-base-connection/data-base-connection.module';
 import { AccessType } from '../../../domain/user/access.type';
 import { ParentRepository } from '../../../infrastructure/repositories/parent/parent.repository';

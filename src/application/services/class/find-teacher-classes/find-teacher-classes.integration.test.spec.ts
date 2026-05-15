@@ -7,8 +7,9 @@ import { ClassEntity } from "../../../../infrastructure/entities/class/class.ent
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { FindTeacherClassesService } from './find.teacher-classes';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks'
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 
 describe('FindTeacherClass integration test', () => {
 
@@ -47,18 +48,18 @@ describe('FindTeacherClass integration test', () => {
     });
 
     it('Should find all classes related to the teacher id', async () => {
-        const student1 = DomainMocks.mockStudent();
+        const student1 = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student1);
-        const student2 = DomainMocks.mockStudentWithoutParent();
+        const student2 = mockStudent();
         const studentEntity2 = StudentEntity.toStudentEntity(student2);
         expect(await studentRepository.create(studentEntity));
         expect(await studentRepository.create(studentEntity2));
 
-        const worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        const worker = mockWorker();
         const workerEntity = WorkerEntity.toWorkerEntity(worker);
         expect(await wordRepository.create(workerEntity));
 
-        const classModel = DomainMocks.mockSchoolGroup();
+        const classModel = mockClass();
         classModel.setTeacher(worker);
         classModel.setStudent(student1);
         classModel.setStudent(student2);

@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import { DomainMocks } from "../../__mocks__/mocks";
 import { ParentEntity } from "../../entities/parent/parent.entity";
 import { ParentRepository } from '../parent/parent.repository';
 import { StudentRepository } from '../student/student.repository';
@@ -7,6 +6,8 @@ import { StudentEntity } from "../../entities/student/student.entity";
 import { ParentStudentEntity } from "../../entities/parent-student/parent.student.entity";
 import { ParentStudentRepository } from "../../repositories/parent-student/parent.student.repositoy";
 import { TestDataSource } from "../config-test/test.datasource";
+import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
+import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 
 
 describe('ParentRepository unit test', () => {
@@ -35,7 +36,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should save a parent model to the BD', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         let model = ParentEntity.toParentEntity(parent);
         let wantedId = parent.getId();
 
@@ -47,7 +48,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should delete a parent model to the BD', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent =mockParent();
         let model = ParentEntity.toParentEntity(parent);
         let wantedId = parent.getId();
         await parentRepository.create(model);
@@ -61,7 +62,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should not throw an error while finding a parent with no-existent id', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         let model = ParentEntity.toParentEntity(parent);
 
         let wantedId = '6a0e9000-c5f9-4dad-bd4a-e4642964c2fb';
@@ -75,7 +76,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should find a parent model to the BD', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         let model = ParentEntity.toParentEntity(parent);
         let wantedId = parent.getId();
         await parentRepository.create(model);
@@ -86,12 +87,12 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should find a parent by name and by student names', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         const wantedParentName = parent.getName();
         let parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
-        let student = DomainMocks.mockStudentWithoutParent();
+        let student = mockStudent();
         const wantedStudetName = student.getName();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
@@ -105,8 +106,8 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should find all parent', async () => {
-        let parent = DomainMocks.mockParent();
-        let parent1 = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
+        let parent1 = mockParent();
         let parentEntity = ParentEntity.toParentEntity(parent);
         let parentEntity1 = ParentEntity.toParentEntity(parent1);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
@@ -120,7 +121,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should update a parent model to the BD', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         parent.setBirthDay(null as any);
         let model = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(model)).toBeInstanceOf(ParentEntity);

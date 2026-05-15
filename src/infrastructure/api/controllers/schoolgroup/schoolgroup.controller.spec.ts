@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setEnv } from '../../../__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { SchoolgroupController } from './schoolgroup.controller';
 import { CreateSchoolgroupUseCase } from '@/application/usecases/schoolgroup-usecases/create/create-schoolgroup-usecase';

@@ -1,9 +1,9 @@
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { FindStudentService } from '../find/find.student.service';
 import { Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 
 describe('FindStudentService integration tests', () => {
@@ -25,7 +25,7 @@ describe('FindStudentService integration tests', () => {
     });
 
     it('should throw a SystemError if student does not exisit', async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
@@ -38,7 +38,7 @@ describe('FindStudentService integration tests', () => {
     })
 
     it('should find a student', async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 

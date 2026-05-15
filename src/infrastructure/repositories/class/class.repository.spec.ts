@@ -1,4 +1,3 @@
-import { DomainMocks } from '../../__mocks__/mocks';
 import { ClassRepository } from '../class/class.repository';
 import { ClassEntity } from '../../entities/class/class.entity';
 import { Class } from '../../../domain/class/class';
@@ -9,6 +8,10 @@ import { StudentEntity } from '../../entities/student/student.entity';
 import { StudentRepository } from '../student/student.repository';
 import { Repository } from 'typeorm';
 import { RoleEnum } from '../../../domain/worker/roleEnum';
+import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
+import { mockSchedule } from '../../../../tests/mocks/domain/schedule.mocks';
+import { mockStudent } from '../../../../tests/mocks/domain/student.mocks';
+import { mockWorker } from '../../../../tests/mocks/domain/worker.mock';
 
 describe('ClassRepository unit test', () => {
 
@@ -35,7 +38,7 @@ describe('ClassRepository unit test', () => {
     })
 
     it('should save a class on BD', async () => {
-        let schoolGroup = DomainMocks.mockSchoolGroup();
+        let schoolGroup = mockClass();
         let classModel = ClassEntity.toClassEntity(schoolGroup);
         let wantedId = schoolGroup.getId();
         expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
@@ -46,7 +49,7 @@ describe('ClassRepository unit test', () => {
     })
 
     it('should delete a class on BD', async () => {
-        let schedule = DomainMocks.mockSchedule();
+        let schedule = mockSchedule();
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
         let classModel = ClassEntity.toClassEntity(schoolGroup);
@@ -57,7 +60,7 @@ describe('ClassRepository unit test', () => {
     })
 
     it('should find a class on BD', async () => {
-        let schedule = DomainMocks.mockSchedule();
+        let schedule = mockSchedule();
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
         let classModel = ClassEntity.toClassEntity(schoolGroup);
@@ -70,7 +73,7 @@ describe('ClassRepository unit test', () => {
     })
 
     it('should find all class on BD', async () => {
-        let schedule = DomainMocks.mockSchedule();
+        let schedule = mockSchedule();
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, '2ac4ba35-a052-439f-91dc-1a85c655a339');
         let classModel = ClassEntity.toClassEntity(schoolGroup);
         expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
@@ -86,7 +89,7 @@ describe('ClassRepository unit test', () => {
     })
 
     it('should update a class on BD', async () => {
-        let schedule = DomainMocks.mockSchedule();
+        let schedule = mockSchedule();
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
 
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
@@ -108,15 +111,15 @@ describe('ClassRepository unit test', () => {
     });
 
     it('findByTeacherId should find a class', async () => {
-        const student1 = DomainMocks.mockStudent();
-        const student2 = DomainMocks.mockStudentWithoutParent();
+        const student1 = mockStudent();
+        const student2 = mockStudent();
         const studentEntity1 = StudentEntity.toStudentEntity(student1);
         const studentEntity2 = StudentEntity.toStudentEntity(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const teacher = mockWorker();
+        const classModel = mockClass();
         teacher.setClass(classModel);
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -136,15 +139,15 @@ describe('ClassRepository unit test', () => {
     });
 
     it('findByTeacherId should not find a class if the id does not exist', async () => {
-        const student1 = DomainMocks.mockStudent();
-        const student2 = DomainMocks.mockStudentWithoutParent();
+        const student1 = mockStudent();
+        const student2 = mockStudent();
         const studentEntity1 = StudentEntity.toStudentEntity(student1);
         const studentEntity2 = StudentEntity.toStudentEntity(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const teacher = mockWorker();
+        const classModel = mockClass();
         teacher.setClass(classModel);
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -161,15 +164,15 @@ describe('ClassRepository unit test', () => {
     });
 
     it('findByTeacherIdAndClassId should find a class by teacherId and class id', async () => {
-        const student1 = DomainMocks.mockStudent();
-        const student2 = DomainMocks.mockStudentWithoutParent();
+        const student1 = mockStudent();
+        const student2 = mockStudent();
         const studentEntity1 = StudentEntity.toStudentEntity(student1);
         const studentEntity2 = StudentEntity.toStudentEntity(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const teacher = mockWorker();
+        const classModel = mockClass();
         teacher.setClass(classModel);
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -190,8 +193,8 @@ describe('ClassRepository unit test', () => {
     });
 
     it('findByTeacherIdAndClassId should not find a class by teacherId and class id when teacherId does not exist', async () => {
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const teacher = mockWorker();
+        const classModel = mockClass();
         teacher.setClass(classModel);
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
@@ -207,8 +210,8 @@ describe('ClassRepository unit test', () => {
     });
 
     it('findByTeacherIdAndClassId should not find a class by teacherId and class id when classId does not exist', async () => {
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const teacher = mockWorker();
+        const classModel = mockClass();
         teacher.setClass(classModel);
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);

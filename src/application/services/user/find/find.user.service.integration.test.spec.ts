@@ -1,11 +1,12 @@
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindUserService } from "./find.user.service";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
+import { AccessType } from "@/domain/user/access.type";
 
 describe('find user integration unit test', () =>{
 
@@ -35,7 +36,7 @@ describe('find user integration unit test', () =>{
     })
 
     it('given a valid id should find an user', async () =>{
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.STUDENT);
         let person = user.getPerson() as any;
         let worker = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;
@@ -52,7 +53,7 @@ describe('find user integration unit test', () =>{
 
     it('given an invalid id should not find an user', async () =>{
         let wantedId = 'f08a20a6-dc13-4e85-b716-3efefecd247a';
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let worker = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;

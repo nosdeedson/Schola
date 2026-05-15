@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CreateSemesterUsecase } from './create-semester-usecase';
-import { setEnv } from "../../../../infrastructure/__mocks__/env.mock";
+import { setEnv } from "../../../../../tests/mocks/env/env.mock";
 import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
 import { mockCreateSemesterDto } from '../../../../../tests/mocks/domain-dto/create-semester-dto.mocks';

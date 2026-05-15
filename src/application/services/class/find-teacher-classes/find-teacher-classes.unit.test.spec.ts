@@ -2,8 +2,8 @@ import { FindTeacherClassesService } from "./find.teacher-classes";
 import { ClassesOfTeacherDto } from '../../../usecases/teacher-list-classes-usecase/classes-of-teacher-dto';
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { mockClassesOfTeacherDto } from "../../../../infrastructure/__mocks__/mock-dtos/mock-dtos";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 
 describe('FindTeacherClassesService unit test', () => {
 
@@ -30,7 +30,7 @@ describe('FindTeacherClassesService unit test', () => {
 
     it('should return one class by teacher id', async () => {
         const repository = MockRepositoriesForUnitTest.mockRepositories();
-        const classModel = DomainMocks.mockSchoolGroup();
+        const classModel = mockClass();
         const classEntity = ClassEntity.toClassEntity(classModel);
         repository.findByTeacherId = jest.fn()
             .mockImplementation(() => [classEntity]);

@@ -6,10 +6,12 @@ import { CreateStudentService } from "../create/create.student.service";
 import { CreateStudentDto } from '../create/create.student.dto';
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 describe('CreateStudentService integration tests', () => {
     let studentEntity;
@@ -52,15 +54,15 @@ describe('CreateStudentService integration tests', () => {
 
     it('should update a student with birthday', async () => {
         // class 
-        let schoogroup = DomainMocks.mockSchoolGroup();
+        let schoogroup = mockClass();
         let sgEntity = ClassEntity.toClassEntity(schoogroup);
         expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
 
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         const parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
-        let student = DomainMocks.mockStudentWithoutParent();
+        let student = mockStudent();
         student.setSchoolGroup(schoogroup)
         let studentEntity = StudentEntity.toStudentEntity(student);
         studentEntity.birthday = null as any;
@@ -78,11 +80,11 @@ describe('CreateStudentService integration tests', () => {
     });
 
     it('should create a student', async () => {
-        let parent = DomainMocks.mockParent();
+        let parent = mockParent();
         parent.setStudents([]);
         let parentModel = ParentEntity.toParentEntity(parent);
 
-        let schoogroup = DomainMocks.mockSchoolGroup();
+        let schoogroup = mockClass();
         let sgEntity = ClassEntity.toClassEntity(schoogroup);
         expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
 

@@ -1,12 +1,10 @@
 import { DataSource } from 'typeorm';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../../../infrastructure/repositories/config-test/appDataSource';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
-import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { ParentRepository } from '../../../../infrastructure/repositories/parent/parent.repository';
-import { StudentRepository } from '../../../../infrastructure/repositories/student/student.repository';
 import { FindAllParentService } from './findAll.parent.service';
+import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
 
 
 describe('FindAllParentService integration tests', () =>{
@@ -43,7 +41,7 @@ describe('FindAllParentService integration tests', () =>{
     });
 
     it('should find an array with one parent', async () =>{
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         const entity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(entity)).toBeInstanceOf(ParentEntity);
         const service = new FindAllParentService(parentRepository);

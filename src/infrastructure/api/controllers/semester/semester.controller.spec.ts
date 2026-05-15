@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SemesterController } from './semester.controller';
 import { CreateSemesterUsecase } from '../../../../application/usecases/semester-usecases/create/create-semester-usecase';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
-import { setEnv } from '../../../__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto';
 import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto';

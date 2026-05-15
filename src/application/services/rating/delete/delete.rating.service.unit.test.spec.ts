@@ -1,5 +1,4 @@
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DeleteRatingService } from './delete.rating.service';
 import {mockRating} from '../../../../../tests/mocks/domain/rating.mocks';
 

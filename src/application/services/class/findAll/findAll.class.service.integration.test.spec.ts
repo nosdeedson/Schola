@@ -1,10 +1,10 @@
 import { DataSource } from "typeorm";
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
 import { FindAllClassService } from './findAll.class.service';
 import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 
 
 describe('findall service integration test', () => {
@@ -44,7 +44,7 @@ describe('findall service integration test', () => {
 
 
     it('should find one class', async () => {
-        let schoolgroup = DomainMocks.mockSchoolGroup();
+        let schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
 

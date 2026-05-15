@@ -1,11 +1,12 @@
 import { Repository } from 'typeorm';
 import { Worker } from '../../../domain/worker/worker';
-import { DomainMocks } from "../../__mocks__/mocks";
 import { UserEntity } from "../../entities/user/user.entity";
 import { WorkerEntity } from "../../entities/worker/worker.entity";
 import { UserRepository } from '../user/user.repository';
 import { WorkerRepository } from "../worker/worker.repository";
 import { TestDataSource } from '../config-test/test.datasource';
+import { mockUser } from '../../../../tests/mocks/domain/user.mock';
+import { AccessType } from '@/domain/user/access.type';
 
 describe('UserRepository unit test', () => {
 
@@ -29,7 +30,7 @@ describe('UserRepository unit test', () => {
     });
 
     it('should save a user in BD', async () => {
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
@@ -43,7 +44,7 @@ describe('UserRepository unit test', () => {
     });
 
     it('should delete a user in BD', async () => {
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
@@ -62,7 +63,7 @@ describe('UserRepository unit test', () => {
     });
 
     it('should find a user in BD', async () => {
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
@@ -79,8 +80,8 @@ describe('UserRepository unit test', () => {
     })
 
     it('should find all users in BD', async () => {
-        let user = DomainMocks.mockUserAdmin();
-        let user1 = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.ADMIN);
+        let user1 = mockUser(AccessType.TEACHER);
 
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
@@ -103,7 +104,7 @@ describe('UserRepository unit test', () => {
     });
 
     it('should update an user in BD', async () => {
-        let user = DomainMocks.mockUserTeacher();
+        let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
         let model = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);

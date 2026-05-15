@@ -1,14 +1,14 @@
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { DeleteParentService } from './delete.parent.service';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
+import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
 
 
 describe('DeleteParentService unit tests', () =>{
 
     it('should not throw error when trying to delete a parent with nos-existent id', async () =>{
 
-        let parent = DomainMocks.mockParent();
+        let parent = mockParent();
         let entity = ParentEntity.toParentEntity(parent);
 
         let parentRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -22,7 +22,7 @@ describe('DeleteParentService unit tests', () =>{
     })
 
     it('should delete a parent', async () => {
-        let parent = DomainMocks.mockParent();
+        let parent = mockParent();
         let entity = ParentEntity.toParentEntity(parent);
 
         let wantedId = parent.getId();

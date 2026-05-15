@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { Comment } from "../../../../domain/comment/comment";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { CommentEntity } from "../../../../infrastructure/entities/comment/comment.entity";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
@@ -15,6 +14,8 @@ import { FindAllCommentService } from './findAll.comment.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
 
 describe('FindAllCommentService integration tests', () => {
 
@@ -80,7 +81,7 @@ describe('FindAllCommentService integration tests', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
@@ -95,7 +96,7 @@ describe('FindAllCommentService integration tests', () => {
         let results = await service.execute()
         expect(results.all.length).toBe(0);
 
-        let comment = DomainMocks.mockComment();
+        let comment = mockComment();
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
 

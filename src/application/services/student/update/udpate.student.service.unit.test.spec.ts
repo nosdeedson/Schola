@@ -2,7 +2,7 @@ import { UpdateStudentDto } from './udpate.student.dto';
 import { UpdateStudentService } from './udpate.student.service';
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
+import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
 
 describe('UpdateStudentService unit test', () =>{
 
@@ -24,7 +24,7 @@ describe('UpdateStudentService unit test', () =>{
 
     it('should update a student', async () =>{
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const student = DomainMocks.mockStudent();
+        const student = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student);
 
         let wantedEnrolled = '43321';

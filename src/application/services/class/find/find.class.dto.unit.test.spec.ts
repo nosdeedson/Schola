@@ -1,17 +1,19 @@
 import { Class } from "../../../../domain/class/class";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import {FindClassScheduleDto, FindClassDto, FindClassTeacherDto, FindClassStudentDto} from './find.class.dto'
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+
 
 describe('find dto unit test', () => {
 
     let schoolgroup: Class;
 
     beforeEach(() =>{
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
     })
 
     afterEach(() =>{
@@ -32,11 +34,11 @@ describe('find dto unit test', () => {
 
     it('should return a dto of FindClassDto with students and teacher', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker()
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         entity.setTeacher(workerEntity);
                 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent()
         let studentEntity = StudentEntity.toStudentEntity(student);
         entity.setStudents(studentEntity);
 
@@ -59,7 +61,7 @@ describe('find dto unit test', () => {
 
     it('should return a dto of ClassTeacherDto', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker()
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         entity.setTeacher(workerEntity);
         let teacher = FindClassTeacherDto.toDto(entity.teacher);
@@ -78,7 +80,7 @@ describe('find dto unit test', () => {
 
     it('should return a dto of ClassStudentDto', () =>{
         let entity = ClassEntity.toClassEntity(schoolgroup);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent()
         let studentEntity = StudentEntity.toStudentEntity(student);
         entity.setStudents(studentEntity);
         let students = FindClassStudentDto.toDto(entity.students);

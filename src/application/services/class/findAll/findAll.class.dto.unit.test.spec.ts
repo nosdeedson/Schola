@@ -1,8 +1,8 @@
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { FindAllClassDto } from './findAll.class.dto';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { Class } from '../../../../domain/class/class';
+import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
 
 // jest.mock('./findAll.class.dto.ts')
 
@@ -11,7 +11,7 @@ describe('findAllClassDto unit test', () =>{
     let schoolgroup: Class;
 
     beforeEach(() =>{
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
     })
 
     afterEach( () =>{

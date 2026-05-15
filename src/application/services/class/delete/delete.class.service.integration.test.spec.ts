@@ -1,9 +1,9 @@
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { ClassRepository } from "../../../../infrastructure/repositories/class/class.repository";
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { DeleteClassService } from './delete.class.service';
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 
 
 describe('delete class service integration test', () => {
@@ -28,7 +28,7 @@ describe('delete class service integration test', () => {
     });
 
     it('should delete a class from the DB', async () => {
-        let schoolgroup = DomainMocks.mockSchoolGroup();
+        let schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         let wantedId = schoolgroup.getId();
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
@@ -44,7 +44,7 @@ describe('delete class service integration test', () => {
     });
 
     it('should not thorw an error while deleting class with invalid id', async () => {
-        let schoolgroup = DomainMocks.mockSchoolGroup();
+        let schoolgroup = mockClass();
         let entity = ClassEntity.toClassEntity(schoolgroup);
         let wantedId = 'a58827ba-0560-4cab-b283-19d1435fbdd2';
 

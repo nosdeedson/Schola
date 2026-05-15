@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StudentController } from './student.controller';
-import { setEnv } from '@/infrastructure/__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { FindStudentRantingUsecase } from '@/application/usecases/find-student-rating/find-student-rating-usecase';
 import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { mockStudentRatingUsecaseDtoOut } from '../../../../../tests/mocks/usecases/student-rating-usecase-dto.mocks';

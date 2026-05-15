@@ -1,5 +1,5 @@
+import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { Student } from "../../../domain/student/student";
-import { DomainMocks } from "../../__mocks__/mocks";
 import { StudentEntity } from "./student.entity"
 
 describe("StudentModel unit test", () => {
@@ -9,8 +9,8 @@ describe("StudentModel unit test", () => {
     let students: Student[];
 
     beforeEach(() => {
-        student = DomainMocks.mockStudent();
-        student1 = DomainMocks.mockStudent();
+        student = mockStudent();
+        student1 = mockStudent();
         students = [];
         students.push(student)
         students.push(student1)
@@ -37,7 +37,7 @@ describe("StudentModel unit test", () => {
     });
 
     it('should instantiate an array of sudents model', () => {
-        let student = DomainMocks.mockStudentWithoutParent();
+        let student = mockStudent();
         try {
             let model = StudentEntity.toStudentEntity(student);
         } catch (error) {

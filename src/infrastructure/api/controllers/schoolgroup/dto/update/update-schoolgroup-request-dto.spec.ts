@@ -1,7 +1,4 @@
 import { UpdateSchoolgroupRequestDto } from './update-schoolgroup-request-dto';
-import {WorkerEntity} from '../../../../../entities/worker/worker.entity';
-import {DomainMocks} from '../../../../../__mocks__/mocks'
-import { RoleEnum } from '../../../../../../domain/worker/roleEnum';
 
 describe('UpdateSchoolgroupDto', () => {
 

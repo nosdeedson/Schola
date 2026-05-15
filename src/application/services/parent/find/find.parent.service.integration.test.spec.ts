@@ -1,11 +1,12 @@
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { FindParentService } from './find.parent.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 describe('FindParentService integration tests ', () => {
 
@@ -36,7 +37,7 @@ describe('FindParentService integration tests ', () => {
     })
 
     it('should not find a parent passing a non-existent id', async () => {
-        let parent = DomainMocks.mockParent()
+        let parent = mockParent();
         let students = parent.getStudents();
 
         let studentEntity = StudentEntity.toStudentEntity(students[0]);
@@ -59,8 +60,8 @@ describe('FindParentService integration tests ', () => {
     })
 
     it('should find a parent', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent()
-        let students = [DomainMocks.mockStudentWithoutParent()];
+        let parent = mockParent();
+        let students = [mockStudent()];
         parent.setStudents(students);
         students[0].setParents(parent);
 

@@ -1,11 +1,13 @@
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindAllUserService } from './findAll.user.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { RoleEnum } from "@/domain/worker/roleEnum";
+import { Person } from "@/domain/@shared/person";
 
 describe('FindAllUserService integration tests', () =>{
     
@@ -42,8 +44,8 @@ describe('FindAllUserService integration tests', () =>{
     })
 
     it('should find two users', async () =>{
-        let admin = DomainMocks.mockUserAdmin();
-        let teacher = DomainMocks.mockUserTeacher();
+        let admin = mockWorker({role: RoleEnum.ADMINISTRATOR});
+        let teacher = mockWorker({role: RoleEnum.TEACHER});
 
         let person = admin.getPerson() as any;
         let person1 = teacher.getPerson() as any;

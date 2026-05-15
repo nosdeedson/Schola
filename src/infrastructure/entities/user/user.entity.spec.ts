@@ -1,14 +1,14 @@
 import { AccessType } from "../../../domain/user/access.type";
 import { User } from "../../../domain/user/user";
-import { DomainMocks } from "../../__mocks__/mocks";
 import { UserEntity } from "./user.entity";
+import { mockPerson } from '../../../../tests/mocks/domain/mock.person';
 
 describe('UserEntity Unit tests', () =>{
 
     let user: User;
 
     it('should instantiate an user with access type equal to admin', () => {
-        user = DomainMocks.mockPerson(AccessType.ADMIN);
+        user = mockPerson(AccessType.ADMIN);
         let userModel = UserEntity.toUserEntity(user);
         expect(userModel).toBeDefined();
         expect(userModel.id).toEqual(user.getId());
@@ -22,7 +22,7 @@ describe('UserEntity Unit tests', () =>{
     })
 
     it('should instantiate an user with access type equal to parent', () => {
-        user = DomainMocks.mockPerson(AccessType.PARENT);
+        user = mockPerson(AccessType.PARENT);
         let userModel = UserEntity.toUserEntity(user);
         expect(userModel).toBeDefined();
         expect(userModel.id).toEqual(user.getId());
@@ -36,7 +36,7 @@ describe('UserEntity Unit tests', () =>{
     })
 
     it('should instantiate an user with access type equal to student', () => {
-        user = DomainMocks.mockPerson(AccessType.STUDENT);
+        user = mockPerson(AccessType.STUDENT);
         let userModel = UserEntity.toUserEntity(user);
         expect(userModel).toBeDefined();
         expect(userModel.id).toEqual(user.getId());
@@ -50,7 +50,7 @@ describe('UserEntity Unit tests', () =>{
     })
 
     it('should instantiate an user with access type equal to teacher', () => {
-        user = DomainMocks.mockPerson(AccessType.TEACHER);
+        user = mockPerson(AccessType.TEACHER);
         let userModel = UserEntity.toUserEntity(user);
         expect(userModel).toBeDefined();
         expect(userModel.id).toEqual(user.getId());

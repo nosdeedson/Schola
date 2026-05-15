@@ -1,4 +1,4 @@
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
+import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { FindAllStudentService } from './findAll.student.service';
@@ -15,7 +15,7 @@ describe('FindAllSudentService unit test', () =>{
     });
 
     it('should find one student', async () =>{
-        const student = DomainMocks.mockStudent();
+        const student = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student);
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         studentRepository.findAll = jest.fn().mockImplementationOnce(() => {return [studentEntity]});

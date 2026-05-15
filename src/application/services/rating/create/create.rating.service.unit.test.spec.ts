@@ -1,9 +1,9 @@
 import { mockQuarter } from "../../../../../tests/mocks/domain/quarter.mocks";
 import { Grade } from "../../../../domain/enum/grade/grade";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { CreateRatingDto } from './create.rating.dto';
 import { CreateRatingService } from './create.rating.service';
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 
 describe('CreateRatingService unit tests', () => {
@@ -11,7 +11,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if semester is not present', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        const student = DomainMocks.mockStudent();
+        const student = mockStudent();
         let quarter;
         const dto = new CreateRatingDto(
             student,
@@ -56,7 +56,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if listining is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter()
         let listing;
         const dto = new CreateRatingDto(
@@ -79,7 +79,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if writing is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let writing;
         const dto = new CreateRatingDto(
@@ -102,7 +102,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if reading is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let reading;
         const dto = new CreateRatingDto(
@@ -125,7 +125,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if speaking is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let speaking;
         const dto = new CreateRatingDto(
@@ -148,7 +148,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if grammar is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let grammar;
         const dto = new CreateRatingDto(
@@ -171,7 +171,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if homework is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let homework;
         const dto = new CreateRatingDto(
@@ -194,7 +194,7 @@ describe('CreateRatingService unit tests', () => {
     it('should throw a systemError if vocabulary is not graded ', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateRatingService(ratingRepository);
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let quarter = mockQuarter();
         let vocabulary;
         const dto = new CreateRatingDto(

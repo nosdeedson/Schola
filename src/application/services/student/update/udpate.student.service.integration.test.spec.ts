@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateStudentDto } from '../update/udpate.student.dto';
 import { UpdateStudentService } from '../update/udpate.student.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 describe('UpdateStudentService integration tests', () => {
     let studentEntity: Repository<StudentEntity>;
@@ -40,7 +40,7 @@ describe('UpdateStudentService integration tests', () => {
     });
 
     it('should update a student in database', async () => {
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let updatedErroled = '987';

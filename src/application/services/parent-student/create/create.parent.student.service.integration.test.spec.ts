@@ -4,9 +4,10 @@ import { StudentEntity } from "../../../../infrastructure/entities/student/stude
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { Repository } from "typeorm";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 
 describe('CreateParentStudentService Integration Test', () => {
 
@@ -45,11 +46,11 @@ describe('CreateParentStudentService Integration Test', () => {
     });
 
     it('should save a parentStudentEntity', async () => {
-        const student = DomainMocks.mockStudent();
+        const student = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        const parent = DomainMocks.mockParent();
+        const parent = mockParent();
         const parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 

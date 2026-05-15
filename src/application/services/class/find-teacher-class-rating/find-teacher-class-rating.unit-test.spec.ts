@@ -1,10 +1,11 @@
 import { QueryFailedError } from "typeorm";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { FindTeacherClassRatingService } from './find-teacher-class-rating';
+import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 describe('FindTeacherClassRating', () => {
 
@@ -28,9 +29,9 @@ describe('FindTeacherClassRating', () => {
     it('should return class rating if teacherId and classId exist', async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.findByTeacherIdAndClassId = jest.fn().mockImplementation(() => classEntity);
-        const classModel = DomainMocks.mockSchoolGroup();
+        const classModel = mockClass()
         const classEntity = ClassEntity.toClassEntity(classModel);
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        const teacher = mockWorker()
         const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         const findClassRating = new FindTeacherClassRatingService(classRepository);
         classEntity.teacher = teacherEntity;

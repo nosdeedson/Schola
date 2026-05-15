@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommentController } from './comment.controller';
-import { setEnv } from '@/infrastructure/__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { SaveCommentRatingRequestDto } from './dto/save-comment-rating-request.dto';
 import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
 import { BadRequestException } from '@nestjs/common';

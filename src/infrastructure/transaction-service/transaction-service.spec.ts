@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionService } from './transaction-service';
 import { DataBaseConnectionModule } from '../data-base-connection/data-base-connection.module';
-import { setEnv } from '../__mocks__/env.mock';
+import { setEnv } from '../../../tests/mocks/env/env.mock';
 
 describe('TransactionServiceService', () => {
   let service: TransactionService;

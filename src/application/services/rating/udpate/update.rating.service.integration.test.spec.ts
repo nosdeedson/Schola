@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { Grade } from "../../../../domain/enum/grade/grade";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { RatingEntity } from "../../../../infrastructure/entities/rating/rating.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";

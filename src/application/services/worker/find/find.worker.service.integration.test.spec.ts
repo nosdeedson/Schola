@@ -1,11 +1,10 @@
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindWorkerService } from './find.worker.service'
 import { SystemError } from "../../@shared/system-error";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 
 describe('FindWorkerService integration test', () =>{
@@ -27,7 +26,7 @@ describe('FindWorkerService integration test', () =>{
     })
 
     it('should find a worker from BD', async () =>{
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker();
         let model = WorkerEntity.toWorkerEntity(worker);
         await workerRepository.create(model);
 
@@ -42,7 +41,7 @@ describe('FindWorkerService integration test', () =>{
     } )
 
     it('should not find a worker if id invalid', async () =>{
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker();
         let model = WorkerEntity.toWorkerEntity(worker);
         await workerRepository.create(model);
 

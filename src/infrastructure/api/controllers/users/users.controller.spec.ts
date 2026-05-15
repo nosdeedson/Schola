@@ -4,7 +4,7 @@ import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUsecase } from '../../../../application/usecases/user-usecases/create-user/create-user-usecase';
 import { AccessType } from '../../../../domain/user/access.type';
-import { setEnv } from '../../../__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { mockCreateUsersDto, mockFindUserDto } from '../../../__mocks__/mock-dtos/mock-dtos';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { CreateUserFactoryService } from '../../../factory/create-user-service-factory/create-user-factory-service';

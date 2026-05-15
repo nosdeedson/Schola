@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserFactoryService } from './create-user-factory-service';
 import { DataBaseConnectionModule } from '../../data-base-connection/data-base-connection.module';
-import { setEnv } from '../../__mocks__/env.mock';
+import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { AccessType } from '../../../domain/user/access.type';
 import { UserAggregateResolverService } from '../user-aggregate-resolver/user-aggregate-resolver.service';
 import { SystemError } from '../../../application/services/@shared/system-error';

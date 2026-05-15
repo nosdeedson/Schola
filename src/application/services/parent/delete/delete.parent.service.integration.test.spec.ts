@@ -2,10 +2,11 @@ import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { DeleteParentService } from "./delete.parent.service";
 import { Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 
 describe('DeleteParentService integration tests', () => {
 
@@ -36,7 +37,7 @@ describe('DeleteParentService integration tests', () => {
 
     it('should not delete a parent with invalid id', async () => {
         // TODO FIX THE TEST
-        let parent = DomainMocks.mockParent()
+        let parent = mockParent()
         let students = parent.getStudents()
 
         let studentEntity = StudentEntity.toStudentEntity(students[0]);
@@ -56,8 +57,8 @@ describe('DeleteParentService integration tests', () => {
     })
 
     it('should delete a parent', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent()
-        let students = [DomainMocks.mockStudentWithoutParent()];
+        let parent = mockParent();
+        let students = [mockStudent()];
         parent.setStudents(students);
         students[0].setParents(parent);
 

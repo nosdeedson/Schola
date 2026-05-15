@@ -1,11 +1,10 @@
-import { DomainMocks } from "../../__mocks__/mocks";
-import { Parent } from "../../../domain/parent/parent";
+import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { ParentEntity } from "./parent.entity";
 
 describe('ParentEntity', () => {
 
     it('should intantiate a ParentModel', () => {
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         let model = ParentEntity.toParentEntity(parent);
         expect(model).toBeDefined();
         expect(model.birthday).toBe(parent.getBirthday());
@@ -17,7 +16,7 @@ describe('ParentEntity', () => {
     });
 
     it('should instantiate a ParentModel', () => {
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         let models = ParentEntity.toParentsModels([parent]);
         expect(models).toBeDefined();
         expect(models[0].birthday).toBe(parent.getBirthday());

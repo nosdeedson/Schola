@@ -1,10 +1,10 @@
 import { UpdateClassDto } from './udpate.class.dto';
 import { UpdateClassService } from './update.class.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
-import { RoleEnum } from '../../../../domain/worker/roleEnum';
+import { mockWorker } from '../../../../../tests/mocks/domain/worker.mock';
+import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
 
 describe('update class service unit test', () =>{
 
@@ -15,7 +15,7 @@ describe('update class service unit test', () =>{
     it('should throw an error if passing invalid id', async () =>{
         let nonExistentId = '123';
         let wantedBookName = 'bookb1';
-        let newTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        let newTeacher = WorkerEntity.toWorkerEntity(mockWorker());
         let input = new UpdateClassDto(nonExistentId, wantedBookName, newTeacher);
         
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -33,9 +33,9 @@ describe('update class service unit test', () =>{
     });
 
     it('should update a class', async () =>{
-        const schoolgroup = DomainMocks.mockSchoolGroup();
+        const schoolgroup = mockClass();
         const entity = ClassEntity.toClassEntity(schoolgroup);
-        const newTeacher = WorkerEntity.toWorkerEntity(DomainMocks.mockWorker(RoleEnum.TEACHER));
+        const newTeacher = WorkerEntity.toWorkerEntity(mockWorker());
         let wantedId = schoolgroup.getId();
         let wantedBookName = 'bookb1';
         let input = new UpdateClassDto(wantedId, wantedBookName, newTeacher);

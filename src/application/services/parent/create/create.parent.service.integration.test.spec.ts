@@ -1,5 +1,4 @@
 import { QueryFailedError, Repository } from "typeorm";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
@@ -9,6 +8,8 @@ import { CreateParentService } from './create.parent.service';
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 
 describe('CreateParentService integration tests', () => {
 
@@ -47,10 +48,10 @@ describe('CreateParentService integration tests', () => {
     });
 
     it('should update parent with previously created by the student', async () => {
-        const student = DomainMocks.mockStudent();
+        const student = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
-        const parent = DomainMocks.mockParentWithoutStudent();
+        const parent = mockParent();
         parent.setStudents([]);
         const parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
@@ -67,7 +68,7 @@ describe('CreateParentService integration tests', () => {
     });
 
     it('should save a parent', async () => {
-        let parent = DomainMocks.mockParentWithoutStudent()
+        let parent = mockParent()
         let input = new CreateParentDto(parent.getBirthday(), parent.getName(), ['jose']);
         const service = new CreateParentService(parentRepository);
         const result = await service.execute(input);
@@ -80,7 +81,7 @@ describe('CreateParentService integration tests', () => {
     });
 
     it("should throw an error", async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         parent.setName(null as any);
         parent.setBirthDay(null as any);
         let input = new CreateParentDto(parent.getBirthday(), parent.getName(), ["no one"]);
@@ -94,7 +95,7 @@ describe('CreateParentService integration tests', () => {
     });
 
     it("should throw an error while trying to find the parent", async () => {
-        let parent = DomainMocks.mockParentWithoutStudent();
+        let parent = mockParent();
         parent.setName(null as any);
         parent.setBirthDay(null as any);
         let input = new CreateParentDto(parent.getBirthday(), parent.getName(), []);

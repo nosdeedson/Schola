@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FindStudentRantingUsecase } from "./find-student-rating-usecase";
-import { setEnv } from "@/infrastructure/__mocks__/env.mock";
+import { setEnv } from "../../../../tests/mocks/env/env.mock";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";

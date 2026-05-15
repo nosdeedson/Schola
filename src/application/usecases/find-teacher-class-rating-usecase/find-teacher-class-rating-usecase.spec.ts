@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RoleEnum } from '../../../domain/worker/roleEnum';
-import { setEnv } from '../../../infrastructure/__mocks__/env.mock';
-import { DomainMocks } from '../../../infrastructure/__mocks__/mocks';
+import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
 import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
 import { ClassEntity } from '../../../infrastructure/entities/class/class.entity';
@@ -11,6 +9,9 @@ import { FindTeacherClassRatingService } from '../../services/class/find-teacher
 import { TeacherClassRatingDto } from './find-teacher-class-rating-dto';
 import { FindTeacherClassRatingUsecase } from './find-teacher-class-rating-usecase';
 import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
+import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
+import { mockWorker } from '../../../../tests/mocks/domain/worker.mock';
+import { mockStudent } from '../../../../tests/mocks/domain/student.mocks';
 
 describe('FindTeacherClassRatingUsecase unit test', () =>{
 
@@ -61,10 +62,10 @@ describe('FindTeacherClassRatingUsecase unit test', () =>{
     });
 
     it('should return an TeacherClassRatingDto of a class', async () => {
-        const classModel = DomainMocks.mockSchoolGroup();
-        const teacher = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        const classModel = mockClass();
+        const teacher = mockWorker();
         classModel.setTeacher(teacher);
-        classModel.setStudent(DomainMocks.mockStudent());
+        classModel.setStudent(mockStudent());
         const classEntity = ClassEntity.toClassEntity(classModel);
         const semester =  mockSemester();
         const semesterEntity = AcademicSemesterEntity.toEntity(semester);

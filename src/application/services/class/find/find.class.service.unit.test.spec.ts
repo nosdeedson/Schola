@@ -1,5 +1,5 @@
+import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { FindClassDto } from './find.class.dto';
 import { FindClassService } from './find.class.service';
@@ -18,7 +18,7 @@ describe('find class service unit test', () => {
     })
 
     it('should find a class', async () => {
-        schoolgroup = DomainMocks.mockSchoolGroup();
+        schoolgroup = mockClass();
         entity = ClassEntity.toClassEntity(schoolgroup);
         output = FindClassDto.toDto(entity);
         const findDto = jest.spyOn(FindClassDto, 'toDto')

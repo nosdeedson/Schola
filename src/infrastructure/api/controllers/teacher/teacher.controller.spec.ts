@@ -3,7 +3,7 @@ import { TeacherController } from './teacher.controller';
 import { TeacherListClassesUsecase } from '../../../../application/usecases/teacher-list-classes-usecase/teacher-list-classes-usecase'
 import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service'
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
-import { setEnv } from '../../../__mocks__/env.mock';
+import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { ClassesOfTeacherDto } from '../../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto';
 import { mockClassesOfTeacherDto, mockTeacherClassRatingDto } from '../../../__mocks__/mock-dtos/mock-dtos';
 import { FindTeacherClassRatingUsecase } from '../../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-usecase';

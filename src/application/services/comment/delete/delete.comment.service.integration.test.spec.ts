@@ -8,12 +8,13 @@ import { AcademicSemesterRepository } from "../../../../infrastructure/repositor
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
-import { DomainMocks } from "../../../../infrastructure/__mocks__/mocks";
 import { Repository } from "typeorm";
 import { DeleteCommentService } from "./delete.comment.service";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
+import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
 
 
 describe('DeleteCommentService integration test', () => {
@@ -80,7 +81,7 @@ describe('DeleteCommentService integration test', () => {
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let student = DomainMocks.mockStudent();
+        let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
@@ -90,7 +91,7 @@ describe('DeleteCommentService integration test', () => {
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
-        let comment = DomainMocks.mockComment();
+        let comment = mockComment();
         let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
         let wantedId = comment.getId();
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);

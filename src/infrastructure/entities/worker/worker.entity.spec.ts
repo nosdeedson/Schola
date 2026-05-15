@@ -1,4 +1,5 @@
-import { DomainMocks } from '../../../infrastructure/__mocks__/mocks';
+import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
+import { mockWorker } from '../../../../tests/mocks/domain/worker.mock';
 import { RoleEnum } from '../../../domain/worker/roleEnum';
 import { WorkerEntity } from './worker.entity';
 
@@ -6,8 +7,8 @@ describe('WokerModel', () => {
   let worker;
   let schooGroup;
   beforeEach(() => {
-    worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
-    schooGroup = DomainMocks.mockSchoolGroup();
+    worker = mockWorker();
+    schooGroup = mockClass();
   })
 
   it('should be defined as a teacher', () => {

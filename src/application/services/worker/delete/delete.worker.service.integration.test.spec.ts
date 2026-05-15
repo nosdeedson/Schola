@@ -1,9 +1,8 @@
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { DomainMocks } from '../../../../infrastructure/__mocks__/mocks';
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { DeleteWorkerService } from './delete.worker.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 
 describe('DeleteWorkerService integration test', () => {
@@ -26,7 +25,7 @@ describe('DeleteWorkerService integration test', () => {
 
     it('should delete a worker', async () => {
 
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker();
         let workerModel = WorkerEntity.toWorkerEntity(worker);
 
         let wantedId = worker.getId();
@@ -44,7 +43,7 @@ describe('DeleteWorkerService integration test', () => {
 
     it('should do nothing if worker does not exist', async () => {
 
-        let worker = DomainMocks.mockWorker(RoleEnum.TEACHER);
+        let worker = mockWorker();
         let workerModel = WorkerEntity.toWorkerEntity(worker);
 
         let wantedId = '00ac5b00-1326-40ce-8db9-bafaaa95f762';
