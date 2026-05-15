@@ -8,6 +8,8 @@ import { TestDataSource } from "@/infrastructure/repositories/config-test/test.d
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { RoleEnum } from "@/domain/worker/roleEnum";
 import { Person } from "@/domain/@shared/person";
+import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
+import { AccessType } from "@/domain/user/access.type";
 
 describe('FindAllUserService integration tests', () =>{
     
@@ -44,8 +46,8 @@ describe('FindAllUserService integration tests', () =>{
     })
 
     it('should find two users', async () =>{
-        let admin = mockWorker({role: RoleEnum.ADMINISTRATOR});
-        let teacher = mockWorker({role: RoleEnum.TEACHER});
+        let admin = mockUser(AccessType.ADMIN);
+        let teacher = mockUser(AccessType.TEACHER);
 
         let person = admin.getPerson() as any;
         let person1 = teacher.getPerson() as any;
