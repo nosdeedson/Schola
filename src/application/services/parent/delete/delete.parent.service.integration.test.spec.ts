@@ -40,7 +40,8 @@ describe('DeleteParentService integration tests', () => {
         let parent = mockParent()
         let students = parent.getStudents()
 
-        let studentEntity = StudentEntity.toStudentEntity(students[0]);
+        let studentEntity = StudentEntity.toStudentEntity(students
+            [0]);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let parentEntity = ParentEntity.toParentEntity(parent);

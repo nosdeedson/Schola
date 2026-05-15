@@ -1,4 +1,4 @@
-import { mockParent, mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { CreateParentDto, } from './create.parent.dto';
