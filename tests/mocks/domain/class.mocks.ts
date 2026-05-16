@@ -15,7 +15,7 @@ export const mockClass = (
 ): Class => {
 
     return new Class(
-        overrides.classCode || "any_class_code",
+        overrides.classCode || "12345678",
         overrides.nameBook || "any_name_book",
         overrides.name || "any_name",
         overrides.schedule || mockSchedule(),

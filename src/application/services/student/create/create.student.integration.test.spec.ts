@@ -76,7 +76,7 @@ describe('CreateStudentService integration tests', () => {
         expect(await service.execute(dto)).toBeInstanceOf(StudentEntity);
         const results = await studentRepository.findAll();
         expect(results[0].birthday).toStrictEqual(new Date(1980, 6, 30, 23, 59, 59));
-        expect(results[0].fullName).toBe('julio');
+        expect(results[0].fullName).toBe(dto.name);
     });
 
     it('should create a student', async () => {

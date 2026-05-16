@@ -36,14 +36,7 @@ describe('DeleteParentService integration tests', () => {
     });
 
     it('should not delete a parent with invalid id', async () => {
-        // TODO FIX THE TEST
         let parent = mockParent()
-        let students = parent.getStudents()
-
-        let studentEntity = StudentEntity.toStudentEntity(students
-            [0]);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
-
         let parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 

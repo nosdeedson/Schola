@@ -8,15 +8,15 @@ import { TestDataSource } from "@/infrastructure/repositories/config-test/test.d
 import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { AccessType } from "@/domain/user/access.type";
 
-describe('find user integration unit test', () =>{
+describe('find user integration unit test', () => {
 
     let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
-    
+
     let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
-    beforeAll(async () =>{
+    beforeAll(async () => {
         userEntity = TestDataSource.getRepository(UserEntity);
         userRepository = new UserRepository(TestDataSource);
 
@@ -24,25 +24,25 @@ describe('find user integration unit test', () =>{
         workerRepository = new WorkerRepository(TestDataSource);
     });
 
-    afterEach(async () =>{
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('user entity and repository should be instantiated', async () =>{
+    it('user entity and repository should be instantiated', async () => {
         expect(userEntity).toBeDefined();
         expect(userRepository).toBeDefined();
         expect(workerEntity).toBeDefined();
         expect(workerRepository).toBeDefined();
     })
 
-    it('given a valid id should find an user', async () =>{
-        let user = mockUser(AccessType.STUDENT);
+    it('given a valid id should find an user', async () => {
+        let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let worker = WorkerEntity.toWorkerEntity(person);
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;
 
         let userSave = UserEntity.toUserEntity(user);
-        
+
         expect(await userRepository.create(userSave)).toBeInstanceOf(UserEntity);
         let wantedId = userSave.id;
         const service = new FindUserService(userRepository);
@@ -51,7 +51,7 @@ describe('find user integration unit test', () =>{
         expect(result.id).toBe(wantedId);
     });
 
-    it('given an invalid id should not find an user', async () =>{
+    it('given an invalid id should not find an user', async () => {
         let wantedId = 'f08a20a6-dc13-4e85-b716-3efefecd247a';
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
@@ -59,7 +59,7 @@ describe('find user integration unit test', () =>{
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;
 
         let userSave = UserEntity.toUserEntity(user);
-        
+
         expect(await userRepository.create(userSave)).toBeInstanceOf(UserEntity);
         const service = new FindUserService(userRepository);
         try {
@@ -67,7 +67,7 @@ describe('find user integration unit test', () =>{
         } catch (error) {
             expect(error).toBeDefined();
             //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'user', message: 'user not found'}]);
+            expect(error.errors).toMatchObject([{ context: 'user', message: 'user not found' }]);
         }
     });
 

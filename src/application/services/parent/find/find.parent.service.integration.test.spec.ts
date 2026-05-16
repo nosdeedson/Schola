@@ -38,10 +38,6 @@ describe('FindParentService integration tests ', () => {
 
     it('should not find a parent passing a non-existent id', async () => {
         let parent = mockParent();
-        let students = parent.getStudents();
-
-        let studentEntity = StudentEntity.toStudentEntity(students[0]);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let parentEntity = ParentEntity.toParentEntity(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
@@ -49,14 +45,8 @@ describe('FindParentService integration tests ', () => {
         const wantedId = 'e9c826b0-2fb4-41a7-aae8-8eed8fa999e8';
 
         const service = new FindParentService(parentRepository);
-        try {
-            let result = await service.execute(wantedId);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ context: 'parent', message: 'Parent not found' }])
-        }
+        await expect(service.execute(wantedId)).rejects
+            .toMatchObject({ errors: [{ context: 'parent', message: 'Parent not found' }] })
     })
 
     it('should find a parent', async () => {
