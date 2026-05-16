@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUsecase } from '../../../../application/usecases/user-usecases/create-user/create-user-usecase';
 import { AccessType } from '../../../../domain/user/access.type';
 import { setEnv } from '../../../../../tests/mocks/env/env.mock';
-import { mockCreateUsersDto, mockFindUserDto } from '../../../__mocks__/mock-dtos/mock-dtos';
+import { mockCreateUsersDto, mockFindUserDto } from '../../../../../tests/mocks/mock-dtos/mock-dtos';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { CreateUserFactoryService } from '../../../factory/create-user-service-factory/create-user-factory-service';
 import { DeleteUserFactoryService } from '../../../factory/delete-user-factory/delete-user-factory.service';

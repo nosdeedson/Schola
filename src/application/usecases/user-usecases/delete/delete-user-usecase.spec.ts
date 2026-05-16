@@ -1,12 +1,12 @@
 import { DeleteUserService } from "@/application/services/user/delete/delete.user.service";
 import { FindUserService } from "@/application/services/user/find/find.user.service";
-import { mockFindUserDto } from "@/infrastructure/__mocks__/mock-dtos/mock-dtos";
 import { DeleteUserUsecase } from "./delete-user-usecase";
 import { DeleteUserFactoryService } from "@/infrastructure/factory/delete-user-factory/delete-user-factory.service";
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { mockFindUserDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 
 const deleteUserFactoryServiceMock = {
     deleteUserServiceFactory: jest.fn()

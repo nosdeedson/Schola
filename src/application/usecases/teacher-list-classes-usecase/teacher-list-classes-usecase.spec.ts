@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {TeacherListClassesUsecase} from './teacher-list-classes-usecase';
+import { TeacherListClassesUsecase } from './teacher-list-classes-usecase';
 import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
 import { RepositoryFactoryService } from '../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { FindTeacherClassesService } from '../../services/class/find-teacher-classes/find.teacher-classes';
-import { mockClassesOfTeacherDto } from '../../../infrastructure/__mocks__/mock-dtos/mock-dtos';
+import { mockClassesOfTeacherDto } from '../../../../tests/mocks/mock-dtos/mock-dtos';
 
 
 describe('teacher list classes usecase', () => {

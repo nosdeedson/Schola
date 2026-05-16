@@ -5,7 +5,7 @@ import { RepositoryFactoryService } from '../../../factory/repositiry-factory/re
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { ClassesOfTeacherDto } from '../../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto';
-import { mockClassesOfTeacherDto, mockTeacherClassRatingDto } from '../../../__mocks__/mock-dtos/mock-dtos';
+import { mockClassesOfTeacherDto, mockTeacherClassRatingDto } from '../../../../../tests/mocks/mock-dtos/mock-dtos';
 import { FindTeacherClassRatingUsecase } from '../../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-usecase';
 import { TeacherClassRatingDto } from '../../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-dto';
 
@@ -73,7 +73,7 @@ describe('TeacherController', () => {
   describe('FindTeacherClassRatingUsecase', () => {
 
     it('should return a TeacherClassRatingDto empty', async () => {
-      const dto =  new TeacherClassRatingDto(null as any, null as any)
+      const dto = new TeacherClassRatingDto(null as any, null as any)
       const usecase = jest.spyOn(FindTeacherClassRatingUsecase.prototype, 'execute')
         .mockResolvedValue(Promise.resolve(dto));
       const teacherId = '560774b6-3366-474f-84ca-54a83bd7eb31';

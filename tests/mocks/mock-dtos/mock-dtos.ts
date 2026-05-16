@@ -1,11 +1,11 @@
-import { FindUserDto } from "../../../application/services/user/find/find.user.dto";
-import { AccessType } from "../../../domain/user/access.type";
-import { FindWorkerDto } from '../../../application/services/worker/find/find.worker.dto'
-import { RoleEnum } from "../../../domain/worker/roleEnum";
-import { CreateUserRequestDto } from "../../api/controllers/users/dtos/create-user-dto/create-user-request-dto";
-import { ClassesOfTeacherDto } from "../../../application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
-import { TeacherClassRatingDto } from "../../../application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-dto";
-import { mockQuarterDto } from "../../../../tests/mocks/domain-dto/quarter-dto.mocks";
+import { FindUserDto } from "../../../src/application/services/user/find/find.user.dto";
+import { AccessType } from "../../../src/domain/user/access.type";
+import { FindWorkerDto } from '../../../src/application/services/worker/find/find.worker.dto'
+import { RoleEnum } from "../../../src/domain/worker/roleEnum";
+import { CreateUserRequestDto } from "../../../src/infrastructure/api/controllers/users/dtos/create-user-dto/create-user-request-dto";
+import { ClassesOfTeacherDto } from "../../../src/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
+import { TeacherClassRatingDto } from "../../../src/application/usecases/find-teacher-class-rating-usecase/find-teacher-class-rating-dto";
+import { mockQuarterDto } from "../domain-dto/quarter-dto.mocks";
 
 export function mockFindUserDto(
     overrides: Partial<FindUserDto> = {},
@@ -110,6 +110,6 @@ export function mockTeacherClassRatingDto(): TeacherClassRatingDto {
             "firstQuarter": mockQuarterDto(),
             "secondQuarter": mockQuarterDto(),
             "current": true
-        } 
+        }
     } as TeacherClassRatingDto;
 }

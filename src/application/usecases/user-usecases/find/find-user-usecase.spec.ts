@@ -4,13 +4,8 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { FindUserUsecase } from "./find-user-usecase";
-import { FindUserFactoryService } from "@/infrastructure/factory/find-user-factory/find-user-factory.service";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
-import { mockFindUserDto, mockOutputFindWorkerDto } from "@/infrastructure/__mocks__/mock-dtos/mock-dtos";
-import { FindUserResponseDto } from "@/infrastructure/api/controllers/users/dtos/find-user-dto/find-user-response-dto";
-import { RoleEnum } from "@/domain/worker/roleEnum";
-import { FindUserDto } from "@/application/services/user/find/find.user.dto";
 import { AccessType } from "@/domain/user/access.type";
+import { mockFindUserDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 
 const repositoryFactoryMock = {
     createRepository: jest.fn()

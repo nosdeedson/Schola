@@ -3,7 +3,7 @@ import { RepositoryFactoryService } from "../../../../infrastructure/factory/rep
 import { CreateUserFactoryService } from "../../../../infrastructure/factory/create-user-service-factory/create-user-factory-service";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { mockCreateUsersDto } from "../../../../infrastructure/__mocks__/mock-dtos/mock-dtos";
+import { mockCreateUsersDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 import { CreateWorkerDto } from "../../../services/worker/create/create.worker.dto";
 import { CreateUserService } from "../../../services/user/create/create.user.service";
 import { SystemError } from "../../../services/@shared/system-error";
@@ -132,7 +132,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should create a user as a Admin', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker({role: RoleEnum.ADMINISTRATOR}));
+        const person = WorkerEntity.toWorkerEntity(mockWorker({ role: RoleEnum.ADMINISTRATOR }));
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,

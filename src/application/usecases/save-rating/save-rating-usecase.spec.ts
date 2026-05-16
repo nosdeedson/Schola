@@ -14,7 +14,7 @@ import { CreateCommentService } from "@/application/services/comment/create/crea
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { FindWorkerService } from "@/application/services/worker/find/find.worker.service";
-import { mockOutputFindWorkerDto } from "@/infrastructure/__mocks__/mock-dtos/mock-dtos";
+import { mockOutputFindWorkerDto } from "../../../../tests/mocks/mock-dtos/mock-dtos";
 
 describe('SaveRatingUsecase', () => {
 
