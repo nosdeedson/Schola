@@ -5,13 +5,12 @@ import { DataSource } from 'typeorm';
 import { Repository } from 'typeorm';
 import { ClassRepositoryInterface } from '../../../../domain/class/class.repository.interface';
 import { Class } from '../../../../domain/class/class';
-import { AppDataSource } from '../../../../infrastructure/repositories/config-test/appDataSource';
 import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
+import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
 
 
 describe('find class service integration test', () => {
 
-    let appDataSource: DataSource;
     let classEntity: Repository<ClassEntity>;
     let classRepository: ClassRepositoryInterface | ClassRepository;
 
@@ -19,16 +18,11 @@ describe('find class service integration test', () => {
 
     beforeEach(async () => {
         schoolgroup = mockClass();
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch((error: any) => console.log(error))
-        classEntity = appDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(appDataSource);
+        classEntity = TestDataSource.getRepository(ClassEntity);
+        classRepository = new ClassRepository(TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 

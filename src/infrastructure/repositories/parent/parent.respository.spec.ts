@@ -1,4 +1,3 @@
-import { DataSource } from "typeorm";
 import { ParentEntity } from "../../entities/parent/parent.entity";
 import { ParentRepository } from '../parent/parent.repository';
 import { StudentRepository } from '../student/student.repository';
@@ -12,7 +11,6 @@ import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 
 describe('ParentRepository unit test', () => {
 
-    let appDataSource: DataSource;
     let parentModel;
     let parentRepository: ParentRepository;
     let studentModel;
@@ -48,7 +46,7 @@ describe('ParentRepository unit test', () => {
     });
 
     it('should delete a parent model to the BD', async () => {
-        let parent =mockParent();
+        let parent = mockParent();
         let model = ParentEntity.toParentEntity(parent);
         let wantedId = parent.getId();
         await parentRepository.create(model);

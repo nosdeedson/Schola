@@ -1,12 +1,7 @@
-import { Test, TestingModule } from "@nestjs/testing";
 import { FindStudentRantingUsecase } from "./find-student-rating-usecase";
-import { setEnv } from "../../../../tests/mocks/env/env.mock";
-import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
-import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { FindRatingByStudent } from "@/application/services/rating/find-rating-by-student/find-rating-by-student.service";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
-import { StudentRatingUsecaseResponseDto } from "./student-rating-usecase-response-dto";
 import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 
 describe('studentRatingUsecase', () => {

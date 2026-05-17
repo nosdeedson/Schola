@@ -12,11 +12,11 @@ export class UpdateSchoolgroupRequestDto {
     @ApiProperty({ description: 'the name of the new teacher of class' })
     teacherName: string;
 
-    toUpdateSchoolgroupUsecaseDto(): UpdateSchoolgroupUsecaseDto {
+    static toUpdateSchoolgroupUsecaseDto(dto: UpdateSchoolgroupRequestDto): UpdateSchoolgroupUsecaseDto {
         return new UpdateSchoolgroupUsecaseDto({
-            id: this.id,
-            nameBook: this.nameBook,
-            teacherName: this.teacherName
+            id: dto.id,
+            nameBook: dto.nameBook,
+            teacherName: dto.teacherName
         });
     }
 }

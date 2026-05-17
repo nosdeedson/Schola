@@ -69,11 +69,11 @@ export class SchoolgroupController {
     }
 
     @ApiOperation({ description: 'Update schoolgroup' })
-    @ApiResponse({ status: 204, description: '' })
+    @ApiResponse({ status: 200, description: '' })
     @ApiResponse({ status: '4XX', description: 'If schoolgroup not found throw exeception' })
     @Patch()
     async update(@Body() dto: UpdateSchoolgroupRequestDto): Promise<void> {
-        await this.updateSchoolgroup.update(dto.toUpdateSchoolgroupUsecaseDto());
+        await this.updateSchoolgroup.update(UpdateSchoolgroupRequestDto.toUpdateSchoolgroupUsecaseDto(dto));
     }
 
 }

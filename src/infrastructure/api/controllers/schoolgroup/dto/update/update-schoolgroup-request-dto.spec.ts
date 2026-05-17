@@ -10,7 +10,7 @@ describe('UpdateSchoolgroupDto', () => {
         let dto = new UpdateSchoolgroupRequestDto();
         dto.id = "16efc675-a208-43fe-93dd-8b9a3eebe656";
         dto.nameBook = 'name book';
-        let input = dto.toUpdateSchoolgroupUsecaseDto();
+        let input = UpdateSchoolgroupRequestDto.toUpdateSchoolgroupUsecaseDto(dto);
         expect(input).toBeDefined();
         expect(input.id).toBe(dto.id);
         expect(input.nameBook).toBe(dto.nameBook);

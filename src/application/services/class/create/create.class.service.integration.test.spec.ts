@@ -10,7 +10,6 @@ import { CreateClassDto } from './create.class.dto';
 
 describe('create class service integration test', () => {
 
-    let appDatasource: DataSource;
     let classEntity: Repository<ClassEntity>;
     let classRepository: ClassRepository;
 

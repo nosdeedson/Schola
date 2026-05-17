@@ -3,28 +3,21 @@ import { Repository } from "typeorm";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
 import { FindAllClassService } from './findAll.class.service';
-import { AppDataSource } from "../../../../infrastructure/repositories/config-test/appDataSource";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 
 
 describe('findall service integration test', () => {
 
-    let appDataSource: DataSource;
     let classEntity: Repository<ClassEntity>;
     let classRepository: ClassRepository;
 
     beforeEach(async () => {
-        appDataSource = AppDataSource.getAppDataSource();
-        await appDataSource.initialize()
-            .catch(error => console.log(error));
-
-        classEntity = appDataSource.getRepository(ClassEntity);
-        classRepository = new ClassRepository(appDataSource);
+        classEntity = TestDataSource.getRepository(ClassEntity);
+        classRepository = new ClassRepository(TestDataSource);
     });
 
     afterEach(async () => {
-        await appDataSource.createQueryBuilder().delete().from(ClassEntity).execute();
-        await appDataSource.destroy();
         jest.clearAllMocks();
     });
 

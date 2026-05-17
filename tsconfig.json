@@ -5,6 +5,7 @@
         "removeComments": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "target": "ES2021",
         "sourceMap": true,
@@ -31,6 +32,8 @@
     ],
     "include": [
         "src/**/*.ts",
-        "jest.setup.ts"
-, "tests/mocks/mock-repositories/mockRepositories.ts", "tests/mocks/env/env.mock.ts"    ]
+        "jest.setup.ts",
+        "tests/mocks/mock-repositories/mockRepositories.ts",
+        "tests/mocks/env/env.mock.ts"
+    ]
 }
