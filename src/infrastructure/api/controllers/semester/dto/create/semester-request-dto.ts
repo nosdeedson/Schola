@@ -16,11 +16,11 @@ export class SemesterRequestDto {
     @ApiProperty({ description: "Indicates if it is the current semester" })
     currentSemester: boolean;
 
-    toSemester(): CreateAcademicSemesterUsecaseDto {
+    static toSemester(dto: SemesterRequestDto): CreateAcademicSemesterUsecaseDto {
         return new CreateAcademicSemesterUsecaseDto({
-            currentSemester: this.currentSemester,
-            firstQuarter: this.firstQuarter.toQuarterDto(),
-            secondQuarter: this.secondQuarter.toQuarterDto()
+            currentSemester: dto.currentSemester,
+            firstQuarter: QuarterRequestDto.toQuarterDto(dto.firstQuarter),
+            secondQuarter: QuarterRequestDto.toQuarterDto(dto.secondQuarter)
         });
     }
 }

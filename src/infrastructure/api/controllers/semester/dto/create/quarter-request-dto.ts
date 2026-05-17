@@ -16,11 +16,11 @@ export class QuarterRequestDto {
     @IsBoolean()
     currentQuarter: boolean;
 
-    toQuarterDto(): QuarterDto {
+    static toQuarterDto(dto: QuarterRequestDto): QuarterDto {
         return new QuarterDto({
-            beginningDate: this.beginningDate,
-            endingDate: this.endingDate,
-            currentQuarter: this.currentQuarter
+            beginningDate: dto.beginningDate,
+            endingDate: dto.endingDate,
+            currentQuarter: dto.currentQuarter
         })
     }
 }

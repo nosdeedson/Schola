@@ -15,11 +15,11 @@ export class UpdateAcademicSemesterRequestDto {
     @IsBoolean()
     updatingSemester: boolean;
 
-    toUsecaseDto(): UpdateAcademicSemesterDto {
+    static toUsecaseDto(dto: UpdateAcademicSemesterRequestDto): UpdateAcademicSemesterDto {
         return new UpdateAcademicSemesterDto({
-            id: this.id,
-            updatingQuarter: this.updatingQuarter,
-            updatingSemester: this.updatingSemester
-        })
+            id: dto.id,
+            updatingQuarter: dto.updatingQuarter,
+            updatingSemester: dto.updatingSemester
+        });
     }
 }
