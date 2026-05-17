@@ -32,6 +32,7 @@
     ],
     "include": [
         "src/**/*.ts",
+        "tests/**/*.ts",
         "jest.setup.ts",
         "tests/mocks/mock-repositories/mockRepositories.ts",
         "tests/mocks/env/env.mock.ts"

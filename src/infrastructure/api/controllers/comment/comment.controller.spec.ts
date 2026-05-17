@@ -36,7 +36,7 @@ describe('CommentController', () => {
       .mockImplementation(() => Promise.resolve(void 0));
     expect(await controller.commentingRating(dto)).toBe(void 0);
     expect(studentCommentRating).toHaveBeenCalledTimes(1);
-    expect(studentCommentRating).toHaveBeenCalledWith(dto.toCommentRatingUsecaseDto());
+    expect(studentCommentRating).toHaveBeenCalledWith(SaveCommentRatingRequestDto.toCommentRatingUsecaseDto(dto));
   });
 
   it('shoulg throw a badrequest rating not found', async () => {
@@ -46,6 +46,6 @@ describe('CommentController', () => {
     await expect(controller.commentingRating(dto)).rejects
       .toMatchObject(new BadRequestException("Rating not found"));
     expect(studentCommentRating).toHaveBeenCalledTimes(1);
-    expect(studentCommentRating).toHaveBeenCalledWith(dto.toCommentRatingUsecaseDto());
+    expect(studentCommentRating).toHaveBeenCalledWith(SaveCommentRatingRequestDto.toCommentRatingUsecaseDto(dto));
   })
 });

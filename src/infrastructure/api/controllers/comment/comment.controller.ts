@@ -13,6 +13,6 @@ export class CommentController {
     @ApiOperation({ description: 'save a comment of a rating of the student' })
     @Post('ratings')
     public async commentingRating(@Body() dto: SaveCommentRatingRequestDto) {
-        this.studentCommentRating.execute(dto.toCommentRatingUsecaseDto());
+        await this.studentCommentRating.execute(SaveCommentRatingRequestDto.toCommentRatingUsecaseDto(dto));
     }
 }

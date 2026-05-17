@@ -1,6 +1,4 @@
 import { INestApplication } from "@nestjs/common";
-import { DataSource } from "typeorm";
-import { setEnv } from "../mocks/env/env.mock";
 import { Test } from "@nestjs/testing";
 import { SchoolgroupModule } from "../../src/infrastructure/api/controllers/schoolgroup/schoolgroup.module";
 import { DATA_SOURCE, DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
@@ -12,25 +10,13 @@ import { ClassEntity } from "../../src/infrastructure/entities/class/class.entit
 import { mockClass } from "../mocks/domain/class.mocks";
 import { mockWorker } from "../mocks/domain/worker.mock";
 import { WorkerEntity } from "../../src/infrastructure/entities/worker/worker.entity";
+import { createE2EConfing } from "./create.e2e.confing";
 
 describe('SCHOOLGROUP CONTROLLER', () => {
     let app: INestApplication;
 
     beforeAll(async () => {
-        const moduleRef = await Test.createTestingModule({
-            imports: [
-                SchoolgroupModule,
-                DataBaseConnectionModule,
-            ],
-            providers: [...providers],
-
-        }).overrideProvider(DATA_SOURCE)
-            .useValue(TestDataSource)
-            .compile();
-
-        app = moduleRef.createNestApplication();
-
-        await app.init();
+        app = await createE2EConfing([SchoolgroupModule, DataBaseConnectionModule], providers)
     });
 
     afterAll(async () => {

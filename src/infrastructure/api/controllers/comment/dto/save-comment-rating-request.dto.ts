@@ -28,8 +28,11 @@ export class SaveCommentRatingRequestDto {
         this.ratingId = ratingId;
     }
 
-    toCommentRatingUsecaseDto(): StudentCommentRatingUsecaseDto {
-        const dto = new StudentCommentRatingUsecaseDto(this.comment, this.namePersonHaveDone, this.ratingId);
-        return dto;
+    static toCommentRatingUsecaseDto(dto: SaveCommentRatingRequestDto): StudentCommentRatingUsecaseDto {
+        const usecaseDto = new StudentCommentRatingUsecaseDto(
+            dto.comment,
+            dto.namePersonHaveDone,
+            dto.ratingId);
+        return usecaseDto;
     }
 }

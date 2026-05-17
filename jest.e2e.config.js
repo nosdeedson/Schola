@@ -3,8 +3,8 @@ module.exports = {
   // forceExit: true,
   rootDir: '.',
   testEnvironment: 'node',
-  // testRegex: 'tests/e2e/.*\\.e2e.spec\\.ts$',
-  testMatch: ['<rootDir>/tests/e2e/**/*.e2e.spec.ts'],
+  testRegex: 'tests/e2e/.*\\.e2e.spec\\.ts$',
+  // testMatch: ['<rootDir>/tests/e2e/**/*.e2e.spec.ts'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   setupFilesAfterEnv: [
