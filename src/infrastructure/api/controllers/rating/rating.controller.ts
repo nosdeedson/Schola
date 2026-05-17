@@ -14,6 +14,6 @@ export class RatingController {
     @ApiOperation({ description: "Save a rating of a student" })
     @Post()
     public async saveRating(@Body() dto: SaveRatingRequestDto) {
-        this.saveRatingUsecase.execute(dto.toUseCaseDto());
+        await this.saveRatingUsecase.execute(SaveRatingRequestDto.toUseCaseDto(dto));
     }
 }

@@ -1,3 +1,7 @@
 {
-    "editor.fontSize": 16
+    "editor.fontSize": 16,
+    "jestrunner.configPath": {
+        "**/*.e2e.{spec,test}.{js,ts}": "jest.e2e.config.js",
+        "**/*.{spec,test}.{js,ts}": "jest.config.js"
+    }
 }

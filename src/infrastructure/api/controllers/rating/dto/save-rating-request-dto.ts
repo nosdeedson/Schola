@@ -46,18 +46,18 @@ export class SaveRatingRequestDto {
     @MaxLength(500)
     comment: string;
 
-    toUseCaseDto(): SaveRatingUsecaseDto {
-        const dto = new SaveRatingUsecaseDto();
-        dto.grammar = this.grammar;
-        dto.homework = this.homework;
-        dto.listing = this.listing;
-        dto.reading = this.reading;
-        dto.speaking = this.speaking;
-        dto.vocabulary = this.vocabulary;
-        dto.writing = this.writing;
-        dto.comment = this.comment;
-        dto.studentBeingEvaluatedId = this.studentBeingEvaluatedId;
-        dto.teacherId = this.teacherId;
-        return dto;
+    static toUseCaseDto(dto: SaveRatingRequestDto): SaveRatingUsecaseDto {
+        const usecaseDto = new SaveRatingUsecaseDto();
+        usecaseDto.grammar = dto.grammar;
+        usecaseDto.homework = dto.homework;
+        usecaseDto.listing = dto.listing;
+        usecaseDto.reading = dto.reading;
+        usecaseDto.speaking = dto.speaking;
+        usecaseDto.vocabulary = dto.vocabulary;
+        usecaseDto.writing = dto.writing;
+        usecaseDto.comment = dto.comment;
+        usecaseDto.studentBeingEvaluatedId = dto.studentBeingEvaluatedId;
+        usecaseDto.teacherId = dto.teacherId;
+        return usecaseDto;
     }
 }

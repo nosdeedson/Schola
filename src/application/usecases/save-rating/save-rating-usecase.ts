@@ -31,6 +31,7 @@ export class SaveRatingUsecase {
         try {
             const semesterService = new FindCurrentSemesterService(this.semesterRespository);
             const semester = await semesterService.execute();
+            if (!semester) throw new SystemError([{ context: 'semester', message: 'semester not found' }]);
             const studentService = new FindStudentService(this.studentRepository);
             const studentEntity = await studentService.execute(dto.studentBeingEvaluatedId);
             if (!studentEntity) throw new SystemError([{ context: 'student', message: 'student not found' }]);

@@ -8,6 +8,7 @@ import { SaveRatingUsecase } from '@/application/usecases/save-rating/save-ratin
 import { BadRequestException } from '@nestjs/common';
 import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
 import { SystemError } from '@/application/services/@shared/system-error';
+import { SaveRatingRequestDto } from './dto/save-rating-request-dto';
 describe('RatingController', () => {
   let controller: RatingController;
   let module: TestingModule;
@@ -37,7 +38,7 @@ describe('RatingController', () => {
       .mockImplementation(() => Promise.resolve(void 0));
     expect(await controller.saveRating(request)).toBe(void 0);
     expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(request.toUseCaseDto());
+    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 
   it('should throw an error', async () => {
@@ -47,7 +48,7 @@ describe('RatingController', () => {
     await expect(controller.saveRating(request)).rejects
       .toMatchObject(new BadRequestException("student not found"));
     expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(request.toUseCaseDto());
+    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 
   it('should throw an error current semester not found', async () => {
@@ -57,6 +58,6 @@ describe('RatingController', () => {
     await expect(controller.saveRating(request)).rejects
       .toMatchObject(new BadRequestException("Current semester was not found"));
     expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(request.toUseCaseDto());
+    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 });
