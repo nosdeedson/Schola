@@ -1,5 +1,6 @@
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
+import { SystemError } from "../../@shared/system-error";
 
 export class FindCurrentSemesterService {
 
@@ -10,7 +11,9 @@ export class FindCurrentSemesterService {
 
     async execute(): Promise<AcademicSemesterEntity> {
         try {
-            return await this.semesterRepository.findCurrentSemester();
+            const semester = await this.semesterRepository.findCurrentSemester();
+            if (!semester) throw new SystemError([{ context: 'semester', message: 'semester not found' }]); 
+            return semester;
         } catch (error) {
             throw error;
         }

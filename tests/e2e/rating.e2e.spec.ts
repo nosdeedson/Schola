@@ -92,6 +92,7 @@ describe('Rating E2E TESTS', () => {
             .send(dto);
         expect(response).toBeDefined();
         expect(response.status).toBe(400);
+        expect(response.body.message).toBe('semester not found');
     });
 
     it('should not found a student', async () => {

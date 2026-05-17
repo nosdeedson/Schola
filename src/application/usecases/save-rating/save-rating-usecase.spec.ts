@@ -15,6 +15,7 @@ import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { FindWorkerService } from "@/application/services/worker/find/find.worker.service";
 import { mockOutputFindWorkerDto } from "../../../../tests/mocks/mock-dtos/mock-dtos";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 describe('SaveRatingUsecase', () => {
 
@@ -31,7 +32,7 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => Promise.resolve(semesterEntity));
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(null));
+            .mockImplementation(() =>  { throw new SystemError([{ context: 'student', message: 'student not found' }])});
 
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -85,7 +86,7 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => { throw new BadRequestException("teacher not found.") });
 
         const workerService = jest.spyOn(FindWorkerService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(null));
+            .mockImplementation(() => {throw new SystemError([{ context: "find user", message: "Failed to find the user" }])});
 
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -110,10 +111,9 @@ describe('SaveRatingUsecase', () => {
     it('should throw a badRequest if current semester is not found', async () => {
         const dto = saveRatingUsecaseDtoMock();
         const teacher = mockOutputFindWorkerDto();
-        const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: false }));
 
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(semesterEntity));
+            .mockImplementation(() => {throw new SystemError([{ context: 'semester', message: 'semester not found' }])});
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
@@ -141,13 +141,11 @@ describe('SaveRatingUsecase', () => {
             new BadRequestException("Current semester was not found")
         );
         expect(semesterService).toHaveBeenCalledTimes(1);
-        expect(findStudentService).toHaveBeenCalledTimes(1);
-        expect(findStudentService).toHaveBeenCalledWith(dto.studentBeingEvaluatedId);
+        expect(findStudentService).toHaveBeenCalledTimes(0);
         expect(saveRating).toHaveBeenCalledTimes(0);
         expect(commentService).toHaveBeenCalledTimes(0);
         expect(tratarErros).toHaveBeenCalledTimes(1);
-        expect(workerService).toHaveBeenCalledTimes(1);
-        expect(workerService).toHaveBeenCalledWith(dto.teacherId);
+        expect(workerService).toHaveBeenCalledTimes(0);
     });
 
 

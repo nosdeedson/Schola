@@ -31,36 +31,30 @@ export class SaveRatingUsecase {
         try {
             const semesterService = new FindCurrentSemesterService(this.semesterRespository);
             const semester = await semesterService.execute();
-            if (!semester) throw new SystemError([{ context: 'semester', message: 'semester not found' }]);
             const studentService = new FindStudentService(this.studentRepository);
             const studentEntity = await studentService.execute(dto.studentBeingEvaluatedId);
-            if (!studentEntity) throw new SystemError([{ context: 'student', message: 'student not found' }]);
             const workerService = new FindWorkerService(this.workerRepo);
             const teacher = await workerService.execute(dto.teacherId);
-            if (!teacher) throw new SystemError([{ context: 'teacher', message: 'teacher not found' }]);
             let quarter: Quarter;
-            if (semester.current) {
-                const quarterEntity = semester.quarters[0].currentQuarter ? semester.quarters[0] : semester.quarters[1];
-                quarter = Quarter.fromEntity(quarterEntity);
-                const rating = new CreateRatingDto(
-                    Student.toDomain(studentEntity),
-                    quarter,
-                    dto.listing,
-                    dto.writing,
-                    dto.reading,
-                    dto.speaking,
-                    dto.grammar,
-                    dto.homework,
-                    dto.vocabulary
-                );
-                const ratingCreate = new CreateRatingService(this.ratingRepository);
-                const ratingEntity = await ratingCreate.execute(rating);
-                const commentService = new CreateCommentService(this.commentRepository);
-                const commentDto = new CreateCommentDto(dto.comment, teacher.name, ratingEntity);
-                await commentService.execute(commentDto);
-            } else {
-                throw new BadRequestException("Current semester was not found");
-            }
+            const quarterEntity = semester.quarters[0].currentQuarter ? semester.quarters[0] : semester.quarters[1];
+            quarter = Quarter.fromEntity(quarterEntity);
+            const rating = new CreateRatingDto(
+                Student.toDomain(studentEntity),
+                quarter,
+                dto.listing,
+                dto.writing,
+                dto.reading,
+                dto.speaking,
+                dto.grammar,
+                dto.homework,
+                dto.vocabulary
+            );
+            const ratingCreate = new CreateRatingService(this.ratingRepository);
+            const ratingEntity = await ratingCreate.execute(rating);
+            const commentService = new CreateCommentService(this.commentRepository);
+            const commentDto = new CreateCommentDto(dto.comment, teacher.name, ratingEntity);
+            await commentService.execute(commentDto);
+
         } catch (error) {
             TrataErros.tratarErrorsBadRequest(error as SystemError);
         }
