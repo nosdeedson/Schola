@@ -13,12 +13,13 @@ export class CreateSchoolgroupScheduleUsecaseDto {
 
     toMap(times: string[], dayOfWeeks: string[]){
         let m = new Map<string, string>();
+        if(!times || !dayOfWeeks) return m;
         m.set(dayOfWeeks[0], times[0]);
         m.set(dayOfWeeks[1], times[1]);
         return m;
     }
 
     toScheduleDto(): ScheduleDto {
-        return new ScheduleDto(this.dayOfWeeks, this.toMap(this.times, this.dayOfWeeks));
+        return new ScheduleDto(this?.dayOfWeeks, this?.toMap(this.times, this.dayOfWeeks));
     }
 }

@@ -12,9 +12,9 @@ export function mockCreateSchoolgroupRequestDto(
     overrides: CreateSchoolgroupRequestDtoMock = {}
 ): CreateSchoolgroupRequestDto {
     const dto = new CreateSchoolgroupRequestDto();
-    dto.name = overrides.name ?? "class name";
-    dto.nameBook = overrides.nameBook ?? "book name";
-    dto.scheduleDto = overrides.scheduleDto ?? mockScheduleRequestDto();
-    dto.teacherName = overrides.teacherName ?? "teacher name";
+    dto.nameBook = overrides.nameBook ?? "C1";
+    dto.name = overrides.name ?? "C1-morning";
+    dto.scheduleDto = mockScheduleRequestDto(overrides.scheduleDto);
+    dto.teacherName = overrides.teacherName ?? "Amelia Teacher";
     return dto;
 }

@@ -20,8 +20,8 @@ export class CreateSchoolgroupUseCaseDto {
         this.name = params.name;
         this.nameBook = params.nameBook;
         this.scheduleDto = new CreateSchoolgroupScheduleUsecaseDto({
-            dayOfWeeks: params.scheduleDto.dayOfWeeks,
-            times: params.scheduleDto.times
+            dayOfWeeks: params?.scheduleDto?.dayOfWeeks,
+            times: params?.scheduleDto?.times
         });
         this.teacherName = params.teacherName
     }

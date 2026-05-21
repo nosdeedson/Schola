@@ -1,6 +1,6 @@
 import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
 export async function createE2EConfing(
@@ -16,7 +16,12 @@ export async function createE2EConfing(
         .compile();
 
     const app = moduleRef.createNestApplication();
-
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            transform: true
+        })
+    )
     await app.init();
 
     return app;

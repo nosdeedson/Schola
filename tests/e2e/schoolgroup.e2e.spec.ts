@@ -1,7 +1,6 @@
 import { INestApplication } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
 import { SchoolgroupModule } from "../../src/infrastructure/api/controllers/schoolgroup/schoolgroup.module";
-import { DATA_SOURCE, DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
+import { DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
 import request from 'supertest';
 import { providers } from "../../src/infrastructure/api/controllers/schoolgroup/providers/schoolgroups.providers";
 import { UpdateSchoolgroupRequestDto } from "../../src/infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto";
@@ -11,34 +10,23 @@ import { mockClass } from "../mocks/domain/class.mocks";
 import { mockWorker } from "../mocks/domain/worker.mock";
 import { WorkerEntity } from "../../src/infrastructure/entities/worker/worker.entity";
 import { createE2EConfing } from "./create.e2e.confing";
+import { mockCreateSchoolgroupRequestDto } from "../mocks/controller/schoolgroup-request-dto-mock";
+import { mockScheduleRequestDto } from "../mocks/controller/schedule-request-dto-mock";
 
 describe('SCHOOLGROUP CONTROLLER', () => {
     let app: INestApplication;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         app = await createE2EConfing([SchoolgroupModule, DataBaseConnectionModule], providers)
     });
-
-    afterAll(async () => {
+    
+    afterEach(async () => {
         await app.close();
-    });
+        jest.clearAllMocks();
+    })
 
     it('should create a class', async () => {
-        const dto = {
-            "nameBook": "C1",
-            "name": "C1-morning",
-            "scheduleDto": {
-                "dayOfWeeks": [
-                    "Monday",
-                    "Tuesday"
-                ],
-                "times": [
-                    "08:00",
-                    "09:00"
-                ]
-            },
-            "teacherName": "Amelia Teacher"
-        }
+        const dto = mockCreateSchoolgroupRequestDto()
         const response = await request(app.getHttpServer())
             .post('/classes').send(dto);
 
@@ -86,7 +74,7 @@ describe('SCHOOLGROUP CONTROLLER', () => {
         const wantedId = entity.id;
         const wantedNameBook = "updatedBookName"
         const wantedNameTeacher = teacherEntity.fullName;
-        const dto = new UpdateSchoolgroupRequestDto();
+        let dto = new UpdateSchoolgroupRequestDto();
         dto.id = wantedId;
         dto.nameBook = wantedNameBook;
         dto.teacherName = wantedNameTeacher;
@@ -115,4 +103,54 @@ describe('SCHOOLGROUP CONTROLLER', () => {
         expect(validation.body).toHaveLength(0);
     });
 
+    it('should not create a class without name of the book', async () => {
+        const dto = mockCreateSchoolgroupRequestDto();
+        dto.nameBook = null;
+        const response = await request(app.getHttpServer())
+            .post('/classes').send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.status).toBe(400);
+        expect(response.body.message).toEqual(["Name of the book is required"])
+    });
+
+    it('should not create a class without name', async () => {
+        const dto = mockCreateSchoolgroupRequestDto();
+        dto.name = null;
+        const response = await request(app.getHttpServer())
+            .post('/classes').send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.status).toBe(400);
+        expect(response.body.message).toEqual(["Name of the class is required"])
+    });
+
+    it('should not create a class without schedule', async () => {
+        const dto = mockCreateSchoolgroupRequestDto();
+        dto.scheduleDto = null;
+        const response = await request(app.getHttpServer())
+            .post('/classes').send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.status).toBe(400);
+        expect(response.body.message).toStrictEqual(["Schedule of the class is required", "Schedule must have the days of week of a class and the times"])
+    });
+
+    it('should not create a class wiht schedule whitout times', async () => {
+        const scheduleDto = mockScheduleRequestDto()
+        const dto = mockCreateSchoolgroupRequestDto();
+        dto.scheduleDto.times = null;
+        const response = await request(app.getHttpServer())
+            .post('/classes').send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.status).toBe(400);
+        expect(response.body.message).toEqual([ 'scheduleDto.Times of the class is required' ])
+    });
+
+    it('should not create a class wiht schedule whitout dayofWeeks', async () => {
+        const dto = mockCreateSchoolgroupRequestDto();
+        dto.scheduleDto.dayOfWeeks = null;
+        const response = await request(app.getHttpServer())
+            .post('/classes').send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.status).toBe(400);
+        expect(response.body.message).toEqual(["scheduleDto.Days of week of the class is required"])
+    });
 });
