@@ -16,6 +16,8 @@ import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
 import { FindAllAcademicSemesterDto } from '@/application/services/academic-semester/findAll/findAll.academic-semester.dto';
 import { UpdateSemesterUseCase } from '@/application/usecases/semester-usecases/update/update-semester.usecase';
 import { mockUpdateAcademicSemesterRequestDto } from '../../../../../tests/mocks/controller/update-academic-semester-request-dto-mock';
+import { SemesterRequestDto } from './dto/create/semester-request-dto';
+import { UpdateAcademicSemesterRequestDto } from './dto/update/update-academic-semester-request-dto';
 
 
 describe('SemesterController', () => {
@@ -51,7 +53,7 @@ describe('SemesterController', () => {
       .mockImplementation(() => Promise.resolve());
     expect(await controller.create(dto)).toBe(void 0);
     expect(useCase).toHaveBeenCalledTimes(1);
-    expect(useCase).toHaveBeenCalledWith(dto);
+    expect(useCase).toHaveBeenCalledWith(SemesterRequestDto.toSemester(dto));
   });
 
   it('should throw an error while creating a semester', async () => {
@@ -63,7 +65,7 @@ describe('SemesterController', () => {
       .mockImplementationOnce(() => Promise.reject(new BadRequestException('test')));
     await expect(controller.create(dto)).rejects.toMatchObject(new BadRequestException('test'));
     expect(useCase).toHaveBeenCalledTimes(1);
-    expect(useCase).toHaveBeenCalledWith(dto);
+    expect(useCase).toHaveBeenCalledWith(SemesterRequestDto.toSemester(dto));
   });
 
   it('should delete a semester', async () => {
@@ -119,7 +121,7 @@ describe('SemesterController', () => {
     const dto = mockUpdateAcademicSemesterRequestDto();
     expect(await controller.update(dto)).toBe(void 0);
     expect(useCase).toHaveBeenCalledTimes(1);
-    expect(useCase).toHaveBeenCalledWith(dto);
+    expect(useCase).toHaveBeenCalledWith(UpdateAcademicSemesterRequestDto.toUsecaseDto(dto));
   });
 
   it('should throw an error semester not found', async () => {
