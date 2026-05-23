@@ -5,17 +5,17 @@ import { IsNotEmpty, IsUUID, Length, MaxLength } from "class-validator";
 export class SaveCommentRatingRequestDto {
 
     @ApiProperty({ description: "A comment about a rating", example: "test comment" })
-    @IsNotEmpty()
-    @MaxLength(500)
+    @IsNotEmpty({ message: "Comment is required" })
+    @MaxLength(500, { message: "The comment must be less than 500" })
     readonly comment: string;
 
     @ApiProperty({ description: "Id of the person doing the comment" })
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "The name of who did it is required" })
     readonly namePersonHaveDone: string;
 
-    @ApiProperty({ description: "Id of the rating" })
+    @ApiProperty({ description: "Id of the rating is required" })
     @IsUUID()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Rating id must not be empty" })
     readonly ratingId: string;
 
     constructor(

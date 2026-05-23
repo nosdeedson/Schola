@@ -1,7 +1,6 @@
 import { INestApplication } from "@nestjs/common"
-import { Test } from "@nestjs/testing";
 import { CommentModule } from "../../src/infrastructure/api/controllers/comment/comment.module";
-import { DATA_SOURCE, DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
+import { DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
 import { providers } from "../../src/infrastructure/api/controllers/comment/providers/comments-providers";
 import { TestDataSource } from "../../src/infrastructure/repositories/config-test/test.datasource";
 import { mockRating } from '../mocks/domain/rating.mocks';
@@ -63,7 +62,48 @@ describe("comment E2E TEST", () => {
             .send(dto);
         expect(response).toBeDefined();
         expect(response.status).toBe(404);
-    })
+    });
 
+    it('should throw an exception if comment not present in DTo', async () => {
+        const dto = {
+            "comment": null,
+            "namePersonHaveDone": "Edson Jose",
+            "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto)
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual(["The comment must be less than 500",
+            "Comment is required"])
+    });
 
-})
+    it('should throw an exception if name who did is not present', async () => {
+        const dto = {
+            "comment": "a comment",
+            "namePersonHaveDone": null,
+            "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual(["The name of who did it is required"]);
+    });
+
+    it('should throw an error if id rating is not present', async () => {
+        const dto = {
+            "comment": "a comment",
+            "namePersonHaveDone": "Edson Jose",
+            "ratingId": null
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual([
+            "Rating id must not be empty",
+            "ratingId must be a UUID"
+        ]);
+    });
+});
