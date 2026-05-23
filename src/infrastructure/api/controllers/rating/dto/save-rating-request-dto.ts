@@ -6,44 +6,44 @@ import { IsEnum, IsNotEmpty, IsUUID, MaxLength } from "class-validator";
 export class SaveRatingRequestDto {
 
     @ApiProperty({ description: 'Id of student' })
-    @IsUUID()
+    @IsUUID("all", { message: "Student Id is required" })
     studentBeingEvaluatedId: string;
 
     @ApiProperty({ description: 'Id of teacher made the avaliaiton' })
-    @IsUUID()
+    @IsUUID("all", { message: "Teacher Id is required" })
     teacherId: string;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Listining skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Listining skills is required" })
     listing: Grade;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Writing skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Writing skills is required" })
     writing: Grade;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Reading skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Reading skills is required" })
     reading: Grade;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Speaking skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Speaking skills is required" })
     speaking: Grade;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Grammar skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Grammar skills is required" })
     grammar: Grade;
 
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
-    @IsEnum(Grade)
+    @ApiProperty({ description: 'Homework skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Homework skills is required" })
     homework: Grade;
 
-    @IsEnum(Grade)
-    @ApiProperty({ description: 'Id of student', example: "BAD" })
+    @ApiProperty({ description: 'Vocabulary skills', example: "BAD" })
+    @IsEnum(Grade, { message: "Vocabulary skills is required" })
     vocabulary: Grade;
 
     @ApiProperty({ description: "Comment of the teacher" })
-    @IsNotEmpty()
-    @MaxLength(500)
+    @IsNotEmpty({ message: "A teacher's comment is requited" })
+    @MaxLength(500, { message: "comment should be less than 500" })
     comment: string;
 
     static toUseCaseDto(dto: SaveRatingRequestDto): SaveRatingUsecaseDto {
