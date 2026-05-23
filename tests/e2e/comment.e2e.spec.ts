@@ -64,9 +64,22 @@ describe("comment E2E TEST", () => {
         expect(response.status).toBe(404);
     });
 
-    it('should throw an exception if comment not present in DTo', async () => {
+    it('should throw an exception if comment is null', async () => {
         const dto = {
             "comment": null,
+            "namePersonHaveDone": "Edson Jose",
+            "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto)
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual(["The comment must be less than 500",
+            "Comment is required"])
+    });
+
+    it('should throw an exception if comment not present in DTo', async () => {
+        const dto = {
             "namePersonHaveDone": "Edson Jose",
             "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
         };
@@ -81,6 +94,18 @@ describe("comment E2E TEST", () => {
     it('should throw an exception if name who did is not present', async () => {
         const dto = {
             "comment": "a comment",
+            "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual(["The name of who did it is required"]);
+    });
+
+    it('should throw an exception if name who did is null', async () => {
+        const dto = {
+            "comment": "a comment",
             "namePersonHaveDone": null,
             "ratingId": "f0c0cccd-481f-445a-aa5c-e973f538f517"
         };
@@ -91,11 +116,26 @@ describe("comment E2E TEST", () => {
         expect(response.body.message).toEqual(["The name of who did it is required"]);
     });
 
-    it('should throw an error if id rating is not present', async () => {
+    it('should throw an error if id rating is null', async () => {
         const dto = {
             "comment": "a comment",
             "namePersonHaveDone": "Edson Jose",
             "ratingId": null
+        };
+        const response = await request(app.getHttpServer())
+            .post("/comment/ratings")
+            .send(dto);
+        expect(response.body).toBeDefined();
+        expect(response.body.message).toEqual([
+            "Rating id must not be empty",
+            "ratingId must be a UUID"
+        ]);
+    });
+
+    it('should throw an error if id rating is not present', async () => {
+        const dto = {
+            "comment": "a comment",
+            "namePersonHaveDone": "Edson Jose",
         };
         const response = await request(app.getHttpServer())
             .post("/comment/ratings")
