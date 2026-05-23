@@ -1,5 +1,5 @@
 import { INestApplication } from "@nestjs/common"
-import { createE2EConfing } from "./create.e2e.confing";
+import { createE2EConfing } from "../e2e.confing";
 import { SemesterModule } from "@/infrastructure/api/controllers/semester/semester.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { providers } from "@/infrastructure/api/controllers/semester/providers/semesters.providers";

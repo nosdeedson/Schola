@@ -5,7 +5,7 @@ import { AppModule } from '../../src/infrastructure/api/controllers/app/AppModul
 import { setEnv } from '../mocks/env/env.mock';
 import { DATA_SOURCE, DataBaseConnectionModule } from '../../src/infrastructure/data-base-connection/data-base-connection.module';
 import { TestDataSource } from '../../src/infrastructure/repositories/config-test/test.datasource';
-import { createE2EConfing } from './create.e2e.confing';
+import { createE2EConfing } from '../e2e.confing';
 
 describe('App E2E', () => {
     let app: INestApplication;

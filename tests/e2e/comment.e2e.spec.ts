@@ -10,7 +10,7 @@ import { mockStudent } from "../mocks/domain/student.mocks";
 import request from 'supertest';
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../mocks/domain/semester.mocks";
-import { createE2EConfing } from "./create.e2e.confing";
+import { createE2EConfing } from "../e2e.confing";
 
 describe("comment E2E TEST", () => {
     let app: INestApplication;
