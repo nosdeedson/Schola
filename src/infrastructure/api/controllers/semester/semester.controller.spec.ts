@@ -4,8 +4,8 @@ import { CreateSemesterUsecase } from '../../../../application/usecases/semester
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto';
-import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto';
+import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto-mock';
+import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto-mock';
 import { providers } from './providers/semesters.providers';
 import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
 import { FindSemesterUsecase } from '@/application/usecases/semester-usecases/find/find-semester-usecase';
