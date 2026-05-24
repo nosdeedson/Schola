@@ -16,7 +16,7 @@ export class StudentController {
 
     @ApiOperation({ description: "Find the student rating", })
     @ApiResponse({ status: 200 })
-    @Get("raintgs/:studentId")
+    @Get("ratings/:studentId")
     public async findRatingStudent(@Param('studentId') studentId: string): Promise<StudentRatingUsecaseResponseDto[]> {
         return await this.studentRating.execute(studentId);
     }
@@ -24,6 +24,6 @@ export class StudentController {
     @ApiOperation({ description: "Transfer the student from one class to another" })
     @Patch("transfer-students")
     public async transferStudentsAnotherClass(@Body() dto: TransferStudendtsRequestDto) {
-        await this.transferStudents.execute(dto.toUsecaseDto());
+        await this.transferStudents.execute(TransferStudendtsRequestDto.toUsecaseDto(dto));
     }
 }

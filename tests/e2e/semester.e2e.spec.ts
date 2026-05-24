@@ -22,7 +22,6 @@ describe('SEMESTER E2E TESTS', () => {
 
     describe('business tests', () => {
 
-
         it('should not find a semester', async () => {
             const response = await request(app.getHttpServer())
                 .get('/semesters/93aaa908-2d46-4779-80ff-7a2ba0f45458');
