@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TeacherController } from './teacher.controller';
-import { teacherProviders } from './providers/teacher-providers';
+import { teachersProviders } from './providers/teachers-providers';
 
 @Module({
     controllers: [
         TeacherController
     ],
-    providers: [...teacherProviders],
+    providers: [...teachersProviders],
     imports: []
 })
 export class TeacherModule { }

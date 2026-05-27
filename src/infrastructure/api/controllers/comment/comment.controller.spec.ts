@@ -4,7 +4,7 @@ import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { SaveCommentRatingRequestDto } from './dto/save-comment-rating-request.dto';
 import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
 import { BadRequestException } from '@nestjs/common';
-import { providers } from './providers/comments-providers';
+import { commentsProviders } from './providers/comments-providers';
 import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 
 describe('CommentController', () => {
@@ -16,7 +16,7 @@ describe('CommentController', () => {
     module = await Test.createTestingModule({
       controllers: [CommentController],
       imports: [DataBaseConnectionModule],
-      providers: [...providers]
+      providers: [...commentsProviders]
     }).compile();
 
     controller = module.get<CommentController>(CommentController);

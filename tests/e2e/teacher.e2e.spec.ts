@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common";
 import { createE2EConfing } from "../e2e.confing";
 import { TeacherModule } from "@/infrastructure/api/controllers/teacher/teacher.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
-import { teacherProviders } from "@/infrastructure/api/controllers/teacher/providers/teacher-providers";
+import { teachersProviders } from "@/infrastructure/api/controllers/teacher/providers/teachers-providers";
 import request from 'supertest';
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
@@ -19,7 +19,7 @@ describe('TEACHAR E2E TESTS', () => {
         app = await createE2EConfing([
             TeacherModule,
             DataBaseConnectionModule
-        ], teacherProviders)
+        ], teachersProviders)
     });
 
     afterAll(async () => { await app.close() });

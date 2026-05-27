@@ -6,7 +6,7 @@ import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mockQuarterRequestDto } from '../../../../../tests/mocks/controller/quarter-request-dto-mock';
 import { mockSemesterRequestDto } from '../../../../../tests/mocks/controller/semester-request-dto-mock';
-import { providers } from './providers/semesters.providers';
+import { semestersProviders } from './providers/semesters.providers';
 import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
 import { FindSemesterUsecase } from '@/application/usecases/semester-usecases/find/find-semester-usecase';
 import { mockFindAcademicSemesterDto } from '../../../../../tests/mocks/usecases/find-academic-semester-dto.mock';
@@ -28,7 +28,7 @@ describe('SemesterController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SemesterController],
-      providers: [...providers],
+      providers: [...semestersProviders],
       imports: [DataBaseConnectionModule]
     }).compile();
 

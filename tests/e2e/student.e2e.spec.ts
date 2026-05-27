@@ -2,8 +2,8 @@ import { INestApplication } from "@nestjs/common"
 import { createE2EConfing } from "../e2e.confing";
 import { StudentModule } from "@/infrastructure/api/controllers/student/student.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
-import { providers } from "@/infrastructure/api/controllers/student/providers/students.providers";
-import { providers as providersClass } from "@/infrastructure/api/controllers/schoolgroup/providers/schoolgroups.providers";
+import { studentsProviders } from "@/infrastructure/api/controllers/student/providers/students.providers";
+import { schoolgroupsProviders as providersClass } from "@/infrastructure/api/controllers/schoolgroup/providers/schoolgroups.providers";
 import request from 'supertest';
 import { mockStudent } from "../mocks/domain/student.mocks";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
@@ -26,7 +26,7 @@ describe('STUDENT E2E TESTS', () => {
         app = await createE2EConfing([
             StudentModule,
             DataBaseConnectionModule
-        ], providers);
+        ], studentsProviders);
         classApp = await createE2EConfing([
             SchoolgroupModule, DataBaseConnectionModule
         ], providersClass)

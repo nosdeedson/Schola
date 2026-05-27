@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SchoolgroupController } from './schoolgroup.controller';
-import { providers } from './providers/schoolgroups.providers';
+import { schoolgroupsProviders } from './providers/schoolgroups.providers';
 
 @Module({
     controllers: [
         SchoolgroupController,
     ],
-    providers: [...providers],
+    providers: [...schoolgroupsProviders],
     imports: []
 })
 export class SchoolgroupModule { }

@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common"
 import { createE2EConfing } from "../e2e.confing";
 import { SemesterModule } from "@/infrastructure/api/controllers/semester/semester.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
-import { providers } from "@/infrastructure/api/controllers/semester/providers/semesters.providers";
+import { semestersProviders } from "@/infrastructure/api/controllers/semester/providers/semesters.providers";
 import request from 'supertest';
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../mocks/domain/semester.mocks";
@@ -13,7 +13,7 @@ describe('SEMESTER E2E TESTS', () => {
     let app: INestApplication;
 
     beforeAll(async () => {
-        app = await createE2EConfing([SemesterModule, DataBaseConnectionModule], providers);
+        app = await createE2EConfing([SemesterModule, DataBaseConnectionModule], semestersProviders);
     });
 
     afterAll(async () => {

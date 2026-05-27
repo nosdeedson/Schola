@@ -13,7 +13,7 @@ import { RepositoryFactoryService } from '../../../factory/repositiry-factory/re
 import { UserAggregateResolverService } from '../../../factory/user-aggregate-resolver/user-aggregate-resolver.service';
 import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
 import { userDeleteUsecaseProvider } from './providers/user-delete-usecase-providers';
-import { userProviders } from './providers/user-provider';
+import { usersProviders } from './providers/users-provider';
 import { UsersController } from './users.controller';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { FindAllUserUsecase } from '@/application/usecases/user-usecases/find-all/find-all-user-usecase';
@@ -31,7 +31,7 @@ describe('UsersController', () => {
     module = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
-        ...userProviders,
+        ...usersProviders,
         ...userDeleteUsecaseProvider,
         IsStrongPasswordConstraint,
         RepositoryFactoryService,

@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common"
 import { createE2EConfing } from "../e2e.confing";
 import { RatingModule } from "@/infrastructure/api/controllers/rating/rating.module";
 import { DataBaseConnectionModule } from "@/infrastructure/data-base-connection/data-base-connection.module";
-import { providers } from "@/infrastructure/api/controllers/rating/providers/ratings.providers";
+import { ratingsProviders } from "@/infrastructure/api/controllers/rating/providers/ratings.providers";
 import request from "supertest";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { mockStudent } from "../mocks/domain/student.mocks";
@@ -18,7 +18,7 @@ describe('Rating E2E TESTS', () => {
     let app: INestApplication;
 
     beforeAll(async () => {
-        app = await createE2EConfing([RatingModule, DataBaseConnectionModule], providers)
+        app = await createE2EConfing([RatingModule, DataBaseConnectionModule], ratingsProviders)
     });
 
     afterAll(async () => {

@@ -6,7 +6,7 @@ import { userFindUsecaseProvider } from "./user-find-usecase-providers";
 import { userFindAllUsecaseProvider } from "./user-find-all-usecase.provider";
 
 
-export const userProviders: Provider[] = [
+export const usersProviders: Provider[] = [
     ...userRepositoriesProviders,
     ...userCreateUsecaseProvider,
     ...userDeleteUsecaseProvider,

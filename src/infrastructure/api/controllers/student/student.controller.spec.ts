@@ -9,11 +9,12 @@ import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { providers } from './providers/students.providers';
+import { studentsProviders } from './providers/students.providers';
 import { SaveCommentRatingRequestDto } from '../comment/dto/save-comment-rating-request.dto';
 import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
 import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
+import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -23,7 +24,7 @@ describe('StudentController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [StudentController],
-      providers: [...providers],
+      providers: [...studentsProviders],
       imports: [
         DataBaseConnectionModule
       ]
@@ -75,7 +76,7 @@ describe('StudentController', () => {
     await expect(controller.transferStudentsAnotherClass(dto))
       .rejects.toThrow(NotFoundException);
     expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(dto.toUsecaseDto());
+    expect(usecase).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
   });
 
   it('should update students', async () => {
@@ -84,6 +85,6 @@ describe('StudentController', () => {
       .mockImplementation(() => Promise.resolve(void 0));
     expect(await controller.transferStudentsAnotherClass(dto)).toBe(void 0);
     expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(dto.toUsecaseDto());
+    expect(usecase).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
   });
 });

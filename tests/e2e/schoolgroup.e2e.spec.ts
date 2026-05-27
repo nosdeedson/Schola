@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common";
 import { SchoolgroupModule } from "../../src/infrastructure/api/controllers/schoolgroup/schoolgroup.module";
 import { DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
 import request from 'supertest';
-import { providers } from "../../src/infrastructure/api/controllers/schoolgroup/providers/schoolgroups.providers";
+import { schoolgroupsProviders } from "../../src/infrastructure/api/controllers/schoolgroup/providers/schoolgroups.providers";
 import { UpdateSchoolgroupRequestDto } from "../../src/infrastructure/api/controllers/schoolgroup/dto/update/update-schoolgroup-request-dto";
 import { TestDataSource } from "../../src/infrastructure/repositories/config-test/test.datasource";
 import { ClassEntity } from "../../src/infrastructure/entities/class/class.entity";
@@ -17,7 +17,7 @@ describe('SCHOOLGROUP CONTROLLER', () => {
     let app: INestApplication;
 
     beforeEach(async () => {
-        app = await createE2EConfing([SchoolgroupModule, DataBaseConnectionModule], providers)
+        app = await createE2EConfing([SchoolgroupModule, DataBaseConnectionModule], schoolgroupsProviders)
     });
 
     afterEach(async () => {

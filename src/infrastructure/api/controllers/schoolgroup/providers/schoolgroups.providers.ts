@@ -7,7 +7,7 @@ import { schoolgroupDeleteProvider } from "./schoolgroup-delete-usecase.provider
 import { schoolgroupFindAllUsecaseProvider } from "./schoolgroup-find-all-usecase.provider";
 import { transactionServiceProvider } from "../../controller-tokens/transaction-service.provider";
 
-export const providers: Provider[] = [
+export const schoolgroupsProviders: Provider[] = [
     ...schoolgroupRepositoriesProviders,
     ...schoolgroupCreateUseCaseProvider,
     ...schoolgroupUpdateUsecaseProvider,

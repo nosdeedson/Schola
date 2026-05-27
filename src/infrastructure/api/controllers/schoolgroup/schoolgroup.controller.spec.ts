@@ -8,7 +8,7 @@ import { UpdateSchoolgroupUsecase } from '@/application/usecases/schoolgroup-use
 import { mockCreateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/schoolgroup-request-dto-mock';
 import { mockUpdateSchoolgroupRequestDto } from '../../../../../tests/mocks/controller/update-schoolgroup-request-dto-mock';
 import { FindSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/find/find-schoolgroup-usecase';
-import { providers } from './providers/schoolgroups.providers';
+import { schoolgroupsProviders } from './providers/schoolgroups.providers';
 import { mockFindClassDto } from '../../../../../tests/mocks/controller/find-class-dto-mock';
 import { DeleteSchoolgroupUsecase } from '@/application/usecases/schoolgroup-usecases/delete/delete-schoolgroup-usecase';
 import { FindAllClassDto } from '@/application/services/class/findAll/findAll.class.dto';
@@ -24,7 +24,7 @@ describe('SchoolgroupController', () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [SchoolgroupController],
-      providers: [...providers ],
+      providers: [...schoolgroupsProviders ],
       imports: [DataBaseConnectionModule]
     }).compile();
 

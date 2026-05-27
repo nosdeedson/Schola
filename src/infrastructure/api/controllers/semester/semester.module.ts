@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SemesterController } from './semester.controller';
-import { providers } from './providers/semesters.providers';
+import { semestersProviders } from './providers/semesters.providers';
 
 @Module({
     controllers: [
         SemesterController
     ],
-    providers: [...providers],
+    providers: [...semestersProviders],
     imports: [ ]
 })
 export class SemesterModule { }

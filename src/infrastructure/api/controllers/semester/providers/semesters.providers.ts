@@ -6,7 +6,7 @@ import { semesterFindAllUsecaseProvider } from "./semester-find-all-usecase-prov
 import { semesterFindUsecaseProvider } from "./semester-find-usecase-providers";
 import { semesterUpdateUsecasProvider } from "./semester-update-usecase-providers";
 
-export const providers: Provider[] = [
+export const semestersProviders: Provider[] = [
     ...semesterRepositoriesProviders,
     ...semesterCreateUsecaseProvider,
     ...semesterDeleteUsecaseProvider,

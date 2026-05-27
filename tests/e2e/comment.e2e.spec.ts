@@ -1,7 +1,7 @@
 import { INestApplication } from "@nestjs/common"
 import { CommentModule } from "../../src/infrastructure/api/controllers/comment/comment.module";
 import { DataBaseConnectionModule } from "../../src/infrastructure/data-base-connection/data-base-connection.module";
-import { providers } from "../../src/infrastructure/api/controllers/comment/providers/comments-providers";
+import { commentsProviders } from "../../src/infrastructure/api/controllers/comment/providers/comments-providers";
 import { TestDataSource } from "../../src/infrastructure/repositories/config-test/test.datasource";
 import { mockRating } from '../mocks/domain/rating.mocks';
 import { RatingEntity } from "../../src/infrastructure/entities/rating/rating.entity";
@@ -16,7 +16,7 @@ describe("comment E2E TEST", () => {
     let app: INestApplication;
 
     beforeAll(async () => {
-        app = await createE2EConfing([CommentModule, DataBaseConnectionModule], providers)
+        app = await createE2EConfing([CommentModule, DataBaseConnectionModule], commentsProviders)
     });
 
     afterAll(async () => {

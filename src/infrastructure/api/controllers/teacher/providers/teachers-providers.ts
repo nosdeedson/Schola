@@ -4,7 +4,7 @@ import { teacherListClassesUsecaseProvider } from "./teacher-list-classes-usecas
 import { teacherFindClassRatingUsecaseProvider } from "./teacher-find-class-rating-usecase.providers";
 
 
-export const teacherProviders: Provider[] = [
+export const teachersProviders: Provider[] = [
     ...teachersRepositoriesProviders,
     ...teacherListClassesUsecaseProvider,
     ...teacherFindClassRatingUsecaseProvider

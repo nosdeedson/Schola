@@ -3,7 +3,7 @@ import { studentsRepositoriesProviders } from "./student-repositories-providers"
 import { studentTransferUsecaseProvider } from "./student-transfer-student-usecase-provider";
 import { findRatingUsecaseProvider } from "./student-find-rating-usecase.provider";
 
-export const providers: Provider[] = [
+export const studentsProviders: Provider[] = [
     ...studentsRepositoriesProviders,
     ...studentTransferUsecaseProvider,
     ...findRatingUsecaseProvider,

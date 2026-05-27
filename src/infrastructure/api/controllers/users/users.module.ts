@@ -5,14 +5,14 @@ import { DeleteUserFactoryService } from '@/infrastructure/factory/delete-user-f
 import { UserAggregateResolverService } from '@/infrastructure/factory/user-aggregate-resolver/user-aggregate-resolver.service';
 import { CreateUserFactoryService } from '@/infrastructure/factory/create-user-service-factory/create-user-factory-service';
 import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
-import { userProviders } from './providers/user-provider';
+import { usersProviders } from './providers/users-provider';
 
 @Module({
     controllers: [
         UsersController,
     ],
     providers: [
-        ...userProviders,
+        ...usersProviders,
         IsStrongPasswordConstraint,
         RepositoryFactoryService,
         CreateUserFactoryService,
