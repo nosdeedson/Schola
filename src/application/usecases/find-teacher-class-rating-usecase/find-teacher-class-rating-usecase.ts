@@ -3,6 +3,8 @@ import { FindTeacherClassRatingService } from "@/application/services/class/find
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { TeacherClassRatingDto } from "./find-teacher-class-rating-dto";
+import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { SystemError } from "@/application/services/@shared/system-error";
 
 export class FindTeacherClassRatingUsecase {
 
@@ -19,7 +21,7 @@ export class FindTeacherClassRatingUsecase {
             const semester = await semesterService.execute();
             return new TeacherClassRatingDto(classEntity, semester);
         } catch (error) {
-            throw error;
+            throw TrataErros.tratarErrorsNotFound(error as SystemError);
         }
     }
 }
