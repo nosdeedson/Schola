@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsStrongPassword, Length, Max, MaxLength, Min } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsStrongPassword, Length, Max, MaxLength, Min, ValidateIf } from "class-validator";
 import { AccessType } from "@/domain/user/access.type";
 
 export class CreateUserRequestDto {
@@ -71,8 +71,9 @@ export class CreateUserRequestDto {
         example: ['John Father', 'Mary Mother'],
         required: false,
     })
-    @IsOptional()
+    @ValidateIf((p) => p.accessType === AccessType.STUDENT)
     @IsArray()
+    @ArrayNotEmpty({message: 'At least one parent must be sent'})
     parents?: string[];
 
     @ApiProperty({
@@ -80,7 +81,8 @@ export class CreateUserRequestDto {
         example: ['John Student', 'Mary Student'],
         required: false,
     })
-    @IsOptional()
+    @ValidateIf((p) => p.accessType === AccessType.PARENT)
     @IsArray()
+    @ArrayNotEmpty({message: "At least one student must be sent"})
     students?: string[];
 }

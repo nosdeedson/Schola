@@ -20,11 +20,11 @@ export function mockCreateUserRequestDto(
     dto.accessType = overrides.accessType ?? AccessType.ADMIN;
     dto.birthDate = overrides.birthDate ?? new Date().toISOString();
     dto.classCode = overrides.classCode ?? "1234";
-    dto.email = overrides.email ?? "email@email";
+    dto.email = overrides.email ?? "email@email.com";
     dto.name = overrides.name ?? "name user";
     dto.nickname = overrides.nickname ?? "nickname";
     dto.parents = overrides.parents ?? ['father', 'mother'];
-    dto.password = overrides.password ?? '1234';
+    dto.password = overrides.password ?? '1234@Mudar';
     dto.students = overrides.students ?? ['student 1', 'student 2'];
     return dto;
 }

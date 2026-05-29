@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserRequestDto } from './dtos/create-user-dto/create-user-request-dto';
 import { CreateUserUsecase } from '@/application/usecases/user-usecases/create-user/create-user-usecase';
@@ -29,22 +29,23 @@ export class UsersController {
     @ApiOperation({ description: 'Delete an user of the system' })
     @ApiResponse({ status: 204, description: 'When user is deleted the status will be 204' })
     @ApiResponse({ status: '4XX', description: 'Throw an exception when is not possible to delete.' })
-    @Delete(":id")
-    async delete(@Param("idUser") idUser: string) {
+    @Delete(":idUser")
+    async delete(@Param("idUser", new ParseUUIDPipe()) idUser: string) {
         await this.deleteUser.execute(idUser);
     }
 
     @ApiOperation({ description: 'Find an user of the system' })
     @ApiResponse({ status: 200, description: 'Return the user information' })
     @ApiResponse({ status: '4XX', description: 'Throw an exception when is not possible to find.' })
-    @Get(":id")
-    async find(@Param("idUser") idUser: string): Promise<FindUserResponseDto> {
+    @Get(":idUser")
+    async find(@Param("idUser", new ParseUUIDPipe()) idUser: string): Promise<FindUserResponseDto> {
         const dto = await this.findUser.execute(idUser);
         return FindUserResponseDto.from(dto);
     }
 
     @ApiOperation({ description: 'Find all users' })
     @ApiResponse({ status: 200, description: "Returns all users or an empty array" })
+    @Get()
     async findAll(): Promise<FindUserResponseDto[]> {
         const dto = await this.findAllUser.execute();
         return FindUserResponseDto.fromUsers(dto);
