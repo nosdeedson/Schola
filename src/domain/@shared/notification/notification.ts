@@ -4,7 +4,6 @@ export type NotificationErrorProps = {
 }
 
 export class Notification {
-    // TODO ADD HTTP STATUS 
     private errors: NotificationErrorProps[] = [];
 
     addError(error: NotificationErrorProps) {

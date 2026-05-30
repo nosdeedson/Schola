@@ -90,7 +90,7 @@ describe("USERS E2E TESTS", () => {
 
             const response = await request(app.getHttpServer()).get(`/users/${wantedId}`);
             expect(response.body).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
             expect(response.body.message).toEqual('user not found');
         });
 
@@ -108,7 +108,7 @@ describe("USERS E2E TESTS", () => {
             expect(response.status).toBe(200);
             const validation = await request(app.getHttpServer()).get(`/users/${wantedId}`);
             expect(validation.body).toBeDefined();
-            expect(validation.status).toBe(400);
+            expect(validation.status).toBe(404);
             expect(validation.body.message).toEqual('user not found')
         });
 
@@ -116,7 +116,7 @@ describe("USERS E2E TESTS", () => {
             const wantedId = "851af9ff-6aeb-42bc-92dc-53ae102fe7f3";
             const response = await request(app.getHttpServer()).delete(`/users/${wantedId}`);
             expect(response.body).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
             expect(response.body.message).toEqual('user not found')
         });
 
@@ -188,7 +188,7 @@ describe("USERS E2E TESTS", () => {
             const response = await request(app.getHttpServer())
                 .post('/users').send(dto);
             expect(response.body).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
             expect(response.body.message).toBe("class not found");
         });
 

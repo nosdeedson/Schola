@@ -77,7 +77,7 @@ describe('Rating E2E TESTS', () => {
                 .post('/ratings')
                 .send(dto);
             expect(response).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
             expect(response.body.message).toBe('semester not found');
         });
 
@@ -100,7 +100,7 @@ describe('Rating E2E TESTS', () => {
                 .post('/ratings')
                 .send(dto);
             expect(response).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
         });
 
         it('should not find a teacher', async () => {
@@ -122,7 +122,7 @@ describe('Rating E2E TESTS', () => {
                 .post('/ratings')
                 .send(dto);
             expect(response).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
         });
     });
 

@@ -1,5 +1,5 @@
 import { BadRequestException, InternalServerErrorException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { mockSystemError } from '../../../../tests/mocks/system-error/system-error-mock';
+import { mockSystemError, NotificationErrorPropsMock } from '../../../../tests/mocks/system-error/system-error-mock';
 import { ExceptionHandler } from './exception-handler';
 
 describe('ExcptionHandler', () => {
@@ -14,20 +14,41 @@ describe('ExcptionHandler', () => {
   });
 
   it('should return an UnprocessableEntityException', async () => {
-    const error = mockSystemError({ statusCode: 422, context: 'class', message: "was not able to instantite the class domain entity" });
+    const error = mockSystemError({
+      statusCode: 422,
+      errors: [{ context: 'any context', message: "was not able to instantite the class domain entity" }] as NotificationErrorPropsMock[]
+    });
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow(UnprocessableEntityException);
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow("was not able to instantite the class domain entity");
   });
 
   it('should return an NotFoundException', async () => {
-    const error = mockSystemError({ statusCode: 404, context: 'class', message: "class not found" });
+    const error = mockSystemError({
+      statusCode: 404,
+      errors: [{ context: 'class', message: "class not found" }]
+    });
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow(NotFoundException);
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow("class not found");
   });
 
   it('should return an BadGatewayException', async () => {
-    const error = mockSystemError({ statusCode: 400, context: 'class', message: "name of class id required" });
+    const error = mockSystemError({
+      statusCode: 400,
+      errors: [{ context: 'class', message: "name of class id required" }]
+    });
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow(BadRequestException);
     expect(() => ExceptionHandler.exceptionHandler(error)).toThrow("name of class id required");
+  });
+
+  it('should test treatErrors', async () => {
+    const error = mockSystemError({
+      statusCode: 400,
+      errors: [
+        { context: 'class', message: "first error" },
+        { context: 'class', message: "second error" },
+      ]
+    });
+    expect(() => ExceptionHandler.exceptionHandler(error)).toThrow(BadRequestException);
+    expect(() => ExceptionHandler.exceptionHandler(error)).toThrow("first error, second error");
   });
 });
