@@ -15,7 +15,6 @@ import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockWorker } from "../mocks/domain/worker.mock";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
-import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
 import { mockCreateUserRequestDto } from "../mocks/controller/create-user-request-dto-mock";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../mocks/domain/class.mocks";
@@ -141,10 +140,40 @@ describe("USERS E2E TESTS", () => {
             classEntity.teacher = teacher
             const classRepository = TestDataSource.getRepository(ClassEntity);
             await classRepository.save(classEntity)
-            const dto = mockCreateUserRequestDto({ 
-                classCode: classEntity.classCode, 
+            const dto = mockCreateUserRequestDto({
+                classCode: classEntity.classCode,
                 accessType: AccessType.TEACHER,
                 name: teacher.fullName
+            });
+
+            const response = await request(app.getHttpServer())
+                .post('/users').send(dto);
+            expect(response.body).toBeDefined();
+            expect(response.status).toBe(201);
+        });
+
+        it('should create an user as student', async () => {
+            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classRepository = TestDataSource.getRepository(ClassEntity);
+            await classRepository.save(classEntity)
+            const dto = mockCreateUserRequestDto({
+                classCode: classEntity.classCode,
+                accessType: AccessType.STUDENT,
+            });
+
+            const response = await request(app.getHttpServer())
+                .post('/users').send(dto);
+            expect(response.body).toBeDefined();
+            expect(response.status).toBe(201);
+        });
+
+        it('should create an user as parent', async () => {
+            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classRepository = TestDataSource.getRepository(ClassEntity);
+            await classRepository.save(classEntity)
+            const dto = mockCreateUserRequestDto({
+                classCode: classEntity.classCode,
+                accessType: AccessType.PARENT,
             });
 
             const response = await request(app.getHttpServer())
@@ -191,10 +220,10 @@ describe("USERS E2E TESTS", () => {
             expect(response.body).toBeDefined();
             expect(response.status).toBe(400);
             expect(response.body.message[0]).toBe("name should not be empty");
-        });        
-        
+        });
+
         it('should not create an user without birthDate', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.birthDate = null;
 
             const response = await request(app.getHttpServer())
@@ -202,10 +231,10 @@ describe("USERS E2E TESTS", () => {
             expect(response.body).toBeDefined();
             expect(response.status).toBe(400);
             expect(response.body.message[0]).toBe("birthDate must be a valid ISO 8601 date string");
-        });        
-        
+        });
+
         it('should not create an user without email', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.email = null;
 
             const response = await request(app.getHttpServer())
@@ -213,10 +242,10 @@ describe("USERS E2E TESTS", () => {
             expect(response.body).toBeDefined();
             expect(response.status).toBe(400);
             expect(response.body.message[0]).toBe("email must be an email");
-        });       
-        
+        });
+
         it('should not create an user without password', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.password = null;
 
             const response = await request(app.getHttpServer())
@@ -224,10 +253,10 @@ describe("USERS E2E TESTS", () => {
             expect(response.body).toBeDefined();
             expect(response.status).toBe(400);
             expect(response.body.message[0]).toBe("password is not strong enough");
-        });     
-        
+        });
+
         it('should not create an user without access type', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.accessType = null;
 
             const response = await request(app.getHttpServer())
@@ -238,7 +267,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should not create an user without class code', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.classCode = null;
 
             const response = await request(app.getHttpServer())
@@ -249,7 +278,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should not create an user without nickname', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.TEACHER});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.TEACHER });
             dto.nickname = null;
 
             const response = await request(app.getHttpServer())
@@ -260,7 +289,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should not allow empty students array if accessType is Parent', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.PARENT});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.PARENT });
             dto.students = null;
 
             const response = await request(app.getHttpServer())
@@ -271,7 +300,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should not allow empty parents array if accessType is student', async () => {
-            const dto = mockCreateUserRequestDto({classCode: '123456', accessType: AccessType.STUDENT});
+            const dto = mockCreateUserRequestDto({ classCode: '123456', accessType: AccessType.STUDENT });
             dto.parents = null;
 
             const response = await request(app.getHttpServer())
