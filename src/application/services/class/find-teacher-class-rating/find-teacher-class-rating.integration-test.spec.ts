@@ -43,8 +43,9 @@ describe('FindTeacherClassRatingService integration test', () => {
         const teahcerId = 'f1c2b937-f4ed-4132-acbe-d91a3d6a4435';
         const classId = '38f81c2b-2586-432a-bad2-4dd576b69586';
         const service = new FindTeacherClassRatingService(classRepository);
-        const result = await service.execute(teahcerId, classId);
-        expect(result).toBeNull();
+        await expect(service.execute(teahcerId, classId)).rejects.toMatchObject({
+            errors: [{ context: "class", message: "class not found." }]
+        });
     });
 
     it('should find a classEntity', async () => {

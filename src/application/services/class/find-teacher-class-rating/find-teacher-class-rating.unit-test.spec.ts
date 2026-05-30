@@ -1,5 +1,4 @@
 import { QueryFailedError } from "typeorm";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
@@ -20,8 +19,8 @@ describe('FindTeacherClassRating', () => {
         const wrongClassId = '607658c13b2c940015a57123';
         const wrondTeacherId = '607658c13b2c940015a57133';
         const findClassRating = new FindTeacherClassRatingService(classRepository);
-        const result = await findClassRating.execute(wrondTeacherId, wrongClassId);
-        expect(result).toBeNull();
+        await expect(findClassRating.execute(wrondTeacherId, wrongClassId)).rejects
+            .toMatchObject({ errors: [{ context: 'class', message: 'class not found.' }] });
         expect(classRepository.findByTeacherIdAndClassId).toHaveBeenCalledTimes(1);
         expect(classRepository.findByTeacherIdAndClassId).toHaveBeenCalledWith(wrondTeacherId, wrongClassId);
     });

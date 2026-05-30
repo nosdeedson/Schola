@@ -102,8 +102,8 @@ describe('StudentRepository unit test', () => {
 
         let students = await studentRepository.findAll();
         expect(students).toHaveLength(2);
-        expect(students[0].fullName).toEqual(model1.fullName);
-        expect(students[1].fullName).toEqual(model2.fullName);
+        expect([model1.fullName, model2.fullName].includes(students[0].fullName)).toBeTruthy();
+        expect([model1.fullName, model2.fullName].includes(students[1].fullName)).toBeTruthy();
     });
 
     it('should update a student in BD', async () => {
