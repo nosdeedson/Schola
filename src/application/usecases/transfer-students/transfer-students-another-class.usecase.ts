@@ -2,7 +2,7 @@ import { StudentRepositoryInterface } from "@/domain/student/student.repository.
 import { TransferStudentsAnotherClassUseCaseDto } from "./transfer-students-another-class-usecase-dto";
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { SystemError } from "@/application/services/@shared/system-error";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 
 export class TransferStudentsAnotherClassUsecase {
 
@@ -14,14 +14,14 @@ export class TransferStudentsAnotherClassUsecase {
     async execute(transferStudents: TransferStudentsAnotherClassUseCaseDto): Promise<void> {
         try {
             const nextClass = await this.classRepository.find(transferStudents.classId);
-            if (!nextClass) throw new SystemError([{ context: 'class', message: 'class not found' }]);
+            if (!nextClass) throw new SystemError([{ context: 'class', message: 'class not found' }], 404);
             let students = await this.studentRepository.findByIds(transferStudents.studentIds);
             students.forEach(it => {
                 it.schoolGroup = nextClass;
             });
             await this.studentRepository.updateAll(students);
         } catch (error) {
-            TrataErros.tratarErrorsNotFound(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
     }
 

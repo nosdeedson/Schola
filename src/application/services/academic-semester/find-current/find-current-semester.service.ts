@@ -12,7 +12,10 @@ export class FindCurrentSemesterService {
     async execute(): Promise<AcademicSemesterEntity> {
         try {
             const semester = await this.semesterRepository.findCurrentSemester();
-            if (!semester) throw new SystemError([{ context: 'semester', message: 'semester not found' }]); 
+            if (!semester) throw new SystemError([
+                { context: 'semester', message: 'semester not found' }],
+                404
+            );
             return semester;
         } catch (error) {
             throw error;

@@ -25,7 +25,7 @@ export class CreateParentService extends CreateGenericService {
             } else {
                 let parent = CreateParentDto.toParent(dto);
                 if (parent?.notification.hasError()) {
-                    throw new SystemError(parent.notification?.getErrors());
+                    throw new SystemError(parent.notification?.getErrors(), 422);
                 }
                 let entity = ParentEntity.toParentEntity(parent);
                 return await this.parentRepository.create(entity);

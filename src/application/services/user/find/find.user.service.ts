@@ -15,7 +15,7 @@ export class FindUserService {
 
             let user = await this.userRepository.find(userId);
             if (!user) {
-                throw new SystemError([{ context: 'user', message: 'user not found' }]);
+                throw new SystemError([{ context: 'user', message: 'user not found' }], 404);
             }
             let dto = new FindUserDto(user.id, user.person.id, user.email, user.nickname, user.person.fullName, user.accesType);
             return dto;

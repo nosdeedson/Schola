@@ -14,7 +14,7 @@ export class UpdateStudentService {
     async execute(dto: UpdateStudentDto): Promise<void> {
         let student = await this.studentRepository.find(dto.id) as StudentEntity;
         if (!student) {
-            throw new SystemError([{ context: 'student', message: 'student not found' }])
+            throw new SystemError([{ context: 'student', message: 'student not found' }], 404)
         }
         student.enrolled = dto.enrolled
         await this.studentRepository.update(student);

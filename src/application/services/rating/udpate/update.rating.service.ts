@@ -14,7 +14,7 @@ export class UpdateRatingService {
         try {
             let entity = await this.ratingRepository.find(dto.id);
             if (!entity) {
-                throw new SystemError([{ context: 'rating', message: 'Not found' }]);
+                throw new SystemError([{ context: 'rating', message: 'Not found' }], 404);
             }
             entity = dto.updateEntity(entity);
             await this.ratingRepository.update(entity);

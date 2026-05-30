@@ -2,13 +2,13 @@ import { SystemError } from "@/application/services/@shared/system-error";
 import { FindUserDto } from "@/application/services/user/find/find.user.dto";
 import { FindUserService } from "@/application/services/user/find/find.user.service";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 
 export class FindUserUsecase {
 
     constructor(
         private userRepository: UserRepositoryInterface
-    ) {    }
+    ) { }
 
     async execute(id: string): Promise<FindUserDto> {
         try {
@@ -16,7 +16,7 @@ export class FindUserUsecase {
             let user = await findUserService.execute(id);
             return user;
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
     }
 }

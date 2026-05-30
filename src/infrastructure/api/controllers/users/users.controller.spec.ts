@@ -131,7 +131,7 @@ describe('UsersController', () => {
     });
 
     it('should throw an error if user not found', async () => {
-      const error = new SystemError([{ context: 'user', message: 'user not found' }]);
+      const error = new SystemError([{ context: 'user', message: 'user not found' }], 404);
       const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
         .mockImplementation(() => { throw error });
       await expect(controller.find("123")).rejects.toMatchObject(error);

@@ -14,7 +14,7 @@ export class FindStudentService {
     async execute(id: string): Promise<StudentEntity> {
         const student = await this.studentRepository.find(id) as StudentEntity;
         if (!student) {
-            throw new SystemError([{ context: 'student', message: 'student not found' }]);
+            throw new SystemError([{ context: 'student', message: 'student not found' }], 404);
         }
         return student;
     }

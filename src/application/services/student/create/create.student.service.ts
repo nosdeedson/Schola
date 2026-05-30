@@ -28,7 +28,7 @@ export class CreateStudentService extends CreateGenericService {
             const schoolGroup = await this.schoolgroupRepository.findByClassCode(dto.enrolled);
             if (!schoolGroup) {
                 errors.push({ context: 'student', message: 'Schoolgroup not found' });
-                throw new SystemError(errors);
+                throw new SystemError(errors, 404);
             }
             const fromBD = await this.studentRepository.findStudentByNameAndParentNames(dto.name, dto.parentsName);
             if (fromBD) {
@@ -42,7 +42,7 @@ export class CreateStudentService extends CreateGenericService {
                 let student = new Student({ birthday: dto.birthday, name: dto.name, enrolled: dto.enrolled });
                 student.setSchoolGroup(Class.from(schoolGroup));
                 if (student?.notification?.hasError()) {
-                    throw new SystemError(student.notification.errors);
+                    throw new SystemError(student.notification.errors, 422);
                 }
                 let studentEntity = StudentEntity.toStudentEntity(student);
                 return await this.studentRepository.create(studentEntity);

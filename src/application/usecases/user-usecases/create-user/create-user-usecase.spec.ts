@@ -7,7 +7,7 @@ import { mockCreateUsersDto } from "../../../../../tests/mocks/mock-dtos/mock-dt
 import { CreateWorkerDto } from "../../../services/worker/create/create.worker.dto";
 import { CreateUserService } from "../../../services/user/create/create.user.service";
 import { SystemError } from "../../../services/@shared/system-error";
-import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "../../../../infrastructure/utils/exception-handler/exception-handler";
 import { BadRequestException } from "@nestjs/common";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { AccessType } from "../../../../domain/user/access.type";
@@ -69,14 +69,14 @@ describe('CreateUserUsecase', () => {
         var errorToThrow = new SystemError([{
             "context": "worker",
             "message": "error while creating worker",
-        }]);
+        }], 422);
         userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
         createPersonServiceMock.execute.mockRejectedValue(errorToThrow);
 
         const createUser = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockImplementation(async () => await Promise.resolve(void 0));
 
-        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException('error while creating worker') });
         const useCase = new CreateUserUsecase(
             userServiceFactoryMock as unknown as CreateUserFactoryService,
@@ -105,7 +105,7 @@ describe('CreateUserUsecase', () => {
         var errorToThrow = new SystemError([{
             "context": "user",
             "message": "error while creating user",
-        }]);
+        }], 422);
 
         userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
         createPersonServiceMock.execute.mockResolvedValue(person);
@@ -113,7 +113,7 @@ describe('CreateUserUsecase', () => {
         const createUser = jest.spyOn(CreateUserService.prototype, 'execute')
             .mockRejectedValue(errorToThrow);
 
-        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementationOnce(() => { throw new BadRequestException('test') });
         const useCase = new CreateUserUsecase(
             userServiceFactoryMock as unknown as CreateUserFactoryService,
@@ -222,8 +222,8 @@ describe('CreateUserUsecase', () => {
         });
         userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
         const workerValidation = jest.spyOn(WorkerValidation.prototype, 'validateWorker')
-            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'class not found' }]); })
-        const tratarErro = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'class not found' }], 404); })
+        const tratarErro = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException('class not found') })
 
         const useCase = new CreateUserUsecase(
@@ -250,8 +250,8 @@ describe('CreateUserUsecase', () => {
         });
         userServiceFactoryMock.createUserServiceFactory.mockReturnValue(createPersonServiceMock as any);
         const workerValidation = jest.spyOn(WorkerValidation.prototype, 'validateWorker')
-            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'You are not teaching in this class' }]); })
-        const tratarErro = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'You are not teaching in this class' }], 400); })
+        const tratarErro = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException('You are not teaching in this class') })
 
         const useCase = new CreateUserUsecase(

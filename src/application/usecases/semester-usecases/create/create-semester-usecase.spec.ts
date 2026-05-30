@@ -7,7 +7,7 @@ import { mockCreateSemesterDto } from '../../../../../tests/mocks/domain-dto/cre
 import { CreateAcademicSemesterService } from '../../../services/academic-semester/create/create.academic-semester.service';
 import { SystemError } from '../../../services/@shared/system-error';
 import { mockQuarterDto } from "../../../../../tests/mocks/domain-dto/quarter-dto.mocks";
-import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "../../../../infrastructure/utils/exception-handler/exception-handler";
 import { BadRequestException } from "@nestjs/common";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 
@@ -35,9 +35,9 @@ describe('CreateSemesterUsecase', () => {
         });
         const executeSpy = jest.spyOn(CreateAcademicSemesterService.prototype, 'execute')
             .mockImplementation(async () => Promise.reject(
-                new SystemError([{ context: 'academicSemester', message: 'Academic Semester not found' }])
+                new SystemError([{ context: 'academicSemester', message: 'Academic Semester not found' }], 404)
             ));
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(async () => Promise.resolve(new BadRequestException('Academic Semester not found')));
         const createSemesterUsecase = new CreateSemesterUsecase(semesterRepository);
         await createSemesterUsecase.execute(dto);

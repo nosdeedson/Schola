@@ -21,7 +21,7 @@ export class FindUserFactoryService {
             case AccessType.ADMIN:
                 return new FindWorkerService(context.workerRepository);
             default:
-                throw new SystemError([{ context: "find User", message: 'fail to create service to find user' }]);
+                throw new SystemError([{ context: "find User", message: 'fail to create service to find user' }], 422);
         }
     }
 }

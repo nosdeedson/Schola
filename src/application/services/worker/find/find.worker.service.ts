@@ -15,7 +15,7 @@ export class FindWorkerService extends FindGenericService {
     public async execute(id: string): Promise<FindWorkerDto> {
         let worker = await this.workerRepository.find(id) as WorkerEntity;
         if (!worker) {
-            throw new SystemError([{ context: "find user", message: "Failed to find the user" }]);
+            throw new SystemError([{ context: "find user", message: "Failed to find the user" }], 404);
         }
         let output = {} as FindWorkerDto;
         output = {

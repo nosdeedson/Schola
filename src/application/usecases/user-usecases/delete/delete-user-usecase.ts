@@ -3,7 +3,7 @@ import { DeleteUserService } from "@/application/services/user/delete/delete.use
 import { FindUserService } from "@/application/services/user/find/find.user.service";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { DeleteUserFactoryInterface } from "@/interfaces/factory/delete-user-factory.interface";
 import { RepositoryFactoryInterface } from "@/interfaces/factory/repository-factory.interface";
 
@@ -15,7 +15,7 @@ export class DeleteUserUsecase {
         private userDeleteFactory: DeleteUserFactoryInterface,
         private repositoryFactory: RepositoryFactoryInterface
     ) { }
-    
+
     async execute(id: string): Promise<void> {
         try {
             this.userRepository = this.repositoryFactory.createRepository(TypeRepository.USER);
@@ -26,7 +26,7 @@ export class DeleteUserUsecase {
             let deleteUserService = new DeleteUserService(this.userRepository);
             await deleteUserService.execute(id);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
     }
 }

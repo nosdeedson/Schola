@@ -13,7 +13,7 @@ export class FindCommentService {
     async execute(id: string): Promise<FindCommentDto> {
         let entity = await this.commentRepository.find(id);
         if (!entity) {
-            throw new SystemError([{ context: 'comment', message: 'comment not found' }]);
+            throw new SystemError([{ context: 'comment', message: 'comment not found' }], 404);
         }
         let dto = new FindCommentDto(entity);
         return dto;

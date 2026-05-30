@@ -5,7 +5,7 @@ import { StudentRepositoryInterface } from "@/domain/student/student.repository.
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { SaveRatingUsecaseDto } from "./save-rating-usecase-dto";
 import { FindCurrentSemesterService } from "@/application/services/academic-semester/find-current/find-current-semester.service";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { Quarter } from "@/domain/quarter/quarter";
 import { FindStudentService } from "@/application/services/student/find/find.student.service";
@@ -56,7 +56,7 @@ export class SaveRatingUsecase {
             await commentService.execute(commentDto);
 
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
 
     }

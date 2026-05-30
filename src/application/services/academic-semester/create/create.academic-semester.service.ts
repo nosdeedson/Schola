@@ -17,7 +17,7 @@ export class CreateAcademicSemesterService {
             let semester = new AcademicSemester(input.firstQuarter.toDomain(), input.secondQuarter.toDomain(), input.currentSemester);
             if (semester.notification?.hasError()) {
                 let errors = semester.notification?.getErrors();
-                throw new SystemError(errors);
+                throw new SystemError(errors, 422);
             }
             let model = AcademicSemesterEntity.toEntity(semester);
             await this.semesterRepository.create(model);

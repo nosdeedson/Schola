@@ -27,7 +27,7 @@ export class CreateRatingService {
                 dto.vocabulary
             );
             if (rating?.notification?.hasError()) {
-                throw new SystemError(rating?.notification?.getErrors());
+                throw new SystemError(rating?.notification?.getErrors(), 422);
             }
             const ratingEntity = RatingEntity.toRatingEntity(rating);
             return await this.ratingRepository.create(ratingEntity);

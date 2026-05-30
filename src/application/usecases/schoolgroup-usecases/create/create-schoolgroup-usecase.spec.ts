@@ -4,7 +4,7 @@ import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateClassService } from "../../../services/class/create/create.class.service";
 import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
@@ -64,7 +64,7 @@ describe('CreateSchoolGroupUsecase', () => {
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
 
-        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException('Test') });
         const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository);
         await expect(usecase.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));
@@ -84,7 +84,7 @@ describe('CreateSchoolGroupUsecase', () => {
             .mockImplementationOnce(() => Promise.resolve(teacher));
         const createClass = jest.spyOn(CreateClassService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.reject(new BadRequestException("Test")));
-        const tratatError = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratatError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException('Test') });
         const usecase = new CreateSchoolgroupUseCase(classRepository, workerRepository);
         await expect(usecase.create(dto)).rejects.toMatchObject(new BadRequestException("Test"));

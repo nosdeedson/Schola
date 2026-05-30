@@ -4,7 +4,7 @@ import { FindCurrentSemesterService } from "@/application/services/academic-seme
 import { FindStudentService } from "@/application/services/student/find/find.student.service";
 import { CreateRatingService } from "@/application/services/rating/create/create.rating.service";
 import { BadRequestException } from "@nestjs/common";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
@@ -32,7 +32,7 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => Promise.resolve(semesterEntity));
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
-            .mockImplementation(() =>  { throw new SystemError([{ context: 'student', message: 'student not found' }])});
+            .mockImplementation(() => { throw new SystemError([{ context: 'student', message: 'student not found' }], 404) });
 
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -40,7 +40,7 @@ describe('SaveRatingUsecase', () => {
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
 
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("student not found.") });
 
         const workerService = jest.spyOn(FindWorkerService.prototype, 'execute')
@@ -82,11 +82,11 @@ describe('SaveRatingUsecase', () => {
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
 
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("teacher not found.") });
 
         const workerService = jest.spyOn(FindWorkerService.prototype, 'execute')
-            .mockImplementation(() => {throw new SystemError([{ context: "find user", message: "Failed to find the user" }])});
+            .mockImplementation(() => { throw new SystemError([{ context: "find user", message: "Failed to find the user" }], 422) });
 
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -113,7 +113,7 @@ describe('SaveRatingUsecase', () => {
         const teacher = mockOutputFindWorkerDto();
 
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
-            .mockImplementation(() => {throw new SystemError([{ context: 'semester', message: 'semester not found' }])});
+            .mockImplementation(() => { throw new SystemError([{ context: 'semester', message: 'semester not found' }], 404) });
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
@@ -124,7 +124,7 @@ describe('SaveRatingUsecase', () => {
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
 
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("Current semester was not found") });
 
         const workerService = jest.spyOn(FindWorkerService.prototype, 'execute')

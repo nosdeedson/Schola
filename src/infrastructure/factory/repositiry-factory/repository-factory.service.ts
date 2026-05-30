@@ -42,7 +42,7 @@ export class RepositoryFactoryService {
             case TypeRepository.WORKER:
                 return new WorkerRepository(this.dataSource);
             default:
-                throw new SystemError([{ context: 'RepositoryFactory', message: "Erro while creating repository." }])
+                throw new SystemError([{ context: 'RepositoryFactory', message: "Erro while creating repository." }], 500)
         }
     }
 }

@@ -2,18 +2,18 @@ import { ClassRepositoryInterface } from "@/domain/class/class.repository.interf
 import { UpdateClassDto } from "./udpate.class.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
 
-export class UpdateClassService{
+export class UpdateClassService {
 
     private classRepository: ClassRepositoryInterface;
 
-    constructor(classRepository: ClassRepositoryInterface){
+    constructor(classRepository: ClassRepositoryInterface) {
         this.classRepository = classRepository;
     }
 
-    async execute(dto: UpdateClassDto){
+    async execute(dto: UpdateClassDto) {
         let schoolgroup = await this.classRepository.find(dto.id);
-        if(!schoolgroup){
-            throw new SystemError([{context: 'class', message: "class not found"}]);
+        if (!schoolgroup) {
+            throw new SystemError([{ context: 'class', message: "class not found" }], 404);
         }
         schoolgroup.bookName = dto.nameBook;
         schoolgroup.teacher = dto.teacher;

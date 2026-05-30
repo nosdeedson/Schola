@@ -6,8 +6,6 @@ import { ratingsProviders } from './providers/ratings.providers';
 import { mockSaveRatingRequest } from "../../../../../tests/mocks/controller/save-rating-request-dto-mock";
 import { SaveRatingUsecase } from '@/application/usecases/save-rating/save-rating-usecase';
 import { BadRequestException } from '@nestjs/common';
-import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
-import { SystemError } from '@/application/services/@shared/system-error';
 import { SaveRatingRequestDto } from './dto/save-rating-request-dto';
 describe('RatingController', () => {
   let controller: RatingController;

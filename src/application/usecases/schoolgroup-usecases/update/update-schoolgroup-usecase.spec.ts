@@ -6,7 +6,7 @@ import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/upda
 import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
 import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/domain-dto/update-schoolgroup-usecase-dto.mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { TrataErros } from '@/infrastructure/utils/trata-erros/trata-erros';
+import { ExceptionHandler } from '@/infrastructure/utils/exception-handler/exception-handler';
 import { NotFoundException } from '@nestjs/common';
 import { mockWorker } from '../../../../../tests/mocks/domain/worker.mock';
 
@@ -45,7 +45,7 @@ describe('UpdateSchoolgroupUsecase', () => {
             nameBook: "bookName",
             teacherName: "new teacher"
         });
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsNotFound')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new NotFoundException("teacher not found") })
 
         const usecase = new UpdateSchoolgroupUsecase(classRepository, workerRepository);

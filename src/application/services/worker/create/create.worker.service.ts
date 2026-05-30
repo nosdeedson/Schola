@@ -28,7 +28,7 @@ export class CreateWorkerService extends CreateGenericService {
             }
             let worker = new Worker({ birthday: input.birthday, name: input.name, role: input.role });
             if (worker.notification?.hasError()) {
-                throw new SystemError(worker.notification.getErrors());
+                throw new SystemError(worker.notification.getErrors(), 422);
             }
             let model = WorkerEntity.toWorkerEntity(worker);
             return await this.workerRepository.create(model) as WorkerEntity;

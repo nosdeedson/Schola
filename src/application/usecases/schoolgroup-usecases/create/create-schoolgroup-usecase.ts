@@ -5,7 +5,7 @@ import { ClassRepositoryInterface } from "@/domain/class/class.repository.interf
 import { AccessType } from "@/domain/user/access.type";
 import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { CreateSchoolgroupUseCaseDto } from "./dto/create-schoolgroup-usecase.dto";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
 
@@ -29,7 +29,7 @@ export class CreateSchoolgroupUseCase {
             let input = dto.toCreateClassDto(teacher);
             await createService.execute(input);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
     }
 }

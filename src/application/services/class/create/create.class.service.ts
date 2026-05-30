@@ -9,22 +9,22 @@ import { SystemError } from "../../@shared/system-error";
 export class CreateClassService {
     private classRepository: ClassRepositoryInterface;
 
-    constructor(classRepository: ClassRepositoryInterface){
+    constructor(classRepository: ClassRepositoryInterface) {
         this.classRepository = classRepository;
     }
 
     async execute(dto: CreateClassDto) {
-        try{
+        try {
             dto.classCode = ClassCodeHelper.createClassCode();
             let schedule = new Schedule(dto?.scheduleDto?.dayOfWeeks, dto?.scheduleDto?.times);
             let schoolGroup = new Class(dto.classCode, dto.nameBook, dto.name, schedule);
-            if( schoolGroup.notification.hasError()){
-                throw new SystemError(schoolGroup.notification?.getErrors());
-            }    
+            if (schoolGroup.notification.hasError()) {
+                throw new SystemError(schoolGroup.notification?.getErrors(), 422);
+            }
             let entity = ClassEntity.toClassEntity(schoolGroup);
             entity.teacher = dto.teacherEntity;
             await this.classRepository.create(entity);
-        } catch(error){
+        } catch (error) {
             throw error;
         }
     }

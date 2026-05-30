@@ -4,7 +4,7 @@ import { mockUpdateSemesterDto } from "../../../../../tests/mocks/domain-dto/upd
 import { setEnv } from "../../../../../tests/mocks/env/env.mock";
 import { DataBaseConnectionModule } from "../../../../infrastructure/data-base-connection/data-base-connection.module";
 import { RepositoryFactoryService } from "../../../../infrastructure/factory/repositiry-factory/repository-factory.service";
-import { TrataErros } from "../../../../infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "../../../../infrastructure/utils/exception-handler/exception-handler";
 import { SystemError } from "../../../services/@shared/system-error";
 import { UpdateAcademicSemesterService } from "../../../services/academic-semester/update/update.academic-semester.service";
 import { UpdateSemesterUseCase } from "./update-semester.usecase";
@@ -29,11 +29,11 @@ describe('UpdateSemesterUserCase', () => {
     it('should throw an error while updating a semester', async () => {
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         const mockDto = mockUpdateSemesterDto();
-        const errorToThrow = new SystemError([{ context: 'semester', message: 'semester not found' }])
+        const errorToThrow = new SystemError([{ context: 'semester', message: 'semester not found' }], 404);
         const updateService = jest.spyOn(UpdateAcademicSemesterService.prototype, 'execute')
             .mockRejectedValue(errorToThrow);
 
-        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsNotFound')
+        const tratarError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new NotFoundException("semester not found") });
         const updateSemesterUsecase = new UpdateSemesterUseCase(repository);
 

@@ -4,7 +4,7 @@ import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { FindSchoolgroupUsecase } from "./find-schoolgroup-usecase";
 import { FindClassDto } from "@/application/services/class/find/find.class.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { NotFoundException } from "@nestjs/common";
 import { FindClassService } from "@/application/services/class/find/find.class.service";
 
@@ -25,8 +25,8 @@ describe('FindSchoolgroupUsecase', () => {
     it('should throw an error if class not found', async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const findClassService = jest.spyOn(FindClassService.prototype, 'execute')
-            .mockImplementation(() => { throw new SystemError([{ context: 'class', message: 'class not found' }]) });
-        const tratarError = jest.spyOn(TrataErros, 'tratarErrorsNotFound')
+            .mockImplementation(() => { throw new SystemError([{ context: 'class', message: 'class not found' }], 404) });
+        const tratarError = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementationOnce(() => { throw new NotFoundException('class not found') });
         const usecase = new FindSchoolgroupUsecase(classRepository);
         await expect(usecase.execute("123")).rejects.toMatchObject(new NotFoundException('class not found'));

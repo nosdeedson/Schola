@@ -14,7 +14,10 @@ export class FindAcademicSemesterService {
         try {
             let semester = await this.semesterRepository.find(id);
             if (!semester) {
-                throw new SystemError([{ context: 'academicSemester', message: 'Academic Semester not found' }]);
+                throw new SystemError([
+                    { context: 'academicSemester', message: 'Academic Semester not found' }],
+                    404
+                );
             }
             const firstQuarter = semester.quarters[0].quarterNumber === 1 ? semester.quarters[0] : semester.quarters[1];
             const secondQuarter = semester.quarters[0].quarterNumber === 2 ? semester.quarters[0] : semester.quarters[1];

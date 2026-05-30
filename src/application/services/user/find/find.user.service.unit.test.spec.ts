@@ -4,16 +4,16 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { FindUserService } from './find.user.service';
 
 
-describe('FindUserService tests unit', () =>{
+describe('FindUserService tests unit', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
     })
 
-    it('should find an user', async () =>{
+    it('should find an user', async () => {
         let user = mockUser(AccessType.TEACHER);
         const userRepository = await MockRepositoriesForUnitTest.mockRepositories();
-        userRepository.find = jest.fn().mockImplementationOnce(() =>{
+        userRepository.find = jest.fn().mockImplementationOnce(() => {
             return user;
         });
         let wantedId = user.getId();
@@ -25,18 +25,23 @@ describe('FindUserService tests unit', () =>{
         expect(userRepository.find).toHaveBeenCalledWith(wantedId)
     });
 
-    it('should not find an user', async () =>{
+    it('should not find an user', async () => {
         let user = mockUser(AccessType.TEACHER);
         const userRepository = await MockRepositoriesForUnitTest.mockRepositories();
-        userRepository.find = jest.fn().mockImplementationOnce(() =>{
+        userRepository.find = jest.fn().mockImplementationOnce(() => {
             return null;
         });
         let wantedId = user.getId();
         const service = new FindUserService(userRepository);
-        try{
-            let result = await service.execute(wantedId);
-        } catch(error){
-            expect(error).toEqual( {errors: [ { context: 'user', message: 'user not found' } ]});
+        await expect(service.execute(wantedId)).rejects
+            .toMatchObject({
+                errors: [
+                    { context: "user", message: 'user not found' }
+                ]
+            });
+        try {
+        } catch (error) {
+            expect(error).toEqual({ errors: [{ context: 'user', message: 'user not found' }] });
         }
     });
 });

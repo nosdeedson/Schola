@@ -13,7 +13,7 @@ export class FindClassService {
     async execute(id: string): Promise<FindClassDto> {
         let schoolgroup = await this.classRepository.find(id);
         if (!schoolgroup) {
-            throw new SystemError([{ context: 'class', message: 'class not found' }]);
+            throw new SystemError([{ context: 'class', message: 'class not found' }], 404);
         }
         let dto = FindClassDto.toDto(schoolgroup);
         return dto;

@@ -1,6 +1,6 @@
 import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 import { TransferStudentsAnotherClassUsecase } from "./transfer-students-another-class.usecase";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { NotFoundException } from "@nestjs/common";
 import { mockTransferStudentsAnotherClassDto } from '../../../../tests/mocks/usecases/transfer-students-another-class-dto.mocks';
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
@@ -15,7 +15,7 @@ describe('TransferStudentsAnotherClassUsecase unit tests', () => {
         classRepository.find = jest.fn().mockResolvedValue(null);
 
         const usecase = new TransferStudentsAnotherClassUsecase(studentRepository, classRepository);
-        const tratrarErrors = jest.spyOn(TrataErros, "tratarErrorsNotFound")
+        const tratrarErrors = jest.spyOn(ExceptionHandler, "exceptionHandler")
             .mockImplementation(() => { throw new NotFoundException('class not found') });
         const dto = mockTransferStudentsAnotherClassDto();
         await expect(usecase.execute(dto)).rejects.toMatchObject(new NotFoundException('class not found'));

@@ -13,7 +13,7 @@ export class UpdateCommentService {
     async execute(dto: UpdateCommentDto) {
         const comment = await this.commentRepository.find(dto.idComment);
         if (!comment) {
-            throw new SystemError([{ context: 'comment', message: 'comment not found' }]);
+            throw new SystemError([{ context: 'comment', message: 'comment not found' }], 404);
         }
         comment.comment = dto.comment;
         await this.commentRepository.update(comment);

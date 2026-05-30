@@ -4,7 +4,7 @@ import { CreateUserRequestDto } from "@/infrastructure/api/controllers/users/dto
 import { CreatePersonFactoryService } from "@/infrastructure/factory/create-person/create-person-factory.service";
 import { TypeRepository } from "@/infrastructure/factory/repositiry-factory/type-repository";
 import { UserRepository } from "@/infrastructure/repositories/user/user.repository";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { CreateUserFactotyInterface } from "@/interfaces/factory/create-user-factory.interface";
@@ -34,7 +34,7 @@ export class CreateUserUsecase {
             let input = new InputCreateUserDto(dto, person);
             await createUser.execute(input);
         } catch (error) {
-            TrataErros.tratarErrorsBadRequest(error as SystemError);
+            ExceptionHandler.exceptionHandler(error as SystemError);
         }
     }
 }

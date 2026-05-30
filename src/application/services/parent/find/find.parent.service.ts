@@ -14,7 +14,7 @@ export class FindParentService {
     async execute(id: string): Promise<FindParentDto> {
         let entity = await this.parentRepository.find(id);
         if (!entity) {
-            throw new SystemError([{ context: 'parent', message: 'Parent not found' }])
+            throw new SystemError([{ context: 'parent', message: 'Parent not found' }], 404)
         }
         let dto = FindParentDto.toDto(entity as ParentEntity);
         return dto;

@@ -29,7 +29,7 @@ export class CreatePersonFactoryService {
                     birthday: new Date(dto.birthDate)
                 });
             default:
-                throw new SystemError([{ context: 'CreatePersonFactoryService', message: 'Invalid access type' }]);
+                throw new SystemError([{ context: 'CreatePersonFactoryService', message: 'Invalid access type' }], 400);
         }
     }
 }

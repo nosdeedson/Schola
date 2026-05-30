@@ -50,7 +50,7 @@ export class UserAggregateResolverService {
                     classRepository: this.repositoryFactory.createRepository(TypeRepository.CLASS) as ClassRepository,
                 };
             default:
-                throw new SystemError([{ context: 'UserAggregateResolver', message: 'Invalid access type' },]);
+                throw new SystemError([{ context: 'UserAggregateResolver', message: 'Invalid access type' },], 400);
         }
     };
 }

@@ -13,7 +13,7 @@ export class FindRatingService {
     async execute(id: string): Promise<FindRatingDto> {
         let result = await this.ratingRepository.find(id);
         if (!result) {
-            throw new SystemError([{ context: 'rating', message: 'Not found' }])
+            throw new SystemError([{ context: 'rating', message: 'Not found' }], 404)
         }
         let dto = new FindRatingDto(result);
         return dto;

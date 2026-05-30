@@ -14,7 +14,7 @@ export class UpdateParentService {
         try {
             let parent = await this.parentRepository.find(parentId) as ParentEntity;
             if (!parent) {
-                throw new SystemError([{ context: 'parent', message: 'Parent not found' }]);
+                throw new SystemError([{ context: 'parent', message: 'Parent not found' }], 404);
             }
             parent.birthday = birthday;
             parent.fullName = name;

@@ -1,7 +1,6 @@
 import { User } from "@/domain/user/user";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { UserEntity } from "@/infrastructure/entities/user/user.entity";
-import { PeronRepositoryInterface } from "../../../../domain/@shared/repository/person.repository.interface";
 import { InputCreateUserDto } from "./input.create.user.dto";
 import { AccessType } from "@/domain/user/access.type";
 import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
@@ -11,7 +10,6 @@ import { Parent } from "@/domain/parent/parent";
 import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { Student } from "@/domain/student/student";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
 import { RepositoryInterface } from "@/domain/@shared/repository/repository.interface";
 import { PasswordHasher } from "@/helpers/password-encryption/password-hasher";
 

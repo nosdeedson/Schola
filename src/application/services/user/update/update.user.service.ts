@@ -12,10 +12,10 @@ export class UpdateUserService {
 
     async execute(dto: UpdateUserDto) {
         if (!dto.id) {
-            throw new SystemError([{ context: 'user', message: 'id must be informed' }]);
+            throw new SystemError([{ context: 'user', message: 'id must be informed' }], 400);
         }
         if (!dto?.email && !dto?.nickname && !dto?.password) {
-            throw new SystemError([{ context: 'user', message: 'at least one atribute must be passed to update an user' }]);
+            throw new SystemError([{ context: 'user', message: 'at least one atribute must be passed to update an user' }], 404);
         }
         let user = await this.userRepository.find(dto.id);
         if (user) {

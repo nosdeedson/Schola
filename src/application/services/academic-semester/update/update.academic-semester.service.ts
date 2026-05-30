@@ -28,7 +28,10 @@ export class UpdateAcademicSemesterService {
                 }
                 await this.semesterRepository.update(entity);
             } else {
-                throw new SystemError([{ context: 'semester', message: 'semester not found' }]);
+                throw new SystemError([
+                    { context: 'semester', message: 'semester not found' }],
+                    404
+                );
             }
         } catch (error) {
             throw error;

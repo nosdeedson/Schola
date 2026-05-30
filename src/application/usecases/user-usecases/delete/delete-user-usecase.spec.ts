@@ -5,7 +5,7 @@ import { DeleteUserFactoryService } from "@/infrastructure/factory/delete-user-f
 import { RepositoryFactoryService } from "@/infrastructure/factory/repositiry-factory/repository-factory.service";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
-import { TrataErros } from "@/infrastructure/utils/trata-erros/trata-erros";
+import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { mockFindUserDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 
 const deleteUserFactoryServiceMock = {
@@ -48,7 +48,7 @@ describe('DeleteUserUsecase', () => {
 
     it('should not find a user to delete', async () => {
         const findUser = jest.spyOn(FindUserService.prototype, 'execute')
-            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'user not found' }]) });
+            .mockImplementation(() => { throw new SystemError([{ context: 'user', message: 'user not found' }], 404) });
 
         const deleteUserService = jest.spyOn(DeleteUserService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -56,7 +56,7 @@ describe('DeleteUserUsecase', () => {
             deleteUserFactoryServiceMock as unknown as DeleteUserFactoryService,
             repositoryFactoryMock as unknown as RepositoryFactoryService
         );
-        const tratarErros = jest.spyOn(TrataErros, 'tratarErrorsBadRequest')
+        const tratarErros = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("user not found") })
         const wantedId = '7e17c191-07b9-4419-965f-e07156eded60'
         expect(usecase.execute(wantedId)).rejects.toMatchObject(new BadRequestException('user not found'));
