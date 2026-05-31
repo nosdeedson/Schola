@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemester } from "../../../../domain/academc-semester/academic.semester";
 import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
@@ -47,5 +47,10 @@ describe('academic semester integration test', () => {
         const service = new DeleteAcademicSemesterService(semesterRepository);
         expect(await service.execute('4558243c-c380-4a0d-8739-05a403bfec90')).toBe(void 0);
     });
+
+    it('should throw an exception while deleting a semester', async () => {
+        const service = new DeleteAcademicSemesterService(semesterRepository);
+        expect(service.execute("1234")).rejects.toThrow(QueryFailedError);
+    })
 
 });

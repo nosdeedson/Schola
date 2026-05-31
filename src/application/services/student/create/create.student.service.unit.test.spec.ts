@@ -7,16 +7,16 @@ import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 
 
-describe('CreateStudentService', () =>{
+describe('CreateStudentService', () => {
 
-    it('should throw a SystemError if schoolgroup not found', async () =>{
+    it('should throw a SystemError if schoolgroup not found', async () => {
         const dto = new CreateStudentDto(new Date(), 'edson', '123', ['marie']);
         const schoolgroupRepository = MockRepositoriesForUnitTest.mockRepositories();
-        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => {return null})
+        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => { return null })
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = new CreateStudentService(studentRepository, schoolgroupRepository);
-        await expect( service.execute(dto)).rejects
-            .toMatchObject({errors: [{context: 'student', message: 'Schoolgroup not found'}]});
+        await expect(service.execute(dto)).rejects
+            .toMatchObject({ errors: [{ context: 'student', message: 'Schoolgroup not found' }] });
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledTimes(1);
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledWith(dto.enrolled);
         expect(studentRepository.create).toHaveBeenCalledTimes(0);
@@ -28,7 +28,7 @@ describe('CreateStudentService', () =>{
         const schoolgroupRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classModel = mockClass();
         const classEntity = ClassEntity.toClassEntity(classModel);
-        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => {return classEntity});
+        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => { return classEntity });
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         studentRepository.findStudentByNameAndParentNames = jest.fn()
             .mockImplementation(async () => await Promise.resolve(studentEntity));
@@ -41,27 +41,51 @@ describe('CreateStudentService', () =>{
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledTimes(1);
     });
 
-    it('should save student', async () =>{
+    it('should save student', async () => {
         const schoolGroup = mockClass();
         const schoolGroupEntity = ClassEntity.toClassEntity(schoolGroup);
         const schoolgroupRepository = MockRepositoriesForUnitTest.mockRepositories();
-        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => {return schoolGroupEntity});
+        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => { return schoolGroupEntity });
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         studentRepository.findStudentByNameAndParentNames = jest.fn().mockImplementation(() => null);
-        
+
         const student = mockStudent();
         const studentEntity = StudentEntity.toStudentEntity(student);
 
         studentRepository.create = jest.fn().mockImplementation(async () => await Promise.resolve(studentEntity));
-        
+
         const dto = new CreateStudentDto(new Date(), student.getName(), '123', ['marie']);
         const service = new CreateStudentService(studentRepository, schoolgroupRepository);
 
-        const result  = await service.execute(dto);
+        const result = await service.execute(dto);
         expect(result).toBeInstanceOf(StudentEntity);
         expect(studentRepository.findStudentByNameAndParentNames).toHaveBeenCalledTimes(1);
-        expect(studentRepository.create).toHaveBeenCalledTimes(1);        
+        expect(studentRepository.create).toHaveBeenCalledTimes(1);
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledTimes(1);
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledWith(dto.enrolled);
     });
+
+    it('should find a student by name and parents', async () => {
+        const schoolgroupRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const classModel = mockClass();
+        const classEntity = ClassEntity.toClassEntity(classModel);
+        schoolgroupRepository.findByClassCode = jest.fn().mockImplementationOnce(() => { return classEntity });
+
+        const student = mockStudent();
+        const studentEntity = StudentEntity.toStudentEntity(student);
+        studentEntity.schoolGroup = classEntity;
+        const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
+
+        studentRepository.findStudentByNameAndParentNames = jest.fn()
+            .mockImplementation(async () => await Promise.resolve(studentEntity));
+        const dto = new CreateStudentDto(new Date(), 'edson', '123', ['marie']);
+        const service = new CreateStudentService(studentRepository, schoolgroupRepository);
+        const result = await service.execute(dto) as StudentEntity;
+        expect(result).toBeInstanceOf(StudentEntity);
+        expect(result.schoolGroup).toEqual(classEntity)
+        expect(studentRepository.findStudentByNameAndParentNames).toHaveBeenCalledTimes(1);
+        expect(studentRepository.create).toHaveBeenCalledTimes(1);
+        expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledTimes(1);
+    });
+
 });

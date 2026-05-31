@@ -1,18 +1,21 @@
 import { Grade } from "./grade"
 import { toEnum } from '../grade/grade'
 
-describe('Grade unit test', () =>{
+describe('Grade unit test', () => {
 
-    it('should return enum of BAD', () => {
-        const grade = Grade.BAD;
-        let result = toEnum(grade);
-        expect(result).toBe('BAD')
-    })
+    it.each([
+        ['BAD', Grade.BAD],
+        ['REGULAR', Grade.REGULAR],
+        ['GOOD', Grade.GOOD],
+        ['VERY_GOOD', Grade.VERY_GOOD],
+        ['EXCELENT', Grade.EXCELENT],
+    ])('should convert %s', (input, expected) => {
+        expect(toEnum(input)).toBe(expected);
+    });
 
     it('should return undefined', () => {
         const grade = 'invalid';
-        let result = toEnum(grade);
-        expect(result).toBeUndefined()
+        expect(toEnum(grade)).toBeUndefined()
     })
 
 })

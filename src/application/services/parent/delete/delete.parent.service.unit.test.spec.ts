@@ -2,24 +2,25 @@ import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-rep
 import { DeleteParentService } from './delete.parent.service';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
 import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
+import { QueryFailedError } from 'typeorm';
 
 
-describe('DeleteParentService unit tests', () =>{
+describe('DeleteParentService unit tests', () => {
 
-    it('should not throw error when trying to delete a parent with nos-existent id', async () =>{
+    it('should not throw error when trying to delete a parent with nos-existent id', async () => {
 
         let parent = mockParent();
         let entity = ParentEntity.toParentEntity(parent);
 
         let parentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        
-        parentRepository.delete = jest.fn().mockImplementationOnce(() => { return void 0});
+
+        parentRepository.delete = jest.fn().mockImplementationOnce(() => { return void 0 });
 
         const service = new DeleteParentService(parentRepository);
         expect(await service.execute('1234')).toBe(void 0);
         expect(parentRepository.delete).toHaveBeenCalledTimes(1);
         expect(parentRepository.delete).toHaveBeenCalledWith('1234');
-    })
+    });
 
     it('should delete a parent', async () => {
         let parent = mockParent();
@@ -28,7 +29,7 @@ describe('DeleteParentService unit tests', () =>{
         let wantedId = parent.getId();
 
         let parentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        
+
         parentRepository.find = jest.fn().mockReturnValue(entity);
 
         let result = await parentRepository.find(wantedId);
@@ -37,7 +38,7 @@ describe('DeleteParentService unit tests', () =>{
 
         let wantedDeletedAt = new Date();
 
-        parentRepository.delete = jest.fn().mockImplementationOnce(() => { entity.deletedAt = wantedDeletedAt});
+        parentRepository.delete = jest.fn().mockImplementationOnce(() => { entity.deletedAt = wantedDeletedAt });
 
         const service = new DeleteParentService(parentRepository);
 
@@ -46,6 +47,16 @@ describe('DeleteParentService unit tests', () =>{
         expect(result).toBeDefined()
         expect(result.deletedAt).toBeDefined();
         expect(result.deletedAt).toStrictEqual(wantedDeletedAt)
-    })
+    });
 
-})
+    it('should throw an error while deleting a parent', async () => {
+        let parentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        parentRepository.delete = jest.fn()
+            .mockImplementationOnce(() => { throw new QueryFailedError(null, null, new Error('failed')) });
+
+        const service = new DeleteParentService(parentRepository);
+
+        await expect(service.execute('123')).rejects.toThrow(QueryFailedError);
+    });
+
+});

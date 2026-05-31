@@ -1,7 +1,8 @@
+import { QueryFailedError } from 'typeorm';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { DeleteAcademicSemesterService } from '../../academic-semester/delete/delete.academic-semester.service';
 
-describe('delete academic semester unit test', () =>{
+describe('delete academic semester unit test', () => {
 
     it('should delete an academic semester', async () => {
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
@@ -10,6 +11,17 @@ describe('delete academic semester unit test', () =>{
         expect(await service.execute(idToDelete)).toBe(void 0);
         expect(semesterRepository.delete).toHaveBeenCalledTimes(1)
         expect(semesterRepository.delete).toHaveBeenCalledWith(idToDelete);
+    });
+
+    it('should throw an error while deleting a semester with invalid uuid', async () => {
+        const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
+        semesterRepository.delete = jest.fn().mockImplementation(() => {
+            throw new
+                QueryFailedError(null, null, new Error("failed"))
+        });
+        const service = new DeleteAcademicSemesterService(semesterRepository);
+        const idToDelete = '1234';
+        await expect(service.execute(idToDelete)).rejects.toThrow(QueryFailedError);
     });
 
 });

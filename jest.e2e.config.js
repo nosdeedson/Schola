@@ -1,3 +1,5 @@
+const { coverageDirectory } = require("./jest.config");
+
 module.exports = {
   preset: 'ts-jest',
   // forceExit: true,
@@ -14,4 +16,5 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  coverageDirectory: '../coverage_e2e'
 };

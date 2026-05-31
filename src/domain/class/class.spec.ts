@@ -1,3 +1,5 @@
+import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
+import { mockClass } from "../../../tests/mocks/domain/class.mocks";
 import { DateHelper } from "../../helpers/date/date.helper"
 import { Schedule } from "../schedule/schedule";
 import { Student } from "../student/student";
@@ -302,5 +304,18 @@ describe('Class tests units', () => {
         expect(c.getTeacher()).toBeUndefined();
         expect(c.getStudents().length).toBe(0);
     });
+
+    it('should set classCode', () => {
+        const c = mockClass();
+        c.setClassCode('123456');
+        expect(c.getClassCode()).toBe('123456')
+    })
+
+    it('should instantiate a domain class from ClassEntity', () => {
+        const entity = ClassEntity.toClassEntity(mockClass());
+        const domain = Class.from(entity);
+        expect(domain).toBeDefined();
+        expect(entity.id).toBe(domain.getId());
+    })
 
 });

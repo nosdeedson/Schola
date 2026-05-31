@@ -10,7 +10,7 @@ import { ParentRepository } from "../../../../infrastructure/repositories/parent
 import { RatingRepository } from "../../../../infrastructure/repositories/rating/rating.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { CreateCommentService } from './create.comment.service';
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
@@ -99,5 +99,16 @@ describe('create comment service integration tests', () => {
         expect(results[0].namePersonHaveDone).toBe(namePersonHaveDone);
         expect(results[0].comment).toBe('test a test');
     });
+
+    it('should throw an error while saving a comment', async () => {
+        let semester = mockSemester()
+        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity)
+        let namePersonHaveDone = 'não tem';
+        const dto = new CreateCommentDto('test a test', namePersonHaveDone, null);
+        const service = new CreateCommentService(commentRepository);
+        await expect(service.execute(dto)).rejects.toThrow(QueryFailedError);
+    });
+
 
 });

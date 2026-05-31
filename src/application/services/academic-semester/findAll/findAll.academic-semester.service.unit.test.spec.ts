@@ -3,13 +3,14 @@ import { FindAllAcademicSemesterService } from './findAll.academic-semester.serv
 import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
 import { mockQuarter } from '../../../../../tests/mocks/domain/quarter.mocks';
 import { AcademicSemesterEntity } from '../../../../infrastructure/entities/academic-semester/academic.semester.entity';
+import { QueryFailedError } from "typeorm";
 
-describe('findAll service unit tests', () =>{
-    
-    it('should receive an empty array of semester', async () =>{
+describe('findAll service unit tests', () => {
+
+    it('should receive an empty array of semester', async () => {
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         semesterRepository.findAll = jest.fn()
-            .mockImplementationOnce(() =>{
+            .mockImplementationOnce(() => {
                 return []
             })
         const service = new FindAllAcademicSemesterService(semesterRepository);
@@ -18,8 +19,8 @@ describe('findAll service unit tests', () =>{
         expect(semesterRepository.findAll).toHaveBeenCalledTimes(1)
     })
 
-    it('should receive an array of semester', async () =>{
-        const semester1 = mockSemester({currentSemester: true});
+    it('should receive an array of semester', async () => {
+        const semester1 = mockSemester({ currentSemester: true });
         const entity1 = AcademicSemesterEntity.toEntity(semester1)
         const thirdQuarter = mockQuarter({
             currentQuarter: false,
@@ -39,7 +40,7 @@ describe('findAll service unit tests', () =>{
         const entity2 = AcademicSemesterEntity.toEntity(semester2);
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         semesterRepository.findAll = jest.fn()
-            .mockImplementationOnce(() =>{
+            .mockImplementationOnce(() => {
                 return [
                     entity1,
                     entity2
@@ -51,5 +52,13 @@ describe('findAll service unit tests', () =>{
         expect(results.all[0].id).toBe(semester1.getId());
         expect(results.all[1].id).toBe(semester2.getId());
         expect(semesterRepository.findAll).toHaveBeenCalledTimes(1)
-    })
-})
+    });
+
+    it('should throw an erro while selecting all semester', async () => {
+        const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
+        semesterRepository.findAll = jest.fn()
+            .mockImplementationOnce(() => { throw new QueryFailedError(null, null, new Error("failed")) })
+        const service = new FindAllAcademicSemesterService(semesterRepository);
+        await expect(service.execute()).rejects.toThrow(QueryFailedError)
+    });
+});

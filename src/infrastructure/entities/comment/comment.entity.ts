@@ -25,10 +25,10 @@ export class CommentEntity extends GenericEntity {
     })
     namePersonHaveDone: string;
 
-    @ManyToOne(() => RatingEntity, rating => rating.comments)
+    @ManyToOne(() => RatingEntity, rating => rating.comments, { nullable: false })
     @JoinColumn({
         name: 'rating_id',
-        foreignKeyConstraintName: 'fk_comment_rating'
+        foreignKeyConstraintName: 'fk_comment_rating',
     })
     rating: RatingEntity;
 

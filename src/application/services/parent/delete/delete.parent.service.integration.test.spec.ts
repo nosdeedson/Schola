@@ -3,7 +3,7 @@ import { StudentEntity } from "../../../../infrastructure/entities/student/stude
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { DeleteParentService } from "./delete.parent.service";
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
@@ -48,7 +48,7 @@ describe('DeleteParentService integration tests', () => {
         expect(await service.execute(wantedId)).toBe(void 0);
         result = await parentRepository.findAll();
         expect(result.length).toBe(1);
-    })
+    });
 
     it('should delete a parent', async () => {
         let parent = mockParent();
@@ -69,4 +69,10 @@ describe('DeleteParentService integration tests', () => {
         expect(result.length).toBe(0);
     });
 
-})
+    it('should throw an error while deleting a parent with an invalid id', async () => {
+        let wantedId = 'e9c826b0';
+        const service = new DeleteParentService(parentRepository);
+        await expect(service.execute(wantedId)).rejects.toThrow(QueryFailedError)
+    });
+
+});

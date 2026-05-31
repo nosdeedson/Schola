@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
@@ -75,5 +75,12 @@ describe('FindTeacherClass integration test', () => {
         expect(result[0].students[1].idStudent).toBe(student2.getId());
         expect(result[0].classId).toBe(classModel.getId());
     });
+
+    it('Should ', async () => {
+        const teacherId = '61834720';
+        const findClassesService = new FindTeacherClassesService(classRepository);
+        await expect(findClassesService.execute(teacherId)).rejects.toThrow(QueryFailedError);
+    });
+
 
 });

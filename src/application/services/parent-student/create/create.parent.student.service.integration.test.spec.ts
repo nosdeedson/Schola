@@ -5,7 +5,7 @@ import { StudentRepository } from "../../../../infrastructure/repositories/stude
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { ParentStudentRepository } from "../../../../infrastructure/repositories/parent-student/parent.student.repositoy";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 
@@ -63,6 +63,18 @@ describe('CreateParentStudentService Integration Test', () => {
         expect(results[0]).toBeInstanceOf(ParentStudentEntity);
         expect(results[0].studentId).toBe(studentEntity.id);
         expect(results[0].parentId).toBe(parentEntity.id);
+    });
+
+    it('should save a parentStudentEntity', async () => {
+
+        const parent = mockParent();
+        const parentEntity = ParentEntity.toParentEntity(parent);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+
+        const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, null);
+
+        await expect(parentStudentRepository.create(parentStudent))
+            .rejects.toThrow(QueryFailedError);
     });
 
 });

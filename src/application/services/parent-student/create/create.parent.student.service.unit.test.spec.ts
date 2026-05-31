@@ -9,7 +9,8 @@ import { CreateStudentService } from "../../student/create/create.student.servic
 import { CreateStudentDto } from "../../student/create/create.student.dto";
 import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
-import { mockStudent,   } from "../../../../../tests/mocks/domain/student.mocks";
+import { mockStudent, } from "../../../../../tests/mocks/domain/student.mocks";
+import { QueryFailedError } from "typeorm";
 
 describe('CreateParentStudentService', () => {
 
@@ -142,7 +143,7 @@ describe('CreateParentStudentService', () => {
         parentRepository.create = jest.fn().mockResolvedValue(mockEntity);
         parentRepository.findByParentNameAndStudentNames = jest.fn()
             .mockImplementation(() => Promise.resolve(mockEntity));
-        
+
         const parentStudent = ParentStudentEntity.toParentStudentEntity(mockEntity, mockStudentEntity);
         parentStudentRepository.create = jest.fn().mockResolvedValue(parentStudent);
 
@@ -159,5 +160,38 @@ describe('CreateParentStudentService', () => {
         expect(studentService).toHaveBeenCalledTimes(1);
         expect(parentRepository.findByParentNameAndStudentNames).toHaveBeenCalledTimes(1)
         expect(parentRepository.create).toHaveBeenCalledTimes(0);
+    });
+
+    it('while creating a student should throw an error', async () => {
+        const parentMock = mockParent();
+        const mockEntity = ParentEntity.toParentEntity(parentMock);
+
+        const studentMock = mockStudent();
+        const mockStudentEntity = StudentEntity.toStudentEntity(studentMock);
+
+        const parentStudentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+
+        const studentService = jest.spyOn(CreateStudentService.prototype, 'execute')
+            .mockImplementation(() => { throw new QueryFailedError(null, null, new Error('failed')) });
+
+        parentRepository.create = jest.fn().mockResolvedValue(mockEntity);
+        parentRepository.findByParentNameAndStudentNames = jest.fn()
+            .mockImplementation(() => Promise.resolve(mockEntity));
+
+        const parentStudent = ParentStudentEntity.toParentStudentEntity(mockEntity, mockStudentEntity);
+        parentStudentRepository.create = jest.fn().mockResolvedValue(parentStudent);
+
+        const dto = new CreateStudentDto(studentMock.getBirthday(), studentMock.getName(), '123', ['marie']);
+        const service = new CreateParentStudentService({
+            parentRepository: parentRepository,
+            studentRepository: studentRepository,
+            parentStudentRepository: parentStudentRepository,
+            classRepository: classRepository,
+        });
+
+        await expect(service.execute(dto)).rejects.toThrow(QueryFailedError);
     });
 });

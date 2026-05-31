@@ -9,7 +9,7 @@ describe('FindCurrentSemesterService integration test', () => {
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
-    beforeAll( async () => {
+    beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     });
@@ -19,13 +19,22 @@ describe('FindCurrentSemesterService integration test', () => {
     });
 
     it('should find the current semester', async () => {
-        const semester = mockSemester({currentSemester: true});
+        const semester = mockSemester({ currentSemester: true });
         const entity = AcademicSemesterEntity.toEntity(semester)
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
 
         const result = await semesterRepository.findCurrentSemester();
         expect(result).toBeInstanceOf(AcademicSemesterEntity);
         expect(result.current).toBeTruthy();
+    });
+
+    it('should not find the current semester', async () => {
+        const semester = mockSemester({ currentSemester: false });
+        const entity = AcademicSemesterEntity.toEntity(semester)
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+
+        const result = await semesterRepository.findCurrentSemester();
+        expect(result).toBeNull();
     });
 
 });

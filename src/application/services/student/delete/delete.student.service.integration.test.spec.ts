@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
@@ -38,7 +38,7 @@ describe('DeleteStudentService integration tests', () => {
         let noExixtentId = 'ddb5186b-9a8d-4c5d-8086-2cccc0499c11';
         const service = new DeleteStudentService(studentRepository);
         expect(await service.execute(noExixtentId)).toBe(void 0);
-    })
+    });
 
     it('should delete a student', async () => {
         let student = mockStudent();
@@ -51,5 +51,11 @@ describe('DeleteStudentService integration tests', () => {
 
         const fromBD = await studentRepository.find(student.getId());
         expect(fromBD).toBeNull();
+    });
+
+    it('should throw an QueryFailedError invalid UUID', async () => {
+        let wantedId = '1234';
+        const service = new DeleteStudentService(studentRepository);
+        await expect(service.execute(wantedId)).rejects.toThrow(QueryFailedError);
     });
 });

@@ -4,6 +4,7 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { mockClassesOfTeacherDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { QueryFailedError } from "typeorm";
 
 describe('FindTeacherClassesService unit test', () => {
 
@@ -45,6 +46,16 @@ describe('FindTeacherClassesService unit test', () => {
         expect(repository.findByTeacherId).toHaveBeenCalledWith(wantedTeacherId);
         expect(repository.findByTeacherId).toHaveBeenCalledTimes(1);
         expect(result).toHaveLength(1);
+    });
+
+    it('should throw an erro while finding a class', async () => {
+        const repository = MockRepositoriesForUnitTest.mockRepositories();
+        repository.findByTeacherId = jest.fn()
+            .mockImplementation(() => { throw new QueryFailedError(null, null, new Error('failed')) });
+        const dto = mockClassesOfTeacherDto()
+        const wantedTeacherId = '1234';
+        const service = new FindTeacherClassesService(repository);
+        await expect(service.execute(wantedTeacherId)).rejects.toThrow(QueryFailedError);
     });
 
 
