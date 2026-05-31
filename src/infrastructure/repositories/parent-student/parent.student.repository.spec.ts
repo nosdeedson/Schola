@@ -1,4 +1,4 @@
-import { Repository } from "typeorm"
+import { QueryFailedError, Repository } from "typeorm"
 import { ParentRepository } from "../parent/parent.repository";
 import { StudentRepository } from "../student/student.repository";
 import { ParentStudentRepository } from "../parent-student/parent.student.repositoy";
@@ -8,8 +8,6 @@ import { ParentStudentEntity } from "../../entities/parent-student/parent.studen
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
-
-
 
 describe('ParentStudentRepository', () => {
 
@@ -47,6 +45,30 @@ describe('ParentStudentRepository', () => {
         entity.student = studentEntity;
         entity.id = 'e46c9f3c-9c48-4048-a798-cf58e2c0508f';
         expect(await parentStudentRepository.create(entity)).toBeInstanceOf(ParentStudentEntity);
+    });
+
+    it('should throw a QueryFailedError', async () => {
+        const entity = new ParentStudentEntity();
+        entity.parent = null;
+        entity.student = null;
+        entity.id = '1234';
+        await expect(parentStudentRepository.create(entity)).rejects.toThrow(QueryFailedError);
+    });
+
+    it('should throw an error while deleting a parentStudent', async () => {
+        await expect(parentStudentRepository.delete()).rejects.toThrow(Error);
+    });
+
+    it('should throw an error while finding a parentStudent', async () => {
+        await expect(parentStudentRepository.find()).rejects.toThrow(Error);
+    });
+
+    it('should throw an error while finding all parentStudent', async () => {
+        await expect(parentStudentRepository.findAll()).toBeDefined();
+    });
+
+    it('should throw an error while updating parentStudent', async () => {
+        await expect(parentStudentRepository.update()).rejects.toThrow(Error);
     });
 
 });

@@ -2,31 +2,30 @@ import { ParentStudentEntity } from "@/infrastructure/entities/parent-student/pa
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 
 export class ParentStudentRepository {
-    constructor(private repository: Repository<ParentStudentEntity>){}
+    constructor(private repository: Repository<ParentStudentEntity>) { }
 
-    async create(entity: ParentStudentEntity): Promise<ParentStudentEntity>{
+    async create(entity: ParentStudentEntity): Promise<ParentStudentEntity> {
         try {
             return this.repository.save(entity);
         } catch (error: any) {
-            console.log(error);
             throw new QueryFailedError(null, null, error);
         }
     }
 
-    async delete(){
+    async delete() {
         throw new Error("Method not implemented.");
     }
 
-    async find(){
+    async find() {
         throw new Error("Method not implemented.");
     }
 
-    async findAll(){
+    async findAll() {
         return this.repository.find();
     }
 
-    async update(){
+    async update() {
         throw new Error("Method not implemented.");
-    }   
+    }
 
 }
