@@ -6,7 +6,7 @@
     "configurations": [
         {
             "type": "node",
-            "name": "Start Iscola",
+            "name": "Start Schola",
             "request": "launch",
             "runtimeArgs": [
                 "run",
