@@ -1,6 +1,5 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { ClassRepositoryInterface } from "../../../../domain/class/class.repository.interface";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
@@ -11,6 +10,7 @@ import { CreateGetWorkerService } from "./create-get-worker.service";
 import { AccessType } from "@/domain/user/access.type";
 import { CreateWorkerDto } from "../create/create.worker.dto";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { SystemError } from "../../@shared/system-error";
 
 describe("CreateWorkerService integration test", () => {
     let workerEntity: Repository<WorkerEntity>;
@@ -32,7 +32,7 @@ describe("CreateWorkerService integration test", () => {
 
     it('create a worker', async () => {
         let service = new CreateGetWorkerService(workerRepository);
-        const dto = new CreateWorkerDto({ classCode: '113', name: "Mary Doe", birthday: new Date(), accessType: AccessType.TEACHER }); 
+        const dto = new CreateWorkerDto({ classCode: '113', name: "Mary Doe", birthday: new Date(), accessType: AccessType.TEACHER });
         const entity = await service.execute(dto);
         expect(entity).toBeInstanceOf(WorkerEntity);
         const validation = workerRepository.find(entity.id);
@@ -45,11 +45,22 @@ describe("CreateWorkerService integration test", () => {
         let workerEntity = WorkerEntity.toWorkerEntity(worker);
         expect(await workerRepository.create(workerEntity)).toBeInstanceOf(WorkerEntity);
         const wantedBirthday = new Date();
-        const dto = new CreateWorkerDto({ classCode: '113', name: worker.getName()}); 
+        const dto = new CreateWorkerDto({ classCode: '113', name: worker.getName() });
         const entity = await service.execute(dto);
         expect(entity).toBeInstanceOf(WorkerEntity);
         const validation = await workerRepository.find(entity.id);
         expect(validation).toBeDefined();
         expect(validation.fullName).toBe(worker.getName());
+    });
+
+    it('should throw SystemError error', async () => {
+        let service = new CreateGetWorkerService(workerRepository);
+        const dto = new CreateWorkerDto({ classCode: '113', name: null, birthday: new Date(), accessType: AccessType.TEACHER });
+        await expect(service.execute(dto)).rejects.toMatchObject({
+            errors: [
+                { context: 'teacher', message: 'Name should not be null' }
+            ],
+            "statusCode": 422
+        });
     });
 });

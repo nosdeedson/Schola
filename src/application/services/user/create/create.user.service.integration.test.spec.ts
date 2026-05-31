@@ -9,7 +9,7 @@ import { WorkerRepository } from "../../../../infrastructure/repositories/worker
 import { CreateUserService } from "./create.user.service";
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { ParentRepository } from "../../../../infrastructure/repositories/parent/parent.repository";
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { RoleEnum } from "@/domain/worker/roleEnum";
@@ -66,7 +66,7 @@ describe('create user service integration tests', () => {
     it('should create an user of type admin', async () => {
 
         personRepository = new WorkerRepository(TestDataSource);
-        let person = mockWorker({role: RoleEnum.ADMINISTRATOR});
+        let person = mockWorker({ role: RoleEnum.ADMINISTRATOR });
         let workerAdmin = WorkerEntity.toWorkerEntity(person);
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
 
@@ -134,5 +134,24 @@ describe('create user service integration tests', () => {
         let results = await userRepository.findAll();
         expect(results.length).toBe(1);
         expect(results[0].id).toBeDefined();
+    });
+
+    it('should throw an QueryFailedError', async () => {
+
+        personRepository = new WorkerRepository(TestDataSource);
+        let person = mockWorker();
+        let teacherEntity = WorkerEntity.toWorkerEntity(person);
+        // expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
+
+        let input = {
+            person: teacherEntity,
+            email: 'teste@teste',
+            password: '1234',
+            nickname: 'teste',
+            accesstype: AccessType.TEACHER
+        };
+
+        const service = new CreateUserService(userRepository, personRepository);
+        await expect(service.execute(input)).rejects.toThrow(QueryFailedError);
     });
 });

@@ -5,6 +5,7 @@ import { CreateGetWorkerService } from "./create-get-worker.service";
 import { AccessType } from "@/domain/user/access.type";
 import { CreateWorkerDto } from "../create/create.worker.dto";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { QueryFailedError } from "typeorm";
 
 describe('CreateGetTeacher', () => {
 
@@ -23,7 +24,7 @@ describe('CreateGetTeacher', () => {
 
     it('should create a teacher', async () => {
         const entity = WorkerEntity.toWorkerEntity(mockWorker())
-        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER }); 
+        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER });
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
         workerRepository.create = jest.fn().mockResolvedValue(entity);
@@ -31,5 +32,16 @@ describe('CreateGetTeacher', () => {
         expect(await service.execute(dto)).toBeInstanceOf(WorkerEntity);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an QueryFailedError', async () => {
+        const entity = WorkerEntity.toWorkerEntity(mockWorker())
+        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER });
+        const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
+        workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
+        workerRepository.create = jest.fn()
+            .mockImplementation(() => { throw new QueryFailedError(null, null, new Error("failed")) })
+        const service = new CreateGetWorkerService(workerRepository);
+        await expect(service.execute(dto)).rejects.toThrow(QueryFailedError);
     });
 });

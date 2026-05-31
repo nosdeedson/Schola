@@ -57,6 +57,7 @@ export class WorkerRepository implements WorkerRepositoryInterface {
     }
 
     async findByName(name: string): Promise<WorkerEntity> {
+        if (!name) return null;
         return this.workerRespository.createQueryBuilder('worker')
             .where('UPPER(worker.fullName) = :name', { name: name.toUpperCase() })
             .getOne();

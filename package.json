@@ -9,7 +9,7 @@
     "start:debug": "NODE_ENV=dev nest start --debug --watch",
     "start:prod": "node dist/main",
     "test": "jest --silent --detectOpenHandles",
-    "test:e2e": "jest --silent --detectOpenHandles --config jest.e2e.config.js",
+    "test:e2e": "jest -- --silent --detectOpenHandles --config jest.e2e.config.js",
     "test:all": "npm run test && npm run test:e2e"
   },
   "keywords": [],

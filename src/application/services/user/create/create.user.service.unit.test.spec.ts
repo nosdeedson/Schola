@@ -9,17 +9,18 @@ import { InputCreateUserDto } from "./input.create.user.dto";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { QueryFailedError } from "typeorm";
 
 
-describe('create user service unit test', () =>{
+describe('create user service unit test', () => {
 
     let input: InputCreateUserDto;
 
-    afterEach(() =>{
+    afterEach(() => {
         jest.clearAllMocks()
-    })
+    });
 
-    it('should create an user of type teacher', async () =>{
+    it('should create an user of type teacher', async () => {
         const person = mockWorker();
         const personEntity = WorkerEntity.toWorkerEntity(person);
         input = {
@@ -30,7 +31,7 @@ describe('create user service unit test', () =>{
             accesstype: AccessType.TEACHER
         };
         const createUserservice = jest.spyOn(CreateUserService.prototype, 'typePerson')
-            .mockImplementationOnce(() => { return person});
+            .mockImplementationOnce(() => { return person });
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
         const personRepository = MockRepositoriesForUnitTest.mockRepositories();
         personRepository.find = jest.fn().mockReturnValueOnce(() => personEntity);
@@ -39,8 +40,8 @@ describe('create user service unit test', () =>{
         expect(createUserservice).toHaveBeenCalled()
     });
 
-    it('should create an user of type admin', async () =>{
-        const person = mockWorker({role: RoleEnum.ADMINISTRATOR});
+    it('should create an user of type admin', async () => {
+        const person = mockWorker({ role: RoleEnum.ADMINISTRATOR });
         const personEntity = WorkerEntity.toWorkerEntity(person);
         input = {
             person: personEntity,
@@ -50,7 +51,7 @@ describe('create user service unit test', () =>{
             accesstype: AccessType.ADMIN
         };
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
-            .mockImplementationOnce(() => { return person});
+            .mockImplementationOnce(() => { return person });
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
         const personRepository = MockRepositoriesForUnitTest.mockRepositories();
         personRepository.find = jest.fn().mockReturnValueOnce(() => personEntity);
@@ -59,7 +60,7 @@ describe('create user service unit test', () =>{
         expect(typePerson).toHaveBeenCalled();
     });
 
-    it('should create an user of type student', async () =>{
+    it('should create an user of type student', async () => {
         const person = mockStudent();
         const personEntity = StudentEntity.toStudentEntity(person);
         input = {
@@ -72,7 +73,7 @@ describe('create user service unit test', () =>{
 
 
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
-            .mockImplementationOnce(() => { return person});
+            .mockImplementationOnce(() => { return person });
 
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
         const personRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -85,7 +86,7 @@ describe('create user service unit test', () =>{
         expect(typePerson).toHaveBeenCalled();
     });
 
-    it('should create an user of type parent', async () =>{
+    it('should create an user of type parent', async () => {
         const person = mockParent();
         const personEntity = ParentEntity.toParentEntity(person);
         input = {
@@ -96,7 +97,7 @@ describe('create user service unit test', () =>{
             accesstype: AccessType.PARENT
         };
         const typePerson = jest.spyOn(CreateUserService.prototype, 'typePerson')
-            .mockImplementationOnce(() => { return person});
+            .mockImplementationOnce(() => { return person });
 
         const userRepository = MockRepositoriesForUnitTest.mockRepositories();
         const personRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -104,9 +105,28 @@ describe('create user service unit test', () =>{
         personRepository.find = jest.fn().mockReturnValueOnce(() => personEntity);
 
         const service = new CreateUserService(userRepository, personRepository);
-        
+
         expect(await service.execute(input)).toBe(void 0);
         expect(typePerson).toHaveBeenCalled();
     });
-    
+
+    it('should throw an QueryFailedError while saving a user', async () => {
+        const person = mockWorker();
+        const personEntity = WorkerEntity.toWorkerEntity(person);
+        input = {
+            person: personEntity,
+            email: 'teste@teste',
+            password: '1234',
+            nickname: 'teste',
+            accesstype: AccessType.TEACHER
+        };
+        const userRepository = MockRepositoriesForUnitTest.mockRepositories();
+        userRepository.create = jest.fn()
+            .mockImplementation(() => { throw new QueryFailedError(null, null, new Error('failed')) });
+        const personRepository = MockRepositoriesForUnitTest.mockRepositories();
+        // personRepository.find = jest.fn().mockReturnValueOnce(() => personEntity);
+        const service = new CreateUserService(userRepository, personRepository);
+        await expect(service.execute(input)).rejects.toThrow(QueryFailedError)
+    });
+
 });
