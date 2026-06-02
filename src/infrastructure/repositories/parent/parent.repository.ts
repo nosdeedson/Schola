@@ -20,7 +20,6 @@ export class ParentRepository implements ParentReporitoryInterface {
             await queryRunner.commitTransaction();
             return result;
         } catch (error: any) {
-            console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
         }

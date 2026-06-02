@@ -92,4 +92,10 @@ describe('Classmodel unit tests', () => {
         expect(model.students).toStrictEqual([studentModel]);
     });
 
+    it('should set an empty array of student in class', () => {
+        const model = ClassEntity.toClassEntity(c);
+        delete model.students;
+        model.setStudents(null);
+        expect(model.students).toHaveLength(1);
+    });
 });

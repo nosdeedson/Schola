@@ -19,7 +19,7 @@ describe('UserEntity Unit tests', () =>{
         expect(userModel.password).toEqual(user.getPassword());
         expect(userModel.person.id).toEqual(user.getPerson().getId());
         expect(userModel.updatedAt).toEqual(user.getUpdatedAt());
-    })
+    });
 
     it('should instantiate an user with access type equal to parent', () => {
         user = mockPerson(AccessType.PARENT);
@@ -33,7 +33,7 @@ describe('UserEntity Unit tests', () =>{
         expect(userModel.password).toEqual(user.getPassword());
         expect(userModel.person.id).toEqual(user.getPerson().getId());
         expect(userModel.updatedAt).toEqual(user.getUpdatedAt());
-    })
+    });
 
     it('should instantiate an user with access type equal to student', () => {
         user = mockPerson(AccessType.STUDENT);
@@ -47,7 +47,7 @@ describe('UserEntity Unit tests', () =>{
         expect(userModel.password).toEqual(user.getPassword());
         expect(userModel.person.id).toEqual(user.getPerson().getId());
         expect(userModel.updatedAt).toEqual(user.getUpdatedAt());
-    })
+    });
 
     it('should instantiate an user with access type equal to teacher', () => {
         user = mockPerson(AccessType.TEACHER);
@@ -61,5 +61,11 @@ describe('UserEntity Unit tests', () =>{
         expect(userModel.password).toEqual(user.getPassword());
         expect(userModel.person.id).toEqual(user.getPerson().getId());
         expect(userModel.updatedAt).toEqual(user.getUpdatedAt());
-    })
-})
+    });
+
+    it('should throw an error while trying to create an useEntity', async () => {
+        user = mockPerson("NOT_VALID" as any);
+        expect( () => { UserEntity.toUserEntity(user)})
+            .toThrow("access type does not exist");
+    });
+});

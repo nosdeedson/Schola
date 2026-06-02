@@ -1,3 +1,4 @@
+import { QueryFailedError } from "typeorm";
 import { mockQuarter } from "../../../../tests/mocks/domain/quarter.mocks";
 import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemesterEntity } from "../../entities/academic-semester/academic.semester.entity";
@@ -117,6 +118,11 @@ describe('AcademicSemesterRepository unit tests', () => {
         const result = await repository.findCurrentSemester();
         expect(result).toBeDefined();
         expect(result.current).toBeTruthy();
+    });
+
+    it('should throw QueryFailedError error', async () => {
+        const entity = new AcademicSemesterEntity();
+        await expect(repository.create(entity)).rejects.toThrow(QueryFailedError);
     });
 
 });

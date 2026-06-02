@@ -6,7 +6,7 @@ export class ParentStudentRepository {
 
     async create(entity: ParentStudentEntity): Promise<ParentStudentEntity> {
         try {
-            return this.repository.save(entity);
+            return await this.repository.save(entity);
         } catch (error: any) {
             throw new QueryFailedError(null, null, error);
         }

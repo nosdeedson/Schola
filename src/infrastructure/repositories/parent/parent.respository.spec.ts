@@ -7,6 +7,7 @@ import { ParentStudentRepository } from "../../repositories/parent-student/paren
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
+import { QueryFailedError } from "typeorm";
 
 
 describe('ParentRepository unit test', () => {
@@ -131,4 +132,8 @@ describe('ParentRepository unit test', () => {
         expect(result.birthday.toLocaleDateString()).toBe(expectedBirthDay.toLocaleDateString());
     });
 
+    it('should throw a QueryFailedError error', async () => {
+        const entity = new ParentEntity();
+        await expect(parentRepository.create(entity)).rejects.toThrow(QueryFailedError);
+    });
 });

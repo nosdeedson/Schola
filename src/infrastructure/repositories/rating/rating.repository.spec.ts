@@ -13,6 +13,7 @@ import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 import { CommentRepository } from "../comment/comment.respository";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
+import { QueryFailedError } from "typeorm";
 
 describe('RatingRepository unit tests', () => {
 
@@ -197,6 +198,11 @@ describe('RatingRepository unit tests', () => {
         expect(result.id).toEqual(wantedId);
         expect(result.writing).toEqual(wantedWriting);
         expect(result.listing).toEqual(wantedListing);
+    });
+
+    it('should throw a QueryFailedErro', async () => {
+        const entity = new RatingEntity();
+        await expect(ratingRepository.create(entity)).rejects.toThrow(QueryFailedError);
     });
 
 });

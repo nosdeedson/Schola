@@ -25,9 +25,10 @@ export class StudentRepository implements StudentRepositoryInterface {
             await queryRunner.commitTransaction();
             return result;
         } catch (error) {
-            console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error as any);
+        } finally {
+            queryRunner.release();
         }
     }
 

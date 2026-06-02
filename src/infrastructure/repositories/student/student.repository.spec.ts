@@ -13,6 +13,7 @@ import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { mockClass } from "../../../../tests/mocks/domain/class.mocks";
 import { mockSchedule } from "../../../../tests/mocks/domain/schedule.mocks";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
+import { QueryFailedError } from "typeorm";
 
 const MILISECONDS = 1000;
 
@@ -175,4 +176,9 @@ describe('StudentRepository unit test', () => {
         expect(result).toHaveLength(1);
         expect(wantedIds.includes(result[0].id)).toBeTruthy()
     }, 20000);
+
+    it('should throw a QueryFailedError', async () => {
+        const entity = new StudentEntity();
+        await expect(studentRepository.create(null)).rejects.toThrow(QueryFailedError);
+    });
 });

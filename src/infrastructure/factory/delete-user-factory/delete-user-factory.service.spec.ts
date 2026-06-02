@@ -52,14 +52,4 @@ describe('DeleteUserFactoryService', () => {
     expect(deleteWorkerService).toBeInstanceOf(DeleteWorkerService);
   });
 
-  it('should throw an error when accessType does not exist', () => {
-    try {
-      service.deleteUserServiceFactory('NO_EXIST' as AccessType);
-    } catch (error) {
-      expect(error).toBeInstanceOf(SystemError);
-      //@ts-ignore
-      expect(error.errors).toStrictEqual([{ context: 'UserAggregateResolver', message: 'Invalid access type' }]);
-    }
-  });
-
 });

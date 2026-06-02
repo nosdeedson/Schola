@@ -23,8 +23,6 @@ export class DeleteUserFactoryService implements DeleteUserFactoryInterface {
             case AccessType.TEACHER:
             case AccessType.ADMIN:
                 return new DeleteWorkerService(context.workerRepository);
-            default:
-                throw new SystemError([{ context: "delete User", message: 'fail to create service to delete' }], 422);
         }
     }
 

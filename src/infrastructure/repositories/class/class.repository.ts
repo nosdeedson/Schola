@@ -26,7 +26,6 @@ export class ClassRepository implements ClassRepositoryInterface {
             await queryRunner.commitTransaction();
             return result;
         } catch (error: any) {
-            console.log(error);
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
         } finally {

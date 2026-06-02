@@ -42,6 +42,9 @@ describe('RatingModel test units', () => {
         expect(models.length).toBe(2);
         expect(models[0].id).toStrictEqual(rating.getId());
         expect(models[1].id).toStrictEqual(rating1.getId());
-    })
+    });
 
-})
+    it('should return undefined', () => {
+        expect(RatingEntity.toRatingsEntity(null)).toBeUndefined();
+    })
+});

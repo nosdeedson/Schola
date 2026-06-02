@@ -7,10 +7,6 @@ import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 @Entity("academic_semester")
 export class AcademicSemesterEntity extends GenericEntity {
 
-    private constructor() {
-        super();
-    }
-
     @Column({
         nullable: false,
         name: 'current',

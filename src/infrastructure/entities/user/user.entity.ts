@@ -67,7 +67,7 @@ export class UserEntity extends GenericEntity {
             }
             userModel.person = new WorkerUserconverter().converter(teacher, modelOfClass);
         } else {
-            throw new Error("access type does not exist")
+            throw new Error("access type does not exist");
         }
         userModel.updatedAt = user.getUpdatedAt();
         userModel.accesType = user.getAccessType();

@@ -17,4 +17,8 @@ describe('WokerModel', () => {
     expect(entity.role).toEqual(RoleEnum.TEACHER);
     expect(entity.id).toEqual(worker.getId());
   });
+
+  it('should return undefined', () => {
+    expect(WorkerEntity.toWorkerEntity(null, schooGroup)).toBeUndefined();
+  });
 });

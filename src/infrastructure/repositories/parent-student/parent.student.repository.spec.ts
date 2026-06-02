@@ -71,4 +71,9 @@ describe('ParentStudentRepository', () => {
         await expect(parentStudentRepository.update()).rejects.toThrow(Error);
     });
 
+    it('should throw an QueryFailedError error', async () => {
+        const entity = new ParentStudentEntity();
+        await expect(parentStudentRepository.create(entity)).rejects.toThrow(QueryFailedError);
+    });
+
 });

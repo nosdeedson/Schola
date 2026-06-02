@@ -6,8 +6,7 @@ import { WorkerEntity } from '../../entities/worker/worker.entity';
 import { WorkerRepository } from '../worker/worker.repository';
 import { StudentEntity } from '../../entities/student/student.entity';
 import { StudentRepository } from '../student/student.repository';
-import { Repository } from 'typeorm';
-import { RoleEnum } from '../../../domain/worker/roleEnum';
+import { QueryFailedError, Repository } from 'typeorm';
 import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
 import { mockSchedule } from '../../../../tests/mocks/domain/schedule.mocks';
 import { mockStudent } from '../../../../tests/mocks/domain/student.mocks';
@@ -226,4 +225,8 @@ describe('ClassRepository unit test', () => {
         expect(results).toBeNull;
     });
 
+    it('should throw QueryFailedError error', async () => {
+        const entity = new ClassEntity();
+        await expect(classRepository.create(entity)).rejects.toThrow(QueryFailedError);
+    });
 });
