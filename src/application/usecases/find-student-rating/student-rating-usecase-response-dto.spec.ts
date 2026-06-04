@@ -14,5 +14,20 @@ describe('StudentRatingUsecaseResponseDto', () => {
         const ratingEntity = RatingEntity.toRatingEntity(mockRating());
         const commentEntity = CommentEntity.toCommentEntity(mockComment(), ratingEntity);
         expect(RatingCommentResponseDto.from(commentEntity)).toBeDefined();
-    })
+    });
+
+    it('should instantiate a StudentRatingUsecaseResponseDto with comments', () => {
+        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const commentEntity = CommentEntity.toCommentEntity(mockComment(), ratingEntity);
+        ratingEntity.comments = [commentEntity];
+        const result = StudentRatingUsecaseResponseDto.toDto([ratingEntity]) as StudentRatingUsecaseResponseDto[];
+        expect(result).toBeDefined();
+        expect(result[0].comments).toBeDefined();
+    });
+
+    it('should instantiate an empty array', () => {
+        const ratingEntity = null as any;
+        const result = StudentRatingUsecaseResponseDto.toDto(null);
+        expect(result).toHaveLength(0);
+    });
 });

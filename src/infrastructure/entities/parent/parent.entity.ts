@@ -30,7 +30,4 @@ export class ParentEntity extends PersonEntity {
         return models;
     }
 
-    get students(): StudentEntity[] {
-        return []
-    }
 }

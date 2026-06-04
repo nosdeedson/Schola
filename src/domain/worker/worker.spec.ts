@@ -1,3 +1,4 @@
+import { mockWorker } from "../../../tests/mocks/domain/worker.mock";
 import { DateHelper } from "../../helpers/date/date.helper";
 import { Class } from "../class/class";
 import { Schedule } from "../schedule/schedule";
@@ -108,6 +109,17 @@ describe('Teacher unit test', () =>{
         expect(teacher.getUpdatedAt()).toBeDefined();
         expect(teacher.getDeletedAt()).toBeUndefined();
         expect(teacher.getClasses().length).toBe(1)
-    })
+    });
 
-})
+    it('should set the role of a worker as administrator', () => {
+        const worker = mockWorker();
+        worker.setRole(RoleEnum.ADMINISTRATOR);
+        expect(worker.getRole()).toBe(RoleEnum.ADMINISTRATOR);
+    });
+
+    it('should set the role of a worker as teacher', () => {
+        const worker = mockWorker();
+        worker.setRole(RoleEnum.TEACHER);
+        expect(worker.getRole()).toBe(RoleEnum.TEACHER);
+    });
+});

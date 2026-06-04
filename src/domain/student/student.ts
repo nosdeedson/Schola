@@ -34,6 +34,7 @@ export class Student extends Person {
             deletedAt: params.deletedAt
         });
         this.enrolled = params.enrolled;
+        // TODO SHOULD VALIDATE EVERYTIME
         if(params.nameParents){
             this.parents= Student.createMyParents(params.nameParents);
             this.validate();

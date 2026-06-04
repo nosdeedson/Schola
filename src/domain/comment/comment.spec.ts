@@ -40,12 +40,18 @@ describe('Comment unit tests', () => {
         expect(comment).toBeDefined();
         let resullt = comment.getNamePersonHaveDone()
         expect(resullt).toBe('name who has done');
-    })
+    });
 
     it('should get date of the comment', () => {
         let comment = new Comment("comment", 'name who has done');
         expect(comment).toBeDefined();
         expect(comment.getCreatedAt()).toBeDefined();
-    })
+    });
 
-})
+    it('should set the comment', () => {
+        let comment = new Comment("comment", 'name who has done');
+        expect(comment.getComment()).toBe('comment');
+        comment.setComment('setting the comment');
+        expect(comment.getComment()).toBe('setting the comment');
+    });
+});

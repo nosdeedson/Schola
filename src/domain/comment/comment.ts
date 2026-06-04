@@ -34,16 +34,4 @@ export class Comment extends Entity {
     getNamePersonHaveDone(): string {
         return this.namePersonHaveDone
     }
-
-    setIdPersonHaveDone(id: string) {
-        this.namePersonHaveDone = id;
-    }
-
-    // getRating(): Rating{
-    //     return this.rating;
-    // }
-
-    // setRating(rating : Rating){
-    //     this.rating = rating;
-    // }
 }

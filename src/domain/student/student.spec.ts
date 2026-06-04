@@ -1,6 +1,11 @@
+import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { mockRating } from "../../../tests/mocks/domain/rating.mocks";
+import { mockStudent } from "../../../tests/mocks/domain/student.mocks";
 import { Parent } from "../parent/parent";
 import { RoleEnum } from "../worker/roleEnum";
 import { Student } from "./student";
+import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
+import { mockParent } from "../../../tests/mocks/domain/parent.mocks";
 
 describe("student unit tests", () =>{
 
@@ -103,6 +108,19 @@ describe("student unit tests", () =>{
         expect(results[1].getId()).toBeDefined();
         expect(results[0]).toBeInstanceOf(Parent);
         expect(results[1]).toBeInstanceOf(Parent);
+    });
+
+    it('should get the ratings of a student', () => {
+        const student = mockStudent();
+        expect(student.getRating()).toBeUndefined();
+    });
+
+    it('should convert studentEntity to domain student', () => {
+        const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+        studentEntity.parents.push(ParentEntity.toParentEntity(mockParent()));
+        const toDomain = Student.toDomain(studentEntity);
+        expect(toDomain).toBeDefined();
+        expect(toDomain.getId()).toBe(studentEntity.id);
     });
 
 });

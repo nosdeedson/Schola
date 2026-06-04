@@ -1,4 +1,5 @@
 import { mockQuarter } from "../../../tests/mocks/domain/quarter.mocks";
+import { mockRating } from "../../../tests/mocks/domain/rating.mocks";
 
 describe('Quarter unit test', () => {
 
@@ -48,4 +49,40 @@ describe('Quarter unit test', () => {
             ]
         );
     });
-})
+
+    it('should set quarter as current', () => {
+        const quarter = mockQuarter();
+        quarter.currentQuarter = true;
+        expect(quarter.currentQuarter).toBeTruthy();
+        quarter.currentQuarter = false;
+        expect(quarter.currentQuarter).toBeFalsy();
+    });
+
+    it('should set the beginning of quarter', () => {
+        const quarter = mockQuarter();
+        const beginning = new Date();
+        quarter.beginningDate = beginning;
+        expect(quarter.beginningDate.getTime()).toBe(beginning.getTime());
+    });
+
+    it('should set the ending of quarter', () => {
+        const quarter = mockQuarter();
+        const ending = new Date();
+        quarter.endingDate = ending;
+        expect(quarter.endingDate.getTime()).toBe(ending.getTime());
+    });
+
+    it('should set rating of quarter', () => {
+        const quarter = mockQuarter();
+        const rating = mockRating();
+        quarter.rating = rating;
+        expect(quarter.rating[0].getId()).toBe(rating.getId());
+    });
+
+    it('should get rating of quarter', () => {
+        const quarter = mockQuarter();
+        const rating = mockRating();
+        quarter.rating = rating;
+        expect(quarter.rating).toStrictEqual([rating]);
+    });
+});

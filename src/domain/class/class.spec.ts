@@ -309,13 +309,20 @@ describe('Class tests units', () => {
         const c = mockClass();
         c.setClassCode('123456');
         expect(c.getClassCode()).toBe('123456')
-    })
+    });
 
     it('should instantiate a domain class from ClassEntity', () => {
         const entity = ClassEntity.toClassEntity(mockClass());
         const domain = Class.from(entity);
         expect(domain).toBeDefined();
         expect(entity.id).toBe(domain.getId());
-    })
+    });
+
+    it('should have error is setSchedule receives a null value', () => {
+        const model = mockClass();
+        model.setSchecule(null);
+        expect(model.notification.hasError()).toBeTruthy();
+        expect(model.notification?.messages()).toBe("class: Schedule of the class is required,");
+    });
 
 });
