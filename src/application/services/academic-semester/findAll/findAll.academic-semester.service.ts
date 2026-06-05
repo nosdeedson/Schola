@@ -10,12 +10,8 @@ export class FindAllAcademicSemesterService {
     }
 
     async execute(): Promise<FindAllAcademicSemesterDto> {
-        try {
             let entities = await this.semesterRepository.findAll();
             let dtos = new FindAllAcademicSemesterDto(entities);
             return dtos
-        } catch (error) {
-            throw error;
-        }
     }
 }

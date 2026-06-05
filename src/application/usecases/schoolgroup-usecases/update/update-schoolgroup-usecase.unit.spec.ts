@@ -2,7 +2,7 @@
 import { UpdateClassService } from '../../../services/class/update/update.class.service';
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
 import { RoleEnum } from '../../../../domain/worker/roleEnum';
-import { UpdateSchoolgroupUsecase } from "../../schoolgroup-usecases/update/update-schoolgroup-usecase";
+import { UpdateSchoolgroupUsecase } from "./update-schoolgroup-usecase";
 import { UpdateSchoolgroupUsecaseDto } from './update-schoolgroup-usecase.dto';
 import { mockUpdateSchoolgroupUsecaseDto } from '../../../../../tests/mocks/domain-dto/update-schoolgroup-usecase-dto.mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';

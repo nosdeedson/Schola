@@ -1,4 +1,4 @@
-import { FindStudentService } from '../find/find.student.service';
+import { FindStudentService } from './find.student.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';

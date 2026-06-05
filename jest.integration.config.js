@@ -12,12 +12,12 @@ module.exports = {
   // ],
   rootDir: "src",
   forceExit: true,
-  testRegex: ".*\\.unit\\.spec\\.ts$",
+  testRegex: ".*\\.integration\\.spec\\.ts$",
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
   coverageDirectory: '../coverage',
-  //setupFilesAfterEnv: ['../jest.setup.ts'],
+  setupFilesAfterEnv: ['../jest.setup.ts'],
   // verbose: false,
   // silent: true
 };

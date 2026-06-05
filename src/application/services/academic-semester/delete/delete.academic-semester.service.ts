@@ -9,10 +9,6 @@ export class DeleteAcademicSemesterService {
     }
 
     async execute(id: string) {
-        try {
             await this.semesterRepository.delete(id);
-        } catch (error) {
-            throw error;
-        }
     }
 }

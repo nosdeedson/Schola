@@ -1,5 +1,5 @@
 import { Grade } from "./grade"
-import { toEnum } from '../grade/grade'
+import { toEnum } from './grade'
 
 describe('Grade unit test', () => {
 

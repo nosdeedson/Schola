@@ -1,4 +1,4 @@
-import { DeleteStudentService } from '../delete/delete.student.service';
+import { DeleteStudentService } from './delete.student.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { QueryFailedError } from 'typeorm';
 

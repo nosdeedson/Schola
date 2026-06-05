@@ -5,41 +5,23 @@ import { DataBaseConnectionModule } from '../../../infrastructure/data-base-conn
 import { RepositoryFactoryService } from '../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { FindTeacherClassesService } from '../../services/class/find-teacher-classes/find.teacher-classes';
 import { mockClassesOfTeacherDto } from '../../../../tests/mocks/mock-dtos/mock-dtos';
+import { MockRepositoriesForUnitTest } from '../../../../tests/mocks/mock-repositories/mockRepositories';
 
 
 describe('teacher list classes usecase', () => {
 
     let usecase: TeacherListClassesUsecase;
-    let module: TestingModule;
-
-    beforeAll(async () => {
-        setEnv();
-        module = await Test.createTestingModule({
-            imports: [DataBaseConnectionModule],
-            providers: [
-                TeacherListClassesUsecase,
-                RepositoryFactoryService,
-            ]
-        }).compile();
-        usecase = module.get<TeacherListClassesUsecase>(TeacherListClassesUsecase);
-    });
-
-    afterAll(async () => {
-        await module.close();
-    })
 
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('should be defined', () => {
-        expect(usecase).toBeDefined();
-    });
-
     it('should be return a empty list', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const service = jest.spyOn(FindTeacherClassesService.prototype, 'execute')
             .mockResolvedValue(Promise.resolve([]));
-        const teacherId = '404f7bfd-9c83-4d6e-8de2-9b16bd917461'
+        const teacherId = '404f7bfd-9c83-4d6e-8de2-9b16bd917461';
+        const usecase = new TeacherListClassesUsecase(classRepository);
         const result = await usecase.execute(teacherId);
         expect(result).toBeInstanceOf(Array);
         expect(result).toHaveLength(0);
@@ -47,10 +29,12 @@ describe('teacher list classes usecase', () => {
     });
 
     it('should be return a list with one item', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const list = mockClassesOfTeacherDto();
         const service = jest.spyOn(FindTeacherClassesService.prototype, 'execute')
             .mockResolvedValue(Promise.resolve([list]));
-        const teacherId = '404f7bfd-9c83-4d6e-8de2-9b16bd917461'
+        const teacherId = '404f7bfd-9c83-4d6e-8de2-9b16bd917461';
+        const usecase = new TeacherListClassesUsecase(classRepository);
         const result = await usecase.execute(teacherId);
         expect(result).toBeInstanceOf(Array);
         expect(result[0].students).toHaveLength(2);

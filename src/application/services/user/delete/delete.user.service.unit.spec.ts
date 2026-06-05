@@ -1,7 +1,7 @@
 import { AccessType } from "@/domain/user/access.type";
 import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories"
-import { DeleteUserService } from '../delete/delete.user.service';
+import { DeleteUserService } from './delete.user.service';
 
 
 describe('DeleteUserService unit test', () =>{

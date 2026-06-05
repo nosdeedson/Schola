@@ -1,7 +1,6 @@
 import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { MockRepositoriesForUnitTest } from "../../../../tests/mocks/mock-repositories/mockRepositories";
 import { mockStudentRatingUsecaseDto } from "../../../../tests/mocks/usecases/student-comment-rating-usecase-dto.mock";
-import { mockStudentRatingUsecaseDtoOut } from "../../../../tests/mocks/usecases/student-rating-usecase-dto.mocks";
 import { CommentRatingUsecase } from "./comment-rating-usecase";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";

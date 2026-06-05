@@ -12,6 +12,7 @@ import { WorkerEntity } from "../../src/infrastructure/entities/worker/worker.en
 import { createE2EConfing } from "../e2e.confing";
 import { mockCreateSchoolgroupRequestDto } from "../mocks/controller/schoolgroup-request-dto-mock";
 import { mockScheduleRequestDto } from "../mocks/controller/schedule-request-dto-mock";
+import { ScheduleRequestDto } from "@/infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto";
 
 describe('SCHOOLGROUP CONTROLLER', () => {
     let app: INestApplication;

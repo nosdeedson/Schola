@@ -19,34 +19,13 @@ import { MockRepositoriesForUnitTest } from '../../../../tests/mocks/mock-reposi
 
 describe('FindTeacherClassRatingUsecase unit test', () => {
 
-    let usecase: FindTeacherClassRatingUsecase;
-    let module: TestingModule;
-
-    beforeAll(async () => {
-        setEnv();
-        module = await Test.createTestingModule({
-            imports: [DataBaseConnectionModule],
-            providers: [
-                FindTeacherClassRatingUsecase,
-                RepositoryFactoryService
-            ]
-        }).compile();
-        usecase = module.get<FindTeacherClassRatingUsecase>(FindTeacherClassRatingUsecase);
-    });
-
-    afterAll(async () => {
-        await module.close();
-    });
-
     afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('usecase should be defined', async () => {
-        expect(usecase).toBeDefined();
-    });
-
     it('should return an TeacherClassRatingDto with all atributes undefined', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
         const findTeacherClassRating = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
             .mockResolvedValue(Promise.resolve(null));
         const currentSemester = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
@@ -54,6 +33,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
 
         const teacherId = '78186565-e234-4eef-8e37-aa7f03f6b68a';
         const classId = '37250f2d-e5ea-4b07-98ae-cf0b703768e6';
+        const usecase = new FindTeacherClassRatingUsecase(classRepository,semesterRepository);
         const result = await usecase.execute(teacherId, classId);
         expect(result).toBeInstanceOf(TeacherClassRatingDto);
         expect(findTeacherClassRating).toHaveBeenCalledTimes(1);
@@ -66,6 +46,8 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
     });
 
     it('should return an TeacherClassRatingDto of a class', async () => {
+        const classRepository = MockRepositoriesForUnitTest.mockRepositories();
+        const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classModel = mockClass();
         const teacher = mockWorker();
         classModel.setTeacher(teacher);
@@ -81,6 +63,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
 
         const teacherId = teacher.getId();
         const classId = classModel.getId();
+        const usecase = new FindTeacherClassRatingUsecase(classRepository, semesterRepository);
         const result = await usecase.execute(teacherId, classId);
         expect(result).toBeInstanceOf(TeacherClassRatingDto);
         expect(findTeacherClassRating).toHaveBeenCalledTimes(1);

@@ -20,6 +20,9 @@
 ## how to see the coverage of just one test
 # npm run test -- src/domain/class/class.spec.ts  --coverage 
 
+## to see the coverage of e2e tests
+#  npm run test:e2e -- --coverage
+
 ## run all test command: npm run test
 
 ## run test in folder command: npm run test -- /foldername

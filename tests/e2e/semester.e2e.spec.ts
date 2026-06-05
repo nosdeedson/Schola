@@ -104,11 +104,46 @@ describe('SEMESTER E2E TESTS', () => {
             expect(validation.body).toHaveLength(0);
         });
 
+        it('should update a semester', async () => {
+            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
+            await semesterRepository.save(semesterEntity);
+            const dto = {
+                "id": semesterEntity.id,
+                "updatingQuarter": true,
+                "updatingSemester": false
+            }
+            const response = await request(app.getHttpServer())
+                .put(`/semesters`)
+                .send(dto);
+            expect(response.body).toBeDefined();
+            expect(response.status).toBe(200);
+            /** won't find anyone because the update will set deleted_at */
+            const validation = await request(app.getHttpServer())
+                .get(`/semesters`);
+            expect(validation.body).toBeDefined();
+            expect(validation.status).toBe(200);
+            expect(validation.body).toHaveLength(1);
+        });
+
         it('should not update a semester', async () => {
             const dto = {
                 "id": "80fe54a8-b542-4040-bea4-010f13c515cd",
                 "updatingQuarter": false,
                 "updatingSemester": true
+            }
+            const response = await request(app.getHttpServer())
+                .put(`/semesters`)
+                .send(dto);
+            expect(response.body).toBeDefined();
+            expect(response.status).toBe(404);
+        });
+
+        it('should not update the quarter of a semester', async () => {
+            const dto = {
+                "id": "80fe54a8-b542-4040-bea4-010f13c515cd",
+                "updatingQuarter": true,
+                "updatingSemester": false
             }
             const response = await request(app.getHttpServer())
                 .put(`/semesters`)
@@ -131,6 +166,19 @@ describe('SEMESTER E2E TESTS', () => {
                 .send(dto);
             expect(response.body).toBeDefined();
             expect(response.status).toBe(201)
+        });
+
+        it('should throw a SystemError while creating a semester', async () => {
+            const dto = mockSemesterRequestDto({
+                currentSemester: true,
+                secondQuarter: null
+            })
+            const response = await request(app.getHttpServer())
+                .post('/semesters')
+                .send(dto);
+            expect(response.body).toBeDefined();
+            expect(response.status).toBe(422);
+            expect(response.body.message).toBe('the end of the first Quarter must be before the start of the begining of the secondQuarter');
         });
     });
 

@@ -1,6 +1,6 @@
 import { QueryFailedError } from 'typeorm';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
-import { DeleteAcademicSemesterService } from '../../academic-semester/delete/delete.academic-semester.service';
+import { DeleteAcademicSemesterService } from './delete.academic-semester.service';
 
 describe('delete academic semester unit test', () => {
 

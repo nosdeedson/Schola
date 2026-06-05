@@ -7,19 +7,30 @@ import { mockSaveRatingRequest } from "../../../../../tests/mocks/controller/sav
 import { SaveRatingUsecase } from '@/application/usecases/save-rating/save-rating-usecase';
 import { BadRequestException } from '@nestjs/common';
 import { SaveRatingRequestDto } from './dto/save-rating-request-dto';
+
 describe('RatingController', () => {
   let controller: RatingController;
   let module: TestingModule;
 
+  let saveRatingUsecase: {
+    execute: jest.Mock;
+  };
+  // TODO HOW TO TEST CONTROLLER WITHOUT DEPENDING ON DATABASE CONNECTION
   beforeAll(async () => {
-    setEnv();
     module = await Test.createTestingModule({
       controllers: [RatingController],
-      imports: [DataBaseConnectionModule],
-      providers: [...ratingsProviders]
+      providers: [
+        {
+          provide: SaveRatingUsecase,
+          useValue: {
+            execute: jest.fn()
+          }
+        }
+      ]
     }).compile();
 
     controller = module.get<RatingController>(RatingController);
+    saveRatingUsecase = module.get(SaveRatingUsecase);
   });
 
   afterEach(async () => {
@@ -32,30 +43,27 @@ describe('RatingController', () => {
 
   it('should create a rating', async () => {
     const request = mockSaveRatingRequest();
-    const usecase = jest.spyOn(SaveRatingUsecase.prototype, 'execute')
-      .mockImplementation(() => Promise.resolve(void 0));
+    saveRatingUsecase.execute.mockResolvedValue(void 0)
     expect(await controller.saveRating(request)).toBe(void 0);
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
+    expect(saveRatingUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(saveRatingUsecase.execute).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 
   it('should throw an error', async () => {
     const request = mockSaveRatingRequest();
-    const usecase = jest.spyOn(SaveRatingUsecase.prototype, 'execute')
-      .mockImplementation(() => { throw new BadRequestException("student not found") });
+    saveRatingUsecase.execute.mockRejectedValue(new BadRequestException('student not found'))
     await expect(controller.saveRating(request)).rejects
       .toMatchObject(new BadRequestException("student not found"));
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
+    expect(saveRatingUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(saveRatingUsecase.execute).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 
   it('should throw an error current semester not found', async () => {
     const request = mockSaveRatingRequest();
-    const usecase = jest.spyOn(SaveRatingUsecase.prototype, 'execute')
-      .mockImplementation(() => { throw new BadRequestException("Current semester was not found") });
+    saveRatingUsecase.execute.mockRejectedValue(new BadRequestException('Current semester was not found'))
     await expect(controller.saveRating(request)).rejects
       .toMatchObject(new BadRequestException("Current semester was not found"));
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
+    expect(saveRatingUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(saveRatingUsecase.execute).toHaveBeenCalledWith(SaveRatingRequestDto.toUseCaseDto(request));
   });
 });

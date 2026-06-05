@@ -2,7 +2,7 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { CreateParentDto } from "../../parent/create/create.parent.dto";
 import { CreateParentService } from "../../parent/create/create.parent.service";
-import { CreateParentStudentService } from "../../parent-student/create/create.parent.student.service";
+import { CreateParentStudentService } from "./create.parent.student.service";
 import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
 import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { CreateStudentService } from "../../student/create/create.student.service";
