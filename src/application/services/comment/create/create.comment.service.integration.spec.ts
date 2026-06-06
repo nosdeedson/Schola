@@ -48,7 +48,7 @@ describe('create comment service integration tests', () => {
         studentRepository = new StudentRepository(TestDataSource);
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource)
+        parentRepository = new ParentRepository(TestDataSource)
 
     });
 

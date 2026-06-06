@@ -18,7 +18,7 @@ describe('DeleteParentService integration tests', () => {
 
     beforeEach(async () => {
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
 
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);

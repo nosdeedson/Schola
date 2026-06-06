@@ -17,7 +17,7 @@ describe('DeleteStudentService integration tests', () => {
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
     });
 
     afterEach(() => {

@@ -1,20 +1,21 @@
 import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { ParentStudentEntity } from "@/infrastructure/entities/parent-student/parent.student.entity";
-import { Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 
+@Injectable()
 export class ParentStudentRepository {
-    private repository: Repository<ParentStudentEntity>;
+    private parentStudentRepository: Repository<ParentStudentEntity>;
     constructor(
         @Inject(DATA_SOURCE)
         private dataSource: DataSource
     ) {
-        this.repository = dataSource.getRepository(ParentStudentEntity);
+        this.parentStudentRepository = this.dataSource.getRepository(ParentStudentEntity);
     }
 
     async create(entity: ParentStudentEntity): Promise<ParentStudentEntity> {
         try {
-            return await this.repository.save(entity);
+            return await this.parentStudentRepository.save(entity);
         } catch (error: any) {
             throw new QueryFailedError(null, null, error);
         }
@@ -29,7 +30,7 @@ export class ParentStudentRepository {
     }
 
     async findAll() {
-        return this.repository.find();
+        return this.parentStudentRepository.find();
     }
 
     async update() {

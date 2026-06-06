@@ -25,13 +25,13 @@ describe('CreateParentService integration tests', () => {
     beforeAll(async () => {
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
 
         studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
 
         parentStudentEntity = TestDataSource.getRepository(ParentStudentEntity);
-        parentStudentRepository = new ParentStudentRepository(parentStudentEntity);
+        parentStudentRepository = new ParentStudentRepository(TestDataSource);
     });
 
     afterEach(async () => {

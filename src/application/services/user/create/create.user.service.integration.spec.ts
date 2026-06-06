@@ -113,7 +113,7 @@ describe('create user service integration tests', () => {
 
     it('should create an user of type parent', async () => {
 
-        let parentRepository = new ParentRepository(personEntity, TestDataSource);
+        let parentRepository = new ParentRepository(TestDataSource);
 
         let parent = mockParent();
         let parentEntity = ParentEntity.toParentEntity(parent);

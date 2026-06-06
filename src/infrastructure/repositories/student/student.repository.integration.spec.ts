@@ -34,9 +34,9 @@ describe('StudentRepository unit test', () => {
         schoolGroupModel = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource);
         parentModel = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentModel, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
         parentStudentModel = TestDataSource.getRepository(ParentStudentEntity);
-        parentStudentRepository = new ParentStudentRepository(parentStudentModel);
+        parentStudentRepository = new ParentStudentRepository(TestDataSource);
     });
 
     beforeEach(async () => {

@@ -13,7 +13,7 @@ describe('FindAllParentService integration tests', () => {
 
     beforeEach(async () => {
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
     });
 
     afterEach(async () => {

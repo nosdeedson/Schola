@@ -48,7 +48,7 @@ describe('UpdateCommentService integration tests', () => {
         studentRepository = new StudentRepository(TestDataSource);
 
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource)
+        parentRepository = new ParentRepository(TestDataSource)
 
     });
 
@@ -97,7 +97,7 @@ describe('UpdateCommentService integration tests', () => {
         const service = new UpdateCommentService(commentRepository);
 
         await expect(service.execute(dto)).rejects.toMatchObject({
-            errors:[{ context: 'comment', message: 'comment not found' }]
+            errors: [{ context: 'comment', message: 'comment not found' }]
         });
     });
 

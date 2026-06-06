@@ -46,7 +46,7 @@ describe('CommentRepository unit test', () => {
         studentRepository = new StudentRepository(TestDataSource);
 
         parentModel = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentModel, TestDataSource)
+        parentRepository = new ParentRepository(TestDataSource)
 
     });
 

@@ -1,9 +1,9 @@
 import { ParentEntity } from "../../entities/parent/parent.entity";
-import { ParentRepository } from '../parent/parent.repository';
+import { ParentRepository } from './parent.repository';
 import { StudentRepository } from '../student/student.repository';
 import { StudentEntity } from "../../entities/student/student.entity";
 import { ParentStudentEntity } from "../../entities/parent-student/parent.student.entity";
-import { ParentStudentRepository } from "../../repositories/parent-student/parent.student.repositoy";
+import { ParentStudentRepository } from "../parent-student/parent.student.repositoy";
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
@@ -22,13 +22,12 @@ describe('ParentRepository unit test', () => {
 
     beforeEach(async () => {
         parentModel = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentModel, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
         studentModel = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
         parentStudentModel = TestDataSource.getRepository(ParentStudentEntity);
-        parentStudentRepository = new ParentStudentRepository(parentStudentModel);
+        parentStudentRepository = new ParentStudentRepository(TestDataSource);
     });
-
 
     it('repository should be instantiate', () => {
         expect(parentRepository).toBeDefined();

@@ -29,9 +29,9 @@ describe('CreateStudentService integration tests', () => {
         schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource);
         parentEntity = TestDataSource.getRepository(ParentEntity);
-        parentRepository = new ParentRepository(parentEntity, TestDataSource);
+        parentRepository = new ParentRepository(TestDataSource);
         parentStudentyEntity = TestDataSource.getRepository(ParentStudentEntity);
-        parentStudentRepository = new ParentStudentRepository(parentStudentyEntity);
+        parentStudentRepository = new ParentStudentRepository(TestDataSource);
     });
 
     afterEach(async () => {
