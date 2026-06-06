@@ -2,14 +2,19 @@ import { ParentEntity } from '../../../infrastructure/entities/parent/parent.ent
 import { ParentReporitoryInterface } from '../../../domain/parent/parent.repository.interface';
 import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
+import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
+import { Inject } from '@nestjs/common';
 
 
 export class ParentRepository implements ParentReporitoryInterface {
+    private parentRepository: Repository<ParentEntity>;
 
     constructor(
-        private parentRepository: Repository<ParentEntity>,
+        @Inject(DATA_SOURCE)
         private dataSource: DataSource
-    ) { }
+    ) {
+        this.dataSource.getRepository(ParentEntity);
+    }
 
     async create(entity: ParentEntity): Promise<ParentEntity> {
         const queryRunner = this.dataSource.createQueryRunner();

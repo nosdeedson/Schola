@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateSemesterUsecase } from '@/application/usecases/semester-usecases/create/create-semester-usecase';
 import { SemesterRequestDto } from './dto/create/semester-request-dto';
-import { DelesteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
+import { DeleteSemesterUsecase as DeleteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
 import { FindSemesterUsecase } from '@/application/usecases/semester-usecases/find/find-semester-usecase';
 import { FindAllSemesterUsecase } from '@/application/usecases/semester-usecases/find-all/find-all-semester-usecase';
 import { UpdateSemesterUseCase } from '@/application/usecases/semester-usecases/update/update-semester.usecase';
@@ -15,7 +15,7 @@ export class SemesterController {
 
     constructor(
         private createSemester: CreateSemesterUsecase,
-        private deleteSemester: DelesteSemesterUsecase,
+        private deleteSemester: DeleteSemesterUsecase,
         private findSemester: FindSemesterUsecase,
         private findAllSemester: FindAllSemesterUsecase,
         private updateSemester: UpdateSemesterUseCase,

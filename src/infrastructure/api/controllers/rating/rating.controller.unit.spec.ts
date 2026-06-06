@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RatingController } from './rating.controller';
-import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
-import { setEnv } from '../../../../../tests/mocks/env/env.mock';
-import { ratingsProviders } from './providers/ratings.providers';
 import { mockSaveRatingRequest } from "../../../../../tests/mocks/controller/save-rating-request-dto-mock";
 import { SaveRatingUsecase } from '@/application/usecases/save-rating/save-rating-usecase';
 import { BadRequestException } from '@nestjs/common';

@@ -16,7 +16,7 @@ export class CreateSchoolgroupUseCase {
         private workerReposittory: WorkerRepositoryInterface,
     ) { }
 
-    async create(dto: CreateSchoolgroupUseCaseDto): Promise<void> {
+    async execute(dto: CreateSchoolgroupUseCaseDto): Promise<void> {
         try {
             const teacherService = new CreateGetWorkerService(this.workerReposittory);
             const teacherDto = new CreateWorkerDto({

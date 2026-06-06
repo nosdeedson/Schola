@@ -30,7 +30,7 @@ describe('UpdateSchoolgroupUsecase', () => {
 
         const input = dto.toInput(teacher);
         const usecase = new UpdateSchoolgroupUsecase(classRepository, workerRepository);
-        expect(await usecase.update(dto)).toBe(void 0);
+        expect(await usecase.execute(dto)).toBe(void 0);
         expect(update).toHaveBeenCalledTimes(1);
         expect(update).toHaveBeenCalledWith(input);
     });
@@ -49,7 +49,7 @@ describe('UpdateSchoolgroupUsecase', () => {
             .mockImplementation(() => { throw new NotFoundException("teacher not found") })
 
         const usecase = new UpdateSchoolgroupUsecase(classRepository, workerRepository);
-        await expect(usecase.update(dto)).rejects.toMatchObject(new NotFoundException("teacher not found"))
+        await expect(usecase.execute(dto)).rejects.toMatchObject(new NotFoundException("teacher not found"))
         expect(tratarErros).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledWith(dto.teacherName);

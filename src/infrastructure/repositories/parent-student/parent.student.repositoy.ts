@@ -1,8 +1,16 @@
+import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { ParentStudentEntity } from "@/infrastructure/entities/parent-student/parent.student.entity";
+import { Inject } from "@nestjs/common";
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 
 export class ParentStudentRepository {
-    constructor(private repository: Repository<ParentStudentEntity>) { }
+    private repository: Repository<ParentStudentEntity>;
+    constructor(
+        @Inject(DATA_SOURCE)
+        private dataSource: DataSource
+    ) {
+        this.repository = dataSource.getRepository(ParentStudentEntity);
+    }
 
     async create(entity: ParentStudentEntity): Promise<ParentStudentEntity> {
         try {

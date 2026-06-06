@@ -14,15 +14,19 @@ export class DeleteUserFactoryService implements DeleteUserFactoryInterface {
     constructor(private userAggregateContext: UserAggregateResolverService) { }
 
     public deleteUserServiceFactory(accessType: AccessType): DeleteGenericService {
-        const context = this.userAggregateContext.resolve(accessType);
-        switch (context.accessType) {
-            case AccessType.PARENT:
-                return new DeleteParentService(context.parentRepository);
-            case AccessType.STUDENT:
-                return new DeleteStudentService(context.studentRepository);
-            case AccessType.TEACHER:
-            case AccessType.ADMIN:
-                return new DeleteWorkerService(context.workerRepository);
+        try {
+            const context = this.userAggregateContext.resolve(accessType);
+            switch (context.accessType) {
+                case AccessType.PARENT:
+                    return new DeleteParentService(context.parentRepository);
+                case AccessType.STUDENT:
+                    return new DeleteStudentService(context.studentRepository);
+                case AccessType.TEACHER:
+                case AccessType.ADMIN:
+                    return new DeleteWorkerService(context.workerRepository);
+            }
+        } catch (error) {
+            throw error;
         }
     }
 

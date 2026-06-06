@@ -12,7 +12,7 @@ export class UpdateSchoolgroupUsecase {
         private teacherReposittory: WorkerRepositoryInterface,
     ) { }
 
-    async update(dto: UpdateSchoolgroupUsecaseDto): Promise<void> {
+    async execute(dto: UpdateSchoolgroupUsecaseDto): Promise<void> {
         try {
             const teacher = await this.teacherReposittory.findByName(dto.teacherName);
             if (!teacher) throw new SystemError([{ context: 'teacher', message: 'teacher not found' }], 404);

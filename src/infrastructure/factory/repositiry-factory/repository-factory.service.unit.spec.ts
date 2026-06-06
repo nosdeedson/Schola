@@ -1,6 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { DataBaseConnectionModule } from '../../data-base-connection/data-base-connection.module';
-import { setEnv } from '../../../../tests/mocks/env/env.mock';
 import { TypeRepository } from './type-repository';
 import { AcademicSemesterRepository } from '../../repositories/academic-semester/academic-semester.repository';
 import { ClassRepository } from '../../repositories/class/class.repository';
@@ -12,26 +9,22 @@ import { UserRepository } from '../../repositories/user/user.repository';
 import { WorkerRepository } from '../../repositories/worker/worker.repository';
 import { SystemError } from '../../../application/services/@shared/system-error';
 import { RepositoryFactoryService } from './repository-factory.service';
-
-
+import { DataSource } from 'typeorm';
 
 describe('RepositiryFactoryService', () => {
-  let service: RepositoryFactoryService
-    ;
-  let module: TestingModule;
+  let service: RepositoryFactoryService;
+  let dataSource: jest.Mocked<DataSource>;
 
   beforeEach(async () => {
-    setEnv()
-    module = await Test.createTestingModule({
-      providers: [RepositoryFactoryService],
-      imports: [DataBaseConnectionModule]
-    }).compile();
+    dataSource = {
+      getRepository: jest.fn()
+    } as any;
 
-    service = module.get<RepositoryFactoryService>(RepositoryFactoryService);
+    service = new RepositoryFactoryService(dataSource);
   });
 
   afterAll(async () => {
-    await module.close();
+    // await module.close();
   });
 
   it('should be defined', () => {

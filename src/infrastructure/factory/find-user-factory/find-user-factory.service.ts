@@ -11,17 +11,19 @@ export class FindUserFactoryService {
     constructor(private userAggregateResolver: UserAggregateResolverService) { }
 
     async findUserServiceFactory(accessType: AccessType) {
-        const context = this.userAggregateResolver.resolve(accessType);
-        switch (context.accessType) {
-            case AccessType.PARENT:
-                return new FindParentService(context.parentRepository);
-            case AccessType.STUDENT:
-                return new FindStudentService(context.studentRepository);
-            case AccessType.TEACHER:
-            case AccessType.ADMIN:
-                return new FindWorkerService(context.workerRepository);
-            default:
-                throw new SystemError([{ context: "find User", message: 'fail to create service to find user' }], 422);
+        try {
+            const context = this.userAggregateResolver.resolve(accessType);
+            switch (context.accessType) {
+                case AccessType.PARENT:
+                    return new FindParentService(context.parentRepository);
+                case AccessType.STUDENT:
+                    return new FindStudentService(context.studentRepository);
+                case AccessType.TEACHER:
+                case AccessType.ADMIN:
+                    return new FindWorkerService(context.workerRepository);
+            }
+        } catch (error) {
+            throw error;
         }
     }
 }

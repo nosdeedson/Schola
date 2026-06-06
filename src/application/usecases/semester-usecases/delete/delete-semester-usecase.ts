@@ -1,7 +1,7 @@
 import { DeleteAcademicSemesterService } from "@/application/services/academic-semester/delete/delete.academic-semester.service";
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 
-export class DelesteSemesterUsecase {
+export class DeleteSemesterUsecase {
 
     constructor(private semesterRepository: AcademicSemesterRespositoryInterface) { }
 

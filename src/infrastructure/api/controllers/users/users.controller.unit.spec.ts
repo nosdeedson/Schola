@@ -4,45 +4,51 @@ import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUsecase } from '../../../../application/usecases/user-usecases/create-user/create-user-usecase';
 import { AccessType } from '../../../../domain/user/access.type';
-import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { mockCreateUsersDto, mockFindUserDto } from '../../../../../tests/mocks/mock-dtos/mock-dtos';
 import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
-import { CreateUserFactoryService } from '../../../factory/create-user-service-factory/create-user-factory-service';
-import { DeleteUserFactoryService } from '../../../factory/delete-user-factory/delete-user-factory.service';
-import { RepositoryFactoryService } from '../../../factory/repositiry-factory/repository-factory.service';
-import { UserAggregateResolverService } from '../../../factory/user-aggregate-resolver/user-aggregate-resolver.service';
-import { IsStrongPasswordConstraint } from '../../validators/is-strong-password-constraint/is-strong-password-constraint';
-import { userDeleteUsecaseProvider } from './providers/user-delete-usecase-providers';
-import { usersProviders } from './providers/users-provider';
 import { UsersController } from './users.controller';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { FindAllUserUsecase } from '@/application/usecases/user-usecases/find-all/find-all-user-usecase';
 import { FindAllUserDto } from '@/application/services/user/findAll/findAll.user.dto';
-import { FindUserResponseDto } from './dtos/find-user-dto/find-user-response-dto';
 import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
 import { UserEntity } from '@/infrastructure/entities/user/user.entity';
 
 describe('UsersController', () => {
   let controller: UsersController;
   let module: TestingModule;
+  let createUserUsecase: { execute: jest.Mock; }
+  let deleteUserUsecase: { execute: jest.Mock; }
+  let findUserUsecase: { execute: jest.Mock; }
+  let findAllUserUsecase: { execute: jest.Mock; }
 
   beforeEach(async () => {
-    setEnv();
     module = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
-        ...usersProviders,
-        ...userDeleteUsecaseProvider,
-        IsStrongPasswordConstraint,
-        RepositoryFactoryService,
-        CreateUserFactoryService,
-        DeleteUserFactoryService,
-        UserAggregateResolverService,
+        {
+          provide: CreateUserUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: DeleteUserUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: FindUserUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: FindAllUserUsecase,
+          useValue: { execute: jest.fn() }
+        }
       ],
-      imports: [DataBaseConnectionModule],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
+    createUserUsecase = module.get(CreateUserUsecase);
+    deleteUserUsecase = module.get(DeleteUserUsecase);
+    findUserUsecase = module.get(FindUserUsecase);
+    findAllUserUsecase = module.get(FindAllUserUsecase);
   });
 
   afterEach(async () => {
@@ -57,97 +63,87 @@ describe('UsersController', () => {
 
     it('should create a new user as admin', async () => {
       const dto = mockCreateUsersDto();
-      const userUsecasesService = jest.spyOn(CreateUserUsecase.prototype, 'execute')
-        .mockImplementation(async () => Promise.resolve(void 0));
+      createUserUsecase.execute.mockResolvedValue(void 0);
       expect(await controller.create(dto)).toBe(void 0);
-      expect(userUsecasesService).toHaveBeenCalled();
+      expect(createUserUsecase.execute).toHaveBeenCalled();
     });
 
     it('should create a new user as teacher', async () => {
       const dto = mockCreateUsersDto({ accessType: AccessType.TEACHER });
-      const userUsecasesService = jest.spyOn(CreateUserUsecase.prototype, 'execute')
-        .mockImplementation(async () => Promise.resolve(void 0));
+      createUserUsecase.execute.mockResolvedValue(void 0);
       expect(await controller.create(dto)).toBe(void 0);
-      expect(userUsecasesService).toHaveBeenCalled();
+      expect(createUserUsecase.execute).toHaveBeenCalled();
     });
 
     it('should create a new user as student', async () => {
       const dto = mockCreateUsersDto({ accessType: AccessType.STUDENT });
-      const userUsecasesService = jest.spyOn(CreateUserUsecase.prototype, 'execute')
-        .mockImplementation(async () => Promise.resolve(void 0));
+      createUserUsecase.execute.mockResolvedValue(void 0);
       expect(await controller.create(dto)).toBe(void 0);
-      expect(userUsecasesService).toHaveBeenCalled();
+      expect(createUserUsecase.execute).toHaveBeenCalled();
     });
 
     it('should create a new user as parent', async () => {
       const dto = mockCreateUsersDto({ accessType: AccessType.PARENT });
-      const userUsecasesService = jest.spyOn(CreateUserUsecase.prototype, 'execute')
-        .mockImplementation(async () => Promise.resolve(void 0));
+      createUserUsecase.execute.mockResolvedValue(void 0);
       expect(await controller.create(dto)).toBe(void 0);
-      expect(userUsecasesService).toHaveBeenCalled();
+      expect(createUserUsecase.execute).toHaveBeenCalled();
     });
 
     it('should throw an error when creating a user', async () => {
       const dto = mockCreateUsersDto();
-      const userUsecasesService = jest.spyOn(CreateUserUsecase.prototype, 'execute')
-        .mockImplementation(async () => Promise.reject(new BadRequestException("Error creating user")));
+      createUserUsecase.execute.mockRejectedValue(new BadRequestException('Error creating user'))
       await expect(controller.create(dto)).rejects.toThrow(BadRequestException);
-      expect(userUsecasesService).toHaveBeenCalled();
+      expect(createUserUsecase.execute).toHaveBeenCalled();
     });
   });
 
   describe("Delete user", () => {
     it('should throw an error while deleting an user', async () => {
-      const deleteUseCase = jest.spyOn(DeleteUserUsecase.prototype, 'execute')
-        .mockImplementation(() => { throw new BadRequestException("User not found.") });
+      deleteUserUsecase.execute.mockRejectedValue(new BadRequestException('User not found.'))
       const wantedId = '123456';
       await expect(controller.delete(wantedId)).rejects
         .toMatchObject(new BadRequestException("User not found."));
-      expect(deleteUseCase).toHaveBeenCalledTimes(1);
-      expect(deleteUseCase).toHaveBeenCalledWith(wantedId)
+      expect(deleteUserUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(deleteUserUsecase.execute).toHaveBeenCalledWith(wantedId)
     });
 
     it('should delete an user', async () => {
-      const deleteUsecase = jest.spyOn(DeleteUserUsecase.prototype, 'execute')
-        .mockImplementation(() => Promise.resolve(void 0));
+      deleteUserUsecase.execute.mockResolvedValue(void 0);
       const wantedId = '7316ebf1-49f9-46ab-adfe-19bfa3737580';
       expect(await controller.delete(wantedId)).toBe(void 0);
-      expect(deleteUsecase).toHaveBeenCalledTimes(1);
-      expect(deleteUsecase).toHaveBeenCalledWith(wantedId);
+      expect(deleteUserUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(deleteUserUsecase.execute).toHaveBeenCalledWith(wantedId);
     });
   });
 
   describe('find user', () => {
     it('should find a user', async () => {
       const dto = mockFindUserDto();
-      const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
-        .mockImplementation(() => Promise.resolve(dto));
+      findUserUsecase.execute.mockResolvedValue(dto);
       const result = await controller.find(dto.id);
       expect(result).toBeDefined();
       expect(result.id).toStrictEqual(dto.id);
       expect(result.accessType).toStrictEqual(dto.accessType);
-      expect(usecase).toHaveBeenCalledTimes(1);
-      expect(usecase).toHaveBeenCalledWith(dto.id);
+      expect(findUserUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(findUserUsecase.execute).toHaveBeenCalledWith(dto.id);
     });
 
     it('should throw an error if user not found', async () => {
       const error = new SystemError([{ context: 'user', message: 'user not found' }], 404);
-      const usecase = jest.spyOn(FindUserUsecase.prototype, 'execute')
-        .mockImplementation(() => { throw error });
+      findUserUsecase.execute.mockRejectedValue(error);
       await expect(controller.find("123")).rejects.toMatchObject(error);
-      expect(usecase).toHaveBeenCalledTimes(1);
-      expect(usecase).toHaveBeenCalledWith('123');
+      expect(findUserUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(findUserUsecase.execute).toHaveBeenCalledWith('123');
     });
   });
 
   describe('findAll', () => {
     it('should return an empty array', async () => {
       const users = new FindAllUserDto([]);
-      const usecase = jest.spyOn(FindAllUserUsecase.prototype, 'execute')
-        .mockImplementation(() => Promise.resolve(users));
+      findAllUserUsecase.execute.mockResolvedValue(users);
       const result = await controller.findAll();
       expect(result).toHaveLength(0);
-      expect(usecase).toHaveBeenCalledTimes(1);
+      expect(findAllUserUsecase.execute).toHaveBeenCalledTimes(1);
     });
 
     it('should find users', async () => {
@@ -156,14 +152,13 @@ describe('UsersController', () => {
       const userEntity1 = UserEntity.toUserEntity(user1);
       const userEntity2 = UserEntity.toUserEntity(user2);
       const dto = new FindAllUserDto([userEntity1, userEntity2]);
-      const usecase = jest.spyOn(FindAllUserUsecase.prototype, 'execute')
-        .mockImplementation(() => Promise.resolve(dto));
+      findAllUserUsecase.execute.mockResolvedValue(dto);
       const result = await controller.findAll();
       expect(result).toBeDefined();
       expect(result).toHaveLength(2);
       expect([result[0].id, result[1].id].includes(userEntity1.id)).toBeTruthy();
       expect([result[0].id, result[1].id].includes(userEntity2.id)).toBeTruthy();
-      expect(usecase).toHaveBeenCalledTimes(1);
+      expect(findAllUserUsecase.execute).toHaveBeenCalledTimes(1);
     })
   });
 });

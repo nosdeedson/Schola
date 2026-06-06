@@ -5,15 +5,12 @@ import { TypeRepository } from './type-repository';
 import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
 import { StudentRepository } from '@/infrastructure/repositories/student/student.repository';
 import { CommentRepository } from '@/infrastructure/repositories/comment/comment.respository';
-import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 import { ParentRepository } from '@/infrastructure/repositories/parent/parent.repository';
-import { ParentEntity } from '@/infrastructure/entities/parent/parent.entity';
 import { RatingRepository } from '@/infrastructure/repositories/rating/rating.repository';
 import { UserRepository } from '@/infrastructure/repositories/user/user.repository';
 import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
-import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
 import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 
 @Injectable()
@@ -30,9 +27,9 @@ export class RepositoryFactoryService {
             case TypeRepository.COMMENT:
                 return new CommentRepository(this.dataSource);
             case TypeRepository.PARENT:
-                return new ParentRepository(this.dataSource.getRepository(ParentEntity), this.dataSource);
+                return new ParentRepository(this.dataSource);
             case TypeRepository.PARENT_STUDENT:
-                return new ParentStudentRepository(this.dataSource.getRepository(ParentStudentEntity));
+                return new ParentStudentRepository(this.dataSource);
             case TypeRepository.RATING:
                 return new RatingRepository(this.dataSource);
             case TypeRepository.STUDENT:

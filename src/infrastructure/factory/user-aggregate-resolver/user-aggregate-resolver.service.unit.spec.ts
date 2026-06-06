@@ -8,21 +8,20 @@ import { StudentRepository } from '../../../infrastructure/repositories/student/
 import { WorkerRepository } from '../../../infrastructure/repositories/worker/worker.repository';
 import { WorkerAggregateContext } from './user-aggregate-resolver.service';
 import { RepositoryFactoryService } from '../repositiry-factory/repository-factory.service';
+import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
+import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
+import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
 
 describe('UserAggregateResolverService', () => {
   let service: UserAggregateResolverService;
+  let repositoryFactoryService: jest.Mocked<RepositoryFactoryService>;
   let module: TestingModule;
 
   beforeEach(async () => {
-    setEnv();
-    module = await Test.createTestingModule({
-      providers: [
-        UserAggregateResolverService, 
-        RepositoryFactoryService],
-      imports: [DataBaseConnectionModule]
-    }).compile();
-
-    service = module.get<UserAggregateResolverService>(UserAggregateResolverService);
+    repositoryFactoryService = {
+      createRepository: jest.fn()
+    } as any;
+    service = new UserAggregateResolverService(repositoryFactoryService);
   });
 
   it('should be defined', () => {
@@ -30,6 +29,9 @@ describe('UserAggregateResolverService', () => {
   });
 
   it('should resolve TEACHER aggregate context', () => {
+    repositoryFactoryService.createRepository
+      .mockReturnValueOnce(new WorkerRepository(TestDataSource))
+      .mockReturnValueOnce(new ClassRepository(TestDataSource));
     const context = service.resolve(AccessType.TEACHER) as WorkerAggregateContext;
     expect(context).toBeDefined();
     expect(context.accessType).toBe(AccessType.TEACHER);
@@ -38,6 +40,12 @@ describe('UserAggregateResolverService', () => {
   });
 
   it('should resolve STUDENT aggregate context', () => {
+    repositoryFactoryService.createRepository
+      .mockReturnValueOnce(new StudentRepository(TestDataSource))
+      .mockReturnValueOnce(new ClassRepository(TestDataSource))
+      .mockReturnValueOnce(new ParentRepository(TestDataSource))
+      .mockReturnValueOnce(new ParentStudentRepository(TestDataSource));
+
     const context = service.resolve(AccessType.STUDENT) as ParentStudentAggregateContext;
     expect(context).toBeDefined();
     expect(context.accessType).toBe(AccessType.STUDENT);
@@ -48,6 +56,10 @@ describe('UserAggregateResolverService', () => {
   });
 
   it('should resolve ADMIN aggregate context', () => {
+    repositoryFactoryService.createRepository
+      .mockReturnValueOnce(new WorkerRepository(TestDataSource))
+      .mockReturnValueOnce(new ClassRepository(TestDataSource));
+
     const context = service.resolve(AccessType.ADMIN) as WorkerAggregateContext;
     expect(context).toBeDefined();
     expect(context.accessType).toBe(AccessType.ADMIN);
@@ -58,6 +70,11 @@ describe('UserAggregateResolverService', () => {
   });
 
   it('should resolve PARENT aggregate context', () => {
+    repositoryFactoryService.createRepository
+      .mockReturnValueOnce(new StudentRepository(TestDataSource))
+      .mockReturnValueOnce(new ClassRepository(TestDataSource))
+      .mockReturnValueOnce(new ParentRepository(TestDataSource))
+      .mockReturnValueOnce(new ParentStudentRepository(TestDataSource));
     const context = service.resolve(AccessType.PARENT) as ParentStudentAggregateContext;
     expect(context).toBeDefined();
     expect(context.accessType).toBe(AccessType.PARENT);

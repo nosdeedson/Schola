@@ -2,16 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StudentController } from './student.controller';
 import { setEnv } from '../../../../../tests/mocks/env/env.mock';
 import { FindStudentRantingUsecase } from '@/application/usecases/find-student-rating/find-student-rating-usecase';
-import { DataBaseConnectionModule } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { mockStudentRatingUsecaseDtoOut } from '../../../../../tests/mocks/usecases/student-rating-usecase-dto.mocks';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { RatingEntity } from '@/infrastructure/entities/rating/rating.entity';
 import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/transfer-students/transfer-students-another-class.usecase';
 import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { studentsProviders } from './providers/students.providers';
-import { SaveCommentRatingRequestDto } from '../comment/dto/save-comment-rating-request.dto';
-import { CommentRatingUsecase } from '@/application/usecases/comment-rating/comment-rating-usecase';
+import { NotFoundException } from '@nestjs/common';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
 import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto';
@@ -19,18 +15,28 @@ import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto
 describe('StudentController', () => {
   let controller: StudentController;
   let module: TestingModule;
+  let findStudentRatingUsecase: { execute: jest.Mock; }
+  let transferStudentUsecase: { execute: jest.Mock; }
 
   beforeAll(async () => {
     setEnv();
     module = await Test.createTestingModule({
       controllers: [StudentController],
-      providers: [...studentsProviders],
-      imports: [
-        DataBaseConnectionModule
-      ]
+      providers: [
+        {
+          provide: FindStudentRantingUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: TransferStudentsAnotherClassUsecase,
+          useValue: { execute: jest.fn() }
+        }
+      ],
     }).compile();
 
     controller = module.get<StudentController>(StudentController);
+    findStudentRatingUsecase = module.get(FindStudentRantingUsecase);
+    transferStudentUsecase = module.get(TransferStudentsAnotherClassUsecase)
   });
 
   afterEach(async () => {
@@ -43,12 +49,11 @@ describe('StudentController', () => {
 
   it('should not find a rating', async () => {
     const wanteId = '12345';
-    const ratingStudent = jest.spyOn(FindStudentRantingUsecase.prototype, 'execute')
-      .mockResolvedValue(null);
+    findStudentRatingUsecase.execute.mockResolvedValue(null)
     const result = await controller.findRatingStudent(wanteId);
     expect(result).toBeNull();
-    expect(ratingStudent).toHaveBeenCalledTimes(1);
-    expect(ratingStudent).toHaveBeenCalledWith(wanteId)
+    expect(findStudentRatingUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(findStudentRatingUsecase.execute).toHaveBeenCalledWith(wanteId)
   });
 
   it('should find a rating', async () => {
@@ -57,34 +62,31 @@ describe('StudentController', () => {
     ratingEntity.comments = CommentEntity.toCommentsEntity([mockComment()], ratingEntity);
     const wantedId = ratingEntity.id;
     const out = mockStudentRatingUsecaseDtoOut(ratingEntity);
-    const ratingStudentUsecase = jest.spyOn(FindStudentRantingUsecase.prototype, 'execute')
-      .mockResolvedValue([out]);
+    findStudentRatingUsecase.execute.mockResolvedValue([out])
     const result = await controller.findRatingStudent(wantedId);
     expect(result).toBeDefined();
     expect(result[0].id).toBe(ratingEntity.id);
     expect(result[0].studentId).toBe(out.studentId);
     expect(result[0].comments).toBe(out.comments);
     expect(result[0].studentId).toBe(out.studentId);
-    expect(ratingStudentUsecase).toHaveBeenCalledTimes(1);
-    expect(ratingStudentUsecase).toHaveBeenCalledWith(wantedId);
+    expect(findStudentRatingUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(findStudentRatingUsecase.execute).toHaveBeenCalledWith(wantedId);
   });
 
   it('should throw an error if class not found', async () => {
     const dto = mockTransferStudendtsRequestDto();
-    const usecase = jest.spyOn(TransferStudentsAnotherClassUsecase.prototype, 'execute')
-      .mockImplementation(async () => Promise.reject(new NotFoundException('class not found')));
+    transferStudentUsecase.execute.mockRejectedValue(new NotFoundException('class not found'));
     await expect(controller.transferStudentsAnotherClass(dto))
       .rejects.toThrow(NotFoundException);
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
+    expect(transferStudentUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(transferStudentUsecase.execute).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
   });
 
   it('should update students', async () => {
     const dto = mockTransferStudendtsRequestDto();
-    const usecase = jest.spyOn(TransferStudentsAnotherClassUsecase.prototype, 'execute')
-      .mockImplementation(() => Promise.resolve(void 0));
+    transferStudentUsecase.execute.mockResolvedValue(void 0);
     expect(await controller.transferStudentsAnotherClass(dto)).toBe(void 0);
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
+    expect(transferStudentUsecase.execute).toHaveBeenCalledTimes(1);
+    expect(transferStudentUsecase.execute).toHaveBeenCalledWith(TransferStudendtsRequestDto.toUsecaseDto(dto));
   });
 });

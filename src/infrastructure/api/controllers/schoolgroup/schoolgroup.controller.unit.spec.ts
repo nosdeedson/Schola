@@ -20,15 +20,45 @@ describe('SchoolgroupController', () => {
   let controller: SchoolgroupController;
   let module: TestingModule;
 
+  let createSchoolgroupUseCase: { execute: jest.Mock; }
+  let deleteSchoolgroupUsecase: { execute: jest.Mock; }
+  let findSchoolgroupUsecase: { execute: jest.Mock; }
+  let findAllSchoolgroupUsecase: { execute: jest.Mock; }
+  let updateSchoolgroupUsecase: { execute: jest.Mock; }
+
   beforeAll(async () => {
-    setEnv();
     module = await Test.createTestingModule({
       controllers: [SchoolgroupController],
-      providers: [...schoolgroupsProviders ],
-      imports: [DataBaseConnectionModule]
+      providers: [
+        {
+          provide: CreateSchoolgroupUseCase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: DeleteSchoolgroupUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: FindSchoolgroupUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: FindAllSchoolgroupUsecase,
+          useValue: { execute: jest.fn() }
+        },
+        {
+          provide: UpdateSchoolgroupUsecase,
+          useValue: { execute: jest.fn() }
+        }
+      ],
     }).compile();
 
     controller = module.get<SchoolgroupController>(SchoolgroupController);
+    createSchoolgroupUseCase = module.get(CreateSchoolgroupUseCase);
+    deleteSchoolgroupUsecase = module.get(DeleteSchoolgroupUsecase);
+    findSchoolgroupUsecase = module.get(FindSchoolgroupUsecase);
+    findAllSchoolgroupUsecase = module.get(FindAllSchoolgroupUsecase);
+    updateSchoolgroupUsecase = module.get(UpdateSchoolgroupUsecase);
   });
 
   afterEach(() => {
@@ -46,74 +76,73 @@ describe('SchoolgroupController', () => {
   describe('create class', () => {
     it('should create a schoolgroup', async () => {
       let dto = mockCreateSchoolgroupRequestDto();
-      const usecases = jest.spyOn(CreateSchoolgroupUseCase.prototype, 'create')
-        .mockImplementation(() => Promise.resolve(void 0))
+      createSchoolgroupUseCase.execute.mockResolvedValue(void 0);
       expect(await controller.create(dto)).toBe(void 0);
-      expect(usecases).toHaveBeenCalledTimes(1);
-      expect(usecases).toHaveBeenCalledWith(dto);
+      expect(createSchoolgroupUseCase.execute).toHaveBeenCalledTimes(1);
+      expect(createSchoolgroupUseCase.execute).toHaveBeenCalledWith(dto);
     });
 
     it('should throw an exception', async () => {
       let dto = mockCreateSchoolgroupRequestDto();
-      const usecases = jest.spyOn(CreateSchoolgroupUseCase.prototype, 'create')
-        .mockImplementation(() => Promise.reject(new BadRequestException("test")));
+      createSchoolgroupUseCase.execute.mockRejectedValue(new BadRequestException("test"));
       await expect(controller.create(dto)).rejects.toMatchObject(new BadRequestException('test'));
-      expect(usecases).toHaveBeenCalledTimes(1);
-      expect(usecases).toHaveBeenCalledWith(dto);
+      expect(createSchoolgroupUseCase.execute).toHaveBeenCalledTimes(1);
+      expect(createSchoolgroupUseCase.execute).toHaveBeenCalledWith(dto);
     });
   });
 
-  it('should delete a schoolgroup', async () => {
-    let wantedId = '16efc675-a208-43fe-93dd-8b9a3eebe656';
-    const usecases = jest.spyOn(DeleteSchoolgroupUsecase.prototype, 'execute')
-      .mockImplementationOnce(() => Promise.resolve());
-    expect(await controller.delete(wantedId)).toBe(void 0);
-    expect(usecases).toHaveBeenCalledTimes(1);
-    expect(usecases).toHaveBeenCalledWith(wantedId);
-  })
+  describe('delete a schoolgroup', () => {
+    it('should delete a schoolgroup', async () => {
+      let wantedId = '16efc675-a208-43fe-93dd-8b9a3eebe656';
+      deleteSchoolgroupUsecase.execute.mockResolvedValue(void 0);
+      expect(await controller.delete(wantedId)).toBe(void 0);
+      expect(deleteSchoolgroupUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(deleteSchoolgroupUsecase.execute).toHaveBeenCalledWith(wantedId);
+    })
+  });
 
-  it('should find a schoolgroup', async () => {
-    const dto = mockFindClassDto();
-    let wantedId = dto.id;
-    const usecase = jest.spyOn(FindSchoolgroupUsecase.prototype, 'execute')
-      .mockImplementation(() => Promise.resolve(dto))
-    const result = await controller.find(wantedId);
-    expect(result).toBeDefined();
-    expect(result.id).toBe(dto.id);
-    expect(usecase).toHaveBeenCalledTimes(1);
-    expect(usecase).toHaveBeenCalledWith(wantedId);
-  })
+  describe('find schoolgroup', () => {
+    it('should find a schoolgroup', async () => {
+      const dto = mockFindClassDto();
+      let wantedId = dto.id;
+      findSchoolgroupUsecase.execute.mockResolvedValue(dto);
+      const result = await controller.find(wantedId);
+      expect(result).toBeDefined();
+      expect(result.id).toBe(dto.id);
+      expect(findSchoolgroupUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(findSchoolgroupUsecase.execute).toHaveBeenCalledWith(wantedId);
+    });
+  });
 
-  it('should return all schoolgroup', async () => {
-    const entity1 = ClassEntity.toClassEntity(mockClass());
-    const entity2 = ClassEntity.toClassEntity(mockClass());
-    const entities = new FindAllClassDto([entity1, entity2]);
-    const usecase = jest.spyOn(FindAllSchoolgroupUsecase.prototype, 'execute')
-      .mockImplementation(() => Promise.resolve(entities));
-    const result = await controller.findAll();
-    expect(result).toBeDefined();
-    expect(result).toHaveLength(2);
-    expect(usecase).toHaveBeenCalledTimes(1)
-  })
+  describe('find all schoolgroup', () => {
+
+    it('should return all schoolgroup', async () => {
+      const entity1 = ClassEntity.toClassEntity(mockClass());
+      const entity2 = ClassEntity.toClassEntity(mockClass());
+      const entities = new FindAllClassDto([entity1, entity2]);
+      findAllSchoolgroupUsecase.execute.mockResolvedValue(entities);
+      const result = await controller.findAll();
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(2);
+      expect(findAllSchoolgroupUsecase.execute).toHaveBeenCalledTimes(1)
+    })
+  });
 
   describe('update class', () => {
     it('should update schoolgroup', async () => {
       const dto = mockUpdateSchoolgroupRequestDto();
-      const usecase = jest.spyOn(UpdateSchoolgroupUsecase.prototype, 'update')
-        .mockImplementation(() => Promise.resolve(void 0));
-
+      updateSchoolgroupUsecase.execute.mockResolvedValue(void 0);
       expect(await controller.update(dto)).toBe(void 0);
-      expect(usecase).toHaveBeenCalledTimes(1);
-      expect(usecase).toHaveBeenCalledWith(dto);
+      expect(updateSchoolgroupUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(updateSchoolgroupUsecase.execute).toHaveBeenCalledWith(dto);
     });
 
     it('should throw an exception', async () => {
       const dto = mockUpdateSchoolgroupRequestDto();
-      const usecase = jest.spyOn(UpdateSchoolgroupUsecase.prototype, 'update')
-        .mockImplementation(() => Promise.reject(new BadRequestException("test")));
+      updateSchoolgroupUsecase.execute.mockRejectedValue(new BadRequestException('test'));
       await expect(controller.update(dto)).rejects.toMatchObject(new BadRequestException('test'));
-      expect(usecase).toHaveBeenCalledTimes(1);
-      expect(usecase).toHaveBeenCalledWith(dto);
+      expect(updateSchoolgroupUsecase.execute).toHaveBeenCalledTimes(1);
+      expect(updateSchoolgroupUsecase.execute).toHaveBeenCalledWith(dto);
     });
   });
 

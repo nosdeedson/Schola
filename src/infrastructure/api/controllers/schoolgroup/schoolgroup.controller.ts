@@ -34,7 +34,7 @@ export class SchoolgroupController {
             scheduleDto: dto.scheduleDto,
             teacherName: dto.teacherName
         })
-        await this.createSchoolgroup.create(usecaseDto);
+        await this.createSchoolgroup.execute(usecaseDto);
     }
 
     @ApiOperation({ description: 'Delete a schoolgroup' })
@@ -73,7 +73,7 @@ export class SchoolgroupController {
     @ApiResponse({ status: '4XX', description: 'If schoolgroup not found throw exeception' })
     @Patch()
     async update(@Body() dto: UpdateSchoolgroupRequestDto): Promise<void> {
-        await this.updateSchoolgroup.update(UpdateSchoolgroupRequestDto.toUpdateSchoolgroupUsecaseDto(dto));
+        await this.updateSchoolgroup.execute(UpdateSchoolgroupRequestDto.toUpdateSchoolgroupUsecaseDto(dto));
     }
 
 }

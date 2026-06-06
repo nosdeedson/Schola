@@ -9,23 +9,21 @@ import { SystemError } from '../../../application/services/@shared/system-error'
 import { FindParentService } from '../../../application/services/parent/find/find.parent.service';
 import { FindStudentService } from '../../../application/services/student/find/find.student.service';
 import { FindWorkerService } from '../../../application/services/worker/find/find.worker.service';
+import { ClassRepository } from '@/infrastructure/repositories/class/class.repository';
+import { ParentRepository } from '@/infrastructure/repositories/parent/parent.repository';
+import { ParentStudentRepository } from '@/infrastructure/repositories/parent-student/parent.student.repositoy';
+import { StudentRepository } from '@/infrastructure/repositories/student/student.repository';
+import { WorkerRepository } from '@/infrastructure/repositories/worker/worker.repository';
 
 describe('FindUserFactoryService', () => {
   let service: FindUserFactoryService;
-  let module: TestingModule;
+  let userAggregateResolver: jest.Mocked<UserAggregateResolverService>;
 
   beforeAll(async () => {
-    setEnv();
-    module = await Test.createTestingModule({
-      providers: [
-        FindUserFactoryService,
-        UserAggregateResolverService,
-        RepositoryFactoryService
-      ],
-      imports: [DataBaseConnectionModule]
-    }).compile();
-
-    service = module.get<FindUserFactoryService>(FindUserFactoryService);
+    userAggregateResolver = {
+      resolve: jest.fn()
+    } as any;
+    service = new FindUserFactoryService(userAggregateResolver);
   });
 
   afterEach(async () => {
@@ -37,43 +35,61 @@ describe('FindUserFactoryService', () => {
   });
 
   it('should return a FindParentService', async () => {
+    userAggregateResolver.resolve.mockReturnValue({
+      accessType: AccessType.PARENT,
+      studentRepository: {} as StudentRepository,
+      classRepository: {} as ClassRepository,
+      parentRepository: {} as ParentRepository,
+      parentStudentRepository: {} as ParentStudentRepository
+    }) as any;
     const findParentService = await service.findUserServiceFactory(AccessType.PARENT);
     expect(findParentService).toBeInstanceOf(FindParentService);
   });
 
   it('should return a FindStudentService', async () => {
+    userAggregateResolver.resolve.mockReturnValue({
+      accessType: AccessType.STUDENT,
+      studentRepository: {} as StudentRepository,
+      classRepository: {} as ClassRepository,
+      parentRepository: {} as ParentRepository,
+      parentStudentRepository: {} as ParentStudentRepository
+    }) as any;
     const findStudentService = await service.findUserServiceFactory(AccessType.STUDENT);
     expect(findStudentService).toBeInstanceOf(FindStudentService);
   });
 
-  it('should return a FindWorkerService', async () => {
+  it('should return a FindWorkerService as teacher', async () => {
+    userAggregateResolver.resolve.mockReturnValue({
+      accessType: AccessType.TEACHER,
+      workerRepository: {} as WorkerRepository,
+      classRepository: {} as ClassRepository
+    })
     const findWorkerService = await service.findUserServiceFactory(AccessType.TEACHER);
     expect(findWorkerService).toBeInstanceOf(FindWorkerService);
   });
 
+  it('should return a FindWorkerService as admin', async () => {
+    userAggregateResolver.resolve.mockReturnValue({
+      accessType: AccessType.ADMIN,
+      workerRepository: {} as WorkerRepository,
+      classRepository: {} as ClassRepository
+    })
+    const findWorkerService = await service.findUserServiceFactory(AccessType.ADMIN);
+    expect(findWorkerService).toBeInstanceOf(FindWorkerService);
+  });
+
   it('should throw a SystemError from aggegateResolver', async () => {
-    try {
-      await service.findUserServiceFactory('NO_EXIXT' as AccessType);
-    } catch (error) {
-      expect(error).toBeInstanceOf(SystemError);
-      //@ts-ignore
-      expect(error.errors).toStrictEqual([{ context: "UserAggregateResolver", message: 'Invalid access type' }]);
-    }
+    const error = new SystemError([{ context: 'UserAggregateResolver', message: 'Invalid access type' },], 400);
+    userAggregateResolver.resolve.mockImplementation(() => { throw error });
+    await expect(service.findUserServiceFactory('NO_EXIXT' as AccessType))
+      .rejects.toMatchObject({
+        errors: [
+          {
+            context: 'UserAggregateResolver',
+            message: 'Invalid access type'
+          }
+        ],
+        statusCode: 400
+      })
   });
-
-  it('should throw a SystemError from findUserFactory', async () => {
-    try {
-      jest.spyOn(UserAggregateResolverService.prototype, 'resolve')
-        .mockImplementation(() => ({
-          accessType: 'NO_EXIST' as AccessType,
-          parentRepository: undefined
-        }) as UserAggregateContext)
-      await service.findUserServiceFactory('NO_EXIST' as AccessType);
-    } catch (error) {
-      expect(error).toBeInstanceOf(SystemError);
-      //@ts-ignore
-      expect(error.errors).toStrictEqual([{ context: "find User", message: 'fail to create service to find user' }])
-    }
-  });
-
 });

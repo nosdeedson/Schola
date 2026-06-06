@@ -18,9 +18,7 @@ describe('CommentController', () => {
       providers: [
         {
           provide: CommentRatingUsecase,
-          useValue: {
-            execute: jest.fn()
-          }
+          useValue: { execute: jest.fn() }
         }
       ]
     }).compile();
