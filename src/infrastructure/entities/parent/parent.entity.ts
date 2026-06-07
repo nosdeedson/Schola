@@ -14,20 +14,4 @@ export class ParentEntity extends PersonEntity {
     @OneToMany(() => ParentStudentEntity, ps => ps.parent)
     parentStudents: ParentStudentEntity[];
 
-    static toParentEntity(parent: Parent): ParentEntity {
-        let model = new ParentEntity();
-        model.birthday = parent.getBirthday();
-        model.createdAt = parent.getCreatedAt();
-        model.deletedAt = parent.getDeletedAt();
-        model.fullName = parent.getName();
-        model.id = parent.getId();
-        model.updatedAt = parent.getUpdatedAt();
-        return model;
-    }
-
-    static toParentsModels(parents: Parent[]): ParentEntity[] {
-        let models = parents.map(it => this.toParentEntity(it));
-        return models;
-    }
-
 }
