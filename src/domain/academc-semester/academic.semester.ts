@@ -28,16 +28,20 @@ export class AcademicSemester extends Entity {
         new AcademicSemesterValidator().validate(this);
     }
 
-    getFirstQuarter(): Quarter{
+    getFirstQuarter(): Quarter {
         return this.firstQuarter;
     }
 
-    getSecondQuarter(): Quarter{
+    getSecondQuarter(): Quarter {
         return this.secondQuarter;
-    } 
+    }
 
-    getCurrentSemester(): boolean{
+    getCurrentSemester(): boolean {
         return this.currentSemester;
+    }
+
+    setCurrentSemester(current: boolean) {
+        this.currentSemester = current;
     }
 
 }
