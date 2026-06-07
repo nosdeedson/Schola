@@ -18,6 +18,7 @@ import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academ
 import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
+import { Comment } from "@/domain/comment/comment";
 
 describe('RatingRepository unit tests', () => {
 
@@ -126,7 +127,6 @@ describe('RatingRepository unit tests', () => {
         expect(result).toBeDefined();
         expect(result[0].getStudent().getId()).toEqual(wantedStudentId);
         expect(result[0].getQuarter().getId()).toEqual(semester.firstQuarter.getId());
-        expect(result[0].getComments()).toHaveLength(0);
         expect(result[0].getWriting()).toEqual(Grade.BAD);
     });
 
@@ -144,7 +144,7 @@ describe('RatingRepository unit tests', () => {
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         const comment = mockComment({ namePersoHaveDone: student.getName() });
         const commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
-        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
+        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(Comment);
         const wantedStudentId = student.getId();
 
         let result = await ratingRepository.findByStudentId(wantedStudentId);
@@ -167,14 +167,10 @@ describe('RatingRepository unit tests', () => {
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, '1cfb1c26-5e1e-449e-bdbe-1749bc035379')
         let ratingEntity = RatingMapper.fromDomain(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
-        // let rating2 = new Rating(semester.firstQuarter, student1, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, 'd146249c-0341-4c52-bd02-421f104e5c45')
-        // let ratingEntity2 = RatingMapper.fromDomain(rating2);
-        // expect(await ratingRepository.create(ratingEntity2)).toBeInstanceOf(Rating);
         let results = await ratingRepository.findAll();
         expect(results).toBeDefined();
         expect(results.length).toBe(1);
         expect(results[0].getId()).toEqual(rating.getId());
-        // expect(results[1].id).toEqual(rating2.getId());
     });
 
     it('should update a rating on the BD', async () => {

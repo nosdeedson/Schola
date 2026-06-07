@@ -9,8 +9,9 @@ export class RatingMapper {
     static fromEntity(entity: RatingEntity): Rating {
         if (!entity) return null;
         const student = entity.student ? StudentMapper.fromEntity(entity.student) : null;
+        const quarter = QuarterMapper.fromEntity(entity.quarter);
         const rating = new Rating(
-            QuarterMapper.fromEntity(entity.quarter),
+            quarter,
             student,
             entity.ratingDate,
             entity.listing,

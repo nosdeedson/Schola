@@ -46,14 +46,22 @@ export class RatingRepository implements RatingRepositoryInterface {
         const model = await this.ratingRepository.findOne({
             where: { id: id },
             relations: {
-                student: true
+                student: true,
+                comments: true,
+                quarter: true,
             }
         });
         return RatingMapper.fromEntity(model);
     }
 
     async findAll(): Promise<Rating[]> {
-        const all = await this.ratingRepository.find();
+        const all = await this.ratingRepository.find({
+            relations: {
+                student: true,
+                comments: true,
+                quarter: true
+            }
+        });
         return all.map(it => RatingMapper.fromEntity(it));
     }
 
