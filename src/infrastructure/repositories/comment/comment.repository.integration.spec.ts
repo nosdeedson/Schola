@@ -17,6 +17,8 @@ import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
 import { mockRating } from '../../../../tests/mocks/domain/rating.mocks';
 import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
 
 describe('CommentRepository unit test', () => {
 
@@ -70,7 +72,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -82,14 +84,13 @@ describe('CommentRepository unit test', () => {
         //let entityBD = await ratingRepository.find(ratingEntity.id);
 
         let comment = mockComment();
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         let wantedId = comment.getId();
-        expect(await repository.create(model)).toBeInstanceOf(CommentEntity);
+        expect(await repository.create(model)).toBeInstanceOf(Comment);
 
         let result = await repository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toBe(wantedId);
-        expect(result.rating).toBeUndefined();
+        expect(result.getId()).toBe(wantedId);
     });
 
     it('should delete a comment', async () => {
@@ -102,7 +103,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -115,7 +116,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         await repository.create(model);
 
         expect(await repository.delete(wantedId)).toBe(void 0)
@@ -132,7 +133,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -145,7 +146,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = 'd70bc62e-a53d-4cef-8366-de63099ebf4d';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', '489f0126-e7ca-44d6-8b11-13b61adc35d6');
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         await repository.create(model);
 
         expect(await repository.delete(wantedId)).toBe(void 0)
@@ -161,7 +162,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -174,13 +175,13 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         await repository.create(model);
 
         let result = await repository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId)
-        expect(result.comment).toEqual(wantedComment)
+        expect(result.getId()).toEqual(wantedId)
+        expect(result.getComment()).toEqual(wantedComment)
     })
 
     it('should find all comments', async () => {
@@ -193,7 +194,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -203,20 +204,20 @@ describe('CommentRepository unit test', () => {
         await ratingRepository.create(ratingEntity);
 
         let comment = new Comment('just a comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         await repository.create(model);
 
         let comment2 = new Comment('just another comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
-        let model2 = CommentEntity.toCommentEntity(comment2, ratingEntity);
+        let model2 = CommentMapper.fromDomain(comment2, ratingEntity);
         await repository.create(model2);
 
         let results = await repository.findAll();
         expect(results).toBeDefined();
         expect(results.length).toBe(2);
-        expect(results[0].id).toEqual(comment.getId())
-        expect(results[0].comment).toEqual(comment.getComment())
-        expect(results[1].id).toEqual(comment2.getId())
-        expect(results[1].comment).toEqual(comment2.getComment())
+        expect(results[0].getId()).toEqual(comment.getId())
+        expect(results[0].getComment()).toEqual(comment.getComment())
+        expect(results[1].getId()).toEqual(comment2.getId())
+        expect(results[1].getComment()).toEqual(comment2.getComment())
     })
 
     it('should update a comment', async () => {
@@ -229,7 +230,7 @@ describe('CommentRepository unit test', () => {
         const parent = new Parent({ birthday: new Date(), name: "jose", nameStudents: [student.getName()], id: '0d0c4248-695c-43a5-963e-bc5729abead6' });
         student.setParents(parent);
 
-        let studentModel = StudentEntity.toStudentEntity(student);
+        let studentModel = StudentMapper.fromDomain(student);
         await studentRepository.create(studentModel);
 
         parent.setStudents([student])
@@ -241,7 +242,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, ratingEntity);
         await repository.create(model);
 
         let change = 'changed the comment';
@@ -252,8 +253,8 @@ describe('CommentRepository unit test', () => {
         let result = await repository.find(wantedId);
 
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId)
-        expect(result.comment).toEqual(change)
+        expect(result.getId()).toEqual(wantedId)
+        expect(result.getComment()).toEqual(change)
     });
 
 });

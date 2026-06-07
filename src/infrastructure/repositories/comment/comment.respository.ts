@@ -3,6 +3,8 @@ import { CommentRepositoryInterface } from '../../../domain/comment/comment.repo
 import { CommentEntity } from '../../../infrastructure/entities/comment/comment.entity';
 import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { Inject } from '@nestjs/common';
+import { Comment } from '@/domain/comment/comment';
+import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
 
 
 export class CommentRepository implements CommentRepositoryInterface {
@@ -13,16 +15,16 @@ export class CommentRepository implements CommentRepositoryInterface {
         private dataSource: DataSource
     ) {
         this.commentRepository = this.dataSource.getRepository(CommentEntity)
-     }
+    }
 
-    async create(entity: CommentEntity): Promise<CommentEntity> {
+    async create(entity: CommentEntity): Promise<Comment> {
         const queryRunner = this.dataSource.createQueryRunner();
         try {
             await queryRunner.connect();
             await queryRunner.startTransaction();
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return CommentMapper.fromEntity(result);
         } catch (error: any) {
             console.log(error)
             await queryRunner.rollbackTransaction();
@@ -42,15 +44,16 @@ export class CommentRepository implements CommentRepositoryInterface {
             .execute();
     }
 
-    async find(id: string): Promise<CommentEntity> {
-        const model = await this.commentRepository.findOne({
+    async find(id: string): Promise<Comment> {
+        const entity = await this.commentRepository.findOne({
             where: { id: id }
-        })
-        return model;
+        });
+        return CommentMapper.fromEntity(entity);
     }
 
-    async findAll(): Promise<CommentEntity[]> {
-        return await this.commentRepository.find();
+    async findAll(): Promise<Comment[]> {
+        const all = await this.commentRepository.find();
+        return all.map(it => CommentMapper.fromEntity(it));
     }
 
     async update(entity: CommentEntity) {

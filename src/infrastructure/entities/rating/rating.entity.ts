@@ -6,6 +6,7 @@ import { CommentEntity } from "../comment/comment.entity";
 import { StudentEntity } from "../student/student.entity";
 import { QuarterEntity } from "../quarter/quarter.entity";
 import { QuarterMapper } from "../../mappers/semester/quarter-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 
 @Unique("unique_rating_by_quarter", ["quarter", "student"])
@@ -148,7 +149,7 @@ export class RatingEntity extends GenericEntity {
         model.ratingDate = rating.getRatingDate();
         model.reading = rating.getReading();
         model.speaking = rating.getSpeaking();
-        model.student = StudentEntity.toStudentEntity(rating.getStudent());
+        model.student = StudentMapper.fromDomain(rating.getStudent());
         model.updatedAt = rating.getUpdatedAt();
         model.vocabulary = rating.getVocabulary();
         model.writing = rating.getWriting();

@@ -3,11 +3,12 @@ import { UserConverter } from "../@shared/user-converter/user.converter.interfac
 import { PersonEntity } from "../@shared/person.entity";
 import { WorkerEntity } from "./worker.entity";
 import { ClassEntity } from "../class/class.entity";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
-export class WorkerUserconverter implements UserConverter<Worker>{
+export class WorkerUserconverter implements UserConverter<Worker> {
 
     converter(entity: Worker, schooGroups?: ClassEntity): PersonEntity {
-        return WorkerEntity.toWorkerEntity(entity, schooGroups);
+        return WorkerMapper.fromDomain(entity, schooGroups);
     }
-    
+
 }
