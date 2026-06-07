@@ -15,6 +15,9 @@ import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity"
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { QueryFailedError } from "typeorm";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
 
 describe('RatingRepository unit tests', () => {
 
@@ -55,17 +58,17 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         let wantedId = rating.getId();
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         let result = await ratingRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId);
+        expect(result.getId()).toEqual(wantedId);
     });
 
     it('should delete a rating on the BD', async () => {
@@ -74,13 +77,13 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         let wantedId = rating.getId();
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         let result = await ratingRepository.find(wantedId);
         expect(result).toBeDefined();
         expect(await ratingRepository.delete(wantedId)).toBe(void 0);
@@ -92,17 +95,17 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         let wantedId = rating.getId();
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         let result = await ratingRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId);
-        expect(result.writing).toEqual(Grade.BAD)
+        expect(result.getId()).toEqual(wantedId);
+        expect(result.getWriting()).toEqual(Grade.BAD)
     });
 
     it('should find a rating by student', async () => {
@@ -112,19 +115,19 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        let ratingEntity = RatingMapper.fromDomain(rating);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         const wantedStudentId = student.getId();
 
         let result = await ratingRepository.findByStudentId(wantedStudentId);
         expect(result).toBeDefined();
-        expect(result[0].student.id).toEqual(wantedStudentId);
-        expect(result[0].quarter.id).toEqual(semester.firstQuarter.getId());
-        expect(result[0].comments).toHaveLength(0);
-        expect(result[0].writing).toEqual(Grade.BAD);
+        expect(result[0].getStudent().getId()).toEqual(wantedStudentId);
+        expect(result[0].getQuarter().getId()).toEqual(semester.firstQuarter.getId());
+        expect(result[0].getComments()).toHaveLength(0);
+        expect(result[0].getWriting()).toEqual(Grade.BAD);
     });
 
     it('should find a rating with comment by student', async () => {
@@ -134,22 +137,22 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,);
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        let ratingEntity = RatingMapper.fromDomain(rating);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         const comment = mockComment({ namePersoHaveDone: student.getName() });
-        const commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
+        const commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
         const wantedStudentId = student.getId();
 
         let result = await ratingRepository.findByStudentId(wantedStudentId);
         expect(result).toBeDefined();
-        expect(result[0].student.id).toEqual(wantedStudentId);
-        expect(result[0].quarter.id).toEqual(semester.firstQuarter.getId());
-        expect(result[0].comments).toHaveLength(1);
-        expect(result[0].writing).toEqual(Grade.BAD);
+        expect(result[0].getStudent().getId()).toEqual(wantedStudentId);
+        expect(result[0].getQuarter().getId()).toEqual(semester.firstQuarter.getId());
+        expect(result[0].getComments()).toHaveLength(1);
+        expect(result[0].getWriting()).toEqual(Grade.BAD);
     });
 
     it('should find all rating on the BD', async () => {
@@ -158,19 +161,19 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, '1cfb1c26-5e1e-449e-bdbe-1749bc035379')
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        let ratingEntity = RatingMapper.fromDomain(rating);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         // let rating2 = new Rating(semester.firstQuarter, student1, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, 'd146249c-0341-4c52-bd02-421f104e5c45')
-        // let ratingEntity2 = RatingEntity.toRatingEntity(rating2);
-        // expect(await ratingRepository.create(ratingEntity2)).toBeInstanceOf(RatingEntity);
+        // let ratingEntity2 = RatingMapper.fromDomain(rating2);
+        // expect(await ratingRepository.create(ratingEntity2)).toBeInstanceOf(Rating);
         let results = await ratingRepository.findAll();
         expect(results).toBeDefined();
         expect(results.length).toBe(1);
-        expect(results[0].id).toEqual(rating.getId());
+        expect(results[0].getId()).toEqual(rating.getId());
         // expect(results[1].id).toEqual(rating2.getId());
     });
 
@@ -180,13 +183,13 @@ describe('RatingRepository unit tests', () => {
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         await studentRepository.create(studentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD,)
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         let wantedId = rating.getId();
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         let wantedWriting = Grade.GOOD;
         let wantedListing = Grade.GOOD;
@@ -196,9 +199,9 @@ describe('RatingRepository unit tests', () => {
 
         let result = await ratingRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId);
-        expect(result.writing).toEqual(wantedWriting);
-        expect(result.listing).toEqual(wantedListing);
+        expect(result.getId()).toEqual(wantedId);
+        expect(result.getWriting()).toEqual(wantedWriting);
+        expect(result.getListing()).toEqual(wantedListing);
     });
 
     it('should throw a QueryFailedErro', async () => {

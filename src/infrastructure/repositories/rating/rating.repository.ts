@@ -3,6 +3,8 @@ import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RatingEntity } from '../../../infrastructure/entities/rating/rating.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
+import { Rating } from '@/domain/rating/rating';
+import { RatingMapper } from '@/infrastructure/mappers/rating/rating-mapper';
 
 @Injectable()
 export class RatingRepository implements RatingRepositoryInterface {
@@ -14,14 +16,14 @@ export class RatingRepository implements RatingRepositoryInterface {
         this.ratingRepository = this.dataSource.getRepository(RatingEntity);
     }
 
-    async create(entity: RatingEntity): Promise<RatingEntity> {
+    async create(entity: RatingEntity): Promise<Rating> {
         const queryRunner = this.dataSource.createQueryRunner();
         try {
             await queryRunner.connect();
             await queryRunner.startTransaction();
             let result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return RatingMapper.fromEntity(result);
         } catch (error: any) {
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -40,23 +42,23 @@ export class RatingRepository implements RatingRepositoryInterface {
             .execute();
     }
 
-    async find(id: string): Promise<RatingEntity> {
+    async find(id: string): Promise<Rating> {
         const model = await this.ratingRepository.findOne({
             where: { id: id },
             relations: {
                 student: true
             }
         });
-        return model;
+        return RatingMapper.fromEntity(model);
     }
 
-    async findAll(): Promise<RatingEntity[]> {
+    async findAll(): Promise<Rating[]> {
         const all = await this.ratingRepository.find();
-        return all;
+        return all.map(it => RatingMapper.fromEntity(it));
     }
 
-    async findByStudentId(studentId: string): Promise<RatingEntity[]> {
-        return await this.ratingRepository.find({
+    async findByStudentId(studentId: string): Promise<Rating[]> {
+        const all = await this.ratingRepository.find({
             where: {
                 student: {
                     id: studentId
@@ -71,6 +73,7 @@ export class RatingRepository implements RatingRepositoryInterface {
                 quarter: true
             }
         });
+        return all.map(it => RatingMapper.fromEntity(it));
     }
 
     async update(entity: RatingEntity) {

@@ -138,30 +138,4 @@ export class RatingEntity extends GenericEntity {
     })
     student: StudentEntity;
 
-    static toRatingEntity(rating: Rating): RatingEntity {
-        let model = new RatingEntity();
-        model.createdAt = rating.getCreatedAt();
-        model.deletedAt = rating.getDeletedAt();
-        model.grammar = rating.getGrammar();
-        model.homework = rating.getHomework();
-        model.id = rating.getId();
-        model.listing = rating.getListing();
-        model.ratingDate = rating.getRatingDate();
-        model.reading = rating.getReading();
-        model.speaking = rating.getSpeaking();
-        model.student = StudentMapper.fromDomain(rating.getStudent());
-        model.updatedAt = rating.getUpdatedAt();
-        model.vocabulary = rating.getVocabulary();
-        model.writing = rating.getWriting();
-        model.quarter = QuarterMapper.fromDomain(rating.getQuarter());
-        return model;
-    }
-
-    static toRatingsEntity(ratings: Rating[]): RatingEntity[] {
-        if (!ratings) {
-            return undefined
-        }
-        return ratings.map(it => this.toRatingEntity(it));
-    }
-
 }

@@ -4,6 +4,8 @@ import { StudentEntity } from '../../../infrastructure/entities/student/student.
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
+import { Student } from '@/domain/student/student';
+import { StudentMapper } from '@/infrastructure/mappers/student/student-mapper';
 
 @Injectable()
 export class StudentRepository implements StudentRepositoryInterface {
@@ -16,14 +18,14 @@ export class StudentRepository implements StudentRepositoryInterface {
         this.studentRepository = this.dataSource.getRepository(StudentEntity);
     }
 
-    async create(entity: StudentEntity): Promise<StudentEntity> {
+    async create(entity: StudentEntity): Promise<Student> {
         const queryRunner = this.dataSource.createQueryRunner();
         try {
             await queryRunner.connect();
             await queryRunner.startTransaction();
             let result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return StudentMapper.fromEntity(result);
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error as any);
@@ -37,24 +39,26 @@ export class StudentRepository implements StudentRepositoryInterface {
         const student = await this.studentRepository.delete(id)
     }
 
-    async find(id: string): Promise<StudentEntity> {
-        return await this.studentRepository.findOne({
+    async find(id: string): Promise<Student> {
+        const entity = await this.studentRepository.findOne({
             where: { id: id, },
             relations: {
                 schoolGroup: true,
             }
         });
+        return StudentMapper.fromEntity(entity);
     }
 
-    async findByIds(studentIds: string[]): Promise<StudentEntity[]> {
-        return await this.studentRepository.find({
+    async findByIds(studentIds: string[]): Promise<Student[]> {
+        const all = await this.studentRepository.find({
             where: {
                 id: In(studentIds)
             }
-        })
+        });
+        return all.map(it => StudentMapper.fromEntity(it));
     }
 
-    async findStudentByNameAndParentNames(studentName: string, parentNames: string[]): Promise<StudentEntity> {
+    async findStudentByNameAndParentNames(studentName: string, parentNames: string[]): Promise<Student> {
         const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
             .innerJoin('ps.student', 'student')
             .innerJoin('ps.parent', 'parent')
@@ -64,15 +68,16 @@ export class StudentRepository implements StudentRepositoryInterface {
             .select('student')
             .distinct(true);
         const s = await qb.getRawOne();
-        return s ? this.studentRepository.findOneBy({ id: s.student_id }) : null;
+        return s ? StudentMapper.fromEntity(await this.studentRepository.findOneBy({ id: s.student_id })) : null;
     }
 
-    async findAll(): Promise<StudentEntity[]> {
-        return await this.studentRepository.find({
+    async findAll(): Promise<Student[]> {
+        const all = await this.studentRepository.find({
             relations: {
                 schoolGroup: true
             }
         });
+        return all.map(it => StudentMapper.fromEntity(it));
     }
 
     async update(entity: StudentEntity) {

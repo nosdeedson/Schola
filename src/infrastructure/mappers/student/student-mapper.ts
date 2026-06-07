@@ -6,6 +6,7 @@ export class StudentMapper {
 
 
     static fromEntity(entity: StudentEntity): Student {
+        if (!entity) return null;
         return new Student({
             nameParents: [],
             birthday: entity.birthday,

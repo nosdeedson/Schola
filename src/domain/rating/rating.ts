@@ -30,11 +30,11 @@ export class Rating extends Entity {
         grammar: Grade,
         homework: Grade,
         vocabulary: Grade,
-        id?: string, 
-        createdAt?: Date, 
-        updatedAt?: Date, 
+        id?: string,
+        createdAt?: Date,
+        updatedAt?: Date,
         deletedAt?: Date
-    ){
+    ) {
         super(id, createdAt, updatedAt, deletedAt);
         this.quarter = quarter;
         this.student = student;
@@ -53,30 +53,34 @@ export class Rating extends Entity {
         new RatingValidator().validate(this);
     }
 
-    getComments(): Comment[]{
+    getComments(): Comment[] {
         return this.comments;
     }
 
     setComments(comment: Comment) {
-        if(!this.comments){
+        if (!this.comments) {
             this.comments = [];
         }
         this.comments.push(comment)
     }
-    
-    getQuarter(): Quarter{
+
+    getQuarter(): Quarter {
         return this.quarter;
     }
 
-    getStudent(): Student{
+    getStudent(): Student {
         return this.student;
     }
 
-    getRatingDate(): Date{
+    setStudent(student: Student) {
+        this.student = student;
+    }
+
+    getRatingDate(): Date {
         return this.ratingDate;
     }
 
-    getListing(): Grade{
+    getListing(): Grade {
         return this.listing;
     }
 
@@ -84,51 +88,51 @@ export class Rating extends Entity {
         this.listing = listing;
     }
 
-    getWriting(): Grade{
+    getWriting(): Grade {
         return this.writing;
     }
 
-    setWriting(writing: Grade){
+    setWriting(writing: Grade) {
         this.writing = writing;
     }
 
-    getReading(): Grade{
+    getReading(): Grade {
         return this.reading;
     }
 
-    setReading(reading: Grade){
+    setReading(reading: Grade) {
         this.reading = reading;
     }
 
-    getSpeaking(): Grade{
+    getSpeaking(): Grade {
         return this.speaking
-    } 
+    }
 
-    setSpeaking(speaking: Grade){
+    setSpeaking(speaking: Grade) {
         this.speaking = speaking;
     }
 
-    getGrammar(): Grade{
+    getGrammar(): Grade {
         return this.grammar;
     }
 
-    setGrammar(grammar: Grade){
+    setGrammar(grammar: Grade) {
         this.grammar = grammar;
     }
 
-    getHomework(): Grade{
+    getHomework(): Grade {
         return this.homework;
     }
 
-    setHomework( homework: Grade){
+    setHomework(homework: Grade) {
         this.homework = homework;
     }
 
-    getVocabulary(): Grade{
+    getVocabulary(): Grade {
         return this.vocabulary;
     }
-    
-    setVocabulary(vocabulary: Grade){
+
+    setVocabulary(vocabulary: Grade) {
         this.vocabulary = vocabulary;
     }
 }
