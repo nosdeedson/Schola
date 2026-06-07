@@ -1,10 +1,10 @@
-import { ClassesOfTeacherDto } from "@/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
 import { ClassRepositoryInterface } from "../../../domain/class/class.repository.interface";
 import { ClassEntity } from "../../../infrastructure/entities/class/class.entity";
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { Inject, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
+import { Class } from "@/domain/class/class";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
 
 @Injectable()
 export class ClassRepository implements ClassRepositoryInterface {
@@ -16,7 +16,7 @@ export class ClassRepository implements ClassRepositoryInterface {
         this.classRepository = this.dataSource.getRepository(ClassEntity)
     }
 
-    async create(entity: ClassEntity, relation?: ClassEntity): Promise<ClassEntity> {
+    async create(entity: ClassEntity, relation?: ClassEntity): Promise<Class> {
         const queryRunner = this.dataSource.createQueryRunner();
 
         try {
@@ -24,7 +24,7 @@ export class ClassRepository implements ClassRepositoryInterface {
             await queryRunner.startTransaction();
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return ClassMapper.fromEntity(result);
         } catch (error: any) {
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -41,39 +41,41 @@ export class ClassRepository implements ClassRepositoryInterface {
             .execute();
     }
 
-    async find(id: string): Promise<ClassEntity> {
-        let model = await this.classRepository.findOne({
+    async find(id: string): Promise<Class> {
+        let entity = await this.classRepository.findOne({
             where: { id: id },
             relations: {
                 students: true,
                 teacher: true
             }
         });
-        return model;
+        if (!entity) return null;
+        return ClassMapper.fromEntity(entity);
     }
 
-    async findByClassCode(classCode: string): Promise<ClassEntity> {
-        const model = this.classRepository.findOne({
+    async findByClassCode(classCode: string): Promise<Class> {
+        const entity = await this.classRepository.findOne({
             where: { classCode: classCode },
             relations: {
                 students: true,
                 teacher: true
             }
         });
-        return model;
+        if (!entity) return null;
+        return ClassMapper.fromEntity(entity);
     }
 
-    async findAll(): Promise<ClassEntity[]> {
+    async findAll(): Promise<Class[]> {
         let all = await this.classRepository.find({
             relations: {
                 students: true,
                 teacher: true
             }
         })
-        return all;
+        return all.map(it => ClassMapper.fromEntity(it));
     }
 
-    async findByTeacherId(teacherId: string): Promise<ClassEntity[]> {
+    async findByTeacherId(teacherId: string): Promise<Class[]> {
         const myClasses = await this.classRepository.find({
             where: {
                 teacher: {
@@ -85,11 +87,11 @@ export class ClassRepository implements ClassRepositoryInterface {
                 teacher: true
             }
         });
-        return myClasses;
+        return myClasses.map(it => ClassMapper.fromEntity(it));
     }
 
-    async findByTeacherIdAndClassId(teacherId: string, classId: string): Promise<ClassEntity> {
-        return await this.classRepository.findOne({
+    async findByTeacherIdAndClassId(teacherId: string, classId: string): Promise<Class> {
+        const entity = await this.classRepository.findOne({
             where: {
                 teacher: {
                     id: teacherId
@@ -101,6 +103,8 @@ export class ClassRepository implements ClassRepositoryInterface {
                 teacher: true
             }
         });
+        if (!entity) return null;
+        return ClassMapper.fromEntity(entity)
     }
 
     async update(entity: ClassEntity) {

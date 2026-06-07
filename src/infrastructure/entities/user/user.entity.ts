@@ -10,6 +10,7 @@ import { ParentUserConverter } from "../parent/parent.user.converter";
 import { StudentUserConverter } from "../student/student.user.converter";
 import { WorkerUserconverter } from "../worker/worker.user.converter";
 import { ClassEntity } from "../class/class.entity";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
 
 
 @Entity('users')
@@ -63,7 +64,7 @@ export class UserEntity extends GenericEntity {
             let schoolGroups = teacher.getClasses();
             let modelOfClass = null;
             if (schoolGroups) {
-                modelOfClass = ClassEntity.toClassEntity(schoolGroups[0])
+                modelOfClass = ClassMapper.fromDomain(schoolGroups[0])
             }
             userModel.person = new WorkerUserconverter().converter(teacher, modelOfClass);
         } else {

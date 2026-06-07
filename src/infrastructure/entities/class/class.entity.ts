@@ -59,31 +59,6 @@ export class ClassEntity extends GenericEntity {
     })
     teacher: WorkerEntity;
 
-    static toClassEntity(schoolGroup: Class): ClassEntity {
-        if (!schoolGroup) {
-            return null;
-        }
-        let model = new ClassEntity();
-        model.bookName = schoolGroup.getNameBook();
-        model.classCode = schoolGroup.getClassCode();
-        model.className = schoolGroup.getName();
-        model.createdAt = schoolGroup.getCreatedAt();
-        model.deletedAt = schoolGroup.getDeletedAt();
-        model.firstDayOfClassInWeek = schoolGroup.getSchecule().getDayOfWeek()[0];
-        model.id = schoolGroup.getId();
-        model.secondDayOfClassInWeek = schoolGroup.getSchecule().getDayOfWeek()[1];
-        model.timeFirstDay = schoolGroup.getSchecule().getTimes().get(model.firstDayOfClassInWeek);
-        model.timeSecondDay = schoolGroup.getSchecule().getTimes().get(model.secondDayOfClassInWeek);
-        model.updatedAt = schoolGroup.getUpdatedAt();
-        if (schoolGroup.getStudents()) {
-            model.students = StudentEntity.toStudentsEntities(schoolGroup.getStudents());
-        }
-        if (schoolGroup.getTeacher()) {
-            model.setTeacher(WorkerEntity.toWorkerEntity(schoolGroup.getTeacher()));
-        }
-        return model;
-    }
-
     setStudents(student: StudentEntity) {
         if (!this.students) {
             this.students = [];

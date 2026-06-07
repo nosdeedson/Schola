@@ -7,8 +7,8 @@ import { ClassEntity } from "../class/class.entity";
 @ChildEntity('worker')
 export class WorkerEntity extends PersonEntity {
 
-    constructor(){
-         super();
+    constructor() {
+        super();
     }
 
     @Column({
@@ -23,28 +23,4 @@ export class WorkerEntity extends PersonEntity {
 
     @OneToMany(() => ClassEntity, (classes) => classes.teacher)
     classes: ClassEntity[];
-
-    static toWorkerEntity(worker: Worker, classEntity?: ClassEntity): WorkerEntity{
-      
-        if(!worker){
-            return undefined;
-        }
-        let model = new WorkerEntity();
-        model.birthday = worker?.getBirthday();
-        if(!model.classes){
-            model.classes = []
-        }
-        if(classEntity){
-            model.classes.push(classEntity)
-        } else {
-            model.classes = []
-        }
-        model.createdAt = worker.getCreatedAt();
-        model.deletedAt = worker.getDeletedAt();
-        model.fullName = worker.getName();
-        model.id = worker.getId();
-        model.role = worker.getRole();
-        model.updatedAt = worker.getUpdatedAt();
-        return model;
-    }
 }

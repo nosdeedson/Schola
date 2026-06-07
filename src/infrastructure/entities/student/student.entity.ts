@@ -5,6 +5,7 @@ import { ParentEntity } from "../parent/parent.entity";
 import { Student } from "../../../domain/student/student";
 import { Parent } from "../../../domain/parent/parent";
 import { ParentStudentEntity } from "../parent-student/parent.student.entity";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
 
 
 @ChildEntity('student')
@@ -30,28 +31,6 @@ export class StudentEntity extends PersonEntity {
         referencedColumnName: 'id',
     })
     schoolGroup: ClassEntity;
-
-    static toStudentEntity(student: Student): StudentEntity {
-        let model = new StudentEntity();
-        model.birthday = student.getBirthday();
-        model.createdAt = student.getCreatedAt();
-        model.deletedAt = student.getDeletedAt();
-        model.updatedAt = student.getUpdatedAt();
-        model.enrolled = student.getEnrolled();
-        model.fullName = student.getName();
-        model.id = student.getId();
-        model.schoolGroup = ClassEntity.toClassEntity(student.getSchoolGroup());
-        return model;
-    }
-
-    static toStudentsEntities(students: Student[]): StudentEntity[] {
-        let models: StudentEntity[] = [];
-        students.forEach(it => {
-            let s = this.toStudentEntity(it);
-            models.push(s);
-        })
-        return models;
-    }
 
     get parents(): ParentEntity[] {
         return []

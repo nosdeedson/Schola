@@ -1,9 +1,9 @@
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { RepositoryInterface } from "../@shared/repository/repository.interface";
-import { ClassesOfTeacherDto } from "@/application/usecases/teacher-list-classes-usecase/classes-of-teacher-dto";
+import { Class } from "./class";
 
-export interface ClassRepositoryInterface extends RepositoryInterface<ClassEntity> {
-    findByClassCode(classCode: string): Promise<ClassEntity>;
-    findByTeacherId(teacherId: string): Promise<ClassEntity[]>;
-    findByTeacherIdAndClassId(teacherId: string, classId: string): Promise<ClassEntity>;
+export interface ClassRepositoryInterface extends RepositoryInterface<ClassEntity, Class> {
+    findByClassCode(classCode: string): Promise<Class>;
+    findByTeacherId(teacherId: string): Promise<Class[]>;
+    findByTeacherIdAndClassId(teacherId: string, classId: string): Promise<Class>;
 }

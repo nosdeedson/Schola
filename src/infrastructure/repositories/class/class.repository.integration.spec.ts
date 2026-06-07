@@ -11,6 +11,7 @@ import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
 import { mockSchedule } from '../../../../tests/mocks/domain/schedule.mocks';
 import { mockStudent } from '../../../../tests/mocks/domain/student.mocks';
 import { mockWorker } from '../../../../tests/mocks/domain/worker.mock';
+import { ClassMapper } from '@/infrastructure/mappers/schoolgroup/class-mapper';
 
 describe('ClassRepository unit test', () => {
 
@@ -38,12 +39,12 @@ describe('ClassRepository unit test', () => {
 
     it('should save a class on BD', async () => {
         let schoolGroup = mockClass();
-        let classModel = ClassEntity.toClassEntity(schoolGroup);
+        let classModel = ClassMapper.fromDomain(schoolGroup);
         let wantedId = schoolGroup.getId();
-        expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
+        expect(await classRepository.create(classModel)).toBeInstanceOf(Class);
         let result = await classRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId);
+        expect(result.getId()).toEqual(wantedId);
 
     })
 
@@ -51,8 +52,8 @@ describe('ClassRepository unit test', () => {
         let schedule = mockSchedule();
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
-        let classModel = ClassEntity.toClassEntity(schoolGroup);
-        expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
+        let classModel = ClassMapper.fromDomain(schoolGroup);
+        expect(await classRepository.create(classModel)).toBeInstanceOf(Class);
         let result = await classRepository.find(wantedId);
         expect(result).toBeDefined();
         expect(await classRepository.delete(wantedId)).toBe(void 0);
@@ -62,29 +63,29 @@ describe('ClassRepository unit test', () => {
         let schedule = mockSchedule();
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
-        let classModel = ClassEntity.toClassEntity(schoolGroup);
-        expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
+        let classModel = ClassMapper.fromDomain(schoolGroup);
+        expect(await classRepository.create(classModel)).toBeInstanceOf(Class);
         let result = await classRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toEqual(wantedId);
-        expect(result.firstDayOfClassInWeek).toEqual(schoolGroup.getSchecule().getDayOfWeek()[0]);
-        expect(result.secondDayOfClassInWeek).toEqual(schoolGroup.getSchecule().getDayOfWeek()[1]);
+        expect(result.getId()).toEqual(wantedId);
+        expect(result.getSchecule().getDayOfWeek()[0]).toEqual(schoolGroup.getSchecule().getDayOfWeek()[0]);
+        expect(result.getSchecule().getDayOfWeek()[1]).toEqual(schoolGroup.getSchecule().getDayOfWeek()[1]);
     })
 
     it('should find all class on BD', async () => {
         let schedule = mockSchedule();
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, '2ac4ba35-a052-439f-91dc-1a85c655a339');
-        let classModel = ClassEntity.toClassEntity(schoolGroup);
-        expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
+        let classModel = ClassMapper.fromDomain(schoolGroup);
+        expect(await classRepository.create(classModel)).toBeInstanceOf(Class);
         let schoolGroup2 = new Class('1234', 'nameBook', 'a1', schedule, '2ac4ba35-a052-439f-91dc-1a85c655a340');
-        let classModel2 = ClassEntity.toClassEntity(schoolGroup2);
-        expect(await classRepository.create(classModel2)).toBeInstanceOf(ClassEntity);
+        let classModel2 = ClassMapper.fromDomain(schoolGroup2);
+        expect(await classRepository.create(classModel2)).toBeInstanceOf(Class);
 
         let results = await classRepository.findAll();
         expect(results).toBeDefined();
         expect(results.length).toBe(2);
-        expect(results[0].firstDayOfClassInWeek).toEqual(schoolGroup.getSchecule().getDayOfWeek()[0]);
-        expect(results[0].secondDayOfClassInWeek).toEqual(schoolGroup.getSchecule().getDayOfWeek()[1]);
+        expect(results[0].getSchecule().getDayOfWeek()[0]).toEqual(schoolGroup.getSchecule().getDayOfWeek()[0]);
+        expect(results[0].getSchecule().getDayOfWeek()[1]).toEqual(schoolGroup.getSchecule().getDayOfWeek()[1]);
     })
 
     it('should update a class on BD', async () => {
@@ -92,8 +93,8 @@ describe('ClassRepository unit test', () => {
         let wantedId = '2ac4ba35-a052-439f-91dc-1a85c655a339';
 
         let schoolGroup = new Class('1234', 'nameBook', 'a1', schedule, wantedId);
-        let classModel = ClassEntity.toClassEntity(schoolGroup);
-        expect(await classRepository.create(classModel)).toBeInstanceOf(ClassEntity);
+        let classModel = ClassMapper.fromDomain(schoolGroup);
+        expect(await classRepository.create(classModel)).toBeInstanceOf(Class);
         let result = await classRepository.find(wantedId);
         expect(result).toBeDefined();
         let wantedBookName = 'another book';
@@ -104,9 +105,9 @@ describe('ClassRepository unit test', () => {
 
         result = await classRepository.find(wantedId);
 
-        expect(result.id).toEqual(wantedId);
-        expect(result.bookName).toEqual(wantedBookName);
-        expect(result.className).toEqual(wantedClassName);
+        expect(result.getId()).toEqual(wantedId);
+        expect(result.getNameBook()).toEqual(wantedBookName);
+        expect(result.getName()).toEqual(wantedClassName);
     });
 
     it('findByTeacherId should find a class', async () => {
@@ -125,16 +126,16 @@ describe('ClassRepository unit test', () => {
 
         classModel.setStudents([student1, student2]);
         classModel.setTeacher(teacher);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const wantedIdTeacher = teacher.getId();
         const results = await classRepository.findByTeacherId(wantedIdTeacher);
         expect(results).toBeDefined();
-        expect(results[0].bookName).toBe(classModel.getNameBook());
-        expect(results[0].id).toBe(classModel.getId());
-        expect(results[0].className).toBe(classModel.getName());
-        expect(results[0].students.length).toBe(2);
+        expect(results[0].getNameBook()).toBe(classModel.getNameBook());
+        expect(results[0].getId()).toBe(classModel.getId());
+        expect(results[0].getName()).toBe(classModel.getName());
+        expect(results[0].getStudents().length).toBe(2);
     });
 
     it('findByTeacherId should not find a class if the id does not exist', async () => {
@@ -153,8 +154,8 @@ describe('ClassRepository unit test', () => {
 
         classModel.setStudents([student1, student2]);
         classModel.setTeacher(teacher);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const wrongTeacherId = ('0e62d8a3-0683-4a23-a2c1-1e7865cbd0b1');
         const results = await classRepository.findByTeacherId(wrongTeacherId);
@@ -178,17 +179,17 @@ describe('ClassRepository unit test', () => {
 
         classModel.setStudents([student1, student2]);
         classModel.setTeacher(teacher);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const wantedTeacherId = teacher.getId();
         const wantedClassId = classModel.getId();
         const results = await classRepository.findByTeacherIdAndClassId(wantedTeacherId, wantedClassId);
         expect(results).toBeDefined();
-        expect(results.bookName).toBe(classModel.getNameBook());
-        expect(results.id).toBe(classModel.getId());
-        expect(results.className).toBe(classModel.getName());
-        expect(results.students.length).toBe(2);
+        expect(results.getNameBook()).toBe(classModel.getNameBook());
+        expect(results.getId()).toBe(classModel.getId());
+        expect(results.getName()).toBe(classModel.getName());
+        expect(results.getStudents().length).toBe(2);
     });
 
     it('findByTeacherIdAndClassId should not find a class by teacherId and class id when teacherId does not exist', async () => {
@@ -199,8 +200,8 @@ describe('ClassRepository unit test', () => {
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setTeacher(teacher);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const wrongTeacherId = '89199554-a3c1-411f-8c1b-f6f0ef599f55';
         const wantedClassId = classModel.getId();
@@ -216,8 +217,8 @@ describe('ClassRepository unit test', () => {
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setTeacher(teacher);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const wantedTeacherId = teacher.getId();
         const wrondClassId = '574aa098-50e7-4942-8887-9c066aa9a16c';
