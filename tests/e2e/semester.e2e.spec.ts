@@ -8,6 +8,7 @@ import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semes
 import { mockSemester } from "../mocks/domain/semester.mocks";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockSemesterRequestDto } from "../mocks/controller/semester-request-dto-mock";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('SEMESTER E2E TESTS', () => {
     let app: INestApplication;
@@ -30,7 +31,7 @@ describe('SEMESTER E2E TESTS', () => {
         });
 
         it('should find a semester', async () => {
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
             const response = await request(app.getHttpServer())
@@ -49,7 +50,7 @@ describe('SEMESTER E2E TESTS', () => {
         });
 
         it('should find all semester', async () => {
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
             const response = await request(app.getHttpServer())
@@ -61,7 +62,7 @@ describe('SEMESTER E2E TESTS', () => {
         });
 
         it('should delete a semester', async () => {
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
             const response = await request(app.getHttpServer())
@@ -83,7 +84,7 @@ describe('SEMESTER E2E TESTS', () => {
         });
 
         it('should update a semester', async () => {
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
             const dto = {
@@ -105,7 +106,7 @@ describe('SEMESTER E2E TESTS', () => {
         });
 
         it('should update a semester', async () => {
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
             const dto = {

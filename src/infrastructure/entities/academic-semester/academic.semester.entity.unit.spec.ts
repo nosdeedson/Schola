@@ -1,6 +1,6 @@
-import { AcademicSemesterEntity } from "./academic.semester.entity";
 import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks'
 import { mockQuarter } from '../../../../tests/mocks/domain/quarter.mocks'
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe("AcademicSemester unit test", () => {
 
@@ -13,7 +13,7 @@ describe("AcademicSemester unit test", () => {
         });
 
         const semester = mockSemester({ currentSemester: true, secondQuarter, firstQuarter });
-        const entity = AcademicSemesterEntity.toEntity(semester);
+        const entity = AcademicSemesterMapper.fromDomain(semester);
         expect(entity).toBeDefined();
         expect(entity.current).toBeTruthy();
         expect(entity.quarters[0].beginningDate.getTime()).toEqual(semester.firstQuarter.beginningDate.getTime());

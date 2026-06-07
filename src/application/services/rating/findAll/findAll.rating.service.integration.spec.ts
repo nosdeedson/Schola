@@ -9,6 +9,7 @@ import { StudentRepository } from "../../../../infrastructure/repositories/stude
 import { FindAllRatingService } from './findAll.rating.service';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('find all rating integration tests', () => {
 
@@ -56,7 +57,7 @@ describe('find all rating integration tests', () => {
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let ratingEntity = RatingEntity.toRatingEntity(rating);

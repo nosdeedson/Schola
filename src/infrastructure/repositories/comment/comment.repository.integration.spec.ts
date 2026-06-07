@@ -16,6 +16,7 @@ import { TestDataSource } from "../config-test/test.datasource";
 import { mockSemester } from '../../../../tests/mocks/domain/semester.mocks';
 import { mockRating } from '../../../../tests/mocks/domain/rating.mocks';
 import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('CommentRepository unit test', () => {
 
@@ -61,7 +62,7 @@ describe('CommentRepository unit test', () => {
     it('should save a commnet on BD', async () => {
 
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -93,7 +94,7 @@ describe('CommentRepository unit test', () => {
 
     it('should delete a comment', async () => {
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -123,7 +124,7 @@ describe('CommentRepository unit test', () => {
 
     it('should not throw error when deleting a comment with a wrong id', async () => {
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -152,7 +153,7 @@ describe('CommentRepository unit test', () => {
 
     it('should find a comment', async () => {
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -184,7 +185,7 @@ describe('CommentRepository unit test', () => {
 
     it('should find all comments', async () => {
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed
@@ -220,7 +221,7 @@ describe('CommentRepository unit test', () => {
 
     it('should update a comment', async () => {
         let semester = mockSemester();
-        let academicSemester = AcademicSemesterEntity.toEntity(semester);
+        let academicSemester = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(academicSemester);
 
         // parent needed

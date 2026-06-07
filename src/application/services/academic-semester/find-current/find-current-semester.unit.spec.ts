@@ -3,12 +3,13 @@ import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-rep
 import { FindCurrentSemesterService } from './find-current-semester.service';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { SystemError } from '../../@shared/system-error';
+import { AcademicSemesterMapper } from '@/infrastructure/mappers/semester/academic-semester-mapper';
 
 describe('FindCurrentSemesterService unit test', () => {
 
     it('should find the current semester', async () => {
         const semester = mockSemester()
-        const semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         repository.findCurrentSemester = jest.fn().mockImplementation(() => Promise.resolve(semesterEntity));
         const service = new FindCurrentSemesterService(repository);

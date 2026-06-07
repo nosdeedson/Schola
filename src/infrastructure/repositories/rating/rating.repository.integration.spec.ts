@@ -14,6 +14,7 @@ import { CommentRepository } from "../comment/comment.respository";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { QueryFailedError } from "typeorm";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('RatingRepository unit tests', () => {
 
@@ -50,7 +51,7 @@ describe('RatingRepository unit tests', () => {
 
     it('should save a rating on the BD', async () => {
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -69,7 +70,7 @@ describe('RatingRepository unit tests', () => {
 
     it('should delete a rating on the BD', async () => {
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -87,7 +88,7 @@ describe('RatingRepository unit tests', () => {
 
     it('should find a rating on the BD', async () => {
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -107,7 +108,7 @@ describe('RatingRepository unit tests', () => {
     it('should find a rating by student', async () => {
         const firstQuarter = mockQuarter({ currentQuarter: true })
         let semester = mockSemester({ firstQuarter: firstQuarter });
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -129,7 +130,7 @@ describe('RatingRepository unit tests', () => {
     it('should find a rating with comment by student', async () => {
         const firstQuarter = mockQuarter({ currentQuarter: true })
         let semester = mockSemester({ firstQuarter: firstQuarter });
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -153,7 +154,7 @@ describe('RatingRepository unit tests', () => {
 
     it('should find all rating on the BD', async () => {
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();
@@ -175,7 +176,7 @@ describe('RatingRepository unit tests', () => {
 
     it('should update a rating on the BD', async () => {
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         await semesterRepository.create(semesterEntity);
 
         let student = mockStudent();

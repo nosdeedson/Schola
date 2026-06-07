@@ -1,8 +1,8 @@
 import { AcademicSemester } from '@/domain/academc-semester/academic.semester';
 import { AcademicSemesterRespositoryInterface } from '../../../../domain/academc-semester/academic.semester.repository.interface';
 import { CreateAcademicSemesterUsecaseDto } from './semester/create-academic-semester-usecase.dto';
-import { AcademicSemesterEntity } from '@/infrastructure/entities/academic-semester/academic.semester.entity';
 import { SystemError } from '@/application/services/@shared/system-error';
+import { AcademicSemesterMapper } from '@/infrastructure/mappers/semester/academic-semester-mapper';
 
 
 export class CreateAcademicSemesterService {
@@ -19,7 +19,7 @@ export class CreateAcademicSemesterService {
                 let errors = semester.notification?.getErrors();
                 throw new SystemError(errors, 422);
             }
-            let model = AcademicSemesterEntity.toEntity(semester);
+            let model = AcademicSemesterMapper.fromDomain(semester);
             await this.semesterRepository.create(model);
         } catch (error) {
             throw error;

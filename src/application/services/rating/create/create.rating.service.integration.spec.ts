@@ -11,6 +11,7 @@ import { Grade } from "../../../../domain/enum/grade/grade";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { Repository } from "typeorm";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('create rating integration tests', () => {
 
@@ -51,7 +52,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
@@ -74,7 +75,7 @@ describe('create rating integration tests', () => {
     it('should throw a systemError if student is null', async () => {
         let student;
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let input = new CreateRatingDto(student, semester.firstQuarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
@@ -90,7 +91,7 @@ describe('create rating integration tests', () => {
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let listing;
@@ -108,7 +109,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let writing;
@@ -127,7 +128,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let reading;
@@ -145,7 +146,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let speaking;
@@ -163,7 +164,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let grammar;
@@ -181,7 +182,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let homework;
@@ -198,7 +199,7 @@ describe('create rating integration tests', () => {
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let vocabulary;

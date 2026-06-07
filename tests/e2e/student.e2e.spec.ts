@@ -17,6 +17,7 @@ import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../mocks/domain/class.mocks";
 import { mockTransferStudendtsRequestDto } from "../mocks/controller/transfer-students-request-dto-mock";
 import { SchoolgroupModule } from "@/infrastructure/api/controllers/schoolgroup/schoolgroup.module";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('STUDENT E2E TESTS', () => {
     let app: INestApplication;
@@ -51,7 +52,7 @@ describe('STUDENT E2E TESTS', () => {
             const studentEntity = StudentEntity.toStudentEntity(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
-            const semester = AcademicSemesterEntity.toEntity(mockSemester({
+            const semester = AcademicSemesterMapper.fromDomain(mockSemester({
                 firstQuarter: mockQuarter({ currentQuarter: true })
             }));
             const semesterRespository = TestDataSource.getRepository(AcademicSemesterEntity);

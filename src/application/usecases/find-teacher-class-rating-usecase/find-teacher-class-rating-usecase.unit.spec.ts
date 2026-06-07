@@ -16,6 +16,7 @@ import { SystemError } from '@/application/services/@shared/system-error';
 import { ExceptionHandler } from '@/infrastructure/utils/exception-handler/exception-handler';
 import { BadRequestException } from '@nestjs/common';
 import { MockRepositoriesForUnitTest } from '../../../../tests/mocks/mock-repositories/mockRepositories';
+import { AcademicSemesterMapper } from '@/infrastructure/mappers/semester/academic-semester-mapper';
 
 describe('FindTeacherClassRatingUsecase unit test', () => {
 
@@ -33,7 +34,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
 
         const teacherId = '78186565-e234-4eef-8e37-aa7f03f6b68a';
         const classId = '37250f2d-e5ea-4b07-98ae-cf0b703768e6';
-        const usecase = new FindTeacherClassRatingUsecase(classRepository,semesterRepository);
+        const usecase = new FindTeacherClassRatingUsecase(classRepository, semesterRepository);
         const result = await usecase.execute(teacherId, classId);
         expect(result).toBeInstanceOf(TeacherClassRatingDto);
         expect(findTeacherClassRating).toHaveBeenCalledTimes(1);
@@ -54,7 +55,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
         classModel.setStudent(mockStudent());
         const classEntity = ClassEntity.toClassEntity(classModel);
         const semester = mockSemester();
-        const semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
 
         const findTeacherClassRating = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
             .mockResolvedValue(Promise.resolve(classEntity));
@@ -81,7 +82,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
         const exceptionHandler = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("class not found") });
         const semesterSErvice = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(AcademicSemesterEntity.toEntity(mockSemester())));
+            .mockImplementation(() => Promise.resolve(AcademicSemesterMapper.fromDomain(mockSemester())));
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();

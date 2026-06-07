@@ -12,6 +12,7 @@ import { mockQuarter } from "../../../../../tests/mocks/domain/quarter.mocks";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { Rating } from "@/domain/rating/rating";
 import { Grade } from "@/domain/enum/grade/grade";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('FindRatingByStudent', () => {
 
@@ -59,7 +60,7 @@ describe('FindRatingByStudent', () => {
     it('should find ratings of the student', async () => {
         const firstQuarter = mockQuarter({ currentQuarter: true });
         const semester = mockSemester({ firstQuarter: firstQuarter });
-        const semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
         let student = mockStudent();
         let studentEntity = StudentEntity.toStudentEntity(student);

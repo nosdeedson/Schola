@@ -13,6 +13,7 @@ import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semes
 import { mockSemester } from "../mocks/domain/semester.mocks";
 import { mockQuarter } from "../mocks/domain/quarter.mocks";
 import { mockSaveRatingRequest } from "../mocks/controller/save-rating-request-dto-mock";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('Rating E2E TESTS', () => {
     let app: INestApplication;
@@ -36,7 +37,7 @@ describe('Rating E2E TESTS', () => {
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
-            const semester = AcademicSemesterEntity.toEntity(mockSemester({
+            const semester = AcademicSemesterMapper.fromDomain(mockSemester({
                 firstQuarter: mockQuarter({ currentQuarter: true })
             }));
             const semesterRespository = TestDataSource.getRepository(AcademicSemesterEntity);
@@ -62,7 +63,7 @@ describe('Rating E2E TESTS', () => {
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
-            const semester = AcademicSemesterEntity.toEntity(mockSemester({
+            const semester = AcademicSemesterMapper.fromDomain(mockSemester({
                 currentSemester: false,
                 firstQuarter: mockQuarter({ currentQuarter: false }),
                 secondQuarter: mockQuarter({ currentQuarter: false }),
@@ -87,7 +88,7 @@ describe('Rating E2E TESTS', () => {
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
-            const semester = AcademicSemesterEntity.toEntity(mockSemester({
+            const semester = AcademicSemesterMapper.fromDomain(mockSemester({
                 firstQuarter: mockQuarter({ currentQuarter: true })
             }));
             const semesterRespository = TestDataSource.getRepository(AcademicSemesterEntity);
@@ -108,7 +109,7 @@ describe('Rating E2E TESTS', () => {
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
-            const semester = AcademicSemesterEntity.toEntity(mockSemester({
+            const semester = AcademicSemesterMapper.fromDomain(mockSemester({
                 firstQuarter: mockQuarter({ currentQuarter: true })
             }));
             const semesterRespository = TestDataSource.getRepository(AcademicSemesterEntity);

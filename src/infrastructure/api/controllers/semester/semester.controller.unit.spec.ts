@@ -15,6 +15,7 @@ import { mockUpdateAcademicSemesterRequestDto } from '../../../../../tests/mocks
 import { SemesterRequestDto } from './dto/create/semester-request-dto';
 import { UpdateAcademicSemesterRequestDto } from './dto/update/update-academic-semester-request-dto';
 import { DeleteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
+import { AcademicSemesterMapper } from '../../../../infrastructure/mappers/semester/academic-semester-mapper';
 
 
 describe('SemesterController', () => {
@@ -114,8 +115,8 @@ describe('SemesterController', () => {
   });
 
   it('should find all semester', async () => {
-    const entity1 = AcademicSemesterEntity.toEntity(mockSemester());
-    const entity2 = AcademicSemesterEntity.toEntity(mockSemester());
+    const entity1 = AcademicSemesterMapper.fromDomain(mockSemester());
+    const entity2 = AcademicSemesterMapper.fromDomain(mockSemester());
     findAllSemesterUsecase.execute.mockResolvedValue(new FindAllAcademicSemesterDto([entity1, entity2]));
     const result = await controller.findAll();
     expect(result).toBeDefined();

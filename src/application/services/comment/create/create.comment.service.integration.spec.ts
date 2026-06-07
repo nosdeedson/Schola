@@ -15,6 +15,7 @@ import { TestDataSource } from '../../../../infrastructure/repositories/config-t
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('create comment service integration tests', () => {
 
@@ -72,7 +73,7 @@ describe('create comment service integration tests', () => {
     it('should save a comment', async () => {
 
         let semester = mockSemester()
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity)
 
         let student = mockStudent();
@@ -102,7 +103,7 @@ describe('create comment service integration tests', () => {
 
     it('should throw an error while saving a comment', async () => {
         let semester = mockSemester()
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity)
         let namePersonHaveDone = 'não tem';
         const dto = new CreateCommentDto('test a test', namePersonHaveDone, null);

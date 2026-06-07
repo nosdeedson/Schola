@@ -4,6 +4,7 @@ import { mockSemester } from "../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemesterEntity } from "../../entities/academic-semester/academic.semester.entity";
 import { TestDataSource } from '../config-test/test.datasource';
 import { AcademicSemesterRepository } from './academic-semester.repository';
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('AcademicSemesterRepository unit tests', () => {
 
@@ -22,7 +23,7 @@ describe('AcademicSemesterRepository unit tests', () => {
         let firstQuarter = mockQuarter({ currentQuarter: true });
         let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
         let semester = mockSemester({ secondQuarter, currentSemester: true })
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         let wantedId = semester.getId();
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         let result = await repository.find(wantedId);
@@ -39,7 +40,7 @@ describe('AcademicSemesterRepository unit tests', () => {
     it('should delete an academicSemester', async () => {
         let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
         let semester = mockSemester({ secondQuarter, currentSemester: false })
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         let wantedId = semester.getId();
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         expect(await repository.delete(wantedId)).toBe(void 0);
@@ -48,18 +49,18 @@ describe('AcademicSemesterRepository unit tests', () => {
     })
 
     it('should not throw an error if passed an id that does not existe', async () => {
-        let secondQuarter = mockQuarter({beginningDate: new Date(2026, 3, 1, 23, 59,59), endingDate: new Date(2026,7, 30, 23,59,59)});
-        let semester = mockSemester({secondQuarter, currentSemester: false} )
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
+        let semester = mockSemester({ secondQuarter, currentSemester: false })
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         let wantedId = '85e71875-289c-48b1-82b1-8c4f9ae16104'
         expect(await repository.delete(wantedId)).toBe(void 0);
     })
 
     it('should find an academicSemester on BD', async () => {
-        let secondQuarter = mockQuarter({beginningDate: new Date(2026, 3, 1, 23, 59,59), endingDate: new Date(2026,7, 30, 23,59,59)});
-        let semester = mockSemester({secondQuarter, currentSemester: true} )
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
+        let semester = mockSemester({ secondQuarter, currentSemester: true })
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         let wantedId = semester.getId();
         let result = await repository.find(wantedId);
@@ -69,17 +70,17 @@ describe('AcademicSemesterRepository unit tests', () => {
     })
 
     it('should find all academicSemester on BD', async () => {
-        let secondQuarter = mockQuarter({beginningDate: new Date(2026, 3, 1, 23, 59,59), endingDate: new Date(2026,7, 30, 23,59,59)});
-        let semester = mockSemester({secondQuarter, currentSemester: true} )
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
+        let semester = mockSemester({ secondQuarter, currentSemester: true })
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         const wantedId = 'acd72d81-1703-4313-b3f4-f4c6f8233433';
         entity.id = wantedId;
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let firstQuarter = mockQuarter({beginningDate: new Date(2026, 7, 3, 23, 59,59), endingDate: new Date(2026, 8, 30, 23,59,59)});
-        let secondQuarter2 = mockQuarter({beginningDate: new Date(2026, 9, 1, 23, 59,59), endingDate: new Date(2026, 11, 4, 23,59,59)});
-        let semester2 = mockSemester({firstQuarter, secondQuarter: secondQuarter2, currentSemester: false} )
-        let entity2 = AcademicSemesterEntity.toEntity(semester2);
+        let firstQuarter = mockQuarter({ beginningDate: new Date(2026, 7, 3, 23, 59, 59), endingDate: new Date(2026, 8, 30, 23, 59, 59) });
+        let secondQuarter2 = mockQuarter({ beginningDate: new Date(2026, 9, 1, 23, 59, 59), endingDate: new Date(2026, 11, 4, 23, 59, 59) });
+        let semester2 = mockSemester({ firstQuarter, secondQuarter: secondQuarter2, currentSemester: false })
+        let entity2 = AcademicSemesterMapper.fromDomain(semester2);
         expect(await repository.create(entity2)).toBeInstanceOf(AcademicSemesterEntity);
         let results = await repository.findAll();
         expect(results).toBeDefined();
@@ -91,10 +92,10 @@ describe('AcademicSemesterRepository unit tests', () => {
     });
 
     it('should update current in academicSemester to false', async () => {
-        let secondQuarter = mockQuarter({beginningDate: new Date(2026, 3, 1, 23, 59,59), endingDate: new Date(2026,7, 30, 23,59,59)});
-        let semester = mockSemester({secondQuarter, currentSemester: false} )
-        let entity = AcademicSemesterEntity.toEntity(semester);
-        entity.createdAt = new Date(2026,2, 1, 23,59,59);
+        let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
+        let semester = mockSemester({ secondQuarter, currentSemester: false })
+        let entity = AcademicSemesterMapper.fromDomain(semester);
+        entity.createdAt = new Date(2026, 2, 1, 23, 59, 59);
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const wantedId = entity.id;
 
@@ -111,9 +112,9 @@ describe('AcademicSemesterRepository unit tests', () => {
     });
 
     it('should find the current semester', async () => {
-        let secondQuarter = mockQuarter({beginningDate: new Date(2026, 3, 1, 23, 59,59), endingDate: new Date(2026,7, 30, 23,59,59)});
-        let semester = mockSemester({secondQuarter, currentSemester: true} )
-        let entity = AcademicSemesterEntity.toEntity(semester);
+        let secondQuarter = mockQuarter({ beginningDate: new Date(2026, 3, 1, 23, 59, 59), endingDate: new Date(2026, 7, 30, 23, 59, 59) });
+        let semester = mockSemester({ secondQuarter, currentSemester: true })
+        let entity = AcademicSemesterMapper.fromDomain(semester);
         expect(await repository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const result = await repository.findCurrentSemester();
         expect(result).toBeDefined();

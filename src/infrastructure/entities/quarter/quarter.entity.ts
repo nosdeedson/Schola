@@ -50,13 +50,4 @@ export class QuarterEntity extends GenericEntity {
     @JoinColumn({ name: 'semester_id' })
     semester: AcademicSemesterEntity;
 
-    static toEntity(quarter: Quarter, quarterNumber?: number): QuarterEntity {
-        let entity = new QuarterEntity();
-        entity.id = quarter.getId();
-        entity.quarterNumber = quarterNumber ? quarterNumber : entity.quarterNumber;
-        entity.beginningDate = quarter.beginningDate;
-        entity.endingDate = quarter.endingDate;
-        entity.currentQuarter = quarter.currentQuarter;
-        return entity;
-    }
 }

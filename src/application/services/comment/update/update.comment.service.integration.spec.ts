@@ -16,6 +16,7 @@ import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('UpdateCommentService integration tests', () => {
 
@@ -73,7 +74,7 @@ describe('UpdateCommentService integration tests', () => {
     it('given the wrong id should throw an SystemError', async () => {
 
         let semester = mockSemester();
-        let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntityToSave = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = mockStudent();
@@ -103,7 +104,7 @@ describe('UpdateCommentService integration tests', () => {
 
     it('given a valid id should update a comment', async () => {
         let semester = mockSemester();
-        let semesterEntityToSave = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntityToSave = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = mockStudent();

@@ -3,6 +3,7 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";
 import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('AcademicSemester unit tests', () => {
 
@@ -12,7 +13,7 @@ describe('AcademicSemester unit tests', () => {
 
     it('should update semester changing secondQuarter to current', async () => {
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         const dto = new UpdateAcademicSemesterDto({
             id: entity.id,
             updatingQuarter: true,
@@ -43,9 +44,11 @@ describe('AcademicSemester unit tests', () => {
             .mockResolvedValue(void 0);
 
         const service = new UpdateAcademicSemesterService(semesterRepository);
-        await expect( service.execute(dto)).rejects.toMatchObject({errors: [
-            {context: 'semester', message: 'semester not found'}
-        ]});
+        await expect(service.execute(dto)).rejects.toMatchObject({
+            errors: [
+                { context: 'semester', message: 'semester not found' }
+            ]
+        });
         expect(semesterRepository.update).toHaveBeenCalledTimes(0);
     });
 });

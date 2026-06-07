@@ -3,6 +3,7 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('FindCurrentSemesterService integration test', () => {
 
@@ -20,7 +21,7 @@ describe('FindCurrentSemesterService integration test', () => {
 
     it('should find the current semester', async () => {
         const semester = mockSemester({ currentSemester: true });
-        const entity = AcademicSemesterEntity.toEntity(semester)
+        const entity = AcademicSemesterMapper.fromDomain(semester)
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
 
         const result = await semesterRepository.findCurrentSemester();
@@ -30,7 +31,7 @@ describe('FindCurrentSemesterService integration test', () => {
 
     it('should not find the current semester', async () => {
         const semester = mockSemester({ currentSemester: false });
-        const entity = AcademicSemesterEntity.toEntity(semester)
+        const entity = AcademicSemesterMapper.fromDomain(semester)
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
 
         const result = await semesterRepository.findCurrentSemester();

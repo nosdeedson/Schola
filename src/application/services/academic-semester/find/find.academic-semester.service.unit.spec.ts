@@ -1,18 +1,18 @@
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { AcademicSemesterEntity } from "../../../../infrastructure/entities/academic-semester/academic.semester.entity";
 import { FindAcademicSemesterService } from "./find.academic-semester.service"
 
-describe('find academic semester unit test', () =>{
+describe('find academic semester unit test', () => {
 
-    afterEach( async () => {
+    afterEach(async () => {
         jest.clearAllMocks();
     })
 
-    it('should find an academicSemester', async () =>{
+    it('should find an academicSemester', async () => {
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         const semester = mockSemester();
-        const entity = AcademicSemesterEntity.toEntity(semester);
+        const entity = AcademicSemesterMapper.fromDomain(semester);
         semesterRepository.find = jest.fn().mockImplementationOnce(() => {
             return entity;
         });

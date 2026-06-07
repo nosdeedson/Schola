@@ -16,6 +16,7 @@ import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { FindWorkerService } from "@/application/services/worker/find/find.worker.service";
 import { mockOutputFindWorkerDto } from "../../../../tests/mocks/mock-dtos/mock-dtos";
 import { SystemError } from "@/application/services/@shared/system-error";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('SaveRatingUsecase', () => {
 
@@ -26,7 +27,7 @@ describe('SaveRatingUsecase', () => {
     it('should throw a systemError execption if student not found', async () => {
         const dto = saveRatingUsecaseDtoMock();
         const teacher = mockOutputFindWorkerDto();
-        const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
 
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(semesterEntity));
@@ -68,7 +69,7 @@ describe('SaveRatingUsecase', () => {
 
     it('should throw a systemError exception if worker not found', async () => {
         const dto = saveRatingUsecaseDtoMock();
-        const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
 
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(semesterEntity));
@@ -153,7 +154,7 @@ describe('SaveRatingUsecase', () => {
         const dto = saveRatingUsecaseDtoMock();
         const teacher = mockOutputFindWorkerDto();
         const ratingEntity = RatingEntity.toRatingEntity(mockRating());
-        const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(semesterEntity));
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')

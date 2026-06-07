@@ -5,29 +5,30 @@ import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { UpdateAcademicSemesterService } from "./update.academic-semester.service";
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 
-describe('Update AcademicSemester integration tests', () =>{
+describe('Update AcademicSemester integration tests', () => {
 
     let semesterEntity: Repository<AcademicSemesterEntity>;
     let semesterRepository: AcademicSemesterRepository;
 
-    beforeAll(async () =>{
+    beforeAll(async () => {
         semesterEntity = TestDataSource.getRepository(AcademicSemesterEntity);
         semesterRepository = new AcademicSemesterRepository(TestDataSource);
     })
 
-    afterEach(async () =>{
+    afterEach(async () => {
         jest.clearAllMocks();
     });
 
-    it('repository and model should be instantiated', async () =>{
+    it('repository and model should be instantiated', async () => {
         expect(semesterEntity).toBeDefined();
         expect(semesterRepository).toBeDefined();
     });
 
     it('should update the second an academicSemester', async () => {
-        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         let wantedId = entity.id;
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const dto = new UpdateAcademicSemesterDto({
@@ -47,7 +48,7 @@ describe('Update AcademicSemester integration tests', () =>{
     });
 
     it('should update the semester as not current', async () => {
-        const entity = AcademicSemesterEntity.toEntity(mockSemester({ currentSemester: true }));
+        const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         let wantedId = entity.id;
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const dto = new UpdateAcademicSemesterDto({

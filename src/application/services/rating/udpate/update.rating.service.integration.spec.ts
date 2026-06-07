@@ -11,6 +11,7 @@ import { UpdateRatingService } from './update.rating.service';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 
 describe('update rating service integration tests', () => {
@@ -53,7 +54,7 @@ describe('update rating service integration tests', () => {
         let studentEntity = StudentEntity.toStudentEntity(rating.getStudent());
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         rating.getStudent
@@ -77,7 +78,7 @@ describe('update rating service integration tests', () => {
         let studentEntity = StudentEntity.toStudentEntity(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let semesterEntity = AcademicSemesterEntity.toEntity(semester);
+        let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let ratingEntity = RatingEntity.toRatingEntity(rating);

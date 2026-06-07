@@ -11,6 +11,7 @@ import request from 'supertest';
 import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../mocks/domain/semester.mocks";
 import { createE2EConfing } from "../e2e.confing";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe("comment E2E TEST", () => {
     let app: INestApplication;
@@ -30,7 +31,7 @@ describe("comment E2E TEST", () => {
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
-            const semesterEntity = AcademicSemesterEntity.toEntity(mockSemester());
+            const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester());
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
 

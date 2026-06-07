@@ -5,6 +5,7 @@ import { AcademicSemesterEntity } from "../../../../infrastructure/entities/acad
 import { AcademicSemesterRepository } from "../../../../infrastructure/repositories/academic-semester/academic-semester.repository";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { DeleteAcademicSemesterService } from './delete.academic-semester.service';
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 
 describe('academic semester integration test', () => {
@@ -30,7 +31,7 @@ describe('academic semester integration test', () => {
 
     it('should delete an academic semester from BD', async () => {
         const semester = mockSemester();
-        const entity = AcademicSemesterEntity.toEntity(semester);
+        const entity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
         const idToDelete = semester.getId();
         const hasOne = await semesterRepository.find(idToDelete);

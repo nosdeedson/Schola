@@ -2,8 +2,8 @@ import { FindAllAcademicSemesterDto } from "@/application/services/academic-seme
 import { FindAllAcademicSemesterService } from "@/application/services/academic-semester/findAll/findAll.academic-semester.service";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindAllSemesterUsecase } from "./find-all-semester-usecase";
-import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semester/academic.semester.entity";
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('FindAllSemesterUsecase', () => {
 
@@ -24,7 +24,7 @@ describe('FindAllSemesterUsecase', () => {
     });
 
     it('should find all semester', async () => {
-        const semester = AcademicSemesterEntity.toEntity(mockSemester());
+        const semester = AcademicSemesterMapper.fromDomain(mockSemester());
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         repository.findAll = jest.fn().mockImplementation(() => Promise.resolve([semester]));
         const findSemesterService = jest.spyOn(FindAllAcademicSemesterService.prototype, 'execute')
