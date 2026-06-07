@@ -7,7 +7,7 @@ export class StudentMapper {
 
     static fromEntity(entity: StudentEntity): Student {
         if (!entity) return null;
-        return new Student({
+        const domain = new Student({
             nameParents: [],
             birthday: entity.birthday,
             name: entity.fullName,
@@ -17,6 +17,9 @@ export class StudentMapper {
             updatedAt: entity.updatedAt,
             deletedAt: entity.deletedAt
         });
+        const schoogroup = entity.schoolGroup ? ClassMapper.fromEntity(entity.schoolGroup) : null;
+        domain.setSchoolGroup(schoogroup);
+        return domain;
     }
 
     static fromDomain(student: Student): StudentEntity {

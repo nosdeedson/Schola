@@ -4,6 +4,8 @@ import { DataSource, In, QueryFailedError, Repository } from 'typeorm';
 import { ParentStudentEntity } from '@/infrastructure/entities/parent-student/parent.student.entity';
 import { DATA_SOURCE } from '@/infrastructure/data-base-connection/data-base-connection.module';
 import { Inject, Injectable } from '@nestjs/common';
+import { Parent } from '@/domain/parent/parent';
+import { ParentMapper } from '@/infrastructure/mappers/parent/parent-mapper';
 
 @Injectable()
 export class ParentRepository implements ParentReporitoryInterface {
@@ -16,14 +18,14 @@ export class ParentRepository implements ParentReporitoryInterface {
         this.parentRepository = this.dataSource.getRepository(ParentEntity);
     }
 
-    async create(entity: ParentEntity): Promise<ParentEntity> {
+    async create(entity: ParentEntity): Promise<Parent> {
         const queryRunner = this.dataSource.createQueryRunner();
         try {
             await queryRunner.connect();
             await queryRunner.startTransaction();
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return ParentMapper.fromEntity(result);
         } catch (error: any) {
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -40,11 +42,11 @@ export class ParentRepository implements ParentReporitoryInterface {
             .execute();
     }
 
-    async find(id: string): Promise<ParentEntity> {
-        const model = await this.parentRepository.findOne({
+    async find(id: string): Promise<Parent> {
+        const entity = await this.parentRepository.findOne({
             where: { id: id },
         })
-        return model;
+        return ParentMapper.fromEntity(entity);
     }
 
     async findByParentNameAndStudentNames(nameParent: string, studentNames: string[]): Promise<ParentEntity> {
@@ -59,8 +61,9 @@ export class ParentRepository implements ParentReporitoryInterface {
         return p ? this.parentRepository.findOneBy({ id: p.parent_id }) : null;
     }
 
-    async findAll(): Promise<ParentEntity[]> {
-        return await this.parentRepository.find()
+    async findAll(): Promise<Parent[]> {
+        const all = await this.parentRepository.find();
+        return all.map(it => ParentMapper.fromEntity(it));
     }
 
     async update(entity: ParentEntity) {

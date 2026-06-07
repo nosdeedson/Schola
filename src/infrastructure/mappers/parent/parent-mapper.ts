@@ -4,6 +4,7 @@ import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 export class ParentMapper {
 
     static fromEntity(entity: ParentEntity): Parent {
+        if(!entity) return null;
         return new Parent({
             name: entity.fullName,
             birthday: entity.birthday,

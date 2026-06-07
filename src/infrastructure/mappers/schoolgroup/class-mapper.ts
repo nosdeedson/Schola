@@ -34,6 +34,7 @@ export class ClassMapper {
     }
 
     static fromEntity(entity: ClassEntity): Class {
+        if(!entity) return null;
         let domain = new Class(
             entity.classCode,
             entity.bookName,

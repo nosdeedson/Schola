@@ -103,6 +103,7 @@ export class Student extends Person {
     }
 
     static createMyParents(nameParents: string[]): Parent[]{
+        if(nameParents.length == 0) return [];
         let parents = [];
         nameParents.forEach(it => {
             parents.push(Student.createMyParent(it));
