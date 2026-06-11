@@ -3,6 +3,8 @@ import { WorkerRepositoryInterface } from "../../../domain/worker/worker.reposit
 import { WorkerEntity } from "../../entities/worker/worker.entity";
 import { Inject, Injectable } from "@nestjs/common";
 import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
+import { Worker } from "@/domain/worker/worker";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 @Injectable()
 export class WorkerRepository implements WorkerRepositoryInterface {
@@ -16,14 +18,14 @@ export class WorkerRepository implements WorkerRepositoryInterface {
         this.workerRespository = this.dataSource.getRepository(WorkerEntity);
     }
 
-    async create(entity: WorkerEntity): Promise<WorkerEntity> {
+    async create(entity: WorkerEntity): Promise<Worker> {
         const queryRunner = this.dataSource.createQueryRunner();
         try {
             await queryRunner.connect();
             await queryRunner.startTransaction();
             const result = await queryRunner.manager.save(entity);
             await queryRunner.commitTransaction();
-            return result;
+            return WorkerMapper.fromEntity(result);
         } catch (error: any) {
             await queryRunner.rollbackTransaction();
             throw new QueryFailedError(null, null, error);
@@ -40,26 +42,27 @@ export class WorkerRepository implements WorkerRepositoryInterface {
             .execute();
     }
 
-    async find(id: string): Promise<WorkerEntity> {
+    async find(id: string): Promise<Worker> {
         let worker = await this.workerRespository.findOne({
             where: { id: id },
             relations: {
                 classes: true
             }
         });
-        return worker;
+        return WorkerMapper.fromEntity(worker);
     }
 
-    async findAll(): Promise<WorkerEntity[]> {
+    async findAll(): Promise<Worker[]> {
         let all = await this.workerRespository.find();
-        return all;
+        return all.map(it => WorkerMapper.fromEntity(it));
     }
 
-    async findByName(name: string): Promise<WorkerEntity> {
+    async findByName(name: string): Promise<Worker> {
         if (!name) return null;
-        return this.workerRespository.createQueryBuilder('worker')
+        const result = await this.workerRespository.createQueryBuilder('worker')
             .where('UPPER(worker.fullName) = :name', { name: name.toUpperCase() })
             .getOne();
+        return WorkerMapper.fromEntity(result);
     }
 
     async update(entity: WorkerEntity) {

@@ -1,6 +1,8 @@
+import { User } from "@/domain/user/user";
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { DATA_SOURCE } from "@/infrastructure/data-base-connection/data-base-connection.module";
 import { UserEntity } from "@/infrastructure/entities/user/user.entity";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
 import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 
@@ -15,9 +17,10 @@ export class UserRepository implements UserRepositoryInterface {
         this.userRespository = this.dataSource.getRepository(UserEntity);
      }
 
-    async create(entity: UserEntity): Promise<UserEntity> {
+    async create(entity: UserEntity): Promise<User> {
         try {
-            return await this.userRespository.save(entity);
+            const result = await this.userRespository.save(entity);
+            return UserMapper.fromEntity(result);
         } catch (error) {
             throw error;
         }
@@ -33,22 +36,23 @@ export class UserRepository implements UserRepositoryInterface {
             .execute()
     }
 
-    async find(id: string): Promise<UserEntity> {
+    async find(id: string): Promise<User> {
         let user = await this.userRespository.findOne({
             where: { id: id },
             relations: {
                 person: true
             }
         });
-        return user;
+        return UserMapper.fromEntity(user);
     }
 
-    async findAll(): Promise<UserEntity[]> {
-        return await this.userRespository.find({
+    async findAll(): Promise<User[]> {
+        const all = await this.userRespository.find({
             relations: {
                 person: true
             }
-        })
+        });
+        return all.map(it => UserMapper.fromEntity(it));
     }
 
     async update(entity: UserEntity): Promise<void> {

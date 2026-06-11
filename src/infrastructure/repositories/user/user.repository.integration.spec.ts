@@ -7,6 +7,9 @@ import { WorkerRepository } from "../worker/worker.repository";
 import { TestDataSource } from '../config-test/test.datasource';
 import { mockUser } from '../../../../tests/mocks/domain/user.mock';
 import { AccessType } from '@/domain/user/access.type';
+import { WorkerMapper } from '@/infrastructure/mappers/worker/worker-mapper';
+import { UserMapper } from '@/infrastructure/mappers/user/user-mapper';
+import { User } from '@/domain/user/user';
 
 describe('UserRepository unit test', () => {
 
@@ -32,26 +35,26 @@ describe('UserRepository unit test', () => {
     it('should save a user in BD', async () => {
         let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
-        let model = WorkerEntity.toWorkerEntity(worker);
-        expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
+        let model = WorkerMapper.fromDomain(worker);
+        expect(await workerRepository.create(model)).toBeInstanceOf(Worker);
 
         let wantedid = user.getId();
-        let entity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(entity)).toBeInstanceOf(UserEntity);
+        let entity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(entity)).toBeInstanceOf(User);
         let result = await userRepository.find(wantedid);
         expect(result).toBeDefined();
-        expect(result.id).toBe(wantedid);
+        expect(result.getId()).toBe(wantedid);
     });
 
     it('should delete a user in BD', async () => {
         let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
-        let model = WorkerEntity.toWorkerEntity(worker);
-        expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
+        let model = WorkerMapper.fromDomain(worker);
+        expect(await workerRepository.create(model)).toBeInstanceOf(Worker);
 
         let wantedid = user.getId();
-        let entity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(entity)).toBeInstanceOf(UserEntity)
+        let entity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(entity)).toBeInstanceOf(User)
 
         let result = await userRepository.find(wantedid);
         expect(result).toBeDefined();
@@ -65,62 +68,61 @@ describe('UserRepository unit test', () => {
     it('should find a user in BD', async () => {
         let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
-        let model = WorkerEntity.toWorkerEntity(worker);
-        expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
+        let model = WorkerMapper.fromDomain(worker);
+        expect(await workerRepository.create(model)).toBeInstanceOf(Worker);
 
         let wantedid = user.getId();
-        let entity = UserEntity.toUserEntity(user);
+        let entity = UserMapper.fromDomain(user);
         let result = await userRepository.find(wantedid);
         expect(result).toBeNull();
-        expect(await userRepository.create(entity)).toBeInstanceOf(UserEntity);
+        expect(await userRepository.create(entity)).toBeInstanceOf(User);
 
         result = await userRepository.find(wantedid);
         expect(result).toBeDefined();
-
-    })
+    });
 
     it('should find all users in BD', async () => {
         let user = mockUser(AccessType.ADMIN);
         let user1 = mockUser(AccessType.TEACHER);
 
         let worker = user.getPerson() as Worker;
-        let model = WorkerEntity.toWorkerEntity(worker);
-        expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
+        let model = WorkerMapper.fromDomain(worker);
+        expect(await workerRepository.create(model)).toBeInstanceOf(Worker);
 
         let worker1 = user1.getPerson() as Worker;
-        let model1 = WorkerEntity.toWorkerEntity(worker1);
-        expect(await workerRepository.create(model1)).toBeInstanceOf(WorkerEntity);
+        let model1 = WorkerMapper.fromDomain(worker1);
+        expect(await workerRepository.create(model1)).toBeInstanceOf(Worker);
 
-        let entity = UserEntity.toUserEntity(user);
-        let entity1 = UserEntity.toUserEntity(user1);
-        expect(await userRepository.create(entity)).toBeInstanceOf(UserEntity);
-        expect(await userRepository.create(entity1)).toBeInstanceOf(UserEntity);
+        let entity = UserMapper.fromDomain(user);
+        let entity1 = UserMapper.fromDomain(user1);
+        expect(await userRepository.create(entity)).toBeInstanceOf(User);
+        expect(await userRepository.create(entity1)).toBeInstanceOf(User);
 
         let results = await userRepository.findAll();
         expect(results).toBeDefined();
         expect(results.length).toBe(2);
-        expect(results[0].person).toBeDefined();
-        expect(results[1].person).toBeDefined();
+        expect(results[0].getPerson()).toBeDefined();
+        expect(results[1].getPerson()).toBeDefined();
     });
 
     it('should update an user in BD', async () => {
         let user = mockUser(AccessType.TEACHER);
         let worker = user.getPerson() as Worker;
-        let model = WorkerEntity.toWorkerEntity(worker);
-        expect(await workerRepository.create(model)).toBeInstanceOf(WorkerEntity);
+        let model = WorkerMapper.fromDomain(worker);
+        expect(await workerRepository.create(model)).toBeInstanceOf(Worker);
 
         let wantedid = user.getId();
 
-        let entity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(entity)).toBeInstanceOf(UserEntity);
+        let entity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(entity)).toBeInstanceOf(User);
 
         let fromBD = await userRepository.find(wantedid);
         let wantedNickname = 'new nickname'
-        fromBD.nickname = wantedNickname;
-        expect(await userRepository.update(fromBD)).toBe(void 0);
+        fromBD.setNickanme(wantedNickname);
+        expect(await userRepository.update(UserMapper.fromDomain(fromBD))).toBe(void 0);
         fromBD = await userRepository.find(wantedid);
         expect(fromBD).toBeDefined();
-        expect(fromBD.nickname).toEqual(wantedNickname);
+        expect(fromBD.getNickname()).toEqual(wantedNickname);
     });
 
 });

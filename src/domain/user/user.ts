@@ -7,7 +7,7 @@ export class User extends Entity {
 
     private readonly person: Person;
     private readonly email: string;
-    private readonly nickname: string;
+    private nickname: string;
     private readonly password: string;
     private readonly accessType: AccessType;
 
@@ -48,6 +48,10 @@ export class User extends Entity {
     getNickname(): string{
         const nickname = this.nickname;
         return nickname;
+    }
+
+    setNickanme(nickname: string) {
+        this.nickname = nickname;
     }
 
     getAccessType(): AccessType{

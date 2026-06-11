@@ -30,6 +30,7 @@ export class WorkerMapper {
     }
 
     static fromEntity(entity: WorkerEntity): Worker {
+        if(!entity) return null;
         return new Worker({
             birthday: entity.birthday,
             name: entity.fullName,

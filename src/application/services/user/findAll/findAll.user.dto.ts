@@ -12,7 +12,7 @@ export class FindAllUserDto {
                 it.email,
                 it.nickname,
                 it.person.fullName,
-                it.accesType
+                it.accessType
             );
             this.all.push(user);
         })

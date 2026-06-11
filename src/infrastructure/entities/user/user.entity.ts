@@ -32,7 +32,7 @@ export class UserEntity extends GenericEntity {
         nullable: false,
         name: 'access_type'
     })
-    accesType: AccessType;
+    accessType: AccessType;
 
     @Column({
         nullable: false,
@@ -45,36 +45,5 @@ export class UserEntity extends GenericEntity {
     @OneToOne(() => PersonEntity, { eager: true })
     @JoinColumn({ foreignKeyConstraintName: 'user_person_fk', name: 'person_id', })
     person: PersonEntity;
-
-    static toUserEntity(user: User): UserEntity {
-        let userModel = new UserEntity();
-        userModel.createdAt = user.getCreatedAt();
-        userModel.deletedAt = user.getDeletedAt();
-        userModel.email = user.getEmail();
-        userModel.id = user.getId();
-        userModel.password = user.getPassword();
-        if (user.getAccessType() == AccessType.ADMIN) {
-            userModel.person = new WorkerUserconverter().converter(user.getPerson() as Worker);
-        } else if (user.getAccessType() == AccessType.PARENT) {
-            userModel.person = new ParentUserConverter().converter(user.getPerson() as Parent);
-        } else if (user.getAccessType() == AccessType.STUDENT) {
-            userModel.person = new StudentUserConverter().converter(user.getPerson() as Student);
-        } else if (user.getAccessType() == AccessType.TEACHER) {
-            let teacher = user.getPerson() as Worker;
-            let schoolGroups = teacher.getClasses();
-            let modelOfClass = null;
-            if (schoolGroups) {
-                modelOfClass = ClassMapper.fromDomain(schoolGroups[0])
-            }
-            userModel.person = new WorkerUserconverter().converter(teacher, modelOfClass);
-        } else {
-            throw new Error("access type does not exist");
-        }
-        userModel.updatedAt = user.getUpdatedAt();
-        userModel.accesType = user.getAccessType();
-        userModel.nickname = user.getNickname();
-
-        return userModel;
-    }
 
 }
