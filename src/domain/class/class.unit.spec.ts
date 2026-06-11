@@ -6,6 +6,7 @@ import { Student } from "../student/student";
 import { RoleEnum } from "../worker/roleEnum";
 import { Worker } from "../worker/worker";
 import { Class } from "./class"
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
 
 
 describe('Class tests units', () => {
@@ -312,7 +313,7 @@ describe('Class tests units', () => {
     });
 
     it('should instantiate a domain class from ClassEntity', () => {
-        const entity = ClassEntity.toClassEntity(mockClass());
+        const entity = ClassMapper.fromDomain(mockClass());
         const domain = Class.from(entity);
         expect(domain).toBeDefined();
         expect(entity.id).toBe(domain.getId());

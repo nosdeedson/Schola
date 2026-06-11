@@ -6,6 +6,8 @@ import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../../../tests/mocks/domain/class.mocks";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { mockWorker } from "../../../tests/mocks/domain/worker.mock";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('WorkerValidation', () => {
 
@@ -38,10 +40,10 @@ describe('WorkerValidation', () => {
 
     it("should throw SystemError if teacher name does not match the teacher's class", async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const classEntity = ClassEntity.toClassEntity(mockClass());
-        classEntity.setTeacher(WorkerEntity.toWorkerEntity(mockWorker()));
+        const classDomain = mockClass();
+        classDomain.setTeacher(mockWorker());
         classRepository.findByClassCode = jest.fn()
-            .mockImplementation(() => Promise.resolve(classEntity));
+            .mockImplementation(() => Promise.resolve(classDomain));
         const workerValidation = new WorkerValidation(classRepository);
         await expect(workerValidation.validateWorker('123', 'name teacher', AccessType.TEACHER))
             .rejects.toMatchObject(new SystemError([{ context: 'user', message: 'You are not teaching in this class' }], 400))
@@ -49,12 +51,12 @@ describe('WorkerValidation', () => {
 
     it("should return anything", async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const classEntity = ClassEntity.toClassEntity(mockClass());
-        classEntity.setTeacher(WorkerEntity.toWorkerEntity(mockWorker()));
+        const classDomain = mockClass();
+        classDomain.setTeacher(mockWorker());
         classRepository.findByClassCode = jest.fn()
-            .mockImplementation(() => Promise.resolve(classEntity));
+            .mockImplementation(() => Promise.resolve(classDomain));
         const workerValidation = new WorkerValidation(classRepository);
-        expect(await workerValidation.validateWorker('123', classEntity.teacher.fullName, AccessType.TEACHER)).toBe(void 0);
+        expect(await workerValidation.validateWorker('123', classDomain.getTeacher().getName(), AccessType.TEACHER)).toBe(void 0);
     });
 
 });

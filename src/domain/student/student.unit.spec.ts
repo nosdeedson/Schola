@@ -6,6 +6,8 @@ import { RoleEnum } from "../worker/roleEnum";
 import { Student } from "./student";
 import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { mockParent } from "../../../tests/mocks/domain/parent.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 describe("student unit tests", () =>{
 
@@ -116,8 +118,8 @@ describe("student unit tests", () =>{
     });
 
     it('should convert studentEntity to domain student', () => {
-        const studentEntity = StudentEntity.toStudentEntity(mockStudent());
-        studentEntity.parents.push(ParentEntity.toParentEntity(mockParent()));
+        const studentEntity = StudentMapper.fromDomain(mockStudent());
+        studentEntity.parents.push(ParentMapper.fromDomain(mockParent()));
         const toDomain = Student.toDomain(studentEntity);
         expect(toDomain).toBeDefined();
         expect(toDomain.getId()).toBe(studentEntity.id);

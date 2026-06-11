@@ -11,7 +11,7 @@ export class WorkerValidation {
         if (!schoolGroup) {
             throw new SystemError([{ context: 'user', message: 'class not found' }], 404);
         }
-        const noMatch = schoolGroup.teacher.fullName.toUpperCase() != teacherName.toUpperCase();
+        const noMatch = schoolGroup.getTeacher().getName().toUpperCase() != teacherName.toUpperCase();
         if (noMatch) {
             throw new SystemError([{ context: 'user', message: 'You are not teaching in this class' }], 400);
         }

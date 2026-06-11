@@ -4,6 +4,7 @@ import { mockStudent } from "../../../tests/mocks/domain/student.mocks";
 import { Student } from "../student/student";
 import { Parent } from "./parent";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 describe('Parent unit tests', () => {
 
@@ -83,7 +84,7 @@ describe('Parent unit tests', () => {
 
     it('should convert a parentEntity to a domain parent', () => {
         const parent = mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         const toDomain = Parent.toDomain(parentEntity);
         expect(toDomain).toBeDefined();
         expect(toDomain.getId()).toBe(parentEntity.id);
