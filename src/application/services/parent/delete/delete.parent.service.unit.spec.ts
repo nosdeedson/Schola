@@ -3,6 +3,7 @@ import { DeleteParentService } from './delete.parent.service';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
 import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
 import { QueryFailedError } from 'typeorm';
+import { ParentMapper } from '@/infrastructure/mappers/parent/parent-mapper';
 
 
 describe('DeleteParentService unit tests', () => {
@@ -10,7 +11,7 @@ describe('DeleteParentService unit tests', () => {
     it('should not throw error when trying to delete a parent with nos-existent id', async () => {
 
         let parent = mockParent();
-        let entity = ParentEntity.toParentEntity(parent);
+        let entity = ParentMapper.fromDomain(parent);
 
         let parentRepository = MockRepositoriesForUnitTest.mockRepositories();
 
@@ -24,7 +25,7 @@ describe('DeleteParentService unit tests', () => {
 
     it('should delete a parent', async () => {
         let parent = mockParent();
-        let entity = ParentEntity.toParentEntity(parent);
+        let entity = ParentMapper.fromDomain(parent);
 
         let wantedId = parent.getId();
 

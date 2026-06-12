@@ -19,9 +19,9 @@ export class FindAcademicSemesterService {
                     404
                 );
             }
-            const firstQuarter = semester.quarters[0].quarterNumber === 1 ? semester.quarters[0] : semester.quarters[1];
-            const secondQuarter = semester.quarters[0].quarterNumber === 2 ? semester.quarters[0] : semester.quarters[1];
-            let dto = new FindAcademicSemesterDto({ id: semester.id, current: semester.current, firstQuarter: firstQuarter, secondQuarter: secondQuarter });
+            const firstQuarter = semester.getFirstQuarter();
+            const secondQuarter = semester.getSecondQuarter();
+            let dto = new FindAcademicSemesterDto({ id: semester.getId(), current: semester.getCurrentSemester(), firstQuarter: firstQuarter, secondQuarter: secondQuarter });
             return dto;
         } catch (error) {
             throw error;

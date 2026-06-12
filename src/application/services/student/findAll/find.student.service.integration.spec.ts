@@ -34,7 +34,7 @@ describe('FindAllStudents', () => {
 
     it("should find all students", async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         const service = new FindAllStudentService(studentRepository);
         const students = await service.execute();

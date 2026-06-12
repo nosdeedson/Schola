@@ -121,7 +121,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should create an user as admin', async () => {
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             const classRepository = TestDataSource.getRepository(ClassEntity);
             await classRepository.save(classEntity)
             const dto = mockCreateUserRequestDto({ classCode: classEntity.classCode });
@@ -133,10 +133,10 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should create an user as a teacher', async () => {
-            const teacher = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacher = WorkerMapper.fromDomain(mockWorker());
             const workerRepository = TestDataSource.getRepository(WorkerEntity);
             await workerRepository.save(teacher);
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             classEntity.teacher = teacher
             const classRepository = TestDataSource.getRepository(ClassEntity);
             await classRepository.save(classEntity)
@@ -153,7 +153,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should create an user as student', async () => {
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             const classRepository = TestDataSource.getRepository(ClassEntity);
             await classRepository.save(classEntity)
             const dto = mockCreateUserRequestDto({
@@ -168,7 +168,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should create an user as parent', async () => {
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             const classRepository = TestDataSource.getRepository(ClassEntity);
             await classRepository.save(classEntity)
             const dto = mockCreateUserRequestDto({

@@ -26,7 +26,7 @@ describe('FindCurrentSemesterService integration test', () => {
 
         const result = await semesterRepository.findCurrentSemester();
         expect(result).toBeInstanceOf(AcademicSemesterEntity);
-        expect(result.current).toBeTruthy();
+        expect(result.getCurrentSemester).toBeTruthy();
     });
 
     it('should not find the current semester', async () => {

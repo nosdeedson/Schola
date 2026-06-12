@@ -113,15 +113,15 @@ describe('ClassRepository unit test', () => {
     it('findByTeacherId should find a class', async () => {
         const student1 = mockStudent();
         const student2 = mockStudent();
-        const studentEntity1 = StudentEntity.toStudentEntity(student1);
-        const studentEntity2 = StudentEntity.toStudentEntity(student2);
+        const studentEntity1 = StudentMapper.fromDomain(student1);
+        const studentEntity2 = StudentMapper.fromDomain(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
         const teacher = mockWorker();
         const classModel = mockClass();
         teacher.setClass(classModel);
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
+        const teacherEntity = WorkerMapper.fromDomain(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setStudents([student1, student2]);
@@ -141,15 +141,15 @@ describe('ClassRepository unit test', () => {
     it('findByTeacherId should not find a class if the id does not exist', async () => {
         const student1 = mockStudent();
         const student2 = mockStudent();
-        const studentEntity1 = StudentEntity.toStudentEntity(student1);
-        const studentEntity2 = StudentEntity.toStudentEntity(student2);
+        const studentEntity1 = StudentMapper.fromDomain(student1);
+        const studentEntity2 = StudentMapper.fromDomain(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
         const teacher = mockWorker();
         const classModel = mockClass();
         teacher.setClass(classModel);
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
+        const teacherEntity = WorkerMapper.fromDomain(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setStudents([student1, student2]);
@@ -166,15 +166,15 @@ describe('ClassRepository unit test', () => {
     it('findByTeacherIdAndClassId should find a class by teacherId and class id', async () => {
         const student1 = mockStudent();
         const student2 = mockStudent();
-        const studentEntity1 = StudentEntity.toStudentEntity(student1);
-        const studentEntity2 = StudentEntity.toStudentEntity(student2);
+        const studentEntity1 = StudentMapper.fromDomain(student1);
+        const studentEntity2 = StudentMapper.fromDomain(student2);
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 
         const teacher = mockWorker();
         const classModel = mockClass();
         teacher.setClass(classModel);
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
+        const teacherEntity = WorkerMapper.fromDomain(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setStudents([student1, student2]);
@@ -196,7 +196,7 @@ describe('ClassRepository unit test', () => {
         const teacher = mockWorker();
         const classModel = mockClass();
         teacher.setClass(classModel);
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
+        const teacherEntity = WorkerMapper.fromDomain(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setTeacher(teacher);
@@ -213,7 +213,7 @@ describe('ClassRepository unit test', () => {
         const teacher = mockWorker();
         const classModel = mockClass();
         teacher.setClass(classModel);
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
+        const teacherEntity = WorkerMapper.fromDomain(teacher);
         expect(await teacherRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         classModel.setTeacher(teacher);

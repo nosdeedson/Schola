@@ -21,7 +21,7 @@ export class CreateGetWorkerService {
             if (worker.notification?.hasError()) {
                 throw new SystemError(worker.notification.getErrors(), 422);
             }
-            let model = WorkerEntity.toWorkerEntity(worker);
+            let model = WorkerMapper.fromDomain(worker);
             return await this.workerRepository.create(model) as WorkerEntity;
         } catch (error) {
             throw error;

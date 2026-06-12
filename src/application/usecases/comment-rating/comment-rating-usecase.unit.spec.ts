@@ -27,7 +27,7 @@ describe('CommentRatingUsecase', () => {
 
     it('should create a comment', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(ratingEntity));
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
@@ -40,7 +40,7 @@ describe('CommentRatingUsecase', () => {
 
     it('while creating a comment should throw an error', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(ratingEntity));
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')

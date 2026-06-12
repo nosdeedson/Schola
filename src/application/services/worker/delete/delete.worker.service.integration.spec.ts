@@ -26,7 +26,7 @@ describe('DeleteWorkerService integration test', () => {
     it('should delete a worker', async () => {
 
         let worker = mockWorker();
-        let workerModel = WorkerEntity.toWorkerEntity(worker);
+        let workerModel = WorkerMapper.fromDomain(worker);
 
         let wantedId = worker.getId();
 
@@ -44,7 +44,7 @@ describe('DeleteWorkerService integration test', () => {
     it('should do nothing if worker does not exist', async () => {
 
         let worker = mockWorker();
-        let workerModel = WorkerEntity.toWorkerEntity(worker);
+        let workerModel = WorkerMapper.fromDomain(worker);
 
         let wantedId = '00ac5b00-1326-40ce-8db9-bafaaa95f762';
 

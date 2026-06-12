@@ -48,7 +48,7 @@ describe('create rating integration tests', () => {
 
     it('should insert a rating on database', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -62,7 +62,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if semester is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let quarter;
         let input = new CreateRatingDto(student, quarter, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
@@ -88,7 +88,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if listing is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
@@ -105,7 +105,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if writing is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -124,7 +124,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if reading is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -142,7 +142,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if speaking is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -160,7 +160,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if grammar is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -178,7 +178,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if homework is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();
@@ -195,7 +195,7 @@ describe('create rating integration tests', () => {
 
     it('should throw a systemError if vocabulary is null', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semester = mockSemester();

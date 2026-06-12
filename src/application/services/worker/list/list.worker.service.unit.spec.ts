@@ -20,7 +20,7 @@ describe('FindAllWorkerService unit test', () =>{
     });
 
         workers = [];
-        workers.push(WorkerEntity.toWorkerEntity(worker));
+        workers.push(WorkerMapper.fromDomain(worker));
     });
 
     it('should list all workers', async () => {

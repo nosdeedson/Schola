@@ -5,6 +5,7 @@ import { ClassCodeHelper } from "../../../../helpers/classCode/class-code.heper"
 import { ClassEntity } from "../../../../infrastructure/entities/class/class.entity";
 import { CreateClassDto } from "./create.class.dto";
 import { SystemError } from "../../@shared/system-error";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
 
 export class CreateClassService {
     private classRepository: ClassRepositoryInterface;
@@ -21,7 +22,7 @@ export class CreateClassService {
             if (schoolGroup.notification.hasError()) {
                 throw new SystemError(schoolGroup.notification?.getErrors(), 422);
             }
-            let entity = ClassEntity.toClassEntity(schoolGroup);
+            let entity = ClassMapper.fromDomain(schoolGroup);
             entity.teacher = dto.teacherEntity;
             await this.classRepository.create(entity);
         } catch (error) {

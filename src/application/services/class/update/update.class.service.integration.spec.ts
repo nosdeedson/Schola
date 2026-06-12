@@ -8,6 +8,10 @@ import { TestDataSource } from '../../../../infrastructure/repositories/config-t
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { Class } from "@/domain/class/class";
+import { Worker } from "@/domain/worker/worker";
 
 describe('update class integration test', () => {
 
@@ -36,35 +40,32 @@ describe('update class integration test', () => {
 
     it('should throw an error while updating class if id does not exist', async () => {
         let schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        let entity = ClassMapper.fromDomain(schoolgroup);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
 
         let wantedId = 'ea224f51-5404-4228-8a77-2795b900702d';
         let wantedBookName = 'new book';
-        let wantedTeacher = WorkerEntity.toWorkerEntity(mockWorker());
+        let wantedTeacher = WorkerMapper.fromDomain(mockWorker());
         let input: UpdateClassDto = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
         const service = new UpdateClassService(classRepository);
-        try {
-            await service.execute(input)
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ "context": "class", "message": "class not found" }]);
-        }
+        await expect(service.execute(input)).rejects
+            .toMatchObject({errors: [
+                { "context": "class", "message": "class not found" }
+            ]})
     });
 
     it('should update a class', async () => {
-        let teacher = WorkerEntity.toWorkerEntity(mockWorker());
-        expect(await teacherRepository.create(teacher)).toBeInstanceOf(WorkerEntity);
+        let teacher = WorkerMapper.fromDomain(mockWorker());
+        expect(await teacherRepository.create(teacher)).toBeInstanceOf(Worker);
         let schoolgroup = mockClass();
-        let classEntity = ClassEntity.toClassEntity(schoolgroup);
+        let classEntity = ClassMapper.fromDomain(schoolgroup);
         classEntity.teacher = teacher;
-        expect(await classRepository.create(classEntity)).toBeInstanceOf(ClassEntity);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
         let wantedId = classEntity.id;
         let oldTeacherName = classEntity.teacher.fullName;
         let wantedBookName = 'new book';
-        let wantedTeacher = WorkerEntity.toWorkerEntity(mockWorker({name: 'Emily'}));
-        expect(await teacherRepository.create(wantedTeacher)).toBeInstanceOf(WorkerEntity);
+        let wantedTeacher = WorkerMapper.fromDomain(mockWorker({name: 'Emily'}));
+        expect(await teacherRepository.create(wantedTeacher)).toBeInstanceOf(Worker);
         let input = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
 
         const service = new UpdateClassService(classRepository);
@@ -73,11 +74,11 @@ describe('update class integration test', () => {
         const afterUpdating = await classRepository.find(wantedId);
 
         expect(afterUpdating).toBeDefined();
-        expect(afterUpdating.id).toBe(wantedId);
-        expect(afterUpdating.bookName).toBe(input.nameBook);
-        expect(afterUpdating.teacher.fullName).toBe(wantedTeacher.fullName);
-        expect(afterUpdating.updatedAt.getTime()).toBeGreaterThan(schoolgroup.getUpdatedAt().getTime());
-        expect(oldTeacherName).not.toBe(afterUpdating.teacher.fullName);
+        expect(afterUpdating.getId()).toBe(wantedId);
+        expect(afterUpdating.getNameBook()).toBe(input.nameBook);
+        expect(afterUpdating.getTeacher().getName()).toBe(wantedTeacher.fullName);
+        expect(afterUpdating.getUpdatedAt().getTime()).toBeGreaterThan(schoolgroup.getUpdatedAt().getTime());
+        expect(oldTeacherName).not.toBe(afterUpdating.getTeacher().getName());
     });
 
 });

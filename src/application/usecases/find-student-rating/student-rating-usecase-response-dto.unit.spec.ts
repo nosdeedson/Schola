@@ -6,19 +6,19 @@ import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 
 describe('StudentRatingUsecaseResponseDto', () => {
     it('should instantiate a StudentRatingUsecaseResponseDto', () => {
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         expect(StudentRatingUsecaseResponseDto.toDto([ratingEntity])).toBeDefined()
     });
 
     it('should instantiate a RatingCommentResponseDto', () => {
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
-        const commentEntity = CommentEntity.toCommentEntity(mockComment(), ratingEntity);
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
+        const commentEntity = CommentMapper.fromDomain(mockComment(), ratingEntity);
         expect(RatingCommentResponseDto.from(commentEntity)).toBeDefined();
     });
 
     it('should instantiate a StudentRatingUsecaseResponseDto with comments', () => {
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
-        const commentEntity = CommentEntity.toCommentEntity(mockComment(), ratingEntity);
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
+        const commentEntity = CommentMapper.fromDomain(mockComment(), ratingEntity);
         ratingEntity.comments = [commentEntity];
         const result = StudentRatingUsecaseResponseDto.toDto([ratingEntity]) as StudentRatingUsecaseResponseDto[];
         expect(result).toBeDefined();

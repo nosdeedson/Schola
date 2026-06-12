@@ -44,7 +44,7 @@ describe('create user service integration tests', () => {
 
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
-        let teacherEntity = WorkerEntity.toWorkerEntity(person);
+        let teacherEntity = WorkerMapper.fromDomain(person);
         expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         let input = {
@@ -67,7 +67,7 @@ describe('create user service integration tests', () => {
 
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker({ role: RoleEnum.ADMINISTRATOR });
-        let workerAdmin = WorkerEntity.toWorkerEntity(person);
+        let workerAdmin = WorkerMapper.fromDomain(person);
         expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
 
         let input = {
@@ -91,7 +91,7 @@ describe('create user service integration tests', () => {
         let studentRepository = new StudentRepository(TestDataSource);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
@@ -116,7 +116,7 @@ describe('create user service integration tests', () => {
         let parentRepository = new ParentRepository(TestDataSource);
 
         let parent = mockParent();
-        let parentEntity = ParentEntity.toParentEntity(parent);
+        let parentEntity = ParentMapper.fromDomain(parent);
 
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
@@ -140,7 +140,7 @@ describe('create user service integration tests', () => {
 
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
-        let teacherEntity = WorkerEntity.toWorkerEntity(person);
+        let teacherEntity = WorkerMapper.fromDomain(person);
         // expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
 
         let input = {

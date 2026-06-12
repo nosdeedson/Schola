@@ -11,10 +11,14 @@ export class AcademicSemesterMapper {
         entity.quarters.push(QuarterMapper.fromDomain(semester.firstQuarter, 1));
         entity.quarters.push(QuarterMapper.fromDomain(semester.secondQuarter, 2));
         entity.current = semester.currentSemester;
+        entity.createdAt = semester.getCreatedAt();
+        entity.updatedAt = semester.getUpdatedAt();
+        entity.deletedAt = semester.getDeletedAt();
         return entity;
     }
 
     static fromEntity(entity: AcademicSemesterEntity): AcademicSemester {
+        if(!entity) return null;
         return new AcademicSemester(
             entity.quarters[0].quarterNumber == 1 ? QuarterMapper.fromEntity(entity.quarters[0]) : QuarterMapper.fromEntity(entity.quarters[1]),
             entity.quarters[0].quarterNumber == 2 ? QuarterMapper.fromEntity(entity.quarters[0]) : QuarterMapper.fromEntity(entity.quarters[1]),

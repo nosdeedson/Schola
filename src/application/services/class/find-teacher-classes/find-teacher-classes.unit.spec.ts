@@ -5,6 +5,8 @@ import { ClassEntity } from "../../../../infrastructure/entities/class/class.ent
 import { mockClassesOfTeacherDto } from "../../../../../tests/mocks/mock-dtos/mock-dtos";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { QueryFailedError } from "typeorm";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { Class } from "@/domain/class/class";
 
 describe('FindTeacherClassesService unit test', () => {
 
@@ -14,7 +16,7 @@ describe('FindTeacherClassesService unit test', () => {
 
     it('should return an empty list by teacher id', async () => {
         const repository = MockRepositoriesForUnitTest.mockRepositories();
-        const classes: ClassEntity[] = [];
+        const classes: Class[] = [];
         repository.findByTeacherId = jest.fn()
             .mockImplementation(() => classes);
         const dto: ClassesOfTeacherDto[] = [];
@@ -32,13 +34,12 @@ describe('FindTeacherClassesService unit test', () => {
     it('should return one class by teacher id', async () => {
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         const classModel = mockClass();
-        const classEntity = ClassEntity.toClassEntity(classModel);
         repository.findByTeacherId = jest.fn()
-            .mockImplementation(() => [classEntity]);
+            .mockImplementation(() => [classModel]);
         const dto = mockClassesOfTeacherDto()
         const classOfTeacherDto = jest.spyOn(ClassesOfTeacherDto, 'toClassesOfTeacher')
             .mockReturnValue([dto]);
-        const wantedTeacherId = classEntity.id;
+        const wantedTeacherId = classModel.getId();
         const service = new FindTeacherClassesService(repository);
         const result = await service.execute(wantedTeacherId);
         expect(result).toBeInstanceOf(Array);
@@ -57,6 +58,4 @@ describe('FindTeacherClassesService unit test', () => {
         const service = new FindTeacherClassesService(repository);
         await expect(service.execute(wantedTeacherId)).rejects.toThrow(QueryFailedError);
     });
-
-
 });

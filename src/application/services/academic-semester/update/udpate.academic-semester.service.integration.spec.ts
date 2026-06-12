@@ -6,6 +6,7 @@ import { UpdateAcademicSemesterService } from "./update.academic-semester.servic
 import { TestDataSource } from '../../../../infrastructure/repositories/config-test/test.datasource';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 
 
 describe('Update AcademicSemester integration tests', () => {
@@ -30,7 +31,7 @@ describe('Update AcademicSemester integration tests', () => {
     it('should update the second an academicSemester', async () => {
         const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         let wantedId = entity.id;
-        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemester);
         const dto = new UpdateAcademicSemesterDto({
             id: entity.id,
             updatingQuarter: true,
@@ -41,16 +42,16 @@ describe('Update AcademicSemester integration tests', () => {
         expect(await service.execute(dto)).toBe(void 0);
         let result = await semesterRepository.find(wantedId);
         expect(result).toBeDefined();
-        expect(result.id).toBe(wantedId);
-        expect(result.current).toBeTruthy();
-        expect(result.quarters[0].currentQuarter).toBeFalsy();
-        expect(result.quarters[1].currentQuarter).toBeTruthy();
+        expect(result.getId()).toBe(wantedId);
+        expect(result.getCurrentSemester()).toBeTruthy();
+        expect(result.getFirstQuarter().currentQuarter).toBeFalsy();
+        expect(result.getSecondQuarter().currentQuarter).toBeTruthy();
     });
 
     it('should update the semester as not current', async () => {
         const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         let wantedId = entity.id;
-        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemester);
         const dto = new UpdateAcademicSemesterDto({
             id: entity.id,
             updatingQuarter: false,

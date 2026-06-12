@@ -27,7 +27,7 @@ describe("comment E2E TEST", () => {
     describe('business tests', () => {
 
         it('should create a comment', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent())
+            const studentEntity = StudentMapper.fromDomain(mockStudent())
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
@@ -35,7 +35,7 @@ describe("comment E2E TEST", () => {
             const semesterRepository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRepository.save(semesterEntity);
 
-            let ratingEntity = RatingEntity.toRatingEntity(mockRating());
+            let ratingEntity = RatingMapper.fromDomain(mockRating());
             ratingEntity.student = studentEntity;
             ratingEntity.quarter = semesterEntity.quarters[0];
             const ratingRepository = TestDataSource.getRepository(RatingEntity);

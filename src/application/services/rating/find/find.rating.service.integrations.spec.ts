@@ -47,13 +47,13 @@ describe('find rating integration tests', () => {
         let semester = mockSemester();
         let rating = mockRating({ quarter: semester.firstQuarter });
         let student = rating.getStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
         let wantedid = 'b4145be7-0fed-4a64-8a45-24bdd594cd20';
@@ -68,13 +68,13 @@ describe('find rating integration tests', () => {
         let semester = mockSemester();
         let rating = mockRating({ quarter: semester.firstQuarter });
         let student = rating.getStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let semesterEntity = AcademicSemesterEntity.toEntity(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
         let wantedid = rating.getId();

@@ -29,7 +29,7 @@ describe('delete class service integration test', () => {
 
     it('should delete a class from the DB', async () => {
         let schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
+        let entity = ClassMapper.fromDomain(schoolgroup);
         let wantedId = schoolgroup.getId();
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
 
@@ -45,7 +45,7 @@ describe('delete class service integration test', () => {
 
     it('should not thorw an error while deleting class with invalid id', async () => {
         let schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
+        let entity = ClassMapper.fromDomain(schoolgroup);
         let wantedId = 'a58827ba-0560-4cab-b283-19d1435fbdd2';
 
         expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);

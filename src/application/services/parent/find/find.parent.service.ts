@@ -2,6 +2,7 @@ import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.int
 import { FindParentDto } from "./find.parent.dto";
 import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { SystemError } from "@/application/services/@shared/system-error";
+import { Parent } from "@/domain/parent/parent";
 
 export class FindParentService {
 
@@ -16,7 +17,7 @@ export class FindParentService {
         if (!entity) {
             throw new SystemError([{ context: 'parent', message: 'Parent not found' }], 404)
         }
-        let dto = FindParentDto.toDto(entity as ParentEntity);
+        let dto = FindParentDto.toDto(entity as Parent);
         return dto;
     }
 

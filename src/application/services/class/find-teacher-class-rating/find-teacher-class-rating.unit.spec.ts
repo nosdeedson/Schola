@@ -5,6 +5,8 @@ import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.
 import { FindTeacherClassRatingService } from './find-teacher-class-rating';
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('FindTeacherClassRating', () => {
 
@@ -27,18 +29,16 @@ describe('FindTeacherClassRating', () => {
 
     it('should return class rating if teacherId and classId exist', async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
-        classRepository.findByTeacherIdAndClassId = jest.fn().mockImplementation(() => classEntity);
-        const classModel = mockClass()
-        const classEntity = ClassEntity.toClassEntity(classModel);
+        const classModel = mockClass();
+        classRepository.findByTeacherIdAndClassId = jest.fn().mockImplementation(() => classModel);
         const teacher = mockWorker()
-        const teacherEntity = WorkerEntity.toWorkerEntity(teacher);
         const findClassRating = new FindTeacherClassRatingService(classRepository);
-        classEntity.teacher = teacherEntity;
+        classModel.setTeacher(teacher);
 
-        const result = await findClassRating.execute(classEntity.teacher.id, classEntity.id);
+        const result = await findClassRating.execute(teacher.getId(), classModel.getId());
         expect(result).toBeDefined();
         expect(classRepository.findByTeacherIdAndClassId).toHaveBeenCalledTimes(1);
-        expect(classRepository.findByTeacherIdAndClassId).toHaveBeenCalledWith(classEntity.teacher.id, classEntity.id);
+        expect(classRepository.findByTeacherIdAndClassId).toHaveBeenCalledWith(teacher.getId(), classModel.getId());
     });
 
     it('should throw QueryFailedError error', async () => {

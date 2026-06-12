@@ -38,16 +38,16 @@ describe('TEACHAR E2E TESTS', () => {
         });
 
         it("should find teacher's classes", async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
-            const teacherEntity = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacherEntity = WorkerMapper.fromDomain(mockWorker());
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacherEntity);
 
             const repository = TestDataSource.getRepository(ClassEntity);
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             classEntity.setStudents(studentEntity);
             classEntity.setTeacher(teacherEntity);
             const entity = await repository.save(classEntity);
@@ -72,12 +72,12 @@ describe('TEACHAR E2E TESTS', () => {
         });
 
         it("should not find teacher's class", async () => {
-            const teacherEntity = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacherEntity = WorkerMapper.fromDomain(mockWorker());
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacherEntity);
 
             const repository = TestDataSource.getRepository(ClassEntity);
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             classEntity.setTeacher(teacherEntity);
             const entity = await repository.save(classEntity);
 

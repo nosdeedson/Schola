@@ -83,12 +83,12 @@ describe('FindAllCommentService integration tests', () => {
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
@@ -98,11 +98,11 @@ describe('FindAllCommentService integration tests', () => {
         expect(results.all.length).toBe(0);
 
         let comment = mockComment();
-        let commentEntity = CommentEntity.toCommentEntity(comment, ratingEntity);
+        let commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
 
         let comment1 = new Comment('another comment', comment.getNamePersonHaveDone());
-        const commentEntity1 = CommentEntity.toCommentEntity(comment1, ratingEntity);
+        const commentEntity1 = CommentMapper.fromDomain(comment1, ratingEntity);
         expect(await commentRepository.create(commentEntity1)).toBeInstanceOf(CommentEntity);
 
         results = await service.execute();

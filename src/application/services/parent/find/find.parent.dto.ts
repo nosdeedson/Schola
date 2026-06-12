@@ -1,3 +1,4 @@
+import { Parent } from "@/domain/parent/parent";
 import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 
 export class FindParentDto {
@@ -6,11 +7,11 @@ export class FindParentDto {
     name: string;
     createdAt : Date;
 
-    static toDto(entity: ParentEntity): FindParentDto{
+    static toDto(entity: Parent): FindParentDto{
         let dto = new FindParentDto();
-        dto.id = entity.id;
-        dto.name = entity.fullName;
-        dto.createdAt = entity.createdAt;
+        dto.id = entity.getId();
+        dto.name = entity.getName();
+        dto.createdAt = entity.getCreatedAt();
         return dto;
     }
 

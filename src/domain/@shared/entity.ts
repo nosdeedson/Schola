@@ -37,6 +37,10 @@ export abstract class Entity {
         return this.deletedAt;
     }
 
+    setDeletedAt(date: Date){
+        this.deletedAt = date;
+    }
+
     get notification(): any {
         return this._notification;
     }

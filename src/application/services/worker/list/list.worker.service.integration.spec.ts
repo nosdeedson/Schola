@@ -32,15 +32,15 @@ describe('FindAllWorkerService integration tests', () => {
 
     it('should find all worker', async () =>{
         let worker = new Worker({birthday: new Date(), name: 'one', role: RoleEnum.TEACHER, id: '1828c5d5-3947-4589-88c8-3575f6f51fcb'});
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         await workerRepository.create(model);
 
         let worker1 = new Worker({ birthday: new Date(), name: 'two', role: RoleEnum.ADMINISTRATOR, id: '7a856a80-ffa0-42ab-bd9d-f5fefb3407f7'});
-        let model1 = WorkerEntity.toWorkerEntity(worker1);
+        let model1 = WorkerMapper.fromDomain(worker1);
         await workerRepository.create(model1);
 
         let worker2 = new Worker({ birthday: new Date(), name: 'two', role: RoleEnum.TEACHER, id: 'd5353d39-da88-46e4-ac1a-ff54dd841570'});
-        let model2 = WorkerEntity.toWorkerEntity(worker2);
+        let model2 = WorkerMapper.fromDomain(worker2);
         await workerRepository.create(model2);
 
         let service = new FindAllWorkerService(workerRepository);

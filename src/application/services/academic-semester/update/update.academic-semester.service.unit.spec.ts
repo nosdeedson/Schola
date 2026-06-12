@@ -13,21 +13,21 @@ describe('AcademicSemester unit tests', () => {
 
     it('should update semester changing secondQuarter to current', async () => {
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const entity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
+        const semester = mockSemester({ currentSemester: true });
         const dto = new UpdateAcademicSemesterDto({
-            id: entity.id,
+            id: semester.getId(),
             updatingQuarter: true,
             updatingSemester: false,
         });
         semesterRepository.find = jest.fn()
-            .mockReturnValue(await Promise.resolve(entity));
+            .mockReturnValue(await Promise.resolve(semester));
         semesterRepository.update = jest.fn()
             .mockResolvedValue(void 0);
 
         const service = new UpdateAcademicSemesterService(semesterRepository);
         expect(await service.execute(dto)).toBe(void 0);
         expect(semesterRepository.update).toHaveBeenCalled();
-        expect(semesterRepository.update).toHaveBeenCalledWith(entity);
+        expect(semesterRepository.update).toHaveBeenCalledWith(AcademicSemesterMapper.fromDomain(semester));
         expect(semesterRepository.find).toHaveBeenCalledWith(dto.id);
     });
 

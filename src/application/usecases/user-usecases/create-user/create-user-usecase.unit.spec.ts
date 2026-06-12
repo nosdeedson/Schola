@@ -37,7 +37,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should create a user as a TEACHER', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker());
+        const person = WorkerMapper.fromDomain(mockWorker());
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,
@@ -94,7 +94,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should throw an error when creating user', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker());
+        const person = WorkerMapper.fromDomain(mockWorker());
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,
@@ -132,7 +132,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should create a user as a Admin', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker({ role: RoleEnum.ADMINISTRATOR }));
+        const person = WorkerMapper.fromDomain(mockWorker({ role: RoleEnum.ADMINISTRATOR }));
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,
@@ -160,7 +160,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should create a user as student', async () => {
-        const person = StudentEntity.toStudentEntity(mockStudent());
+        const person = StudentMapper.fromDomain(mockStudent());
         const mockInput = mockCreateUsersDto({
             accessType: AccessType.STUDENT,
             email: 'student@email',
@@ -186,7 +186,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should create a user as parent', async () => {
-        const person = StudentEntity.toStudentEntity(mockStudent());
+        const person = StudentMapper.fromDomain(mockStudent());
         const mockInput = mockCreateUsersDto({
             accessType: AccessType.PARENT,
             email: 'parent@email',
@@ -212,7 +212,7 @@ describe('CreateUserUsecase', () => {
     });
 
     it('should throw a badrequest (class  not found) while creating user as a TEACHER', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker());
+        const person = WorkerMapper.fromDomain(mockWorker());
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,
@@ -240,7 +240,7 @@ describe('CreateUserUsecase', () => {
 
 
     it('should throw a badrequest (teacher does not teach the class) while creating user as a TEACHER', async () => {
-        const person = WorkerEntity.toWorkerEntity(mockWorker());
+        const person = WorkerMapper.fromDomain(mockWorker());
         const mockInput = mockCreateUsersDto();
         const input = new CreateWorkerDto({
             classCode: mockInput.classCode,

@@ -18,7 +18,7 @@ describe('RatingModel test units', () => {
 
     it('should instantiate a RatingModel', () => {
 
-        let model = RatingEntity.toRatingEntity(rating);
+        let model = RatingMapper.fromDomain(rating);
         expect(model.id).toBeDefined();
         expect(model.createdAt).toBeDefined();
         expect(model.deletedAt).toBeUndefined();

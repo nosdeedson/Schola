@@ -5,7 +5,7 @@ describe('ParentEntity', () => {
 
     it('should intantiate a ParentModel', () => {
         const parent = mockParent();
-        let model = ParentEntity.toParentEntity(parent);
+        let model = ParentMapper.fromDomain(parent);
         expect(model).toBeDefined();
         expect(model.birthday).toBe(parent.getBirthday());
         expect(model.createdAt).toBe(parent.getCreatedAt());

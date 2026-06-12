@@ -29,7 +29,7 @@ export class CreateRatingService {
             if (rating?.notification?.hasError()) {
                 throw new SystemError(rating?.notification?.getErrors(), 422);
             }
-            const ratingEntity = RatingEntity.toRatingEntity(rating);
+            const ratingEntity = RatingMapper.fromDomain(rating);
             return await this.ratingRepository.create(ratingEntity);
         } catch (error) {
             throw error;

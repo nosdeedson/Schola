@@ -49,7 +49,7 @@ describe('STUDENT E2E TESTS', () => {
         });
 
         it('should find a ratings of a student', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
             const semester = AcademicSemesterMapper.fromDomain(mockSemester({
@@ -58,7 +58,7 @@ describe('STUDENT E2E TESTS', () => {
             const semesterRespository = TestDataSource.getRepository(AcademicSemesterEntity);
             await semesterRespository.save(semester);
 
-            const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+            const ratingEntity = RatingMapper.fromDomain(mockRating());
             ratingEntity.student = studentEntity;
             ratingEntity.quarter = semester.quarters[0];
             const ratingRepository = TestDataSource.getRepository(RatingEntity);
@@ -74,14 +74,14 @@ describe('STUDENT E2E TESTS', () => {
         });
 
         it('should transfer students', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
-            const studentEntity1 = StudentEntity.toStudentEntity(mockStudent({ name: "second student" }));
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
+            const studentEntity1 = StudentMapper.fromDomain(mockStudent({ name: "second student" }));
             studentEntity1.id = '91f523cb-72f3-4aca-adcd-b76a15ae7be3';
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save([studentEntity, studentEntity1]);
             const repository = TestDataSource.getRepository(ClassEntity);
-            const classEntity = ClassEntity.toClassEntity(mockClass());
-            const classEntity1 = ClassEntity.toClassEntity(mockClass({ name: "A1-morning" }));
+            const classEntity = ClassMapper.fromDomain(mockClass());
+            const classEntity1 = ClassMapper.fromDomain(mockClass({ name: "A1-morning" }));
             classEntity1.id = '36cd408b-5d95-452e-8693-5566625108bb';
             const entity = await repository.save(classEntity);
             const entity1 = await repository.save(classEntity1);
@@ -102,11 +102,11 @@ describe('STUDENT E2E TESTS', () => {
         });
 
         it('should not transfer students', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save([studentEntity]);
             const repository = TestDataSource.getRepository(ClassEntity);
-            const classEntity = ClassEntity.toClassEntity(mockClass());
+            const classEntity = ClassMapper.fromDomain(mockClass());
             await repository.save(classEntity);
             let wantedId = "742b5dd6-c28e-4739-82ae-d9f0aedeb3a9";
             let dto = mockTransferStudendtsRequestDto({ classId: wantedId, studentIds: [studentEntity.id] });

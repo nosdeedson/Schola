@@ -25,7 +25,7 @@ describe('UpdateStudentService unit test', () =>{
     it('should update a student', async () =>{
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const student = mockStudent();
-        const studentEntity = StudentEntity.toStudentEntity(student);
+        const studentEntity = StudentMapper.fromDomain(student);
 
         let wantedEnrolled = '43321';
         studentRepository.update = jest.fn().mockImplementationOnce(() => {

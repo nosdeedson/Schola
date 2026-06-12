@@ -78,18 +78,18 @@ describe('UpdateCommentService integration tests', () => {
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
 
-        let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
+        let ratingEntityToSave = RatingMapper.fromDomain(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
 
         let comment = mockComment();
-        let commentEntityToSave = CommentEntity.toCommentEntity(comment, ratingEntityToSave);
+        let commentEntityToSave = CommentMapper.fromDomain(comment, ratingEntityToSave);
         expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
 
         const wrongId = 'df488d38-4890-4e32-a443-ff0ba9ad86eb';
@@ -108,17 +108,17 @@ describe('UpdateCommentService integration tests', () => {
         expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
-        let ratingEntityToSave = RatingEntity.toRatingEntity(rating);
+        let ratingEntityToSave = RatingMapper.fromDomain(rating);
 
         expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
 
         let comment = mockComment();
-        let commentEntityToSave = CommentEntity.toCommentEntity(comment, ratingEntityToSave);
+        let commentEntityToSave = CommentMapper.fromDomain(comment, ratingEntityToSave);
         expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
 
         let wantedId = comment.getId();

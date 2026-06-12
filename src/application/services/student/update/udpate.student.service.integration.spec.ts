@@ -41,7 +41,7 @@ describe('UpdateStudentService integration tests', () => {
 
     it('should update a student in database', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let updatedErroled = '987';
         const service = new UpdateStudentService(studentRepository);

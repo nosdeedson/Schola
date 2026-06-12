@@ -44,7 +44,7 @@ export class CreateStudentService extends CreateGenericService {
                 if (student?.notification?.hasError()) {
                     throw new SystemError(student.notification.errors, 422);
                 }
-                let studentEntity = StudentEntity.toStudentEntity(student);
+                let studentEntity = StudentMapper.fromDomain(student);
                 return await this.studentRepository.create(studentEntity);
             }
         } catch (error) {

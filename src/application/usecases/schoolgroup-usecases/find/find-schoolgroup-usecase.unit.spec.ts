@@ -11,7 +11,7 @@ import { FindClassService } from "@/application/services/class/find/find.class.s
 describe('FindSchoolgroupUsecase', () => {
 
     it('should find a class', async () => {
-        const entity = ClassEntity.toClassEntity(mockClass());
+        const entity = ClassMapper.fromDomain(mockClass());
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn()
             .mockImplementation(() => Promise.resolve(entity));

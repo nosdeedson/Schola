@@ -38,10 +38,10 @@ describe('Academic semester integration test', () => {
 
         let results = await semesterRepository.findAll();
         expect(results).toBeDefined();
-        expect([results[0].quarters[0].beginningDate.getTime(), results[0].quarters[1].beginningDate.getTime()]
+        expect([results[0].getFirstQuarter().beginningDate.getTime(), results[0].getSecondQuarter().beginningDate.getTime()]
             .includes(firstQuarterDto.beginningDate.getTime())).toBeTruthy();
-        expect(results[0].current).toBeTruthy();
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getCurrentSemester()).toBeTruthy();
+        expect(results[0].getId()).toBeDefined();
     });
 
     it('shoud throw an erro if quarters are the same', async () => {

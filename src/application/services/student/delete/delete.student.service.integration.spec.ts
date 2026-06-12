@@ -33,7 +33,7 @@ describe('DeleteStudentService integration tests', () => {
 
     it('should not throw a SystemError if id does not exist', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let noExixtentId = 'ddb5186b-9a8d-4c5d-8086-2cccc0499c11';
         const service = new DeleteStudentService(studentRepository);
@@ -42,7 +42,7 @@ describe('DeleteStudentService integration tests', () => {
 
     it('should delete a student', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let wantedId = student.getId();

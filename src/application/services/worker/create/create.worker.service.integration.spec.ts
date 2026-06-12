@@ -58,7 +58,7 @@ describe("CreateWorkerService integration test", () => {
     it('should create a worker with class code', async () => {
         let service = new CreateWorkerService(workerRepository);
         let worker = mockWorker();
-        let workerEntity = WorkerEntity.toWorkerEntity(worker);
+        let workerEntity = WorkerMapper.fromDomain(worker);
         expect(await workerRepository.create(workerEntity)).toBeInstanceOf(WorkerEntity);
         const wantedBirthday = new Date();
         let dto = {

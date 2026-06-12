@@ -22,7 +22,7 @@ describe('create user service unit test', () => {
 
     it('should create an user of type teacher', async () => {
         const person = mockWorker();
-        const personEntity = WorkerEntity.toWorkerEntity(person);
+        const personEntity = WorkerMapper.fromDomain(person);
         input = {
             person: personEntity,
             email: 'teste@teste',
@@ -42,7 +42,7 @@ describe('create user service unit test', () => {
 
     it('should create an user of type admin', async () => {
         const person = mockWorker({ role: RoleEnum.ADMINISTRATOR });
-        const personEntity = WorkerEntity.toWorkerEntity(person);
+        const personEntity = WorkerMapper.fromDomain(person);
         input = {
             person: personEntity,
             email: 'teste@teste',
@@ -62,7 +62,7 @@ describe('create user service unit test', () => {
 
     it('should create an user of type student', async () => {
         const person = mockStudent();
-        const personEntity = StudentEntity.toStudentEntity(person);
+        const personEntity = StudentMapper.fromDomain(person);
         input = {
             person: personEntity,
             email: 'teste@teste',
@@ -88,7 +88,7 @@ describe('create user service unit test', () => {
 
     it('should create an user of type parent', async () => {
         const person = mockParent();
-        const personEntity = ParentEntity.toParentEntity(person);
+        const personEntity = ParentMapper.fromDomain(person);
         input = {
             person: personEntity,
             email: 'teste@teste',
@@ -112,7 +112,7 @@ describe('create user service unit test', () => {
 
     it('should throw an QueryFailedError while saving a user', async () => {
         const person = mockWorker();
-        const personEntity = WorkerEntity.toWorkerEntity(person);
+        const personEntity = WorkerMapper.fromDomain(person);
         input = {
             person: personEntity,
             email: 'teste@teste',

@@ -17,7 +17,7 @@ export class FindUserService {
             if (!user) {
                 throw new SystemError([{ context: 'user', message: 'user not found' }], 404);
             }
-            let dto = new FindUserDto(user.id, user.person.id, user.email, user.nickname, user.person.fullName, user.accessType);
+            let dto = new FindUserDto(user.getId(), user.getPerson().getId(), user.getEmail(), user.getNickname(), user.getPerson().getName(), user.getAccessType());
             return dto;
         } catch (error) {
             throw error;

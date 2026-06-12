@@ -1,3 +1,6 @@
+import { Class } from "@/domain/class/class";
+import { Student } from "@/domain/student/student";
+import { Worker } from "@/domain/worker/worker";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
@@ -12,15 +15,15 @@ export class FindClassDto {
     teacher: FindClassTeacherDto;
     students: FindClassStudentDto[];
 
-    static toDto(entity: ClassEntity): FindClassDto {
+    static toDto(entity: Class): FindClassDto {
         let dto = new FindClassDto();
-        dto.id = entity.id;
-        dto.classCode = entity.classCode;
-        dto.name = entity.className;
-        dto.nameBook = entity.bookName;
+        dto.id = entity.getId();
+        dto.classCode = entity.getClassCode();
+        dto.name = entity.getName();
+        dto.nameBook = entity.getNameBook();
         dto.schedule = FindClassScheduleDto.toDto(entity);
-        dto.students = FindClassStudentDto.toDto(entity.students);
-        dto.teacher = FindClassTeacherDto.toDto(entity.teacher);
+        dto.students = FindClassStudentDto.toDto(entity.getStudents());
+        dto.teacher = FindClassTeacherDto.toDto(entity.getTeacher());
         return dto;
     }
 }
@@ -29,13 +32,13 @@ export class FindClassStudentDto {
     id: string;
     name: string;
 
-    static toDto(entities: StudentEntity[]): FindClassStudentDto[]{
+    static toDto(entities: Student[]): FindClassStudentDto[]{
         let dtos : FindClassStudentDto[] = [];
         if(entities){
             entities.forEach(it =>{
                 let dto = new FindClassStudentDto();
-                dto.id = it.id;
-                dto.name = it.fullName;
+                dto.id = it.getId();
+                dto.name = it.getName();
                 dtos.push(dto);
             });
         }
@@ -47,11 +50,11 @@ export class FindClassTeacherDto {
     id: string;
     name: string;
 
-    static toDto(teacher: WorkerEntity): FindClassTeacherDto{
+    static toDto(teacher: Worker): FindClassTeacherDto{
         let dto = new FindClassTeacherDto();
         if(teacher){
-            dto.id = teacher.id;
-            dto.name = teacher.fullName;
+            dto.id = teacher.getId();
+            dto.name = teacher.getName();
         };
         return dto;
     }
@@ -62,13 +65,10 @@ export class  FindClassScheduleDto {
     dayOfWeeks: string[] = [];
     times: Record<string, string> = {};
 
-    static toDto(entity: ClassEntity): FindClassScheduleDto {
+    static toDto(entity: Class): FindClassScheduleDto {
         let dto = new FindClassScheduleDto();
-        dto.dayOfWeeks.push(entity.firstDayOfClassInWeek);
-        dto.dayOfWeeks.push(entity.secondDayOfClassInWeek);
-        let t = new Map();
-        t.set(entity.firstDayOfClassInWeek, entity.timeFirstDay);
-        t.set(entity.secondDayOfClassInWeek, entity.timeSecondDay);
+        dto.dayOfWeeks = entity.getSchecule().getDayOfWeek();
+        let t = entity.getSchecule().getTimes();
         dto.times = Object.fromEntries(t);
         return dto;
     }

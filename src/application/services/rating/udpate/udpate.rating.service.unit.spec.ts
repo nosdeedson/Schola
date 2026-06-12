@@ -25,7 +25,7 @@ describe('update rating service unit tests', () => {
 
     it('should update a rating', async () => {
         const rating = mockRating();
-        const entity = RatingEntity.toRatingEntity(rating);
+        const entity = RatingMapper.fromDomain(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         ratingRepository.find = jest.fn().mockImplementationOnce(() => { return entity });
         const service = new UpdateRatingService(ratingRepository);

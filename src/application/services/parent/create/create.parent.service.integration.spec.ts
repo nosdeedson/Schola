@@ -49,13 +49,13 @@ describe('CreateParentService integration tests', () => {
 
     it('should update parent with previously created by the student', async () => {
         const student = mockStudent();
-        const studentEntity = StudentEntity.toStudentEntity(student);
+        const studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         const parent = mockParent();
         parent.setStudents([]);
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
-        const parentStudentEntity = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);
+        const parentStudentEntity = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
         expect(await parentStudentRepository.create(parentStudentEntity)).toBeInstanceOf(ParentStudentEntity);
         const expectBirthday = new Date();
         let input = new CreateParentDto(expectBirthday, parent.getName(), [student.getName()]);

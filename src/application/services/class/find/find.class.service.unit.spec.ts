@@ -7,26 +7,19 @@ import { FindClassService } from './find.class.service';
 
 describe('find class service unit test', () => {
 
-    let schoolgroup;
-    let entity: ClassEntity | undefined;
-    let output: FindClassDto;
-
     afterEach( () => {
-        schoolgroup = undefined;
-        entity = undefined;
         jest.clearAllMocks();
     })
 
     it('should find a class', async () => {
-        schoolgroup = mockClass();
-        entity = ClassEntity.toClassEntity(schoolgroup);
-        output = FindClassDto.toDto(entity);
+        let schoolgroup = mockClass();
+        let output = FindClassDto.toDto(schoolgroup);
         const findDto = jest.spyOn(FindClassDto, 'toDto')
             .mockReturnValue(output);
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn()
             .mockImplementationOnce(() => {
-                return entity;
+                return schoolgroup;
             });
         let wantedId = schoolgroup.getId();
         const service = new FindClassService(classRepository);
@@ -39,7 +32,7 @@ describe('find class service unit test', () => {
 
     it('should not find a class with invalid id', async () => {
         const findDto = jest.spyOn(FindClassDto, 'toDto')
-            .mockReturnValue(output);
+            .mockReturnValue(new FindClassDto());
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn()
             .mockImplementationOnce(() => {
@@ -47,17 +40,13 @@ describe('find class service unit test', () => {
             });
         let wantedId = 'b5a0db75-f438-4fb6-9213-43c83fc5e8cc';
         const service = new FindClassService(classRepository);
-        try {
-            await service.execute(wantedId)
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toStrictEqual([{context: 'class', message: 'class not found'}])
+        await expect(service.execute(wantedId)).rejects
+            .toMatchObject({errors: [{
+                context: 'class', message: 'class not found'}
+            ]});
             expect(classRepository.find).toHaveBeenCalledTimes(1);
             expect(classRepository.find).toHaveBeenCalledWith(wantedId);
             expect(findDto).toHaveBeenCalledTimes(0);
-        }
-    })
+    });
 
-})
+});

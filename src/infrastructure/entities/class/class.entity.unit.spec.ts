@@ -56,7 +56,7 @@ describe('Classmodel unit tests', () => {
 
     it('should instantiate a ClassEntity from a domain Class', () => {
         
-        const model = ClassEntity.toClassEntity(c);
+        const model = ClassMapper.fromDomain(c);
         expect(model).toBeDefined();
         expect(model.bookName).toEqual(c.getNameBook());
         expect(model.classCode).toEqual(c.getClassCode());
@@ -76,16 +76,16 @@ describe('Classmodel unit tests', () => {
     })
 
     it('should set a teacheer to schoolgroup', () => {
-        const model =ClassEntity.toClassEntity(c);
-        const teacherModel = WorkerEntity.toWorkerEntity(teacher, model)
+        const model =ClassMapper.fromDomain(c);
+        const teacherModel = WorkerMapper.fromDomain(teacher, model)
         model.setTeacher(teacherModel)
         expect(model).toBeDefined();
         expect(model.teacher).toStrictEqual(teacherModel);
     })
 
     it('should set a student to schoolgroup', () => {
-        const model = ClassEntity.toClassEntity(c);
-        const studentModel = StudentEntity.toStudentEntity(student); 
+        const model = ClassMapper.fromDomain(c);
+        const studentModel = StudentMapper.fromDomain(student); 
         model.setStudents(studentModel);
         expect(model).toBeDefined();
         expect(model.students.length).toBe(1)
@@ -93,7 +93,7 @@ describe('Classmodel unit tests', () => {
     });
 
     it('should set an empty array of student in class', () => {
-        const model = ClassEntity.toClassEntity(c);
+        const model = ClassMapper.fromDomain(c);
         delete model.students;
         model.setStudents(null);
         expect(model.students).toHaveLength(1);

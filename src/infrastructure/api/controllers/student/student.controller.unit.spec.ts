@@ -58,7 +58,7 @@ describe('StudentController', () => {
 
   it('should find a rating', async () => {
     const rating = mockRating();
-    const ratingEntity = RatingEntity.toRatingEntity(rating);
+    const ratingEntity = RatingMapper.fromDomain(rating);
     ratingEntity.comments = CommentEntity.toCommentsEntity([mockComment()], ratingEntity);
     const wantedId = ratingEntity.id;
     const out = mockStudentRatingUsecaseDtoOut(ratingEntity);

@@ -35,10 +35,10 @@ describe('ParentStudentRepository', () => {
 
     it('should create a parent student relationship', async () => {
         let parent = mockParent();
-        let parentEntity = ParentEntity.toParentEntity(parent);
+        let parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         const entity = new ParentStudentEntity();
         entity.parent = parentEntity;

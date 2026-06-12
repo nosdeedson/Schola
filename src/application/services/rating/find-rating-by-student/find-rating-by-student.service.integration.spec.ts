@@ -49,7 +49,7 @@ describe('FindRatingByStudent', () => {
 
     it('should return null if student does not have rating', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
         let wantedid = student.getId();
         const findRatingByStudent = new FindRatingByStudent(ratingRepository);
@@ -63,11 +63,11 @@ describe('FindRatingByStudent', () => {
         const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let rating = new Rating(semester.firstQuarter, student, new Date(), Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD, Grade.BAD);
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 
         const findRatingByStudent = new FindRatingByStudent(ratingRepository);

@@ -2,12 +2,13 @@ import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { FindRatingByStudent } from "./find-rating-by-student.service";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 
 describe('findRatingByStudent', () => {
 
     it('should find a rating by student', async () => {
         const rating = mockRating();
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         ratingRepository.findByStudentId = jest.fn()
             .mockImplementation(() => Promise.resolve([ratingEntity]));

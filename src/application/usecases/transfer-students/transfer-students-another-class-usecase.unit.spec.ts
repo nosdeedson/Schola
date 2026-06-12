@@ -27,8 +27,8 @@ describe('TransferStudentsAnotherClassUsecase unit tests', () => {
     it('should udpate students', async () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const classEntity = ClassEntity.toClassEntity(mockClass());
-        const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+        const classEntity = ClassMapper.fromDomain(mockClass());
+        const studentEntity = StudentMapper.fromDomain(mockStudent());
         const dto = mockTransferStudentsAnotherClassDto();
 
         classRepository.find = jest.fn().mockResolvedValue(classEntity);

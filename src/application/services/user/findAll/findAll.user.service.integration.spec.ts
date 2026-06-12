@@ -51,8 +51,8 @@ describe('FindAllUserService integration tests', () =>{
 
         let person = admin.getPerson() as any;
         let person1 = teacher.getPerson() as any;
-        let personEntity = WorkerEntity.toWorkerEntity(person);
-        let personEntity1 = WorkerEntity.toWorkerEntity(person1);
+        let personEntity = WorkerMapper.fromDomain(person);
+        let personEntity1 = WorkerMapper.fromDomain(person1);
 
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
         expect(await workerRepository.create(personEntity1)).toBeInstanceOf(WorkerEntity);

@@ -25,7 +25,7 @@ describe('UpdateWorkerService integration test', () => {
 
     it('should update a worker', async () => {
         let worker = new Worker({birthday: new Date(), name: 'jose', role: RoleEnum.TEACHER});
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         await workerRepository.create(model);
 
         let wantedId = worker.getId();
@@ -49,7 +49,7 @@ describe('UpdateWorkerService integration test', () => {
 
     it('given an invalid id should not update a worker', async () => {
         let worker = new Worker({birthday: new Date(), name: 'jose', role: RoleEnum.TEACHER});
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         await workerRepository.create(model);
 
         let nonExistentId = 'ef136581-e6f1-412a-bfe1-4db85cddcb50';

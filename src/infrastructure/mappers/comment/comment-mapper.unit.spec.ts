@@ -8,12 +8,12 @@ import { Comment } from "@/domain/comment/comment";
 
 describe('CommentMapper', () => {
     it('should convert domain comment to entity comment', () => {
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         expect(CommentMapper.fromDomain(mockComment(), ratingEntity)).toBeInstanceOf(CommentEntity);
     });
 
     it('should convert comment entity to comment domain', () => {
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         const commentEntity = CommentMapper.fromDomain(mockComment(), ratingEntity);
         expect(CommentMapper.fromEntity(commentEntity)).toBeInstanceOf(Comment);
     });

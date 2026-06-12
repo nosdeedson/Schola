@@ -39,7 +39,7 @@ describe('UpdateUserService integration test', () => {
     it('should thorw an error with id not passed', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let personEntity = WorkerEntity.toWorkerEntity(person);
+        let personEntity = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
 
         let userEntity = UserEntity.toUserEntity(user);
@@ -58,7 +58,7 @@ describe('UpdateUserService integration test', () => {
     it('should throw error if input does not have attributes but id', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let personEntity = WorkerEntity.toWorkerEntity(person);
+        let personEntity = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
 
         let userEntity = UserEntity.toUserEntity(user);
@@ -75,7 +75,7 @@ describe('UpdateUserService integration test', () => {
     it('should update an user', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let personEntity = WorkerEntity.toWorkerEntity(person);
+        let personEntity = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
 
         let userEntity = UserEntity.toUserEntity(user);
@@ -99,7 +99,7 @@ describe('UpdateUserService integration test', () => {
     it('should not update an user ', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let personEntity = WorkerEntity.toWorkerEntity(person);
+        let personEntity = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
 
         let userEntity = UserEntity.toUserEntity(user);

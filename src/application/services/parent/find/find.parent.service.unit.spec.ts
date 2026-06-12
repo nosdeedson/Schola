@@ -2,6 +2,7 @@ import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-rep
 import { FindParentService } from './find.parent.service';
 import { ParentEntity } from '../../../../infrastructure/entities/parent/parent.entity';
 import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
+import { ParentMapper } from '@/infrastructure/mappers/parent/parent-mapper';
 
 
 describe('FindParentService unit tests', () => {
@@ -22,7 +23,7 @@ describe('FindParentService unit tests', () => {
     it('should find a parent', async () => {
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const parent = mockParent();
-        const entity = ParentEntity.toParentEntity(parent);
+        const entity = ParentMapper.fromDomain(parent);
         parentRepository.find = jest.fn().mockImplementationOnce(() => { return entity });
         const wantedId = parent.getId();
         const service = new FindParentService(parentRepository);

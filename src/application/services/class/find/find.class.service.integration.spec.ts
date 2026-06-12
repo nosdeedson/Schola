@@ -1,12 +1,12 @@
 import { ClassEntity } from '../../../../infrastructure/entities/class/class.entity';
 import { ClassRepository } from '../../../../infrastructure/repositories/class/class.repository';
 import { FindClassService } from './find.class.service';
-import { DataSource } from 'typeorm';
 import { Repository } from 'typeorm';
 import { ClassRepositoryInterface } from '../../../../domain/class/class.repository.interface';
 import { Class } from '../../../../domain/class/class';
 import { mockClass } from '../../../../../tests/mocks/domain/class.mocks';
 import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
+import { ClassMapper } from '@/infrastructure/mappers/schoolgroup/class-mapper';
 
 
 describe('find class service integration test', () => {
@@ -28,19 +28,15 @@ describe('find class service integration test', () => {
 
     it('should not find a class on BD with wrong id', async () => {
         schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        let entity = ClassMapper.fromDomain(schoolgroup);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
         const service = new FindClassService(classRepository);
 
         let wantedId = '95be3d59-a09c-4da5-9140-0c805c5a391d';
-        try {
-            let result = await service.execute(wantedId);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors[0]).toStrictEqual({ context: 'class', message: 'class not found' })
-        }
+        await expect(service.execute(wantedId)).rejects
+            .toMatchObject({errors: [
+                { context: 'class', message: 'class not found' }
+            ]});
     });
 
     it('repository and entity must be instantiated', async () => {
@@ -50,8 +46,8 @@ describe('find class service integration test', () => {
 
     it('should find a class on BD', async () => {
         schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        let entity = ClassMapper.fromDomain(schoolgroup);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
         const service = new FindClassService(classRepository);
 
         let wantedId = schoolgroup.getId();
@@ -61,4 +57,4 @@ describe('find class service integration test', () => {
 
     });
 
-})
+});

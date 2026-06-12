@@ -2,6 +2,7 @@ import { AcademicSemesterRepository } from "@/infrastructure/repositories/academ
 import { UpdateAcademicSemesterDto } from "./udpate.academic-semester.dto";
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { SystemError } from "../../@shared/system-error";
+import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 export class UpdateAcademicSemesterService {
 
@@ -13,20 +14,20 @@ export class UpdateAcademicSemesterService {
 
     async execute(dto: UpdateAcademicSemesterDto) {
         try {
-            let entity = await this.semesterRepository.find(dto.id);
-            if (entity) {
+            let semester = await this.semesterRepository.find(dto.id);
+            if (semester) {
                 if (dto.updatingQuarter) {
-                    entity.quarters[0].quarterNumber == 1 ? entity.quarters[0].currentQuarter = false : entity.quarters[1].currentQuarter = false;
-                    entity.quarters[1].quarterNumber == 2 ? entity.quarters[1].currentQuarter = true : entity.quarters[0].currentQuarter = false;
-                    entity.updatedAt = new Date();
+                    semester.getFirstQuarter().currentQuarter = false;
+                    semester.getSecondQuarter().currentQuarter = true;
+                    semester.setUpdatedAt(new Date());
                 } else if (dto.updatingSemester) {
-                    entity.quarters[1].currentQuarter = false;
-                    entity.quarters[0].currentQuarter = false;
-                    entity.current = false;
-                    entity.deletedAt = new Date();
-                    entity.updatedAt = new Date();
+                    semester.getFirstQuarter().currentQuarter = false;
+                    semester.getSecondQuarter().currentQuarter = false;
+                    semester.setCurrentSemester(false);
+                    semester.setDeletedAt(new Date());
+                    semester.setUpdatedAt(new Date());
                 }
-                await this.semesterRepository.update(entity);
+                await this.semesterRepository.update(AcademicSemesterMapper.fromDomain(semester));
             } else {
                 throw new SystemError([
                     { context: 'semester', message: 'semester not found' }],

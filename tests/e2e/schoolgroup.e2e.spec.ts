@@ -42,7 +42,7 @@ describe('SCHOOLGROUP CONTROLLER', () => {
 
     it("should get all classes", async () => {
         const repository = TestDataSource.getRepository(ClassEntity);
-        const classEntity = ClassEntity.toClassEntity(mockClass());
+        const classEntity = ClassMapper.fromDomain(mockClass());
         const entity = await repository.save(classEntity);
         const response = await request(app.getHttpServer())
             .get('/classes');
@@ -54,7 +54,7 @@ describe('SCHOOLGROUP CONTROLLER', () => {
 
     it('GET CLASS by id/', async () => {
         const repository = TestDataSource.getRepository(ClassEntity);
-        const classEntity = ClassEntity.toClassEntity(mockClass());
+        const classEntity = ClassMapper.fromDomain(mockClass());
         const entity = await repository.save(classEntity);
         const wantedId = entity.id;
         const response = await request(app.getHttpServer())
@@ -66,10 +66,10 @@ describe('SCHOOLGROUP CONTROLLER', () => {
 
     it('should update a class', async () => {
         const teacherReposittory = TestDataSource.getRepository(WorkerEntity);
-        const teacher = WorkerEntity.toWorkerEntity(mockWorker());
+        const teacher = WorkerMapper.fromDomain(mockWorker());
         const teacherEntity = await teacherReposittory.save(teacher);
         const repository = TestDataSource.getRepository(ClassEntity);
-        let classEntity = ClassEntity.toClassEntity(mockClass());
+        let classEntity = ClassMapper.fromDomain(mockClass());
         classEntity.setTeacher(teacherEntity);
         const entity = await repository.save(classEntity);
         const wantedId = entity.id;
@@ -93,7 +93,7 @@ describe('SCHOOLGROUP CONTROLLER', () => {
 
     it('should delete a class', async () => {
         const repository = TestDataSource.getRepository(ClassEntity);
-        const classEntity = ClassEntity.toClassEntity(mockClass());
+        const classEntity = ClassMapper.fromDomain(mockClass());
         const entity = await repository.save(classEntity);
         const wantedId = entity.id;
         const response = await request(app.getHttpServer())

@@ -4,6 +4,8 @@ import { CommentEntity } from '../../../../infrastructure/entities/comment/comme
 import { FindAllCommentService } from './findAll.comment.service';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
+import { RatingMapper } from '@/infrastructure/mappers/rating/rating-mapper';
+import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
 
 describe('FindAllCommentService unit tests', () => {
 
@@ -20,8 +22,8 @@ describe('FindAllCommentService unit tests', () => {
     it('should find all comments', async () => {
         const comment = mockComment();
         const rating = mockRating();
-        const ratingEntity = RatingEntity.toRatingEntity(rating);
-        const entities = CommentEntity.toCommentEntity(comment, ratingEntity);
+        const ratingEntity = RatingMapper.fromDomain(rating);
+        const entities = CommentMapper.fromDomain(comment, ratingEntity);
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
         commentRepository.findAll = jest.fn().mockImplementationOnce(() => {
             return [entities]

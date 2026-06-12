@@ -1,3 +1,4 @@
+import { Class } from "@/domain/class/class";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 
 export class ClassesOfTeacherDto {
@@ -8,22 +9,22 @@ export class ClassesOfTeacherDto {
     bookName: string;
     daysOfClass: ClassInfoDto[] = [];
 
-    constructor(classEntity: ClassEntity){
-        classEntity.students.forEach(it => {
-            const studentInfo = new StudentInfoDto(it.fullName, it.id);
+    constructor(classEntity: Class){
+        classEntity.getStudents().forEach(it => {
+            const studentInfo = new StudentInfoDto(it.getName(), it.getId());
             this.students.push(studentInfo);
         });
-        this.teacherId = classEntity.teacher.id;
-        this.classId = classEntity.id;
-        this.className = classEntity.className;
-        this.bookName = classEntity.bookName;
-        const firstDay = new ClassInfoDto(classEntity.firstDayOfClassInWeek, classEntity.timeFirstDay);
+        this.teacherId = classEntity.getTeacher().getId();
+        this.classId = classEntity.getId();
+        this.className = classEntity.getName();
+        this.bookName = classEntity.getNameBook();
+        const firstDay = new ClassInfoDto(classEntity.getSchecule().getDayOfWeek()[0], classEntity.getSchecule().getTimes()[0]);
         this.daysOfClass.push(firstDay);
-        const secondDay = new ClassInfoDto(classEntity.secondDayOfClassInWeek, classEntity.timeSecondDay);
+        const secondDay = new ClassInfoDto(classEntity.getSchecule().getDayOfWeek()[0], classEntity.getSchecule().getTimes()[0]);
         this.daysOfClass.push(secondDay);
     }
 
-    static toClassesOfTeacher(classes: ClassEntity[]): ClassesOfTeacherDto[]{
+    static toClassesOfTeacher(classes: Class[]): ClassesOfTeacherDto[]{
         let myClasses: ClassesOfTeacherDto[] = [];
         if(classes.length > 0){
             classes.forEach(it => {

@@ -12,8 +12,8 @@ describe('FindAllSchoolgroupUsecase', () => {
     });
     
     it("should find classes", async () => {
-        const entity1 = ClassEntity.toClassEntity(mockClass());
-        const entity2 = ClassEntity.toClassEntity(mockClass());
+        const entity1 = ClassMapper.fromDomain(mockClass());
+        const entity2 = ClassMapper.fromDomain(mockClass());
         const entities = new FindAllClassDto([entity1, entity2]);
         const classService = jest.spyOn(FindAllClassService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(entities));

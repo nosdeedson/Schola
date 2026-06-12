@@ -39,7 +39,7 @@ describe('FindParentService integration tests ', () => {
     it('should not find a parent passing a non-existent id', async () => {
         let parent = mockParent();
 
-        let parentEntity = ParentEntity.toParentEntity(parent);
+        let parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
         const wantedId = 'e9c826b0-2fb4-41a7-aae8-8eed8fa999e8';
@@ -55,10 +55,10 @@ describe('FindParentService integration tests ', () => {
         parent.setStudents(students);
         students[0].setParents(parent);
 
-        let studentEntity = StudentEntity.toStudentEntity(students[0]);
+        let studentEntity = StudentMapper.fromDomain(students[0]);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        let parentEntity = ParentEntity.toParentEntity(parent);
+        let parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
         const wantedId = parent.getId();

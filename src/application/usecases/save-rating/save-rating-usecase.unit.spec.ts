@@ -75,7 +75,7 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => Promise.resolve(semesterEntity));
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
+            .mockImplementation(() => Promise.resolve(StudentMapper.fromDomain(mockStudent())));
 
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -117,7 +117,7 @@ describe('SaveRatingUsecase', () => {
             .mockImplementation(() => { throw new SystemError([{ context: 'semester', message: 'semester not found' }], 404) });
 
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
+            .mockImplementation(() => Promise.resolve(StudentMapper.fromDomain(mockStudent())));
 
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -153,12 +153,12 @@ describe('SaveRatingUsecase', () => {
     it('should save a rating', async () => {
         const dto = saveRatingUsecaseDtoMock();
         const teacher = mockOutputFindWorkerDto();
-        const ratingEntity = RatingEntity.toRatingEntity(mockRating());
+        const ratingEntity = RatingMapper.fromDomain(mockRating());
         const semesterEntity = AcademicSemesterMapper.fromDomain(mockSemester({ currentSemester: true }));
         const semesterService = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(semesterEntity));
         const findStudentService = jest.spyOn(FindStudentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(StudentEntity.toStudentEntity(mockStudent())));
+            .mockImplementation(() => Promise.resolve(StudentMapper.fromDomain(mockStudent())));
         const saveRating = jest.spyOn(CreateRatingService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(ratingEntity));
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')

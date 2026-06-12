@@ -12,13 +12,13 @@ describe('WokerModel', () => {
   })
 
   it('should be defined as a teacher', () => {
-    let entity = WorkerEntity.toWorkerEntity(worker, schooGroup);
+    let entity = WorkerMapper.fromDomain(worker, schooGroup);
     expect(entity).toBeDefined();
     expect(entity.role).toEqual(RoleEnum.TEACHER);
     expect(entity.id).toEqual(worker.getId());
   });
 
   it('should return undefined', () => {
-    expect(WorkerEntity.toWorkerEntity(null, schooGroup)).toBeUndefined();
+    expect(WorkerMapper.fromDomain(null, schooGroup)).toBeUndefined();
   });
 });

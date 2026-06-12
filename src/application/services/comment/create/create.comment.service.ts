@@ -2,6 +2,7 @@ import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.
 import { CreateCommentDto } from "./create.comment.dto";
 import { Comment } from "@/domain/comment/comment";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
 
 export class CreateCommentService {
 
@@ -16,7 +17,7 @@ export class CreateCommentService {
     async execute(dto: CreateCommentDto) {
         try {
             let comment = new Comment(dto.comment, dto.namePersonHaveDone);
-            let entity = CommentEntity.toCommentEntity(comment, dto.rating);
+            let entity = CommentMapper.fromDomain(comment, dto.rating);
             await this.commentRepository.create(entity);
         } catch (error) {
             throw error;

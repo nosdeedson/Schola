@@ -3,6 +3,7 @@ import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-rep
 import { FindAllRatingService } from './findAll.rating.service';
 import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks"
+import { RatingMapper } from '@/infrastructure/mappers/rating/rating-mapper';
 
 describe('find all rating unit tests', () =>{
 
@@ -16,7 +17,7 @@ describe('find all rating unit tests', () =>{
 
     it('should find all rating', async () =>{
         let rating = mockRating();
-        let entity = RatingEntity.toRatingEntity(rating);
+        let entity = RatingMapper.fromDomain(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
 
         ratingRepository.findAll = jest.fn().mockImplementationOnce(() => {return [entity]})

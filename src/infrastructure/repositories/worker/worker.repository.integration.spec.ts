@@ -25,14 +25,14 @@ describe("WorkerRepository unit tets", () => {
     it('should delete a worker entity in the database', async () => {
         const expectedId = '27543f8f-11bd-464c-96af-c7cb09adeccf';
         const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR, id: expectedId });
-        let model = WorkerEntity.toWorkerEntity(admin);
+        let model = WorkerMapper.fromDomain(admin);
         await repository.create(model);
         expect(await repository.delete(expectedId)).toBe(void 0);
     })
 
     it('should create a worker entity in the database', async () => {
         let worker = mockWorker({ role: RoleEnum.ADMINISTRATOR });
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         let id = worker.getId();
         await repository.create(model);
         let result = await repository.find(id);
@@ -45,7 +45,7 @@ describe("WorkerRepository unit tets", () => {
     it('should find a worker entity in the database', async () => {
         const expectedId = '27543f8f-11bd-464c-96af-c7cb09adeccf';
         const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR, id: expectedId });
-        let model = WorkerEntity.toWorkerEntity(admin);
+        let model = WorkerMapper.fromDomain(admin);
         await repository.create(model);
         let result = await repository.find(expectedId);
         expect(result).toBeDefined();
@@ -57,9 +57,9 @@ describe("WorkerRepository unit tets", () => {
 
     it('should find all workers entity in the database', async () => {
         let worker1 = mockWorker({ role: RoleEnum.ADMINISTRATOR });
-        let model = WorkerEntity.toWorkerEntity(worker1);
+        let model = WorkerMapper.fromDomain(worker1);
         let worker2 = mockWorker({ role: RoleEnum.TEACHER });
-        let model2 = WorkerEntity.toWorkerEntity(worker2);
+        let model2 = WorkerMapper.fromDomain(worker2);
         await repository.create(model);
         await repository.create(model2);
         let results = await repository.findAll();
@@ -73,9 +73,9 @@ describe("WorkerRepository unit tets", () => {
     it('should udpate a workers entity in the database', async () => {
         const expectedId = '27543f8f-11bd-464c-96af-c7cb09adeccf';
         const admin = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.ADMINISTRATOR, id: expectedId });
-        let model = WorkerEntity.toWorkerEntity(admin);
+        let model = WorkerMapper.fromDomain(admin);
         let worker2 = mockWorker();
-        let model2 = WorkerEntity.toWorkerEntity(worker2);
+        let model2 = WorkerMapper.fromDomain(worker2);
         await repository.create(model);
         expect(await repository.update(model2)).toBe(void 0);
         let result = await repository.find(expectedId);
@@ -85,7 +85,7 @@ describe("WorkerRepository unit tets", () => {
 
     it('should find teacher entity by name', async () => {
         let worker = mockWorker();
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         expect(await repository.create(model)).toBeInstanceOf(WorkerEntity);
         let entity = await repository.findByName(model.fullName);
         expect(entity).toBeDefined();

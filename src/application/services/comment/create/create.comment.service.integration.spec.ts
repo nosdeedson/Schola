@@ -77,12 +77,12 @@ describe('create comment service integration tests', () => {
         expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity)
 
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
 
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
-        let ratingEntity = RatingEntity.toRatingEntity(rating);
+        let ratingEntity = RatingMapper.fromDomain(rating);
 
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
 

@@ -21,7 +21,7 @@ describe('UpdateWorkerService unit test', () =>{
             updatedAt: new Date(),
     });
 
-        workerEntity = WorkerEntity.toWorkerEntity(w);
+        workerEntity = WorkerMapper.fromDomain(w);
 
         input = {
             id: '123',

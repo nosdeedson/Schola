@@ -32,18 +32,18 @@ describe('UpdateAllStudentsService integration tests', () => {
 
     it('should update all students', async () => {
         const class1 = mockClass();
-        const firstClass = ClassEntity.toClassEntity(class1);
+        const firstClass = ClassMapper.fromDomain(class1);
         expect(await classRepository.create(firstClass)).toBeInstanceOf(ClassEntity);
 
         const class2 = mockClass({ name: 'second class' });
-        const secondClass = ClassEntity.toClassEntity(class2);
+        const secondClass = ClassMapper.fromDomain(class2);
         expect(await classRepository.create(secondClass)).toBeInstanceOf(ClassEntity);
 
-        const studentEntity1 = StudentEntity.toStudentEntity(mockStudent());
+        const studentEntity1 = StudentMapper.fromDomain(mockStudent());
         studentEntity1.schoolGroup = firstClass;
         expect(await studentRepository.create(studentEntity1)).toBeInstanceOf(StudentEntity);
 
-        const studentEntity2 = StudentEntity.toStudentEntity(mockStudent({ name: 'test 2' }));
+        const studentEntity2 = StudentMapper.fromDomain(mockStudent({ name: 'test 2' }));
         studentEntity2.schoolGroup = firstClass;
         expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(StudentEntity);
 

@@ -11,7 +11,7 @@ describe('CreateGetTeacher', () => {
 
     it('should find a teacher and return it', async () => {
         const worker = mockWorker();
-        const entity = WorkerEntity.toWorkerEntity(worker);
+        const entity = WorkerMapper.fromDomain(worker);
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn()
             .mockImplementation(() => Promise.resolve(entity));
@@ -23,7 +23,7 @@ describe('CreateGetTeacher', () => {
     });
 
     it('should create a teacher', async () => {
-        const entity = WorkerEntity.toWorkerEntity(mockWorker())
+        const entity = WorkerMapper.fromDomain(mockWorker())
         const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER });
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
@@ -35,7 +35,7 @@ describe('CreateGetTeacher', () => {
     });
 
     it('should throw an QueryFailedError', async () => {
-        const entity = WorkerEntity.toWorkerEntity(mockWorker())
+        const entity = WorkerMapper.fromDomain(mockWorker())
         const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER });
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));

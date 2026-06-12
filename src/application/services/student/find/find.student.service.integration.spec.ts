@@ -26,7 +26,7 @@ describe('FindStudentService integration tests', () => {
 
     it('should throw a SystemError if student does not exisit', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let noExixtentId = 'ddb5186b-9a8d-4c5d-8086-2cccc0499c11';
@@ -39,7 +39,7 @@ describe('FindStudentService integration tests', () => {
 
     it('should find a student', async () => {
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         let wantedId = student.getId();

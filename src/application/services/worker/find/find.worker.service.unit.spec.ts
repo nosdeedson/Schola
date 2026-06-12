@@ -13,7 +13,7 @@ describe('FindWorkerService unit tests', () => {
 
     beforeEach(() => {
         worker = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.TEACHER, id: '123'});
-        workerEntity = WorkerEntity.toWorkerEntity(worker);
+        workerEntity = WorkerMapper.fromDomain(worker);
     });
 
     it('should find a worker', async () => {

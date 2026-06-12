@@ -2,6 +2,7 @@ import { FindStudentService } from './find.student.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
+import { StudentMapper } from '@/infrastructure/mappers/student/student-mapper';
 
 describe('FindStudentService unit tests', () =>{
 
@@ -23,7 +24,7 @@ describe('FindStudentService unit tests', () =>{
 
     it('should find a student', async () =>{
         let student = mockStudent();
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         studentRepository.find = jest.fn().mockImplementationOnce(() => { return studentEntity});
         const service = new FindStudentService(studentRepository);

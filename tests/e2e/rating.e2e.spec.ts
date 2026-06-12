@@ -29,11 +29,11 @@ describe('Rating E2E TESTS', () => {
     describe('business tests', () => {
 
         it('should create a rating', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
-            const teacher = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacher = WorkerMapper.fromDomain(mockWorker());
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
@@ -55,11 +55,11 @@ describe('Rating E2E TESTS', () => {
         });
 
         it('should not find the semester', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 
-            const teacher = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacher = WorkerMapper.fromDomain(mockWorker());
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
@@ -84,7 +84,7 @@ describe('Rating E2E TESTS', () => {
 
         it('should not found a student', async () => {
 
-            const teacher = WorkerEntity.toWorkerEntity(mockWorker());
+            const teacher = WorkerMapper.fromDomain(mockWorker());
             const teacherRepository = TestDataSource.getRepository(WorkerEntity);
             await teacherRepository.save(teacher);
 
@@ -105,7 +105,7 @@ describe('Rating E2E TESTS', () => {
         });
 
         it('should not find a teacher', async () => {
-            const studentEntity = StudentEntity.toStudentEntity(mockStudent());
+            const studentEntity = StudentMapper.fromDomain(mockStudent());
             const studentRepository = TestDataSource.getRepository(StudentEntity);
             await studentRepository.save(studentEntity);
 

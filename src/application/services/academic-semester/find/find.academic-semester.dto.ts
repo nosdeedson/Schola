@@ -1,3 +1,4 @@
+import { Quarter } from "@/domain/quarter/quarter";
 import { QuarterDto } from "../create/quarter/quarter.dto";
 import { QuarterEntity } from "@/infrastructure/entities/quarter/quarter.entity";
 
@@ -10,8 +11,8 @@ export class FindAcademicSemesterDto {
     constructor(params: {
         id: string,
         current: boolean,
-        firstQuarter: QuarterEntity,
-        secondQuarter: QuarterEntity,
+        firstQuarter: Quarter,
+        secondQuarter: Quarter,
     }
     ) {
         const { id, current, firstQuarter, secondQuarter } = params;

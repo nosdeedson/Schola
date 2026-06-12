@@ -22,7 +22,7 @@ describe("CommentModel unit tests", () => {
 
     it('should instantiate a comment from Comment domain', () => {
 
-        const model = CommentEntity.toCommentEntity(comment, ratingModel);
+        const model = CommentMapper.fromDomain(comment, ratingModel);
 
         expect(model).toBeDefined();
         expect(model.comment).toEqual(comment.getComment());

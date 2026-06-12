@@ -49,7 +49,7 @@ describe('UpdateParentService integration tests', () => {
 
     it('should update a parent with birthday', async () => {
         const parent = mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         parentEntity.birthday = null as any;
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 

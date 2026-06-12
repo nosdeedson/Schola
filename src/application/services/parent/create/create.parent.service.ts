@@ -3,6 +3,7 @@ import { ParentReporitoryInterface } from "@/domain/parent/parent.repository.int
 import { ParentEntity } from "@/infrastructure/entities/parent/parent.entity";
 import { CreateParentDto } from "./create.parent.dto";
 import { CreateGenericService } from "@/application/services/@shared/create-generic-service";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 export class CreateParentService extends CreateGenericService {
 
@@ -27,7 +28,7 @@ export class CreateParentService extends CreateGenericService {
                 if (parent?.notification.hasError()) {
                     throw new SystemError(parent.notification?.getErrors(), 422);
                 }
-                let entity = ParentEntity.toParentEntity(parent);
+                let entity = ParentMapper.fromDomain(parent);
                 return await this.parentRepository.create(entity);
             }
         } catch (error) {

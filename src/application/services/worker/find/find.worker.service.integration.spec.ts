@@ -27,7 +27,7 @@ describe('FindWorkerService integration test', () =>{
 
     it('should find a worker from BD', async () =>{
         let worker = mockWorker();
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         await workerRepository.create(model);
 
         let service = new FindWorkerService(workerRepository);
@@ -42,7 +42,7 @@ describe('FindWorkerService integration test', () =>{
 
     it('should not find a worker if id invalid', async () =>{
         let worker = mockWorker();
-        let model = WorkerEntity.toWorkerEntity(worker);
+        let model = WorkerMapper.fromDomain(worker);
         await workerRepository.create(model);
 
         let nonExistentId = '31420be1-0ca7-4619-83e9-50101d9ace72'

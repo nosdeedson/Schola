@@ -21,7 +21,7 @@ export class QuarterDto {
         return new Quarter({ currentQuarter: this.currentQuarter, beginningDate: this.beginningDate, endingDate: this.endingDate })
     }
 
-    static fromDomain(quarter: QuarterEntity): QuarterDto {
+    static fromDomain(quarter: Quarter): QuarterDto {
         return new QuarterDto({
             beginningDate: quarter.beginningDate,
             endingDate: quarter.endingDate,

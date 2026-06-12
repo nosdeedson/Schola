@@ -53,7 +53,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
         const teacher = mockWorker();
         classModel.setTeacher(teacher);
         classModel.setStudent(mockStudent());
-        const classEntity = ClassEntity.toClassEntity(classModel);
+        const classEntity = ClassMapper.fromDomain(classModel);
         const semester = mockSemester();
         const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
 
@@ -95,7 +95,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
 
     it('should throw an error while find the semester', async () => {
         const findTeacherClassRatingService = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(ClassEntity.toClassEntity(mockClass())));
+            .mockImplementation(() => Promise.resolve(ClassMapper.fromDomain(mockClass())));
         const exceptionHandler = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("semester not found") });
 

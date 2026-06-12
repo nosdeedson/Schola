@@ -10,10 +10,15 @@ import { FindTeacherClassRatingService } from './find-teacher-class-rating';
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { Worker } from "@/domain/worker/worker";
+import { Class } from "@/domain/class/class";
+import { Student } from "@/domain/student/student";
 
 describe('FindTeacherClassRatingService integration test', () => {
 
-    let studendtEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
     let workerEntity: Repository<WorkerEntity>;
     let wordRepository: WorkerRepository;
@@ -21,7 +26,6 @@ describe('FindTeacherClassRatingService integration test', () => {
     let classRepository: ClassRepository;
 
     beforeAll(async () => {
-        studendtEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
         workerEntity = TestDataSource.getRepository(WorkerEntity);
         wordRepository = new WorkerRepository(TestDataSource);
@@ -50,30 +54,30 @@ describe('FindTeacherClassRatingService integration test', () => {
 
     it('should find a classEntity', async () => {
         const student1 = mockStudent();
-        const studentEntity = StudentEntity.toStudentEntity(student1);
+        const studentEntity = StudentMapper.fromDomain(student1);
         const student2 = mockStudent();
-        const studentEntity2 = StudentEntity.toStudentEntity(student2);
-        expect(await studentRepository.create(studentEntity));
-        expect(await studentRepository.create(studentEntity2));
+        const studentEntity2 = StudentMapper.fromDomain(student2);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
+        expect(await studentRepository.create(studentEntity2)).toBeInstanceOf(Student);
 
         const worker = mockWorker()
-        const workerEntity = WorkerEntity.toWorkerEntity(worker);
-        expect(await wordRepository.create(workerEntity));
+        const workerEntity = WorkerMapper.fromDomain(worker);
+        expect(await wordRepository.create(workerEntity)).toBeInstanceOf(Worker);
 
         const classModel = mockClass()
         classModel.setTeacher(worker);
         classModel.setStudent(student1);
         classModel.setStudent(student2);
-        const classEntity = ClassEntity.toClassEntity(classModel);
-        expect(await classRepository.create(classEntity));
+        const classEntity = ClassMapper.fromDomain(classModel);
+        expect(await classRepository.create(classEntity)).toBeInstanceOf(Class);
 
         const teacherId = worker.getId();
         const classId = classModel.getId();
         const service = new FindTeacherClassRatingService(classRepository);
         const result = await service.execute(teacherId, classId);
-        expect(result).toBeInstanceOf(ClassEntity);
-        expect(result.id).toBe(classEntity.id);
-        expect(result.teacher.id).toBe(worker.getId());
-        expect(result.students).toHaveLength(2);
+        expect(result).toBeInstanceOf(Class);
+        expect(result.getId()).toBe(classEntity.id);
+        expect(result.getTeacher().getId()).toBe(worker.getId());
+        expect(result.getStudents()).toHaveLength(2);
     });
 });

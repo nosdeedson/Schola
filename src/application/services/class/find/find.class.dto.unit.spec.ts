@@ -6,48 +6,43 @@ import {FindClassScheduleDto, FindClassDto, FindClassTeacherDto, FindClassStuden
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 
 describe('find dto unit test', () => {
-
-    let schoolgroup: Class;
-
-    beforeEach(() =>{
-        schoolgroup = mockClass();
-    })
 
     afterEach(() =>{
         jest.clearAllMocks();
     })
 
     it('should return a dto of FindClassDto', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        let classDto = FindClassDto.toDto(entity);
+        const schoolgroup = mockClass();
+        let classDto = FindClassDto.toDto(schoolgroup);
         expect(classDto).toBeDefined();
-        expect(classDto.classCode).toBe(entity.classCode);
-        expect(classDto.name).toEqual(entity.className);
-        expect(classDto.nameBook).toEqual(entity.bookName);
+        expect(classDto.classCode).toBe(schoolgroup.getClassCode());
+        expect(classDto.name).toEqual(schoolgroup.getName());
+        expect(classDto.nameBook).toEqual(schoolgroup.getNameBook());
         expect(classDto.schedule).toBeDefined();
         expect(classDto.teacher).toStrictEqual(new FindClassTeacherDto());
         expect(classDto.students.length).toBe(0);
     });
 
     it('should return a dto of FindClassDto with students and teacher', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
+        const schoolgroup = mockClass();
         let worker = mockWorker()
-        let workerEntity = WorkerEntity.toWorkerEntity(worker);
-        entity.setTeacher(workerEntity);
+        schoolgroup.setTeacher(worker);
                 
         let student = mockStudent()
-        let studentEntity = StudentEntity.toStudentEntity(student);
-        entity.setStudents(studentEntity);
+        schoolgroup.setStudents([student]);
 
-        let classDto = FindClassDto.toDto(entity);
+        let classDto = FindClassDto.toDto(schoolgroup);
         
         expect(classDto).toBeDefined();
-        expect(classDto.classCode).toBe(entity.classCode);
-        expect(classDto.name).toEqual(entity.className);
-        expect(classDto.nameBook).toEqual(entity.bookName);
+        expect(classDto.classCode).toBe(schoolgroup.getClassCode());
+        expect(classDto.name).toEqual(schoolgroup.getName());
+        expect(classDto.nameBook).toEqual(schoolgroup.getNameBook());
         expect(classDto.schedule).toBeDefined();
 
         expect(classDto.teacher.id).toEqual(worker.getId());
@@ -60,30 +55,28 @@ describe('find dto unit test', () => {
     });
 
     it('should return a dto of ClassTeacherDto', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
+        const schoolgroup = mockClass();
         let worker = mockWorker()
-        let workerEntity = WorkerEntity.toWorkerEntity(worker);
-        entity.setTeacher(workerEntity);
-        let teacher = FindClassTeacherDto.toDto(entity.teacher);
+        schoolgroup.setTeacher(worker);
+        let teacher = FindClassTeacherDto.toDto(schoolgroup.getTeacher());
         expect(teacher).toBeDefined();
-        expect(teacher.id).toEqual(entity.teacher.id);
-        expect(teacher.name).toEqual(entity.teacher.fullName);
+        expect(teacher.id).toEqual(schoolgroup.getTeacher().getId());
+        expect(teacher.name).toEqual(schoolgroup.getTeacher().getName());
     });
 
     it('should return a dto of ClassTeacherDto with undefined attributes', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        let teacher = FindClassTeacherDto.toDto(entity.teacher);
+        const schoolgroup = mockClass();
+        let teacher = FindClassTeacherDto.toDto(schoolgroup.getTeacher());
         expect(teacher).toBeDefined();
         expect(teacher.id).toBeUndefined();
         expect(teacher.name).toBeUndefined();
     });
 
     it('should return a dto of ClassStudentDto', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
+        const schoolgroup = mockClass();
         let student = mockStudent()
-        let studentEntity = StudentEntity.toStudentEntity(student);
-        entity.setStudents(studentEntity);
-        let students = FindClassStudentDto.toDto(entity.students);
+        schoolgroup.setStudents([student]);
+        let students = FindClassStudentDto.toDto(schoolgroup.getStudents());
         expect(students).toBeDefined();
         expect(students.length).toBe(1);
         expect(students[0].id).toEqual(student.getId());
@@ -91,22 +84,19 @@ describe('find dto unit test', () => {
     })
 
     it('should return a dto of ClassStudentDto with undefined attributes', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        let students = FindClassStudentDto.toDto(entity.students);
+        const schoolgroup = mockClass();
+        let students = FindClassStudentDto.toDto(schoolgroup.getStudents());
         expect(students).toBeDefined();
         expect(students.length).toBe(0);
         expect(students[0]).toBeUndefined();
     });
 
     it('should return a dto of ClassScheduleDto', () =>{
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        let schedule = FindClassScheduleDto.toDto(entity);
+        const schoolgroup = mockClass();
+        let schedule = FindClassScheduleDto.toDto(schoolgroup);
         expect(schedule).toBeDefined();
         expect(schedule.dayOfWeeks.length).toBe(2);
-        expect(schedule.dayOfWeeks[0]).toEqual(entity.firstDayOfClassInWeek);
-        expect(schedule.dayOfWeeks[1]).toEqual(entity.secondDayOfClassInWeek);
-        expect(schedule.times[entity.firstDayOfClassInWeek]).toEqual(entity.timeFirstDay);
-        expect(schedule.times[entity.secondDayOfClassInWeek]).toEqual(entity.timeSecondDay);
-
+        expect(schedule.dayOfWeeks).toEqual(schoolgroup.getSchecule().getDayOfWeek());
+        expect(schedule.times).toEqual(Object.fromEntries(schoolgroup.getSchecule().getTimes()));
     });
-})
+});

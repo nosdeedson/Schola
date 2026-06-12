@@ -5,6 +5,8 @@ import { ClassRepository } from '../../../../infrastructure/repositories/class/c
 import { FindAllClassService } from './findAll.class.service';
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { Class } from "@/domain/class/class";
 
 
 describe('findall service integration test', () => {
@@ -32,14 +34,13 @@ describe('findall service integration test', () => {
         expect(results).toBeDefined();
         expect(results.all).toBeDefined();
         expect(results.all.length).toBe(0);
-
     });
 
 
     it('should find one class', async () => {
         let schoolgroup = mockClass();
-        let entity = ClassEntity.toClassEntity(schoolgroup);
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        let entity = ClassMapper.fromDomain(schoolgroup);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
 
         const service = new FindAllClassService(classRepository);
         let results = await service.execute();
@@ -50,4 +51,4 @@ describe('findall service integration test', () => {
         expect(results.all.length).toBe(1)
     });
 
-})
+});

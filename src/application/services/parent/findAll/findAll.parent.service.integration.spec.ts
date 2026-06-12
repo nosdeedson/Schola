@@ -34,7 +34,7 @@ describe('FindAllParentService integration tests', () => {
 
     it('should find an array with one parent', async () => {
         const parent = mockParent();
-        const entity = ParentEntity.toParentEntity(parent);
+        const entity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(entity)).toBeInstanceOf(ParentEntity);
         const service = new FindAllParentService(parentRepository);
         const results = await service.execute();

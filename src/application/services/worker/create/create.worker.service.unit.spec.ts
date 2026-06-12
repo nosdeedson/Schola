@@ -23,7 +23,7 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
 
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
-        workerRepository.create = jest.fn().mockResolvedValue(WorkerEntity.toWorkerEntity(mockWorker()));
+        workerRepository.create = jest.fn().mockResolvedValue(WorkerMapper.fromDomain(mockWorker()));
         const service = new CreateWorkerService(workerRepository);
         expect(await service.execute(worker)).toBeInstanceOf(WorkerEntity);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe('CreateWorkerService test unit', () => {
 
     it('should update an existing teacher', async () => {
         const worker = mockWorker();
-        const entity = WorkerEntity.toWorkerEntity(worker);
+        const entity = WorkerMapper.fromDomain(worker);
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
         workerRepository.create = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));

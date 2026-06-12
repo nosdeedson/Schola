@@ -17,7 +17,7 @@ describe("StudentModel unit test", () => {
     });
 
     it('should instantiate a studentModel', () => {
-        let model = StudentEntity.toStudentEntity(student);
+        let model = StudentMapper.fromDomain(student);
         expect(model.id).toEqual(student.getId())
         expect(model.birthday).toEqual(student.getBirthday())
         expect(model.createdAt).toEqual(student.getCreatedAt())
@@ -39,7 +39,7 @@ describe("StudentModel unit test", () => {
     it('should instantiate an array of sudents model', () => {
         let student = mockStudent();
         try {
-            let model = StudentEntity.toStudentEntity(student);
+            let model = StudentMapper.fromDomain(student);
         } catch (error) {
             //@ts-ignore
             expect(error.message).toEqual('should inform at least one parent')

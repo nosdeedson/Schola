@@ -8,9 +8,9 @@ describe('ParentStudentEntity', () => {
   it('should be defined', () => {
     const student = mockStudent();
     const parent = mockParent(); 
-    const studentEntity = StudentEntity.toStudentEntity(student);
-    const parentEntity = ParentEntity.toParentEntity(parent);
-    const parentStudentEntity = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);
+    const studentEntity = StudentMapper.fromDomain(student);
+    const parentEntity = ParentMapper.fromDomain(parent);
+    const parentStudentEntity = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
     expect(parentStudentEntity).toBeDefined();
     expect(parentStudentEntity.parent).toBe(parentEntity);
     expect(parentStudentEntity.student).toBe(studentEntity);

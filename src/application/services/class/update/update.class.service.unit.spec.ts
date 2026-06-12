@@ -15,7 +15,7 @@ describe('update class service unit test', () =>{
     it('should throw an error if passing invalid id', async () =>{
         let nonExistentId = '123';
         let wantedBookName = 'bookb1';
-        let newTeacher = WorkerEntity.toWorkerEntity(mockWorker());
+        let newTeacher = WorkerMapper.fromDomain(mockWorker());
         let input = new UpdateClassDto(nonExistentId, wantedBookName, newTeacher);
         
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -34,8 +34,8 @@ describe('update class service unit test', () =>{
 
     it('should update a class', async () =>{
         const schoolgroup = mockClass();
-        const entity = ClassEntity.toClassEntity(schoolgroup);
-        const newTeacher = WorkerEntity.toWorkerEntity(mockWorker());
+        const entity = ClassMapper.fromDomain(schoolgroup);
+        const newTeacher = WorkerMapper.fromDomain(mockWorker());
         let wantedId = schoolgroup.getId();
         let wantedBookName = 'bookb1';
         let input = new UpdateClassDto(wantedId, wantedBookName, newTeacher);

@@ -47,14 +47,14 @@ describe('CreateParentStudentService Integration Test', () => {
 
     it('should save a parentStudentEntity', async () => {
         const student = mockStudent();
-        const studentEntity = StudentEntity.toStudentEntity(student);
+        const studentEntity = StudentMapper.fromDomain(student);
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
         const parent = mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
-        const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);
+        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
 
         expect(await parentStudentRepository.create(parentStudent)).toBeInstanceOf(ParentStudentEntity);
 
@@ -68,10 +68,10 @@ describe('CreateParentStudentService Integration Test', () => {
     it('should save a parentStudentEntity', async () => {
 
         const parent = mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
-        const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, null);
+        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, null);
 
         await expect(parentStudentRepository.create(parentStudent))
             .rejects.toThrow(QueryFailedError);

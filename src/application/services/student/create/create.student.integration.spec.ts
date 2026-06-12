@@ -55,20 +55,20 @@ describe('CreateStudentService integration tests', () => {
     it('should update a student with birthday', async () => {
         // class 
         let schoogroup = mockClass();
-        let sgEntity = ClassEntity.toClassEntity(schoogroup);
+        let sgEntity = ClassMapper.fromDomain(schoogroup);
         expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
 
         const parent = mockParent();
-        const parentEntity = ParentEntity.toParentEntity(parent);
+        const parentEntity = ParentMapper.fromDomain(parent);
         expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
 
         let student = mockStudent();
         student.setSchoolGroup(schoogroup)
-        let studentEntity = StudentEntity.toStudentEntity(student);
+        let studentEntity = StudentMapper.fromDomain(student);
         studentEntity.birthday = null as any;
         expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
 
-        const parentStudent = ParentStudentEntity.toParentStudentEntity(parentEntity, studentEntity);
+        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
         expect(await parentStudentRepository.create(parentStudent)).toBeInstanceOf(ParentStudentEntity);
 
         let dto = new CreateStudentDto(new Date(1980, 6, 30, 23, 59, 59), student.getName(), sgEntity.classCode, [parent.getName()]);
@@ -82,10 +82,10 @@ describe('CreateStudentService integration tests', () => {
     it('should create a student', async () => {
         let parent = mockParent();
         parent.setStudents([]);
-        let parentModel = ParentEntity.toParentEntity(parent);
+        let parentModel = ParentMapper.fromDomain(parent);
 
         let schoogroup = mockClass();
-        let sgEntity = ClassEntity.toClassEntity(schoogroup);
+        let sgEntity = ClassMapper.fromDomain(schoogroup);
         expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
 
         let dto = new CreateStudentDto(new Date(), 'edson', schoogroup.getClassCode(), [parent.getId()]);

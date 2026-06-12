@@ -38,7 +38,7 @@ describe('find user integration unit test', () => {
     it('given a valid id should find an user', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let worker = WorkerEntity.toWorkerEntity(person);
+        let worker = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;
 
         let userSave = UserEntity.toUserEntity(user);
@@ -55,7 +55,7 @@ describe('find user integration unit test', () => {
         let wantedId = 'f08a20a6-dc13-4e85-b716-3efefecd247a';
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
-        let worker = WorkerEntity.toWorkerEntity(person);
+        let worker = WorkerMapper.fromDomain(person);
         expect(await workerRepository.create(worker)).toBeInstanceOf(WorkerEntity);;
 
         let userSave = UserEntity.toUserEntity(user);

@@ -45,7 +45,7 @@ describe('create class service integration test', () => {
         expect(await service.execute(classDto)).toBe(void 0);
         let results = await classRepository.findAll();
         expect(results).toBeDefined();
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getId()).toBeDefined();
         expect(results.length).toBe(1)
     });
-})
+});
