@@ -1,30 +1,27 @@
 import { StudentMapper } from '@/infrastructure/mappers/student/student-mapper';
 import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
-import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { FindAllStudentService } from './findAll.student.service';
 
-describe('FindAllSudentService unit test', () =>{
+describe('FindAllSudentService unit test', () => {
 
-    it('should return an empty array', async () =>{
+    it('should return an empty array', async () => {
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        studentRepository.findAll = jest.fn().mockImplementationOnce(() => {return []});
+        studentRepository.findAll = jest.fn().mockImplementationOnce(() => { return [] });
         const service = new FindAllStudentService(studentRepository);
         const results = await service.execute();
         expect(results).toBeDefined();
         expect(results.all.length).toBe(0);
     });
 
-    it('should find one student', async () =>{
+    it('should find one student', async () => {
         const student = mockStudent();
-        const studentEntity = StudentMapper.fromDomain(student);
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        studentRepository.findAll = jest.fn().mockImplementationOnce(() => {return [studentEntity]});
+        studentRepository.findAll = jest.fn().mockImplementationOnce(() => { return [student] });
         const service = new FindAllStudentService(studentRepository);
         const results = await service.execute();
         expect(results).toBeDefined();
         expect(results.all.length).toBe(1);
         expect(results.all[0].id).toEqual(student.getId());
-    })
-
-})
+    });
+});

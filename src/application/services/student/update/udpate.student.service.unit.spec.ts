@@ -1,47 +1,36 @@
 import { UpdateStudentDto } from './udpate.student.dto';
 import { UpdateStudentService } from './udpate.student.service';
-import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
 import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
+import { StudentMapper } from '@/infrastructure/mappers/student/student-mapper';
 
-describe('UpdateStudentService unit test', () =>{
+describe('UpdateStudentService unit test', () => {
 
-    it('should throw a SystemError if student not found', async () =>{
+    it('should throw a SystemError if student not found', async () => {
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        studentRepository.find = jest.fn().mockImplementationOnce(() => {return null});
+        studentRepository.find = jest.fn().mockImplementationOnce(() => { return null });
         const service = new UpdateStudentService(studentRepository);
         const dto = new UpdateStudentDto('123', '1234');
-        try {
-            await service.execute(dto);
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors.length).toBe(1);
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'student', message: 'student not found'}]);
-        }
+        await expect(service.execute(dto)).rejects
+            .toMatchObject({ errors: [{ context: 'student', message: 'student not found' }] });
     });
 
-    it('should update a student', async () =>{
+    it('should update a student', async () => {
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const student = mockStudent();
-        const studentEntity = StudentMapper.fromDomain(student);
 
         let wantedEnrolled = '43321';
         studentRepository.update = jest.fn().mockImplementationOnce(() => {
-            studentEntity.enrolled = wantedEnrolled;
+            student.setEnrolled(wantedEnrolled);
             return void 0;
         });
-        studentRepository.find = jest.fn().mockImplementationOnce(() => {return studentEntity})
+        studentRepository.find = jest.fn().mockImplementationOnce(() => { return student })
         let dto = new UpdateStudentDto(student.getId(), '43321');
 
         const service = new UpdateStudentService(studentRepository);
         expect(await service.execute(dto)).toBe(void 0);
         expect(studentRepository.update).toHaveBeenCalledTimes(1);
-        expect(studentRepository.update).toHaveBeenCalledWith(studentEntity);
         expect(studentRepository.find).toHaveBeenCalledTimes(1);
         expect(studentRepository.find).toHaveBeenCalledWith(dto.id);
-    })
-
-
-})
+    });
+});

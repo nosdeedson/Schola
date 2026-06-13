@@ -1,5 +1,6 @@
+import { Student } from "@/domain/student/student";
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
-import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 export class UpdateAllStudentsService {
 
@@ -9,7 +10,7 @@ export class UpdateAllStudentsService {
         this.studentRepository = studentRepository;
     }
 
-    async execute(students: StudentEntity[]) {
-        await this.studentRepository.updateAll(students);
+    async execute(students: Student[]) {
+        await this.studentRepository.updateAll(students.map(it => StudentMapper.fromDomain(it)));
     }
 }

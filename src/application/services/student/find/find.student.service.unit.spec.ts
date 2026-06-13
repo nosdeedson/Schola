@@ -1,38 +1,28 @@
 import { FindStudentService } from './find.student.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
-import { StudentEntity } from '../../../../infrastructure/entities/student/student.entity';
 import { mockStudent } from '../../../../../tests/mocks/domain/student.mocks';
-import { StudentMapper } from '@/infrastructure/mappers/student/student-mapper';
 
-describe('FindStudentService unit tests', () =>{
+describe('FindStudentService unit tests', () => {
 
     it('should throw a SystemErro if student does not exist', async () => {
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        studentRepository.find = jest.fn().mockImplementationOnce(() => {return null});
+        studentRepository.find = jest.fn().mockImplementationOnce(() => { return null });
         const service = new FindStudentService(studentRepository);
 
-        try {
-            await service.execute('123')
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'student', message: 'student not found'}]);
-            expect(studentRepository.find).toHaveBeenCalledTimes(1);
-            expect(studentRepository.find).toHaveBeenCalledWith('123');
-        }
+        await expect(service.execute('123')).rejects
+            .toMatchObject({ errors: [{ context: 'student', message: 'student not found' }] });
     });
 
-    it('should find a student', async () =>{
+    it('should find a student', async () => {
         let student = mockStudent();
-        let studentEntity = StudentMapper.fromDomain(student);
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        studentRepository.find = jest.fn().mockImplementationOnce(() => { return studentEntity});
+        studentRepository.find = jest.fn().mockImplementationOnce(() => { return student });
         const service = new FindStudentService(studentRepository);
         const result = await service.execute(student.getId());
         expect(result).toBeDefined();
-        expect(result.id).toBe(student.getId());
-        expect(result.createdAt).toEqual(student.getCreatedAt());
-        expect(result.fullName).toEqual(student.getName());        
+        expect(result.getId()).toBe(student.getId());
+        expect(result.getCreatedAt()).toEqual(student.getCreatedAt());
+        expect(result.getName()).toEqual(student.getName());
     });
 
 });

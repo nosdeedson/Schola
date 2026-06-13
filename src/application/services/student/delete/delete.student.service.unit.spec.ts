@@ -21,7 +21,7 @@ describe('DeleteStudentService unit test', () => {
         });
         const service = new DeleteStudentService(studentRepository);
         expect(await service.execute('03529796-3960-4d01-8e51-6fcde97ccf60')).toBe(void 0)
-    })
+    });
 
     it('should throw an QueryFailedError', async () => {
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -30,6 +30,5 @@ describe('DeleteStudentService unit test', () => {
         });
         const service = new DeleteStudentService(studentRepository);
         await expect(service.execute('03529796')).rejects.toThrow(QueryFailedError);
-    })
-
-})
+    });
+});

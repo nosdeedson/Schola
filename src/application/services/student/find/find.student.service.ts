@@ -1,7 +1,6 @@
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
-import { FindStutendDto } from "./find.student.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
-import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { Student } from "@/domain/student/student";
 
 export class FindStudentService {
 
@@ -11,8 +10,8 @@ export class FindStudentService {
         this.studentRepository = studentRepository;
     }
 
-    async execute(id: string): Promise<StudentEntity> {
-        const student = await this.studentRepository.find(id) as StudentEntity;
+    async execute(id: string): Promise<Student> {
+        const student = await this.studentRepository.find(id) as Student;
         if (!student) {
             throw new SystemError([{ context: 'student', message: 'student not found' }], 404);
         }

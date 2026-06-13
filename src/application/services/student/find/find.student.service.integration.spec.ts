@@ -4,14 +4,14 @@ import { FindStudentService } from '../find/find.student.service';
 import { Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
 
 
 describe('FindStudentService integration tests', () => {
-    let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
 
     beforeAll(async () => {
-        studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
     });
 
@@ -21,13 +21,12 @@ describe('FindStudentService integration tests', () => {
 
     it('repositories must be instantiated', () => {
         expect(studentRepository).toBeDefined();
-        expect(studentEntity).toBeDefined();
     });
 
     it('should throw a SystemError if student does not exisit', async () => {
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let noExixtentId = 'ddb5186b-9a8d-4c5d-8086-2cccc0499c11';
         const service = new FindStudentService(studentRepository);
@@ -40,14 +39,14 @@ describe('FindStudentService integration tests', () => {
     it('should find a student', async () => {
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let wantedId = student.getId();
         const service = new FindStudentService(studentRepository);
         let result = await service.execute(wantedId)
         expect(result).toBeDefined();
-        expect(result.id).toBe(wantedId);
-        expect(result.fullName).toBe(student.getName());
-        expect(result.enrolled).toBe(student.getEnrolled());
+        expect(result.getId()).toBe(wantedId);
+        expect(result.getName()).toBe(student.getName());
+        expect(result.getEnrolled()).toBe(student.getEnrolled());
     });
 });

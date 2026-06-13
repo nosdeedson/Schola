@@ -12,25 +12,24 @@ import { TestDataSource } from "@/infrastructure/repositories/config-test/test.d
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { ParentStudentMapper } from "@/infrastructure/mappers/parent-student/parent-student-mapper";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Class } from "@/domain/class/class";
+import { Parent } from "@/domain/parent/parent";
+import { Student } from "@/domain/student/student";
 
 describe('CreateStudentService integration tests', () => {
-    let studentEntity;
     let studentRepository: StudentRepository;
-    let schoolGroupEntity;
     let schoolGroupRepository: ClassRepository;
-    let parentEntity;
     let parentRepository: ParentRepository;
-    let parentStudentyEntity;
     let parentStudentRepository: ParentStudentRepository;
 
     beforeEach(async () => {
-        studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
-        schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource);
-        parentEntity = TestDataSource.getRepository(ParentEntity);
         parentRepository = new ParentRepository(TestDataSource);
-        parentStudentyEntity = TestDataSource.getRepository(ParentStudentEntity);
         parentStudentRepository = new ParentStudentRepository(TestDataSource);
     });
 
@@ -56,27 +55,27 @@ describe('CreateStudentService integration tests', () => {
         // class 
         let schoogroup = mockClass();
         let sgEntity = ClassMapper.fromDomain(schoogroup);
-        expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
+        expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(Class);
 
         const parent = mockParent();
         const parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         let student = mockStudent();
         student.setSchoolGroup(schoogroup)
         let studentEntity = StudentMapper.fromDomain(student);
         studentEntity.birthday = null as any;
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
-        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
+        const parentStudent = ParentStudentMapper.fromDomain(parent, student);
         expect(await parentStudentRepository.create(parentStudent)).toBeInstanceOf(ParentStudentEntity);
 
         let dto = new CreateStudentDto(new Date(1980, 6, 30, 23, 59, 59), student.getName(), sgEntity.classCode, [parent.getName()]);
         const service = new CreateStudentService(studentRepository, schoolGroupRepository);
-        expect(await service.execute(dto)).toBeInstanceOf(StudentEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Student);
         const results = await studentRepository.findAll();
-        expect(results[0].birthday).toStrictEqual(new Date(1980, 6, 30, 23, 59, 59));
-        expect(results[0].fullName).toBe(dto.name);
+        expect(results[0].getBirthday()).toStrictEqual(new Date(1980, 6, 30, 23, 59, 59));
+        expect(results[0].getName()).toBe(dto.name);
     });
 
     it('should create a student', async () => {
@@ -86,11 +85,11 @@ describe('CreateStudentService integration tests', () => {
 
         let schoogroup = mockClass();
         let sgEntity = ClassMapper.fromDomain(schoogroup);
-        expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(ClassEntity);
+        expect(await schoolGroupRepository.create(sgEntity)).toBeInstanceOf(Class);
 
         let dto = new CreateStudentDto(new Date(), 'edson', schoogroup.getClassCode(), [parent.getId()]);
         const service = new CreateStudentService(studentRepository, schoolGroupRepository);
-        expect(await service.execute(dto)).toBeInstanceOf(StudentEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Student);
 
     });
 

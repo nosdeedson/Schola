@@ -5,13 +5,13 @@ import { UpdateStudentDto } from '../update/udpate.student.dto';
 import { UpdateStudentService } from '../update/udpate.student.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
 
 describe('UpdateStudentService integration tests', () => {
-    let studentEntity: Repository<StudentEntity>;
     let studentRepository: StudentRepository;
 
     beforeAll(async () => {
-        studentEntity = TestDataSource.getRepository(StudentEntity);
         studentRepository = new StudentRepository(TestDataSource);
     });
 
@@ -21,7 +21,6 @@ describe('UpdateStudentService integration tests', () => {
 
     it('repositories must be instantiated', () => {
         expect(studentRepository).toBeDefined();
-        expect(studentEntity).toBeDefined();
     });
 
     it('should throw a SystemError if student not found', async () => {
@@ -29,25 +28,19 @@ describe('UpdateStudentService integration tests', () => {
         const dto = new UpdateStudentDto(wantedId, '1234');
         const service = new UpdateStudentService(studentRepository);
 
-        try {
-            await service.execute(dto);
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ context: 'student', message: 'student not found' }]);
-        }
-
+        await expect(service.execute(dto)).rejects
+            .toMatchObject({ errors: [{ context: 'student', message: 'student not found' }] });
     });
 
     it('should update a student in database', async () => {
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
         let updatedErroled = '987';
         const service = new UpdateStudentService(studentRepository);
         const dto = new UpdateStudentDto(student.getId(), updatedErroled);
         expect(await service.execute(dto)).toBe(void 0);
         const updatedStudent = await studentRepository.find(student.getId());
-        expect(updatedStudent.enrolled).toBe(updatedErroled)
+        expect(updatedStudent.getEnrolled()).toBe(updatedErroled)
     });
 });

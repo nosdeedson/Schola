@@ -1,6 +1,7 @@
+import { Student } from "@/domain/student/student";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 
-export class FindStutendDto{
+export class FindStutendDto {
     createdAt: Date;
     deletedAt: Date;
     enrolled: string;
@@ -9,12 +10,12 @@ export class FindStutendDto{
     parentsIds: string[] = [];
     schoolGroupId: string;
 
-    constructor(student: StudentEntity){
-        this.createdAt = student.createdAt;
-        this.deletedAt = student.deletedAt;
-        this.enrolled = student.enrolled;
-        this.id = student.id;
-        this.name = student.fullName;
-        this.schoolGroupId = student?.schoolGroup?.id;
+    constructor(student: Student) {
+        this.createdAt = student.getCreatedAt();
+        this.deletedAt = student.getDeletedAt();
+        this.enrolled = student.getEnrolled();
+        this.id = student.getId();
+        this.name = student.getName();
+        this.schoolGroupId = student?.getSchoolGroup()?.getId();
     }
 }
