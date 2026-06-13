@@ -5,25 +5,20 @@ import { UserRepository } from "../../../../infrastructure/repositories/user/use
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { FindAllUserService } from './findAll.user.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
-import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
-import { RoleEnum } from "@/domain/worker/roleEnum";
-import { Person } from "@/domain/@shared/person";
 import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { AccessType } from "@/domain/user/access.type";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { Worker } from "@/domain/worker/worker";
+import { User } from "@/domain/user/user";
 
-describe('FindAllUserService integration tests', () =>{
-    
-    let userEntity: Repository<UserEntity>;
+describe('FindAllUserService integration tests', () => {
+
     let userRepository: UserRepository;
-
-    let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
-    beforeAll(async () =>{
-        userEntity = TestDataSource.getRepository(UserEntity);
+    beforeAll(async () => {
         userRepository = new UserRepository(TestDataSource);
-
-        workerEntity = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
     });
 
@@ -31,21 +26,19 @@ describe('FindAllUserService integration tests', () =>{
         jest.clearAllMocks();
     })
 
-    it('entities and repositories must be instantiated', async () =>{
-        expect(userEntity).toBeDefined();
+    it('entities and repositories must be instantiated', async () => {
         expect(userRepository).toBeDefined();
-        expect(workerEntity).toBeDefined();
         expect(workerRepository).toBeDefined();
     });
 
-    it('should find an empty array', async () =>{
+    it('should find an empty array', async () => {
         const service = new FindAllUserService(userRepository);
         const results = await service.execute();
         expect(results).toBeDefined();
         expect(results.all.length).toBe(0);
     })
 
-    it('should find two users', async () =>{
+    it('should find two users', async () => {
         let admin = mockUser(AccessType.ADMIN);
         let teacher = mockUser(AccessType.TEACHER);
 
@@ -54,14 +47,14 @@ describe('FindAllUserService integration tests', () =>{
         let personEntity = WorkerMapper.fromDomain(person);
         let personEntity1 = WorkerMapper.fromDomain(person1);
 
-        expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
-        expect(await workerRepository.create(personEntity1)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(personEntity)).toBeInstanceOf(Worker);
+        expect(await workerRepository.create(personEntity1)).toBeInstanceOf(Worker);
 
-        let adminEntity = UserEntity.toUserEntity(admin);
-        let teacherEntity = UserEntity.toUserEntity(teacher);
+        let adminEntity = UserMapper.fromDomain(admin);
+        let teacherEntity = UserMapper.fromDomain(teacher);
 
-        expect(await userRepository.create(adminEntity)).toBeInstanceOf(UserEntity);
-        expect(await userRepository.create(teacherEntity)).toBeInstanceOf(UserEntity);
+        expect(await userRepository.create(adminEntity)).toBeInstanceOf(User);
+        expect(await userRepository.create(teacherEntity)).toBeInstanceOf(User);
 
         const service = new FindAllUserService(userRepository);
 

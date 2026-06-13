@@ -12,15 +12,16 @@ import { StudentEntity } from "@/infrastructure/entities/student/student.entity"
 import { Student } from "@/domain/student/student";
 import { RepositoryInterface } from "@/domain/@shared/repository/repository.interface";
 import { PasswordHasher } from "@/helpers/password-encryption/password-hasher";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
 
 export class CreateUserService {
 
     private userRepository: UserRepositoryInterface;
-    public personRepository: RepositoryInterface<any>;
+    public personRepository: RepositoryInterface<any, any>;
 
     constructor(
         userRepository: UserRepositoryInterface,
-        personRepository: RepositoryInterface<any>,
+        personRepository: RepositoryInterface<any, any>,
     ) {
         this.userRepository = userRepository;
         this.personRepository = personRepository
@@ -31,7 +32,7 @@ export class CreateUserService {
             let person = this.typePerson(dto.accesstype, dto.person);
             let hashedPassword = PasswordHasher.encryptPassword(dto.password);
             let user = new User(person, dto.email, dto.nickname, hashedPassword, dto.accesstype);
-            let entity = UserEntity.toUserEntity(user);
+            let entity = UserMapper.fromDomain(user);
             await this.userRepository.create(entity);
         } catch (error) {
             throw error;

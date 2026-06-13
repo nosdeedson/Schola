@@ -6,9 +6,9 @@ import { UserValidator } from "./user.validator";
 export class User extends Entity {
 
     private readonly person: Person;
-    private readonly email: string;
+    private email: string;
     private nickname: string;
-    private readonly password: string;
+    private password: string;
     private readonly accessType: AccessType;
 
     constructor(
@@ -17,11 +17,11 @@ export class User extends Entity {
         nickname: string,
         password: string,
         accessType: AccessType,
-        id?: string, 
-        createdAt?: Date, 
-        updatedAt?: Date, 
+        id?: string,
+        createdAt?: Date,
+        updatedAt?: Date,
         deletedAt?: Date
-    ){
+    ) {
         super(id, createdAt, updatedAt, deletedAt)
         this.person = person;
         this.email = email;
@@ -31,7 +31,7 @@ export class User extends Entity {
         this.validate();
     }
 
-    validate(){
+    validate() {
         new UserValidator().validate(this);
     }
 
@@ -40,12 +40,16 @@ export class User extends Entity {
         return person;
     }
 
-    getEmail(): string{
+    getEmail(): string {
         const email = this.email;
         return email;
     }
 
-    getNickname(): string{
+    setEmail(email: string) {
+        this.email = email;
+    }
+
+    getNickname(): string {
         const nickname = this.nickname;
         return nickname;
     }
@@ -54,14 +58,18 @@ export class User extends Entity {
         this.nickname = nickname;
     }
 
-    getAccessType(): AccessType{
+    getAccessType(): AccessType {
         const accessType = this.accessType;
         return accessType;
     }
 
-    getPassword(): string{
+    getPassword(): string {
         const password = this.password;
         return password
+    }
+
+    setPassword(password: string) {
+        this.password = password;
     }
 
 }

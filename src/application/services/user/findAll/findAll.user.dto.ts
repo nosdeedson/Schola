@@ -1,18 +1,18 @@
-import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 import { FindUserDto } from "../find/find.user.dto";
+import { User } from "@/domain/user/user";
 
 export class FindAllUserDto {
     all: FindUserDto[] = [];
 
-    constructor(entities: UserEntity[]) {
+    constructor(entities: User[]) {
         entities.map(it => {
             let user = new FindUserDto(
-                it.id,
-                it.person.id,
-                it.email,
-                it.nickname,
-                it.person.fullName,
-                it.accessType
+                it.getId(),
+                it.getPerson().getId(),
+                it.getEmail(),
+                it.getNickname(),
+                it.getPerson().getName(),
+                it.getAccessType()
             );
             this.all.push(user);
         })

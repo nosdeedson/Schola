@@ -1,6 +1,7 @@
 import { UserRepositoryInterface } from "@/domain/user/user.repository.interface";
 import { SystemError } from "@/application/services/@shared/system-error";
 import { UpdateUserDto } from "./update.user.dto";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
 
 export class UpdateUserService {
 
@@ -19,10 +20,13 @@ export class UpdateUserService {
         }
         let user = await this.userRepository.find(dto.id);
         if (user) {
-            user.email = dto?.email ? dto.email : user.email;
-            user.nickname = dto?.nickname ? dto.nickname : user.nickname;
-            user.password = dto?.password ? dto.password : user.password;
-            await this.userRepository.update(user);
+            const newEmail = dto?.email ? dto.email : user.getEmail();
+            user.setEmail(newEmail);
+            const newNickname = dto?.nickname ? dto.nickname : user.getNickname();
+            user.setNickanme(newNickname);
+            const newPassword = dto?.password ? dto.password : user.getPassword();
+            user.setPassword(newPassword);
+            await this.userRepository.update(UserMapper.fromDomain(user));
         }
     }
 

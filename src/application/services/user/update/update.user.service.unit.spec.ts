@@ -4,21 +4,21 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { UserEntity } from "../../../../infrastructure/entities/user/user.entity";
 import { UpdateUserDto } from './update.user.dto';
 import { UpdateUserService } from './update.user.service';
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
 
 
 describe('UpdateUserService unit tests', () => {
 
-    let user;
-    let userEntity: UserEntity;
     let updateUserDto: UpdateUserDto;
     let userRepository: any;
 
     beforeEach(() => {
-        user = mockUser(AccessType.TEACHER);
-        userEntity = UserEntity.toUserEntity(user);
-        updateUserDto = { id: userEntity.id, email: 'test@test', nickname: 'test', password: '4321' };
         userRepository = MockRepositoriesForUnitTest.mockRepositories();
     });
+
+    afterEach(async () => {
+        jest.clearAllMocks();
+    })
 
     it('should throw an error because id is not present ', async () => {
         let input = { email: 'test@test', nickname: 'test', password: '4321' };
@@ -44,7 +44,9 @@ describe('UpdateUserService unit tests', () => {
     });
 
     it('should update an user', async () => {
-        userRepository.find = jest.fn().mockImplementationOnce(() => { return userEntity });
+        const user = mockUser(AccessType.TEACHER);
+        updateUserDto = { id: user.getId(), email: 'test@test', nickname: 'test', password: '4321' };
+        userRepository.find = jest.fn().mockImplementationOnce(() => { return user });
         userRepository.update = jest.fn().mockImplementationOnce(() => { void 0 })
         const service = new UpdateUserService(userRepository);
         expect(await service.execute(updateUserDto)).toBe(void 0);

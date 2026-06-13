@@ -1,15 +1,15 @@
 import { AccessType } from "../../../../domain/user/access.type";
 import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
-import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
-import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateUserService } from './create.user.service';
 import { InputCreateUserDto } from "./input.create.user.dto";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { QueryFailedError } from "typeorm";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 
 describe('create user service unit test', () => {

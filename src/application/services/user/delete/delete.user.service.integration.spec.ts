@@ -4,27 +4,23 @@ import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.
 import { UserRepository } from "../../../../infrastructure/repositories/user/user.repository";
 import { WorkerRepository } from "../../../../infrastructure/repositories/worker/worker.repository";
 import { DeleteUserService } from './delete.user.service';
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { mockUser } from "../../../../../tests/mocks/domain/user.mock";
 import { AccessType } from "@/domain/user/access.type";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
+import { User } from "@/domain/user/user";
+import { Worker } from "@/domain/worker/worker";
 
 
 describe('service delete user integration tests', () => {
 
-    let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
-
-    let personEntity: Repository<WorkerEntity>;
     let personRepository: WorkerRepository;
 
-    beforeAll(async () =>{
-        
-        userEntity = TestDataSource.getRepository(UserEntity);
+    beforeAll(async () => {
         userRepository = new UserRepository(TestDataSource);
-
-        personEntity = TestDataSource.getRepository(WorkerEntity);
         personRepository = new WorkerRepository(TestDataSource);
     });
 
@@ -32,22 +28,20 @@ describe('service delete user integration tests', () => {
         jest.clearAllMocks();
     });
 
-    it('entities and repositories must be instantiated', () =>{
-        expect(userEntity).toBeDefined();
+    it('entities and repositories must be instantiated', () => {
         expect(userRepository).toBeDefined();
-        expect(personEntity).toBeDefined();
         expect(personRepository).toBeDefined();
     });
 
-    it('should delete an user', async () =>{
-        personRepository = new WorkerRepository(TestDataSource); 
+    it('should delete an user', async () => {
+        personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
         let teacherEntity = WorkerMapper.fromDomain(person);
         let userInput = mockUser(AccessType.TEACHER);
-        let user = UserEntity.toUserEntity(userInput);
+        let user = UserMapper.fromDomain(userInput);
         user.person = teacherEntity;
-        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
-        expect(await userRepository.create(user)).toBeInstanceOf(UserEntity);
+        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(Worker);
+        expect(await userRepository.create(user)).toBeInstanceOf(User);
         let wantedId = user.id;
         let userBD = await userRepository.find(wantedId);
         expect(userBD).toBeDefined();
@@ -56,17 +50,17 @@ describe('service delete user integration tests', () => {
         userBD = await userRepository.find(wantedId);
         expect(userBD).toBeNull();
     });
-   
 
-    it('should not delete an user', async () =>{
-        personRepository = new WorkerRepository(TestDataSource); 
+
+    it('should not delete an user', async () => {
+        personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
         let teacherEntity = WorkerMapper.fromDomain(person);
         let userInput = mockUser(AccessType.TEACHER);
-        let user = UserEntity.toUserEntity(userInput);
+        let user = UserMapper.fromDomain(userInput);
         user.person = teacherEntity;
-        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
-        expect(await userRepository.create(user)).toBeInstanceOf(UserEntity);
+        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(Worker);
+        expect(await userRepository.create(user)).toBeInstanceOf(User);
         let userBD = await userRepository.find(user.id);
         expect(userBD).toBeDefined();
         const service = new DeleteUserService(userRepository);
@@ -76,4 +70,4 @@ describe('service delete user integration tests', () => {
         expect(afterDeleting).toBeDefined();
     });
 
-})
+});

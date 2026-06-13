@@ -149,8 +149,8 @@ describe('UsersController', () => {
     it('should find users', async () => {
       const user1 = mockUser(AccessType.ADMIN);
       const user2 = mockUser(AccessType.TEACHER);
-      const userEntity1 = UserEntity.toUserEntity(user1);
-      const userEntity2 = UserEntity.toUserEntity(user2);
+      const userEntity1 = UserMapper.fromDomain(user1);
+      const userEntity2 = UserMapper.fromDomain(user2);
       const dto = new FindAllUserDto([userEntity1, userEntity2]);
       findAllUserUsecase.execute.mockResolvedValue(dto);
       const result = await controller.findAll();

@@ -15,19 +15,20 @@ import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 import { RoleEnum } from "@/domain/worker/roleEnum";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { Worker } from "@/domain/worker/worker";
+import { Parent } from "@/domain/parent/parent";
+import { Student } from "@/domain/student/student";
 
 describe('create user service integration tests', () => {
 
-    let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
-
-    let personEntity: Repository<any>;
     let personRepository: any;
 
     beforeAll(async () => {
-        userEntity = TestDataSource.getRepository(UserEntity);
         userRepository = new UserRepository(TestDataSource);
-        personEntity = TestDataSource.getRepository(PersonEntity);
     });
 
     afterEach(async () => {
@@ -35,17 +36,15 @@ describe('create user service integration tests', () => {
     });
 
     it('user entity and repository should be instantiated', async () => {
-        expect(userEntity).toBeDefined();
         expect(userRepository).toBeDefined();
-        expect(personEntity).toBeDefined();
-    })
+    });
 
     it('should create an user of type teacher', async () => {
 
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
         let teacherEntity = WorkerMapper.fromDomain(person);
-        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await personRepository.create(teacherEntity)).toBeInstanceOf(Worker);
 
         let input = {
             person: teacherEntity,
@@ -60,7 +59,7 @@ describe('create user service integration tests', () => {
 
         let results = await userRepository.findAll();
         expect(results.length).toBe(1);
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getId()).toBeDefined();
     });
 
     it('should create an user of type admin', async () => {
@@ -68,7 +67,7 @@ describe('create user service integration tests', () => {
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker({ role: RoleEnum.ADMINISTRATOR });
         let workerAdmin = WorkerMapper.fromDomain(person);
-        expect(await personRepository.create(workerAdmin)).toBeInstanceOf(WorkerEntity);
+        expect(await personRepository.create(workerAdmin)).toBeInstanceOf(Worker);
 
         let input = {
             person: workerAdmin,
@@ -83,7 +82,7 @@ describe('create user service integration tests', () => {
 
         let results = await userRepository.findAll();
         expect(results.length).toBe(1);
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getId()).toBeDefined();
     });
 
     it('should create an user of type student', async () => {
@@ -93,7 +92,7 @@ describe('create user service integration tests', () => {
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
 
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let input = {
             person: studentEntity,
@@ -108,7 +107,7 @@ describe('create user service integration tests', () => {
 
         let results = await userRepository.findAll();
         expect(results.length).toBe(1);
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getId()).toBeDefined();
     });
 
     it('should create an user of type parent', async () => {
@@ -118,7 +117,7 @@ describe('create user service integration tests', () => {
         let parent = mockParent();
         let parentEntity = ParentMapper.fromDomain(parent);
 
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         let input = {
             person: parentEntity,
@@ -133,7 +132,7 @@ describe('create user service integration tests', () => {
 
         let results = await userRepository.findAll();
         expect(results.length).toBe(1);
-        expect(results[0].id).toBeDefined();
+        expect(results[0].getId()).toBeDefined();
     });
 
     it('should throw an QueryFailedError', async () => {
@@ -141,7 +140,7 @@ describe('create user service integration tests', () => {
         personRepository = new WorkerRepository(TestDataSource);
         let person = mockWorker();
         let teacherEntity = WorkerMapper.fromDomain(person);
-        // expect(await personRepository.create(teacherEntity)).toBeInstanceOf(WorkerEntity);
+        // expect(await personRepository.create(teacherEntity)).toBeInstanceOf(Worker);
 
         let input = {
             person: teacherEntity,

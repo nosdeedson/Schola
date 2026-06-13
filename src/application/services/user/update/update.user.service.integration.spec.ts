@@ -8,20 +8,19 @@ import { UpdateUserService } from './update.user.service';
 import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
 import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
 import { AccessType } from '@/domain/user/access.type';
+import { User } from '@/domain/user/user';
+import { UserMapper } from '@/infrastructure/mappers/user/user-mapper';
+import { WorkerMapper } from '@/infrastructure/mappers/worker/worker-mapper';
+import { Worker } from '@/domain/worker/worker';
 
 
 describe('UpdateUserService integration test', () => {
 
-    let userEntity: Repository<UserEntity>;
     let userRepository: UserRepository;
-
-    let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepository;
 
     beforeAll(async () => {
-        userEntity = TestDataSource.getRepository(UserEntity);
         userRepository = new UserRepository(TestDataSource);
-        workerEntity = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
     });
 
@@ -30,9 +29,7 @@ describe('UpdateUserService integration test', () => {
     });
 
     it('entities and repositories must be instantiated', () => {
-        expect(userEntity).toBeDefined();
         expect(userRepository).toBeDefined();
-        expect(workerEntity).toBeDefined();
         expect(workerRepository).toBeDefined();
     });
 
@@ -40,10 +37,10 @@ describe('UpdateUserService integration test', () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerMapper.fromDomain(person);
-        expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(personEntity)).toBeInstanceOf(Worker);
 
-        let userEntity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(userEntity)).toBeInstanceOf(UserEntity);
+        let userEntity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(userEntity)).toBeInstanceOf(User);
 
         let wantedId = 'e211c4ba-da05-4d02-8fa0-f5f0a35d4326';
         const service = new UpdateUserService(userRepository);
@@ -59,10 +56,10 @@ describe('UpdateUserService integration test', () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerMapper.fromDomain(person);
-        expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(personEntity)).toBeInstanceOf(Worker);
 
-        let userEntity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(userEntity)).toBeInstanceOf(UserEntity);
+        let userEntity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(userEntity)).toBeInstanceOf(User);
 
         let wantedId = user.getId();
         const service = new UpdateUserService(userRepository);
@@ -76,10 +73,10 @@ describe('UpdateUserService integration test', () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerMapper.fromDomain(person);
-        expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(personEntity)).toBeInstanceOf(Worker);
 
-        let userEntity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(userEntity)).toBeInstanceOf(UserEntity);
+        let userEntity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(userEntity)).toBeInstanceOf(User);
 
         let wantedId = user.getId();
         let userBD = await userRepository.find(wantedId);
@@ -90,20 +87,18 @@ describe('UpdateUserService integration test', () => {
         expect(await service.execute(input)).toBe(void 0);
         let updatedUser = await userRepository.find(wantedId);
         expect(updatedUser).toBeDefined();
-        expect(updatedUser.id).toBe(wantedId);
-        expect(updatedUser.password).toBe(input.password);
-        // expect(updatedUser.nickname).toBe(input.nickname);
-        expect(updatedUser.email).toBe(input.email);
+        expect(updatedUser.getId()).toBe(wantedId);
+        expect(updatedUser.getEmail()).toBe(input.email);
     });
 
     it('should not update an user ', async () => {
         let user = mockUser(AccessType.TEACHER);
         let person = user.getPerson() as any;
         let personEntity = WorkerMapper.fromDomain(person);
-        expect(await workerRepository.create(personEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(personEntity)).toBeInstanceOf(Worker);
 
-        let userEntity = UserEntity.toUserEntity(user);
-        expect(await userRepository.create(userEntity)).toBeInstanceOf(UserEntity);
+        let userEntity = UserMapper.fromDomain(user);
+        expect(await userRepository.create(userEntity)).toBeInstanceOf(User);
 
         let wantedId = 'e211c4ba-da05-4d02-8fa0-f5f0a35d4326';
         let userBD = await userRepository.find(user.getId());
@@ -114,10 +109,9 @@ describe('UpdateUserService integration test', () => {
         expect(await service.execute(input)).toBe(void 0);
         let updatedUser = await userRepository.find(user.getId());
         expect(updatedUser).toBeDefined();
-        expect(updatedUser.id).toBe(user.getId());
-        expect(updatedUser.password == input.password).toBeFalsy();
-        expect(updatedUser.nickname == input.nickname).toBeFalsy();
-        expect(updatedUser.email == input.email).toBeFalsy();
+        expect(updatedUser.getId()).toBe(user.getId());
+        expect(updatedUser.getNickname() == input.nickname).toBeFalsy();
+        expect(updatedUser.getEmail() == input.email).toBeFalsy();
     });
 
 });

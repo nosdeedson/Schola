@@ -39,9 +39,5 @@ describe('FindUserService tests unit', () => {
                     { context: "user", message: 'user not found' }
                 ]
             });
-        try {
-        } catch (error) {
-            expect(error).toEqual({ errors: [{ context: 'user', message: 'user not found' }] });
-        }
     });
 });

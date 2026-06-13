@@ -52,13 +52,13 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should find all users', async () => {
-            const adminUser = UserEntity.toUserEntity(mockUser(AccessType.ADMIN));
+            const adminUser = UserMapper.fromDomain(mockUser(AccessType.ADMIN));
             const workerRepository = TestDataSource.getRepository(WorkerEntity);
             await workerRepository.save(adminUser.person);
             const userRepository = TestDataSource.getRepository(UserEntity);
             await userRepository.save(adminUser);
 
-            const teacherUser = UserEntity.toUserEntity(mockUser(AccessType.TEACHER));
+            const teacherUser = UserMapper.fromDomain(mockUser(AccessType.TEACHER));
             await workerRepository.save(teacherUser.person);
             await userRepository.save(teacherUser);
 
@@ -71,7 +71,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should find an user', async () => {
-            const adminUser = UserEntity.toUserEntity(mockUser(AccessType.ADMIN));
+            const adminUser = UserMapper.fromDomain(mockUser(AccessType.ADMIN));
             const workerRepository = TestDataSource.getRepository(WorkerEntity);
             await workerRepository.save(adminUser.person);
             const userRepository = TestDataSource.getRepository(UserEntity);
@@ -95,7 +95,7 @@ describe("USERS E2E TESTS", () => {
         });
 
         it('should delete an user', async () => {
-            const adminUser = UserEntity.toUserEntity(mockUser(AccessType.ADMIN));
+            const adminUser = UserMapper.fromDomain(mockUser(AccessType.ADMIN));
             const workerRepository = TestDataSource.getRepository(WorkerEntity);
             await workerRepository.save(adminUser.person);
             const userRepository = TestDataSource.getRepository(UserEntity);
