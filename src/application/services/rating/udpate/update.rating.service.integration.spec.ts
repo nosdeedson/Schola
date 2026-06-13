@@ -12,6 +12,11 @@ import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
+import { Rating } from "@/domain/rating/rating";
 
 
 describe('update rating service integration tests', () => {
@@ -52,14 +57,14 @@ describe('update rating service integration tests', () => {
         let rating = mockRating({ quarter: semester.firstQuarter });
 
         let studentEntity = StudentMapper.fromDomain(rating.getStudent());
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemester);
 
         rating.getStudent
         let ratingEntity = RatingMapper.fromDomain(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         let wantedid = 'b4145be7-0fed-4a64-8a45-24bdd594cd20';
 
@@ -76,13 +81,13 @@ describe('update rating service integration tests', () => {
         let student = rating.getStudent();
 
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemester);
 
         let ratingEntity = RatingMapper.fromDomain(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         let wantedid = rating.getId();
 
@@ -90,14 +95,14 @@ describe('update rating service integration tests', () => {
         const service = new UpdateRatingService(ratingRepository);
         expect(await service.execute(input)).toBe(void 0);
         let result = await ratingRepository.find(wantedid);
-        expect(result.listing).toBe(input.listing);
-        expect(result.writing).toBe(input.writing);
-        expect(result.reading).toBe(input.reading);
-        expect(result.speaking).toBe(input.speaking);
-        expect(result.homework).toBe(input.homework);
-        expect(result.grammar).toBe(input.grammar);
-        expect(result.vocabulary).toBe(input.vocabulary);
-        expect(result.updatedAt.getTime()).toBeGreaterThan(rating.getUpdatedAt().getTime());
+        expect(result.getListing()).toBe(input.listing);
+        expect(result.getWriting()).toBe(input.writing);
+        expect(result.getReading()).toBe(input.reading);
+        expect(result.getSpeaking()).toBe(input.speaking);
+        expect(result.getHomework()).toBe(input.homework);
+        expect(result.getGrammar()).toBe(input.grammar);
+        expect(result.getVocabulary()).toBe(input.vocabulary);
+        expect(result.getUpdatedAt().getTime()).toBeGreaterThan(rating.getUpdatedAt().getTime());
     });
 
 });

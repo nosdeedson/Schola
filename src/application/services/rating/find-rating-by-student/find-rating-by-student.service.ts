@@ -1,5 +1,5 @@
+import { Rating } from "@/domain/rating/rating";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
-import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
 export class FindRatingByStudent {
 
@@ -9,7 +9,7 @@ export class FindRatingByStudent {
         this.ratingRepository = ratingRepository;
     }
 
-    async findRatingByStudent(studentId: string): Promise<RatingEntity[]> {
+    async findRatingByStudent(studentId: string): Promise<Rating[]> {
         const result = await this.ratingRepository.findByStudentId(studentId);
         return result;
     }

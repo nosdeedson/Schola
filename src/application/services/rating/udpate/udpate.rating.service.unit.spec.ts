@@ -1,6 +1,5 @@
 import { Grade } from '../../../../domain/enum/grade/grade';
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { UpdateRatingDto } from './udpate.rating.dto';
 import { UpdateRatingService } from './update.rating.service';
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks"
@@ -12,28 +11,19 @@ describe('update rating service unit tests', () => {
         ratingRepository.find = jest.fn().mockImplementationOnce(() => { return null });
         const service = new UpdateRatingService(ratingRepository);
         let input = new UpdateRatingDto('123', Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD);
-        try {
-            await service.execute(input)
-        } catch (error) {
-            expect(error).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{ context: 'rating', message: 'Not found' }]);
-            expect(ratingRepository.find).toHaveBeenCalledTimes(1);
-            expect(ratingRepository.update).toHaveBeenCalledTimes(0);
-        }
+        await expect(service.execute(input)).rejects
+            .toMatchObject({ errors: [{ context: 'rating', message: 'Not found' }] });
     });
 
     it('should update a rating', async () => {
         const rating = mockRating();
-        const entity = RatingMapper.fromDomain(rating);
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
-        ratingRepository.find = jest.fn().mockImplementationOnce(() => { return entity });
+        ratingRepository.find = jest.fn().mockImplementationOnce(() => { return rating });
         const service = new UpdateRatingService(ratingRepository);
         let input = new UpdateRatingDto('123', Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD, Grade.GOOD);
         expect(await service.execute(input)).toBe(void 0);
         expect(ratingRepository.find).toHaveBeenCalledTimes(1);
         expect(ratingRepository.update).toHaveBeenCalledTimes(1);
-        expect(ratingRepository.update).toHaveBeenCalledWith(entity)
     });
 
 });

@@ -10,6 +10,11 @@ import { FindAllRatingService } from './findAll.rating.service';
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
+import { Rating } from "@/domain/rating/rating";
 
 describe('find all rating integration tests', () => {
 
@@ -55,13 +60,13 @@ describe('find all rating integration tests', () => {
         let rating = mockRating({ quarter: semester.firstQuarter });
         let student = rating.getStudent();
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemester);
 
         let ratingEntity = RatingMapper.fromDomain(rating);
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         const service = new FindAllRatingService(ratingRepository);
         let results = await service.execute();

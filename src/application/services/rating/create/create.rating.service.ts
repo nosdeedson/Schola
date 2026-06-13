@@ -3,6 +3,7 @@ import { CreateRatingDto } from "./create.rating.dto";
 import { Rating } from "@/domain/rating/rating";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 import { SystemError } from "@/application/services/@shared/system-error";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 
 export class CreateRatingService {
 
@@ -12,7 +13,7 @@ export class CreateRatingService {
         this.ratingRepository = ratingRepository;
     }
 
-    async execute(dto: CreateRatingDto): Promise<RatingEntity> {
+    async execute(dto: CreateRatingDto): Promise<Rating> {
 
         try {
             const rating = new Rating(

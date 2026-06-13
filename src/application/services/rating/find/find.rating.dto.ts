@@ -1,4 +1,5 @@
 import { Grade } from "@/domain/enum/grade/grade";
+import { Rating } from "@/domain/rating/rating";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
 export class FindRatingDto {
@@ -16,22 +17,22 @@ export class FindRatingDto {
     comments?: string[] = [];
 
     constructor(
-        ratingEntity: RatingEntity
+        rating: Rating
     ) {
-        this.id = ratingEntity.id;
-        this.ratingDate = ratingEntity.ratingDate;
-        this.listing = ratingEntity.listing;
-        this.writing = ratingEntity.writing;
-        this.reading = ratingEntity.reading;
-        this.speaking = ratingEntity.speaking;
-        this.grammar = ratingEntity.grammar;
-        this.homework = ratingEntity.homework;
-        this.vocabulary = ratingEntity.vocabulary;
-        this.studentId = ratingEntity?.student?.id;
-        this.semesterId = ratingEntity?.quarter?.id;
-        if (ratingEntity?.comments) {
-            ratingEntity?.comments.forEach(it => {
-                this.comments.push(it.comment)
+        this.id = rating.getId();
+        this.ratingDate = rating.getRatingDate();
+        this.listing = rating.getListing();
+        this.writing = rating.getWriting();
+        this.reading = rating.getReading();
+        this.speaking = rating.getSpeaking();
+        this.grammar = rating.getGrammar();
+        this.homework = rating.getHomework();
+        this.vocabulary = rating.getVocabulary();
+        this.studentId = rating?.getStudent()?.getId();
+        this.semesterId = rating?.getQuarter()?.getId();
+        if (rating?.getComments()) {
+            rating?.getComments().forEach(it => {
+                this.comments.push(it.getComment())
             })
         }
     }

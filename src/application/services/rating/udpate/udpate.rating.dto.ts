@@ -1,4 +1,5 @@
 import { Grade } from "@/domain/enum/grade/grade";
+import { Rating } from "@/domain/rating/rating";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
 
 export class UpdateRatingDto {
@@ -20,7 +21,7 @@ export class UpdateRatingDto {
         grammar: Grade,
         homework: Grade,
         vocabulary: Grade
-    ){
+    ) {
         this.id = id;
         this.listing = listing;
         this.writing = writing;
@@ -31,14 +32,14 @@ export class UpdateRatingDto {
         this.vocabulary = vocabulary;
     }
 
-    updateEntity(entity: RatingEntity): RatingEntity{
-        entity.listing = this.listing;
-        entity.writing = this.writing;
-        entity.reading = this.reading;
-        entity.speaking = this.speaking;
-        entity.grammar = this.grammar;
-        entity.homework = this.homework;
-        entity.vocabulary = this.vocabulary;
+    updateEntity(entity: Rating): Rating {
+        entity.setListing(this.listing);
+        entity.setWriting(this.writing);
+        entity.setReading(this.reading);
+        entity.setSpeaking(this.speaking);
+        entity.setGrammar(this.grammar);
+        entity.setHomework(this.homework);
+        entity.setVocabulary(this.vocabulary);
         return entity;
     }
 }
