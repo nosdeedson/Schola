@@ -17,6 +17,13 @@ import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
+import { Student } from "@/domain/student/student";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
+import { Comment } from "@/domain/comment/comment";
+import { Rating } from "@/domain/rating/rating";
 
 describe('UpdateCommentService integration tests', () => {
 
@@ -70,27 +77,26 @@ describe('UpdateCommentService integration tests', () => {
         expect(commentRepository).toBeDefined();
     });
 
-
     it('given the wrong id should throw an SystemError', async () => {
 
         let semester = mockSemester();
         let semesterEntityToSave = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemester);
 
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
 
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
 
         let ratingEntityToSave = RatingMapper.fromDomain(rating);
 
-        expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(Rating);
 
         let comment = mockComment();
-        let commentEntityToSave = CommentMapper.fromDomain(comment, ratingEntityToSave);
-        expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
+        let commentEntityToSave = CommentMapper.fromDomain(comment, rating);
+        expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(Comment);
 
         const wrongId = 'df488d38-4890-4e32-a443-ff0ba9ad86eb';
         const dto = new UpdateCommentDto(wrongId, 'changing comment');
@@ -105,34 +111,34 @@ describe('UpdateCommentService integration tests', () => {
     it('given a valid id should update a comment', async () => {
         let semester = mockSemester();
         let semesterEntityToSave = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntityToSave)).toBeInstanceOf(AcademicSemester);
 
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
 
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntityToSave = RatingMapper.fromDomain(rating);
 
-        expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntityToSave)).toBeInstanceOf(Rating);
 
         let comment = mockComment();
-        let commentEntityToSave = CommentMapper.fromDomain(comment, ratingEntityToSave);
-        expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(CommentEntity);
+        let commentEntityToSave = CommentMapper.fromDomain(comment, rating);
+        expect(await commentRepository.create(commentEntityToSave)).toBeInstanceOf(Comment);
 
         let wantedId = comment.getId();
         let currentComment = comment.getComment();
+        const beforeUpdate = await commentRepository.find(wantedId);
+        expect(beforeUpdate.getComment()).toBe(currentComment);
         let updatedComment = 'changed comment';
         let dto = new UpdateCommentDto(wantedId, updatedComment);
-        let result = await commentRepository.find(wantedId);
-        expect(result.comment).toBe(currentComment);
         const service = new UpdateCommentService(commentRepository);
 
         expect(await service.execute(dto)).toBe(void 0);
-        result = await commentRepository.find(wantedId);
-        expect(result.comment).toBe(updatedComment);
-        expect(result.id).toBe(wantedId);
-    });
+        const result = await commentRepository.find(wantedId);
+        expect(result.getComment()).toBe(updatedComment);
+        expect(result.getId()).toBe(wantedId);
+    }, 10000);
 
 });

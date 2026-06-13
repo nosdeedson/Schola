@@ -4,6 +4,7 @@ import { QuarterEntity } from "../../entities/quarter/quarter.entity";
 export class QuarterMapper {
 
     static fromDomain(quarter: Quarter, quarterNumber?: number): QuarterEntity {
+        if (!quarter) return null;
         let entity = new QuarterEntity();
         entity.id = quarter.getId();
         entity.quarterNumber = quarterNumber ? quarterNumber : entity.quarterNumber;

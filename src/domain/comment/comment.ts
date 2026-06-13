@@ -1,9 +1,11 @@
 import { Entity } from "../@shared/entity";
+import { Rating } from "../rating/rating";
 import { CommentValidator } from "./comment.validator";
 
 export class Comment extends Entity {
     private comment: string;
     private namePersonHaveDone: string;
+    private rating: Rating;
 
     constructor(
         comment: string,
@@ -33,5 +35,13 @@ export class Comment extends Entity {
 
     getNamePersonHaveDone(): string {
         return this.namePersonHaveDone
+    }
+
+    getRating(): Rating {
+        return this.rating;
+    }
+
+    setRating(rating: Rating) {
+        this.rating = rating;
     }
 }

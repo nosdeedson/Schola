@@ -17,6 +17,12 @@ import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { Student } from "@/domain/student/student";
+import { Rating } from "@/domain/rating/rating";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 
 describe('FindAllCommentService integration tests', () => {
 
@@ -80,17 +86,17 @@ describe('FindAllCommentService integration tests', () => {
     it('should find all comments', async () => {
         let semester = mockSemester()
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemester);
 
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
 
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingMapper.fromDomain(rating);
 
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         const service = new FindAllCommentService(commentRepository);
 
@@ -98,12 +104,12 @@ describe('FindAllCommentService integration tests', () => {
         expect(results.all.length).toBe(0);
 
         let comment = mockComment();
-        let commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
-        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
+        let commentEntity = CommentMapper.fromDomain(comment, rating);
+        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(Comment);
 
         let comment1 = new Comment('another comment', comment.getNamePersonHaveDone());
-        const commentEntity1 = CommentMapper.fromDomain(comment1, ratingEntity);
-        expect(await commentRepository.create(commentEntity1)).toBeInstanceOf(CommentEntity);
+        const commentEntity1 = CommentMapper.fromDomain(comment1, rating);
+        expect(await commentRepository.create(commentEntity1)).toBeInstanceOf(Comment);
 
         results = await service.execute();
 

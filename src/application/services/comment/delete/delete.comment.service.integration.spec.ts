@@ -16,6 +16,13 @@ import { mockRating } from "../../../../../tests/mocks/domain/rating.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockComment } from "../../../../../tests/mocks/domain/comment.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
+import { Student } from "@/domain/student/student";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
+import { Rating } from "@/domain/rating/rating";
+import { Comment } from "@/domain/comment/comment";
 
 
 describe('DeleteCommentService integration test', () => {
@@ -80,22 +87,22 @@ describe('DeleteCommentService integration test', () => {
     it('given a valid comment should delete it on BD', async () => {
         let semester = mockSemester();
         let semesterEntity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(semesterEntity)).toBeInstanceOf(AcademicSemester);
 
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
 
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let rating = mockRating({ student, quarter: semester.firstQuarter });
         let ratingEntity = RatingMapper.fromDomain(rating);
 
-        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(RatingEntity);
+        expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
 
         let comment = mockComment();
-        let commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
+        let commentEntity = CommentMapper.fromDomain(comment, rating);
         let wantedId = comment.getId();
-        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(CommentEntity);
+        expect(await commentRepository.create(commentEntity)).toBeInstanceOf(Comment);
 
         let result = await commentRepository.find(wantedId);
         expect(result).toBeDefined();
@@ -105,6 +112,4 @@ describe('DeleteCommentService integration test', () => {
         result = await commentRepository.find(wantedId);
         expect(result).toBeNull();
     });
-
-
-})
+});

@@ -23,6 +23,7 @@ export class StudentMapper {
     }
 
     static fromDomain(student: Student): StudentEntity {
+        if (!student) return null;
         let model = new StudentEntity();
         model.birthday = student.getBirthday();
         model.createdAt = student.getCreatedAt();

@@ -1,65 +1,54 @@
 import { UpdateCommentService } from './update.comment.service';
 import { UpdateCommentDto } from './update.comment.dto';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
-import { CommentEntity} from '../../../../infrastructure/entities/comment/comment.entity';
-import { RatingEntity } from '../../../../infrastructure/entities/rating/rating.entity';
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
-import { RatingMapper } from '@/infrastructure/mappers/rating/rating-mapper';
 import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
+import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 
-describe('UpdateCommentService unit tests', () =>{
+describe('UpdateCommentService unit tests', () => {
 
-    afterEach(async () =>{
+    afterEach(async () => {
         jest.clearAllMocks();
     })
 
-    it('should throw a systemError while updating a comment with wrong id', async () =>{
+    it('should throw a systemError while updating a comment with wrong id', async () => {
         const wrongId = '1234';
         const dto = new UpdateCommentDto(wrongId, 'changing comment');
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
-        commentRepository.find = jest.fn().mockImplementationOnce(() =>{
+        commentRepository.find = jest.fn().mockImplementationOnce(() => {
             return null;
         });
 
         const service = new UpdateCommentService(commentRepository);
 
-        try {
-            await service.execute(dto);
-        } catch (error) {
-            //@ts-ignore
-            expect(error.errors).toBeDefined();
-            //@ts-ignore
-            expect(error.errors).toMatchObject([{context: 'comment', message: 'comment not found'}]);
-        }
+        await expect(service.execute(dto)).rejects
+            .toMatchObject([{ context: 'comment', message: 'comment not found' }]);
     });
 
-    it('should update a comment', async () =>{
+    it('should update a comment', async () => {
         const comment = mockComment();
         const rating = mockRating();
-        const ratingEntity = RatingMapper.fromDomain(rating);
-        const entity = CommentMapper.fromDomain(comment, ratingEntity);
+        comment.setRating(rating)
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
 
         const wantedComment = "changing comment";
         const wantedUpdatedAt = new Date();
 
-        commentRepository.find = jest.fn().mockImplementationOnce(() =>{ return entity});
+        commentRepository.find = jest.fn().mockImplementationOnce(() => comment);
         commentRepository.update = jest.fn().mockImplementationOnce(() => {
-            entity.comment = wantedComment;
-            entity.updatedAt = wantedUpdatedAt;
+            comment.setUpdatedAt(wantedUpdatedAt),
+                comment.setComment(wantedComment)
         })
-        
-        const commentBefore = entity.comment;
-        expect(entity.comment).toBe(commentBefore)
+
         const dto = new UpdateCommentDto(comment.getId(), wantedComment);
         const service = new UpdateCommentService(commentRepository);
         expect(await service.execute(dto)).toBe(void 0);
         expect(commentRepository.find).toHaveBeenCalledTimes(1)
         expect(commentRepository.find).toHaveBeenCalledWith(dto.idComment)
         expect(commentRepository.update).toHaveBeenCalledTimes(1);
-        expect(entity.comment).toBe(wantedComment);
-        expect(entity.updatedAt).toEqual(wantedUpdatedAt);
-    })
+        expect(comment.getComment()).toBe(wantedComment);
+        expect(comment.getUpdatedAt()).toEqual(wantedUpdatedAt);
+    });
 
-})
+});

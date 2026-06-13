@@ -1,3 +1,4 @@
+import { Comment } from "@/domain/comment/comment";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 
 export class FindCommentDto {
@@ -7,10 +8,10 @@ export class FindCommentDto {
     namePersonHadDone: string;
     createdAt: Date;
 
-    constructor(comment: CommentEntity) {
-        this.idComment = comment.id;
-        this.comment = comment.comment;
-        this.namePersonHadDone = comment.namePersonHaveDone;
-        this.createdAt = comment.createdAt;
+    constructor(comment: Comment) {
+        this.idComment = comment.getId();
+        this.comment = comment.getComment();
+        this.namePersonHadDone = comment.getNamePersonHaveDone();
+        this.createdAt = comment.getCreatedAt();
     }
 }

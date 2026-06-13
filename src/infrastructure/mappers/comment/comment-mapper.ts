@@ -1,13 +1,15 @@
 import { Comment } from "@/domain/comment/comment";
+import { Rating } from "@/domain/rating/rating";
 import { CommentEntity } from "@/infrastructure/entities/comment/comment.entity";
 import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
+import { RatingMapper } from "../rating/rating-mapper";
 
 
 export class CommentMapper {
 
     static fromEntity(entity: CommentEntity): Comment {
         if (!entity) return null;
-        return new Comment(
+        const comment = new Comment(
             entity.comment,
             entity.namePersonHaveDone,
             entity.id,
@@ -15,9 +17,11 @@ export class CommentMapper {
             entity.updatedAt,
             entity.deletedAt
         );
+        if (entity.rating) comment.setRating(RatingMapper.fromEntity(entity.rating));
+        return comment;
     }
 
-    static fromDomain(comment: Comment, rating: RatingEntity): CommentEntity {
+    static fromDomain(comment: Comment, rating: Rating): CommentEntity {
         let model = new CommentEntity();
         model.comment = comment.getComment();
         model.createdAt = comment.getCreatedAt();
@@ -25,11 +29,11 @@ export class CommentMapper {
         model.updatedAt = comment.getUpdatedAt();
         model.id = comment.getId();
         model.namePersonHaveDone = comment.getNamePersonHaveDone();
-        model.rating = rating ? rating : null;
+        model.rating = rating ? RatingMapper.fromDomain(rating) : null;
         return model;
     }
 
-    static toCommentsEntity(comments: Comment[], rating: RatingEntity): CommentEntity[] {
+    static toCommentsEntity(comments: Comment[], rating: Rating): CommentEntity[] {
         let models: CommentEntity[] = []
         comments.forEach(it => {
             models.push(this.fromDomain(it, rating));

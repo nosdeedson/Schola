@@ -8,8 +8,8 @@ export class RatingMapper {
 
     static fromEntity(entity: RatingEntity): Rating {
         if (!entity) return null;
-        const student = entity.student ? StudentMapper.fromEntity(entity.student) : null;
-        const quarter = QuarterMapper.fromEntity(entity.quarter);
+        const student = entity?.student ? StudentMapper.fromEntity(entity.student) : null;
+        const quarter = entity?.quarter ? QuarterMapper.fromEntity(entity.quarter) : null;
         const rating = new Rating(
             quarter,
             student,
@@ -26,7 +26,7 @@ export class RatingMapper {
             entity?.updatedAt,
             entity?.deletedAt,
         );
-        entity.comments ? entity.comments.map(it => rating.setComments(CommentMapper.fromEntity(it))) : [];
+        entity?.comments ? entity.comments.map(it => rating.setComments(CommentMapper.fromEntity(it))) : [];
         return rating;
     }
 

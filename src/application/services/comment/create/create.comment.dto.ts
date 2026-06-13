@@ -1,15 +1,15 @@
-import { RatingEntity } from "@/infrastructure/entities/rating/rating.entity";
+import { Rating } from "@/domain/rating/rating";
 
 export class CreateCommentDto {
 
     comment: string;
     namePersonHaveDone: string;
-    rating: RatingEntity;
+    rating: Rating;
 
     constructor(
         comment: string,
         namePersonHaveDone: string,
-        rating: RatingEntity
+        rating: Rating
     ) {
         this.comment = comment;
         this.namePersonHaveDone = namePersonHaveDone;

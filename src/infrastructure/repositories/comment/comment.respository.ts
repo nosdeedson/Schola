@@ -46,7 +46,8 @@ export class CommentRepository implements CommentRepositoryInterface {
 
     async find(id: string): Promise<Comment> {
         const entity = await this.commentRepository.findOne({
-            where: { id: id }
+            where: { id: id },
+            relations: { rating: true }
         });
         return CommentMapper.fromEntity(entity);
     }

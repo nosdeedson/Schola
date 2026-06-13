@@ -1,6 +1,7 @@
 import { CommentRepositoryInterface } from "@/domain/comment/comment.repository.interface";
 import { UpdateCommentDto } from "./update.comment.dto";
 import { SystemError } from "@/application/services/@shared/system-error";
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
 
 export class UpdateCommentService {
 
@@ -15,7 +16,7 @@ export class UpdateCommentService {
         if (!comment) {
             throw new SystemError([{ context: 'comment', message: 'comment not found' }], 404);
         }
-        comment.comment = dto.comment;
-        await this.commentRepository.update(comment);
+        comment.setComment(dto.comment);
+        await this.commentRepository.update(CommentMapper.fromDomain(comment, comment.getRating()));
     }
 }
