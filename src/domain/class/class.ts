@@ -93,24 +93,4 @@ export class Class extends Entity {
         this.validate();
     }
 
-    static from(entity: ClassEntity): Class {
-        const schedule = Schedule.from({
-            dayOfWeeks: [entity.firstDayOfClassInWeek, entity.secondDayOfClassInWeek],
-            times: new Map([
-                [entity.firstDayOfClassInWeek, entity.timeFirstDay],
-                [entity.secondDayOfClassInWeek, entity.timeSecondDay]
-            ])
-        })
-        const c = new Class(
-            entity.classCode,
-            entity.bookName,
-            entity.className,
-            schedule,
-            entity.id,
-            entity.createdAt,
-            entity.updatedAt,
-            entity.deletedAt,
-        );
-        return c;
-    }
 }

@@ -8,6 +8,11 @@ import { TestDataSource } from "@/infrastructure/repositories/config-test/test.d
 import { QueryFailedError, Repository } from "typeorm";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
+import { Parent } from "@/domain/parent/parent";
+import { ParentStudentMapper } from "@/infrastructure/mappers/parent-student/parent-student-mapper";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 describe('CreateParentStudentService Integration Test', () => {
 
@@ -48,13 +53,13 @@ describe('CreateParentStudentService Integration Test', () => {
     it('should save a parentStudentEntity', async () => {
         const student = mockStudent();
         const studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         const parent = mockParent();
         const parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
-        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
+        const parentStudent = ParentStudentMapper.fromDomain(parent, student);
 
         expect(await parentStudentRepository.create(parentStudent)).toBeInstanceOf(ParentStudentEntity);
 
@@ -65,13 +70,12 @@ describe('CreateParentStudentService Integration Test', () => {
         expect(results[0].parentId).toBe(parentEntity.id);
     });
 
-    it('should save a parentStudentEntity', async () => {
-
+    it('should not save a parentStudentEntity', async () => {
         const parent = mockParent();
         const parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
-        const parentStudent = ParentStudentMapper.fromDomain(parentEntity, null);
+        const parentStudent = ParentStudentMapper.fromDomain(parent, null);
 
         await expect(parentStudentRepository.create(parentStudent))
             .rejects.toThrow(QueryFailedError);

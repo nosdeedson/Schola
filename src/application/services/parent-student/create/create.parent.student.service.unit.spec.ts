@@ -1,10 +1,7 @@
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { CreateParentDto } from "../../parent/create/create.parent.dto";
 import { CreateParentService } from "../../parent/create/create.parent.service";
 import { CreateParentStudentService } from "./create.parent.student.service";
-import { ParentStudentEntity } from "../../../../infrastructure/entities/parent-student/parent.student.entity";
-import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { CreateStudentService } from "../../student/create/create.student.service";
 import { CreateStudentDto } from "../../student/create/create.student.dto";
 import { PersonEntity } from "@/infrastructure/entities/@shared/person.entity";
@@ -14,6 +11,8 @@ import { QueryFailedError } from "typeorm";
 import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 import { ParentStudentMapper } from "@/infrastructure/mappers/parent-student/parent-student-mapper";
+import { Person } from "@/domain/@shared/person";
+import { Student } from "@/domain/student/student";
 
 describe('CreateParentStudentService', () => {
 
@@ -22,18 +21,15 @@ describe('CreateParentStudentService', () => {
     });
 
     it('should create a parent entity', async () => {
-        const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
-
-        const studentMock = mockStudent();
-
         const parentStudentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
 
+        const parentMock = mockParent();
+        const studentMock = mockStudent();
         const parentService = jest.spyOn(CreateParentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(mockEntity));
+            .mockImplementation(() => Promise.resolve(parentMock));
 
         studentRepository.create = jest.fn().mockResolvedValue(studentMock);
         studentRepository.findStudentByNameAndParentNames = jest.fn()
@@ -49,7 +45,7 @@ describe('CreateParentStudentService', () => {
             parentStudentRepository
         });
 
-        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Person);
         expect(parentStudentRepository.create).toHaveBeenCalled();
         expect(parentService).toHaveBeenCalled();
         expect(studentRepository.create).toHaveBeenCalled();
@@ -57,10 +53,8 @@ describe('CreateParentStudentService', () => {
 
     it('while creating a parent should not create a student if exists', async () => {
         const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
 
         const studenMock = mockStudent();
-        const mockStudentEntity = StudentMapper.fromDomain(studenMock);
 
         const parentStudentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -68,11 +62,11 @@ describe('CreateParentStudentService', () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
 
         const parentService = jest.spyOn(CreateParentService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(mockEntity));
+            .mockImplementation(() => Promise.resolve(parentMock));
 
-        studentRepository.create = jest.fn().mockResolvedValue(mockStudentEntity);
+        studentRepository.create = jest.fn().mockResolvedValue(studenMock);
         studentRepository.findStudentByNameAndParentNames = jest.fn()
-            .mockImplementation(() => Promise.resolve(mockStudentEntity));
+            .mockImplementation(() => Promise.resolve(studenMock));
 
         const parentStudent = ParentStudentMapper.fromDomain(parentMock, studenMock);
         parentStudentRepository.create = jest.fn().mockResolvedValue(parentStudent);
@@ -85,7 +79,7 @@ describe('CreateParentStudentService', () => {
             parentStudentRepository
         });
 
-        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Person);
         expect(parentStudentRepository.create).toHaveBeenCalledTimes(0)
         expect(parentService).toHaveBeenCalled();
         expect(studentRepository.findStudentByNameAndParentNames).toHaveBeenCalledTimes(1);
@@ -94,7 +88,6 @@ describe('CreateParentStudentService', () => {
 
     it('should create a student entity', async () => {
         const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
 
         const studentMock = mockStudent();
 
@@ -106,7 +99,7 @@ describe('CreateParentStudentService', () => {
         const studentService = jest.spyOn(CreateStudentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(studentMock));
 
-        parentRepository.create = jest.fn().mockResolvedValue(mockEntity);
+        parentRepository.create = jest.fn().mockResolvedValue(parentMock);
         parentRepository.findByParentNameAndStudentNames = jest.fn()
             .mockImplementation(() => Promise.resolve(null));
         const parentStudent = ParentStudentMapper.fromDomain(parentMock, studentMock);
@@ -120,7 +113,7 @@ describe('CreateParentStudentService', () => {
             classRepository: classRepository,
         });
 
-        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Student);
         expect(parentStudentRepository.create).toHaveBeenCalled();
         expect(studentService).toHaveBeenCalled();
         expect(parentRepository.create).toHaveBeenCalled();
@@ -128,8 +121,6 @@ describe('CreateParentStudentService', () => {
 
     it('while creating a student should not create a parent if exists already', async () => {
         const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
-
         const studentMock = mockStudent();
 
         const parentStudentRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -140,9 +131,9 @@ describe('CreateParentStudentService', () => {
         const studentService = jest.spyOn(CreateStudentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(studentMock));
 
-        parentRepository.create = jest.fn().mockResolvedValue(mockEntity);
+        parentRepository.create = jest.fn().mockResolvedValue(parentMock);
         parentRepository.findByParentNameAndStudentNames = jest.fn()
-            .mockImplementation(() => Promise.resolve(mockEntity));
+            .mockImplementation(() => Promise.resolve(parentMock));
 
         const parentStudent = ParentStudentMapper.fromDomain(parentMock, studentMock);
         parentStudentRepository.create = jest.fn().mockResolvedValue(parentStudent);
@@ -155,7 +146,7 @@ describe('CreateParentStudentService', () => {
             classRepository: classRepository,
         });
 
-        expect(await service.execute(dto)).toBeInstanceOf(PersonEntity);
+        expect(await service.execute(dto)).toBeInstanceOf(Student);
         expect(parentStudentRepository.create).toHaveBeenCalledTimes(0);
         expect(studentService).toHaveBeenCalledTimes(1);
         expect(parentRepository.findByParentNameAndStudentNames).toHaveBeenCalledTimes(1)
@@ -167,8 +158,6 @@ describe('CreateParentStudentService', () => {
         const mockEntity = ParentMapper.fromDomain(parentMock);
 
         const studentMock = mockStudent();
-        const mockStudentEntity = StudentMapper.fromDomain(studentMock);
-
         const parentStudentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const studentRepository = MockRepositoriesForUnitTest.mockRepositories();

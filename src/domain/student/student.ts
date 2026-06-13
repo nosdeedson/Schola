@@ -6,9 +6,6 @@ import { Class } from "../class/class";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
 
 export class Student extends Person {
-   
-    // TODO create code to generate enrolled code
-
     private enrolled: string;
     private parents?: Parent[];
     private ratings: Rating[];
@@ -25,23 +22,23 @@ export class Student extends Person {
         deletedAt?: Date,
     }) {
 
-        super( {
-            name: params.name, 
-            birthday: params.birthday, 
-            id: params.id, 
-            createdAt: params.createdAt, 
-            updatedAt: params.updatedAt, 
+        super({
+            name: params.name,
+            birthday: params.birthday,
+            id: params.id,
+            createdAt: params.createdAt,
+            updatedAt: params.updatedAt,
             deletedAt: params.deletedAt
         });
         this.enrolled = params.enrolled;
         // TODO SHOULD VALIDATE EVERYTIME
-        if(params.nameParents){
-            this.parents= Student.createMyParents(params.nameParents);
+        if (params.nameParents) {
+            this.parents = Student.createMyParents(params.nameParents);
             this.validate();
         }
     }
 
-    validate(): void{
+    validate(): void {
         new StudentValidator().validate(this);
     }
 
@@ -49,8 +46,8 @@ export class Student extends Person {
         return this.parents
     }
 
-    setParents(parent: Parent){
-        if(!this.parents){
+    setParents(parent: Parent) {
+        if (!this.parents) {
             this.parents = [];
         }
         this.parents.push(parent);
@@ -60,21 +57,25 @@ export class Student extends Person {
         return this.enrolled;
     }
 
-    getRating(): Rating[]{
+    setEnrolled(enrolled: string) {
+        this.enrolled = enrolled;
+    }
+
+    getRating(): Rating[] {
         return this.ratings;
     }
 
-    getSchoolGroup(): Class{
+    getSchoolGroup(): Class {
         return this.schoolGroup;
     }
 
-    setSchoolGroup(schoolGroup: Class){
+    setSchoolGroup(schoolGroup: Class) {
         this.schoolGroup = schoolGroup;
     }
 
     static toDomain(entity: StudentEntity): Student {
         let parents = [];
-        if(entity.parents && entity?.parents.length > 0){
+        if (entity.parents && entity?.parents.length > 0) {
             entity.parents.forEach(it => {
                 parents.push(Parent.toDomain(it));
             })
@@ -95,15 +96,15 @@ export class Student extends Person {
         return student;
     }
 
-    static createMyParent(nameParent: string): Parent{
+    static createMyParent(nameParent: string): Parent {
         return new Parent({
             name: nameParent,
             nameStudents: [this.name]
         });
     }
 
-    static createMyParents(nameParents: string[]): Parent[]{
-        if(nameParents.length == 0) return [];
+    static createMyParents(nameParents: string[]): Parent[] {
+        if (nameParents.length == 0) return [];
         let parents = [];
         nameParents.forEach(it => {
             parents.push(Student.createMyParent(it));

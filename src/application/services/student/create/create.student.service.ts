@@ -7,6 +7,8 @@ import { StudentEntity } from "@/infrastructure/entities/student/student.entity"
 import { CreateStudentDto } from "./create.student.dto";
 import { CreateGenericService } from "@/application/services/@shared/create-generic-service";
 import { Class } from "@/domain/class/class";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 export class CreateStudentService extends CreateGenericService {
 
@@ -32,15 +34,16 @@ export class CreateStudentService extends CreateGenericService {
             }
             const fromBD = await this.studentRepository.findStudentByNameAndParentNames(dto.name, dto.parentsName);
             if (fromBD) {
-                fromBD.birthday = dto.birthday;
-                fromBD.enrolled = dto.enrolled;
-                fromBD.updatedAt = new Date();
-                fromBD.schoolGroup = fromBD.schoolGroup ? fromBD.schoolGroup : schoolGroup;
-                await this.studentRepository.create(fromBD);
+                fromBD.setBirthDay(dto.birthday);
+                fromBD.setEnrolled(dto.enrolled);
+                fromBD.setUpdatedAt(new Date());
+                const keepSameSchool = fromBD.getSchoolGroup() ? fromBD.getSchoolGroup() : schoolGroup
+                fromBD.setSchoolGroup(keepSameSchool);
+                await this.studentRepository.create(StudentMapper.fromDomain(fromBD));
                 return fromBD;
             } else {
                 let student = new Student({ birthday: dto.birthday, name: dto.name, enrolled: dto.enrolled });
-                student.setSchoolGroup(Class.from(schoolGroup));
+                student.setSchoolGroup(schoolGroup);
                 if (student?.notification?.hasError()) {
                     throw new SystemError(student.notification.errors, 422);
                 }
