@@ -10,6 +10,11 @@ import { ParentStudentRepository } from "../../../../infrastructure/repositories
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { ParentStudentMapper } from "@/infrastructure/mappers/parent-student/parent-student-mapper";
+import { Parent } from "@/domain/parent/parent";
 
 describe('CreateParentService integration tests', () => {
 
@@ -50,21 +55,21 @@ describe('CreateParentService integration tests', () => {
     it('should update parent with previously created by the student', async () => {
         const student = mockStudent();
         const studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
         const parent = mockParent();
         parent.setStudents([]);
         const parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
-        const parentStudentEntity = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
+        const parentStudentEntity = ParentStudentMapper.fromDomain(parent, student);
         expect(await parentStudentRepository.create(parentStudentEntity)).toBeInstanceOf(ParentStudentEntity);
         const expectBirthday = new Date();
         let input = new CreateParentDto(expectBirthday, parent.getName(), [student.getName()]);
         let service = new CreateParentService(parentRepository);
         const result = await service.execute(input);
-        expect(result).toBeInstanceOf(ParentEntity);
+        expect(result).toBeInstanceOf(Parent);
         const parentUpdated = await parentRepository.findAll();
         expect(parentUpdated).toBeDefined();
-        expect(parentUpdated[0].birthday.getTime()).toBe(expectBirthday.getTime());
+        expect(parentUpdated[0].getBirthday().getTime()).toBe(expectBirthday.getTime());
     });
 
     it('should save a parent', async () => {
@@ -72,12 +77,12 @@ describe('CreateParentService integration tests', () => {
         let input = new CreateParentDto(parent.getBirthday(), parent.getName(), ['jose']);
         const service = new CreateParentService(parentRepository);
         const result = await service.execute(input);
-        expect(result).toBeInstanceOf(ParentEntity);
+        expect(result).toBeInstanceOf(Parent);
         const parentSaved = await parentRepository.findAll();
         expect(parentSaved).toBeDefined();
         expect(parentSaved.length).toBe(1);
-        expect(parentSaved[0].birthday.getTime()).toBe(parent.getBirthday().getTime());
-        expect(parentSaved[0].fullName).toBe(parent.getName());
+        expect(parentSaved[0].getBirthday().getTime()).toBe(parent.getBirthday().getTime());
+        expect(parentSaved[0].getName()).toBe(parent.getName());
     });
 
     it("should throw an error", async () => {

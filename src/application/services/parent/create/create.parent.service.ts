@@ -20,8 +20,8 @@ export class CreateParentService extends CreateGenericService {
         try {
             const parentExist = await this.parentRepository.findByParentNameAndStudentNames(dto.name, dto.students);
             if (parentExist) {
-                parentExist.birthday = dto.birthday;
-                await this.parentRepository.update(parentExist);
+                parentExist.setBirthDay(dto.birthday);
+                await this.parentRepository.update(ParentMapper.fromDomain(parentExist));
                 return parentExist;
             } else {
                 let parent = CreateParentDto.toParent(dto);

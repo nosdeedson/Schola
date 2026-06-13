@@ -5,8 +5,9 @@ import { ParentRepository } from "../../../../infrastructure/repositories/parent
 import { StudentRepository } from "../../../../infrastructure/repositories/student/student.repository";
 import { UpdateParentService } from "./update.parent.service";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
-import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { Parent } from "@/domain/parent/parent";
 
 describe('UpdateParentService integration tests', () => {
 
@@ -51,18 +52,18 @@ describe('UpdateParentService integration tests', () => {
         const parent = mockParent();
         const parentEntity = ParentMapper.fromDomain(parent);
         parentEntity.birthday = null as any;
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         let results = await parentRepository.findAll();
         expect(results.length).toBe(1);
-        const wantedParentId = results[0].id;
+        const wantedParentId = results[0].getId();
         const service = new UpdateParentService(parentRepository);
         const wantedName = parent.getName();
         const wantedBirthday = new Date();
         expect(await service.execute(wantedBirthday, wantedName, wantedParentId));
         results = await parentRepository.findAll();
-        expect(results[0].fullName).toBe(wantedName);
-        expect(results[0].birthday.getTime()).toBe(wantedBirthday.getTime());
+        expect(results[0].getName()).toBe(wantedName);
+        expect(results[0].getBirthday().getTime()).toBe(wantedBirthday.getTime());
     });
 
 });

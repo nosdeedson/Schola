@@ -49,7 +49,7 @@ export class ParentRepository implements ParentReporitoryInterface {
         return ParentMapper.fromEntity(entity);
     }
 
-    async findByParentNameAndStudentNames(nameParent: string, studentNames: string[]): Promise<ParentEntity> {
+    async findByParentNameAndStudentNames(nameParent: string, studentNames: string[]): Promise<Parent> {
         const qb = this.dataSource.createQueryBuilder(ParentStudentEntity, 'ps')
             .innerJoin('ps.parent', 'parent')
             .innerJoin('ps.student', 'student')
@@ -58,7 +58,7 @@ export class ParentRepository implements ParentReporitoryInterface {
             .select('parent')
             .distinct(true);
         const p = await qb.getRawOne();
-        return p ? this.parentRepository.findOneBy({ id: p.parent_id }) : null;
+        return p ? ParentMapper.fromEntity(await this.parentRepository.findOneBy({ id: p.parent_id })) : null;
     }
 
     async findAll(): Promise<Parent[]> {

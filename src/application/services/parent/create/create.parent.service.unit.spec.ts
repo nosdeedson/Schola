@@ -4,42 +4,41 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { ParentEntity } from "../../../../infrastructure/entities/parent/parent.entity";
 import { CreateParentDto, } from './create.parent.dto';
 import { CreateParentService } from './create.parent.service';
+import { Parent } from "@/domain/parent/parent";
 
 
 describe('CreateParentService unit tests', () => {
 
     it('should find a parent and update its value', async () => {
         const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
 
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         parentRepository.findByParentNameAndStudentNames = jest.fn()
-            .mockImplementation(async () => await Promise.resolve(mockEntity));
+            .mockImplementation(async () => await Promise.resolve(parentMock));
         const dto = new CreateParentDto(parentMock.getBirthday(), parentMock.getName(), ['jose']);
         const service = new CreateParentService(parentRepository);
 
         const result = await service.execute(dto);
-        expect(result).toBeInstanceOf(ParentEntity);
-        expect(result).toMatchObject(mockEntity);
+        expect(result).toBeInstanceOf(Parent);
+        expect(result).toMatchObject(parentMock);
         expect(parentRepository.update).toHaveBeenCalledTimes(1);
         expect(parentRepository.findByParentNameAndStudentNames).toHaveBeenCalledTimes(1);
     });
 
     it('should save the parrent', async () => {
         const parentMock = mockParent();
-        const mockEntity = ParentMapper.fromDomain(parentMock);
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         parentRepository.findByParentNameAndStudentNames = jest.fn()
             .mockImplementation(async () => await Promise.resolve(null));
         parentRepository.create = jest.fn()
-            .mockImplementation(async () => await Promise.resolve(mockEntity));
+            .mockImplementation(async () => await Promise.resolve(parentMock));
 
         const dto = new CreateParentDto(parentMock.getBirthday(), parentMock.getName(), ['jose']);
         const service = new CreateParentService(parentRepository);
-        
+
         const result = await service.execute(dto);
-        expect(result).toBeInstanceOf(ParentEntity);
-        expect(result).toMatchObject(ParentMapper.fromDomain(parentMock));
+        expect(result).toBeInstanceOf(Parent);
+        expect(result).toMatchObject(parentMock);
         expect(parentRepository.create).toHaveBeenCalledTimes(1);
         expect(parentRepository.findByParentNameAndStudentNames).toHaveBeenCalledTimes(1);
     });
@@ -73,5 +72,5 @@ describe('CreateParentService unit tests', () => {
             ],
         });
     });
-    
+
 });

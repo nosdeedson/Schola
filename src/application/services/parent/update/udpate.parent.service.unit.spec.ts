@@ -22,8 +22,7 @@ describe('UpdateParentService unit test', () => {
     it('should update the parent', async () => {
         const parentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const parent = mockParent();
-        const parentEntity = ParentMapper.fromDomain(parent);
-        parentRepository.find = jest.fn().mockImplementationOnce(() => parentEntity);
+        parentRepository.find = jest.fn().mockImplementationOnce(() => parent);
         const wantedName = 'Marcus';
         const wantedBirthday = new Date();
         const service = new UpdateParentService(parentRepository);

@@ -7,6 +7,10 @@ import { QueryFailedError, Repository } from "typeorm";
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
+import { Parent } from "@/domain/parent/parent";
 
 describe('DeleteParentService integration tests', () => {
 
@@ -38,7 +42,7 @@ describe('DeleteParentService integration tests', () => {
     it('should not delete a parent with invalid id', async () => {
         let parent = mockParent()
         let parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         let result = await parentRepository.findAll();
         expect(result.length).toBe(1);
@@ -57,10 +61,10 @@ describe('DeleteParentService integration tests', () => {
         students[0].setParents(parent);
 
         let studentEntity = StudentMapper.fromDomain(students[0]);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         let wantedId = parent.getId();
         const service = new DeleteParentService(parentRepository);

@@ -7,10 +7,12 @@ import { FindParentService } from './find.parent.service';
 import { TestDataSource } from "@/infrastructure/repositories/config-test/test.datasource";
 import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { Parent } from "@/domain/parent/parent";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Student } from "@/domain/student/student";
 
 describe('FindParentService integration tests ', () => {
-
-
     let parentEntity: Repository<ParentEntity>;
     let parentRepository: ParentRepository;
 
@@ -38,16 +40,13 @@ describe('FindParentService integration tests ', () => {
 
     it('should not find a parent passing a non-existent id', async () => {
         let parent = mockParent();
-
         let parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
-
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
         const wantedId = 'e9c826b0-2fb4-41a7-aae8-8eed8fa999e8';
-
         const service = new FindParentService(parentRepository);
         await expect(service.execute(wantedId)).rejects
             .toMatchObject({ errors: [{ context: 'parent', message: 'Parent not found' }] })
-    })
+    });
 
     it('should find a parent', async () => {
         let parent = mockParent();
@@ -56,10 +55,10 @@ describe('FindParentService integration tests ', () => {
         students[0].setParents(parent);
 
         let studentEntity = StudentMapper.fromDomain(students[0]);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
 
         let parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
 
         const wantedId = parent.getId();
 
@@ -70,5 +69,4 @@ describe('FindParentService integration tests ', () => {
         expect(result.name).toBe(parent.getName());
     });
 
-
-})
+});

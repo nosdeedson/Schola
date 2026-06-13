@@ -4,6 +4,8 @@ import { ParentRepository } from '../../../../infrastructure/repositories/parent
 import { FindAllParentService } from './findAll.parent.service';
 import { mockParent } from '../../../../../tests/mocks/domain/parent.mocks';
 import { TestDataSource } from '@/infrastructure/repositories/config-test/test.datasource';
+import { ParentMapper } from '@/infrastructure/mappers/parent/parent-mapper';
+import { Parent } from '@/domain/parent/parent';
 
 
 describe('FindAllParentService integration tests', () => {
@@ -35,7 +37,7 @@ describe('FindAllParentService integration tests', () => {
     it('should find an array with one parent', async () => {
         const parent = mockParent();
         const entity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(entity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(entity)).toBeInstanceOf(Parent);
         const service = new FindAllParentService(parentRepository);
         const results = await service.execute();
         expect(results).toBeDefined();
