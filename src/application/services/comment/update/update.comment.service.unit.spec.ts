@@ -3,8 +3,6 @@ import { UpdateCommentDto } from './update.comment.dto';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories'
 import { mockRating } from '../../../../../tests/mocks/domain/rating.mocks';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
-import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
-import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 
 describe('UpdateCommentService unit tests', () => {
 
@@ -23,7 +21,7 @@ describe('UpdateCommentService unit tests', () => {
         const service = new UpdateCommentService(commentRepository);
 
         await expect(service.execute(dto)).rejects
-            .toMatchObject([{ context: 'comment', message: 'comment not found' }]);
+            .toMatchObject({ "errors": [{ context: 'comment', message: 'comment not found' }] });
     });
 
     it('should update a comment', async () => {

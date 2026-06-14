@@ -12,9 +12,8 @@ describe('find academic semester unit test', () => {
     it('should find an academicSemester', async () => {
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         const semester = mockSemester();
-        const entity = AcademicSemesterMapper.fromDomain(semester);
         semesterRepository.find = jest.fn().mockImplementationOnce(() => {
-            return entity;
+            return semester;
         });
         let wantedId = semester.getId();
         const service = new FindAcademicSemesterService(semesterRepository);
