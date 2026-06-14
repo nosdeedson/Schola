@@ -6,6 +6,7 @@ import { TestDataSource } from "../../../../infrastructure/repositories/config-t
 import { mockSemester } from "../../../../../tests/mocks/domain/semester.mocks";
 import { mockQuarter } from "../../../../../tests/mocks/domain/quarter.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { AcademicSemester } from "@/domain/academc-semester/academic.semester";
 
 describe('AcademicSemester integration tests', () => {
 
@@ -35,7 +36,7 @@ describe('AcademicSemester integration tests', () => {
     it('should receive two semester', async () => {
         const semester1 = mockSemester({ currentSemester: true });
         const entity1 = AcademicSemesterMapper.fromDomain(semester1);
-        expect(await semesterRepository.create(entity1)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity1)).toBeInstanceOf(AcademicSemester);
         const thirdQuarter = mockQuarter({
             currentQuarter: false,
             beginningDate: new Date(2026, 7, 1, 0, 0, 0),
@@ -52,7 +53,7 @@ describe('AcademicSemester integration tests', () => {
             secondQuarter: forth
         });
         const entity2 = AcademicSemesterMapper.fromDomain(semester2);
-        expect(await semesterRepository.create(entity2)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity2)).toBeInstanceOf(AcademicSemester);
         const service = new FindAllAcademicSemesterService(semesterRepository);
         const results = await service.execute();
 

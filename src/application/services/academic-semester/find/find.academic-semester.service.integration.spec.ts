@@ -34,7 +34,7 @@ describe('Academic semester find integrations tests', () => {
         let wantedId = semester.getId();
         var inBD = await semesterRepository.find(wantedId);
         expect(inBD).toBeNull()
-        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemester);
         const service = new FindAcademicSemesterService(semesterRepository);
         let result = await service.execute(wantedId);
         expect(result).toBeDefined();
@@ -44,7 +44,7 @@ describe('Academic semester find integrations tests', () => {
     it('should not find an academicSemester on BD', async () => {
         let semester = mockSemester();
         let entity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemester);
         let doesNotExist = 'a8b3ddcd-936e-4a35-8d85-6ddde1b019ed';
         const service = new FindAcademicSemesterService(semesterRepository);
         await expect(service.execute(doesNotExist))

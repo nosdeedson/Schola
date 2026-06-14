@@ -32,7 +32,7 @@ describe('academic semester integration test', () => {
     it('should delete an academic semester from BD', async () => {
         const semester = mockSemester();
         const entity = AcademicSemesterMapper.fromDomain(semester);
-        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemesterEntity);
+        expect(await semesterRepository.create(entity)).toBeInstanceOf(AcademicSemester);
         const idToDelete = semester.getId();
         const hasOne = await semesterRepository.find(idToDelete);
         expect(hasOne).toBeDefined();

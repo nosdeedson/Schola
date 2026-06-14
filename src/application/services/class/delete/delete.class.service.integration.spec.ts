@@ -4,6 +4,8 @@ import { DeleteClassService } from './delete.class.service';
 import { Repository } from "typeorm";
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { Class } from "@/domain/class/class";
 
 
 describe('delete class service integration test', () => {
@@ -31,7 +33,7 @@ describe('delete class service integration test', () => {
         let schoolgroup = mockClass();
         let entity = ClassMapper.fromDomain(schoolgroup);
         let wantedId = schoolgroup.getId();
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
 
         let result = await classRepository.find(wantedId);
         expect(result).toBeDefined();
@@ -48,7 +50,7 @@ describe('delete class service integration test', () => {
         let entity = ClassMapper.fromDomain(schoolgroup);
         let wantedId = 'a58827ba-0560-4cab-b283-19d1435fbdd2';
 
-        expect(await classRepository.create(entity)).toBeInstanceOf(ClassEntity);
+        expect(await classRepository.create(entity)).toBeInstanceOf(Class);
 
         let results = await classRepository.findAll();
         expect(results.length).toBe(1);

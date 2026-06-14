@@ -2,9 +2,7 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { FindAllAcademicSemesterService } from './findAll.academic-semester.service';
 import { mockSemester } from '../../../../../tests/mocks/domain/semester.mocks';
 import { mockQuarter } from '../../../../../tests/mocks/domain/quarter.mocks';
-import { AcademicSemesterEntity } from '../../../../infrastructure/entities/academic-semester/academic.semester.entity';
 import { QueryFailedError } from "typeorm";
-import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 
 describe('findAll service unit tests', () => {
 
@@ -22,7 +20,6 @@ describe('findAll service unit tests', () => {
 
     it('should receive an array of semester', async () => {
         const semester1 = mockSemester({ currentSemester: true });
-        const entity1 = AcademicSemesterMapper.fromDomain(semester1)
         const thirdQuarter = mockQuarter({
             currentQuarter: false,
             beginningDate: new Date(2026, 7, 1, 0, 0, 0),
@@ -38,13 +35,12 @@ describe('findAll service unit tests', () => {
             firstQuarter: thirdQuarter,
             secondQuarter: forth
         });
-        const entity2 = AcademicSemesterMapper.fromDomain(semester2);
         const semesterRepository = await MockRepositoriesForUnitTest.mockRepositories();
         semesterRepository.findAll = jest.fn()
             .mockImplementationOnce(() => {
                 return [
-                    entity1,
-                    entity2
+                    semester1,
+                    semester2
                 ]
             })
         const service = new FindAllAcademicSemesterService(semesterRepository);
