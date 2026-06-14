@@ -2,6 +2,7 @@ import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { WorkerRepositoryInterface } from "../../../../domain/worker/worker.repository.interface";
 import { FindWorkerDto } from "../find/find.worker.dto";
 import { OutputFindAllWorkerDto } from "./list.worker.dto";
+import { Worker } from "@/domain/worker/worker";
 
 export class FindAllWorkerService {
 
@@ -12,22 +13,19 @@ export class FindAllWorkerService {
     }
 
     public async execute(): Promise<OutputFindAllWorkerDto> {
-        let workers = await this.workerRepository.findAll();
-        
-        let results : OutputFindAllWorkerDto =  { 
-            all: workers.map((it: WorkerEntity) =>{
-                let output: FindWorkerDto = {
-                    birthday: it.birthday,
-                    createdAt: it.createdAt,
-                    id: it.id,
-                    name: it.fullName,
-                    role: it.role,
-                    udpatedAt: it.updatedAt
-                } 
-                return output;
-            })
-        };
-
+        let workers = await this.workerRepository.findAll() as unknown as Worker[];
+        let results: OutputFindAllWorkerDto = { all: [] };
+        workers.forEach(it => {
+            const worker: FindWorkerDto = {
+                birthday: it.getBirthday(),
+                createdAt: it.getCreatedAt(),
+                id: it.getId(),
+                name: it.getName(),
+                role: it.getRole(),
+                udpatedAt: it.getUpdatedAt()
+            }
+            results.all.push(worker)
+        });
         return results;
     }
 }

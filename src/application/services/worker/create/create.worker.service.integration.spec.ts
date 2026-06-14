@@ -10,17 +10,15 @@ import { WorkerRepository } from "../../../../infrastructure/repositories/worker
 import { CreateWorkerDto } from "./create.worker.dto";
 import { CreateWorkerService } from "./create.worker.service";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { Worker } from "@/domain/worker/worker";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe("CreateWorkerService integration test", () => {
-    let workerEntity: Repository<WorkerEntity>;
     let workerRepository: WorkerRepositoryInterface;
-    let schoolGroupEntity: Repository<ClassEntity>;
     let schoolGroupRepository: ClassRepositoryInterface;
 
     beforeAll(async () => {
-        workerEntity = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
-        schoolGroupEntity = TestDataSource.getRepository(ClassEntity);
         schoolGroupRepository = new ClassRepository(TestDataSource) as ClassRepository;
     });
 
@@ -38,8 +36,8 @@ describe("CreateWorkerService integration test", () => {
             classCode: null as any,
         } as CreateWorkerDto;
         const entity = await service.execute(worker);
-        expect(entity).toBeInstanceOf(WorkerEntity);
-        const validation = workerRepository.find(entity.id);
+        expect(entity).toBeInstanceOf(Worker);
+        const validation = workerRepository.find(entity.getId());
         expect(validation).toBeDefined();
     });
 
@@ -49,9 +47,9 @@ describe("CreateWorkerService integration test", () => {
             name: 'just name',
             role: RoleEnum.TEACHER
         } as CreateWorkerDto;
-        const entity = await service.execute(teacher) as WorkerEntity;
-        expect(entity).toBeInstanceOf(WorkerEntity);
-        const validation = workerRepository.find(entity.id);
+        const entity = await service.execute(teacher) as Worker;
+        expect(entity).toBeInstanceOf(Worker);
+        const validation = workerRepository.find(entity.getId());
         expect(validation).toBeDefined();
     });
 
@@ -59,7 +57,7 @@ describe("CreateWorkerService integration test", () => {
         let service = new CreateWorkerService(workerRepository);
         let worker = mockWorker();
         let workerEntity = WorkerMapper.fromDomain(worker);
-        expect(await workerRepository.create(workerEntity)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(workerEntity)).toBeInstanceOf(Worker);
         const wantedBirthday = new Date();
         let dto = {
             name: worker.getName(),
@@ -68,10 +66,10 @@ describe("CreateWorkerService integration test", () => {
             birthday: wantedBirthday,
         } as CreateWorkerDto;
         const entity = await service.execute(dto);
-        expect(entity).toBeInstanceOf(WorkerEntity);
-        const validation = await workerRepository.find(entity.id);
+        expect(entity).toBeInstanceOf(Worker);
+        const validation = await workerRepository.find(entity.getId());
         expect(validation).toBeDefined();
-        expect(validation.fullName).toBe(worker.getName());
-        expect(validation.birthday.getTime()).toBe(wantedBirthday.getTime());
+        expect(validation.getName()).toBe(worker.getName());
+        expect(validation.getBirthday().getTime()).toBe(wantedBirthday.getTime());
     });
 });

@@ -3,6 +3,7 @@ import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { CreateWorkerDto } from "../create/create.worker.dto";
 import { Worker } from "@/domain/worker/worker";
 import { SystemError } from "../../@shared/system-error";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 export class CreateGetWorkerService {
     private workerRepository: WorkerRepositoryInterface;
@@ -13,16 +14,16 @@ export class CreateGetWorkerService {
         this.workerRepository = workerRepository;
     }
 
-    async execute(input: CreateWorkerDto): Promise<WorkerEntity> {
+    async execute(input: CreateWorkerDto): Promise<Worker> {
         try {
             const workerExist = await this.workerRepository.findByName(input.name);
-            if (workerExist) return workerExist;
+            if (workerExist) return workerExist as Worker;
             let worker = new Worker({ birthday: input.birthday, name: input.name, role: input.role });
             if (worker.notification?.hasError()) {
                 throw new SystemError(worker.notification.getErrors(), 422);
             }
             let model = WorkerMapper.fromDomain(worker);
-            return await this.workerRepository.create(model) as WorkerEntity;
+            return await this.workerRepository.create(model) as Worker;
         } catch (error) {
             throw error;
         }

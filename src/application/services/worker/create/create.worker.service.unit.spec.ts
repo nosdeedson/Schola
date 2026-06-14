@@ -4,8 +4,8 @@ import { CreateWorkerDto } from "./create.worker.dto"
 import { CreateWorkerService } from "./create.worker.service"
 import { SystemError } from '../../@shared/system-error'
 import { AccessType } from "../../../../domain/user/access.type";
-import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { Worker } from "@/domain/worker/worker";
 
 describe('CreateWorkerService test unit', () => {
     let worker: CreateWorkerDto;
@@ -23,9 +23,9 @@ describe('CreateWorkerService test unit', () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
 
         workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
-        workerRepository.create = jest.fn().mockResolvedValue(WorkerMapper.fromDomain(mockWorker()));
+        workerRepository.create = jest.fn().mockResolvedValue(mockWorker());
         const service = new CreateWorkerService(workerRepository);
-        expect(await service.execute(worker)).toBeInstanceOf(WorkerEntity);
+        expect(await service.execute(worker)).toBeInstanceOf(Worker);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
     });
@@ -68,13 +68,12 @@ describe('CreateWorkerService test unit', () => {
 
     it('should update an existing teacher', async () => {
         const worker = mockWorker();
-        const entity = WorkerMapper.fromDomain(worker);
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
-        workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
-        workerRepository.create = jest.fn().mockImplementationOnce(() => Promise.resolve(entity));
+        workerRepository.findByName = jest.fn().mockImplementationOnce(() => Promise.resolve(worker));
+        workerRepository.create = jest.fn().mockImplementationOnce(() => Promise.resolve(worker));
         const service = new CreateWorkerService(workerRepository);
-        const dto = new CreateWorkerDto({ classCode: '113', name: entity.fullName, birthday: new Date(), accessType: AccessType.TEACHER });
-        expect(await service.execute(dto)).toBeInstanceOf(WorkerEntity);
+        const dto = new CreateWorkerDto({ classCode: '113', name: worker.getName(), birthday: new Date(), accessType: AccessType.TEACHER });
+        expect(await service.execute(dto)).toBeInstanceOf(Worker);
         expect(workerRepository.create).toHaveBeenCalledTimes(1);
         expect(workerRepository.findByName).toHaveBeenCalledTimes(1);
     });

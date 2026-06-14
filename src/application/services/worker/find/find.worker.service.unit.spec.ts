@@ -4,24 +4,20 @@ import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-rep
 import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { FindWorkerService } from './find.worker.service';
 import { SystemError } from "../../@shared/system-error";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
 
 
 describe('FindWorkerService unit tests', () => {
 
-    let worker: Worker;
-    let workerEntity: WorkerEntity;
-
-    beforeEach(() => {
-        worker = new Worker({ birthday: new Date(), name: 'jose', role: RoleEnum.TEACHER, id: '123'});
-        workerEntity = WorkerMapper.fromDomain(worker);
-    });
+    afterEach(async () => { jest.clearAllMocks() });
 
     it('should find a worker', async () => {
+        const worker = mockWorker()
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
-        workerRepository.find = 
-        jest.fn().mockReturnValue(await Promise.resolve(workerEntity));
+        workerRepository.find = jest.fn().mockReturnValue(await Promise.resolve(worker));
         const service = new FindWorkerService(await workerRepository);
-        let id = '123';
+        let id = worker.getId();
         const result = await service.execute(id);
 
         expect(result.id).toBe(id)

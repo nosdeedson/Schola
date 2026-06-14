@@ -3,15 +3,15 @@ import { WorkerRepository } from "../../../../infrastructure/repositories/worker
 import { DeleteWorkerService } from './delete.worker.service';
 import { TestDataSource } from "../../../../infrastructure/repositories/config-test/test.datasource";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
+import { Worker } from "@/domain/worker/worker";
 
 
 describe('DeleteWorkerService integration test', () => {
 
-    let workerModel;
     let workerRepository: WorkerRepository;
 
     beforeAll(async () => {
-        workerModel = TestDataSource.getRepository(WorkerEntity);
         workerRepository = new WorkerRepository(TestDataSource);
     });
 
@@ -24,13 +24,11 @@ describe('DeleteWorkerService integration test', () => {
     });
 
     it('should delete a worker', async () => {
-
         let worker = mockWorker();
         let workerModel = WorkerMapper.fromDomain(worker);
-
         let wantedId = worker.getId();
 
-        expect(await workerRepository.create(workerModel)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(workerModel)).toBeInstanceOf(Worker);
 
         let results = await workerRepository.findAll();
         expect(results.length).toBe(1);
@@ -41,14 +39,14 @@ describe('DeleteWorkerService integration test', () => {
         expect(results).toHaveLength(0);
     })
 
-    it('should do nothing if worker does not exist', async () => {
+    it('should do anything if worker does not exist', async () => {
 
         let worker = mockWorker();
         let workerModel = WorkerMapper.fromDomain(worker);
 
         let wantedId = '00ac5b00-1326-40ce-8db9-bafaaa95f762';
 
-        expect(await workerRepository.create(workerModel)).toBeInstanceOf(WorkerEntity);
+        expect(await workerRepository.create(workerModel)).toBeInstanceOf(Worker);
 
         let result = await workerRepository.find(worker.getId());
         expect(result).toBeDefined();
@@ -56,7 +54,7 @@ describe('DeleteWorkerService integration test', () => {
 
         await service.execute(wantedId);
         result = await workerRepository.find(worker.getId());
-        expect(result.deletedAt).toBeNull();
+        expect(result.getDeletedAt()).toBeNull();
     });
 
 });

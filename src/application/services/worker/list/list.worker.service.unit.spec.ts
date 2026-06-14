@@ -3,29 +3,15 @@ import { Worker } from '../../../../domain/worker/worker'
 import { WorkerEntity } from '../../../../infrastructure/entities/worker/worker.entity';
 import { FindAllWorkerService } from './list.worker.service';
 import { MockRepositoriesForUnitTest } from '../../../../../tests/mocks/mock-repositories/mockRepositories';
+import { mockWorker } from '../../../../../tests/mocks/domain/worker.mock';
 
 
-describe('FindAllWorkerService unit test', () =>{
-    let workers: WorkerEntity[];
-    let worker : Worker;
-
-    beforeEach(() =>{
-        worker = new Worker({
-            birthday: new Date(),
-            name: 'edson',
-            role: RoleEnum.ADMINISTRATOR,
-            id: '123',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-    });
-
-        workers = [];
-        workers.push(WorkerMapper.fromDomain(worker));
-    });
+describe('FindAllWorkerService unit test', () => {
 
     it('should list all workers', async () => {
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
-        workerRepository.findAll = jest.fn().mockReturnValue(await Promise.resolve(workers));
+        const worker = mockWorker();
+        workerRepository.findAll = jest.fn().mockReturnValue(await Promise.resolve([worker]));
         const service = new FindAllWorkerService(await workerRepository);
         const result = await service.execute();
 
