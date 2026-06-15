@@ -314,7 +314,7 @@ describe('Class tests units', () => {
 
     it('should instantiate a domain class from ClassEntity', () => {
         const entity = ClassMapper.fromDomain(mockClass());
-        const domain = Class.from(entity);
+        const domain = ClassMapper.fromEntity(entity);
         expect(domain).toBeDefined();
         expect(entity.id).toBe(domain.getId());
     });

@@ -14,6 +14,8 @@ import { mockSemester } from "../mocks/domain/semester.mocks";
 import { mockQuarter } from "../mocks/domain/quarter.mocks";
 import { mockSaveRatingRequest } from "../mocks/controller/save-rating-request-dto-mock";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('Rating E2E TESTS', () => {
     let app: INestApplication;

@@ -117,10 +117,10 @@ describe('SchoolgroupController', () => {
   describe('find all schoolgroup', () => {
 
     it('should return all schoolgroup', async () => {
-      const entity1 = ClassMapper.fromDomain(mockClass());
-      const entity2 = ClassMapper.fromDomain(mockClass());
-      const entities = new FindAllClassDto([entity1, entity2]);
-      findAllSchoolgroupUsecase.execute.mockResolvedValue(entities);
+      const schoolGroup1 = mockClass();
+      const schoolGroup2 = mockClass();
+      const schoolGroups = new FindAllClassDto([schoolGroup1, schoolGroup2]);
+      findAllSchoolgroupUsecase.execute.mockResolvedValue(schoolGroups);
       const result = await controller.findAll();
       expect(result).toBeDefined();
       expect(result).toHaveLength(2);

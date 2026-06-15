@@ -8,6 +8,7 @@ import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 import { CreateCommentService } from "@/application/services/comment/create/create.comment.service";
 import { QueryFailedError } from "typeorm";
 import { rejects } from "assert";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 
 describe('CommentRatingUsecase', () => {
 
@@ -27,8 +28,8 @@ describe('CommentRatingUsecase', () => {
 
     it('should create a comment', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const ratingEntity = RatingMapper.fromDomain(mockRating());
-        ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(ratingEntity));
+        const rating = mockRating();
+        ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(rating));
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(void 0));
@@ -40,8 +41,8 @@ describe('CommentRatingUsecase', () => {
 
     it('while creating a comment should throw an error', async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
-        const ratingEntity = RatingMapper.fromDomain(mockRating());
-        ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(ratingEntity));
+        const rating = mockRating();
+        ratingRepository.find = jest.fn().mockImplementation(() => Promise.resolve(rating));
         const commentRepository = MockRepositoriesForUnitTest.mockRepositories();
         const commentService = jest.spyOn(CreateCommentService.prototype, 'execute')
             .mockImplementation(() => { throw new QueryFailedError(null, null, new Error('Failed')) });
@@ -54,4 +55,4 @@ describe('CommentRatingUsecase', () => {
         expect(exceptionHandler).toHaveBeenCalledTimes(1)
     });
 
-})
+});

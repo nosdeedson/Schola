@@ -31,6 +31,7 @@ export class RatingMapper {
     }
 
     static fromDomain(rating: Rating): RatingEntity {
+        if(!rating) return null;
         let entity = new RatingEntity();
         entity.createdAt = rating.getCreatedAt();
         entity.deletedAt = rating.getDeletedAt();

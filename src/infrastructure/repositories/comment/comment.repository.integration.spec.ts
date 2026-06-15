@@ -19,6 +19,7 @@ import { mockComment } from "../../../../tests/mocks/domain/comment.mocks";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
 import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 
 describe('CommentRepository unit test', () => {
 
@@ -84,7 +85,7 @@ describe('CommentRepository unit test', () => {
         //let entityBD = await ratingRepository.find(ratingEntity.id);
 
         let comment = mockComment();
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         let wantedId = comment.getId();
         expect(await repository.create(model)).toBeInstanceOf(Comment);
 
@@ -116,7 +117,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         await repository.create(model);
 
         expect(await repository.delete(wantedId)).toBe(void 0)
@@ -146,7 +147,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = 'd70bc62e-a53d-4cef-8366-de63099ebf4d';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', '489f0126-e7ca-44d6-8b11-13b61adc35d6');
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         await repository.create(model);
 
         expect(await repository.delete(wantedId)).toBe(void 0)
@@ -175,7 +176,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         await repository.create(model);
 
         let result = await repository.find(wantedId);
@@ -204,11 +205,11 @@ describe('CommentRepository unit test', () => {
         await ratingRepository.create(ratingEntity);
 
         let comment = new Comment('just a comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         await repository.create(model);
 
         let comment2 = new Comment('just another comment', 'f07d183f-eb37-417e-8a58-ad9ed4b3910f');
-        let model2 = CommentMapper.fromDomain(comment2, ratingEntity);
+        let model2 = CommentMapper.fromDomain(comment2, rating);
         await repository.create(model2);
 
         let results = await repository.findAll();
@@ -242,7 +243,7 @@ describe('CommentRepository unit test', () => {
         let wantedId = '489f0126-e7ca-44d6-8b11-13b61adc35d6';
         let wantedComment = 'just a test';
         let comment = new Comment(wantedComment, 'f07d183f-eb37-417e-8a58-ad9ed4b3910f', wantedId);
-        let model = CommentMapper.fromDomain(comment, ratingEntity);
+        let model = CommentMapper.fromDomain(comment, rating);
         await repository.create(model);
 
         let change = 'changed the comment';

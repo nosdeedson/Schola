@@ -8,6 +8,10 @@ import { ParentStudentEntity } from "../../entities/parent-student/parent.studen
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { Parent } from "@/domain/parent/parent";
+import { Student } from "@/domain/student/student";
 
 describe('ParentStudentRepository', () => {
 
@@ -36,10 +40,10 @@ describe('ParentStudentRepository', () => {
     it('should create a parent student relationship', async () => {
         let parent = mockParent();
         let parentEntity = ParentMapper.fromDomain(parent);
-        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(ParentEntity);
+        expect(await parentRepository.create(parentEntity)).toBeInstanceOf(Parent);
         let student = mockStudent();
         let studentEntity = StudentMapper.fromDomain(student);
-        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(StudentEntity);
+        expect(await studentRepository.create(studentEntity)).toBeInstanceOf(Student);
         const entity = new ParentStudentEntity();
         entity.parent = parentEntity;
         entity.student = studentEntity;

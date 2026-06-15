@@ -1,6 +1,6 @@
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { Student } from "../../../domain/student/student";
-import { StudentEntity } from "./student.entity"
 
 describe("StudentModel unit test", () => {
 
@@ -29,7 +29,7 @@ describe("StudentModel unit test", () => {
     });
 
     it('should instantiate an array of sudents model', () => {
-        let models = StudentEntity.toStudentsEntities(students);
+        let models = StudentMapper.toStudentsEntities(students);
         expect(models).toBeDefined();
         expect(models.length).toBe(2);
         expect(models[0].id).toStrictEqual(student.getId())

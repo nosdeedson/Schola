@@ -1,3 +1,4 @@
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
 import { ParentEntity } from "./parent.entity";
 
@@ -17,7 +18,7 @@ describe('ParentEntity', () => {
 
     it('should instantiate a ParentModel', () => {
         const parent = mockParent();
-        let models = ParentEntity.toParentsModels([parent]);
+        let models = ParentMapper.toParentsModels([parent]);
         expect(models).toBeDefined();
         expect(models[0].birthday).toBe(parent.getBirthday());
         expect(models[0].createdAt).toBe(parent.getCreatedAt());

@@ -143,7 +143,7 @@ describe('RatingRepository unit tests', () => {
         let ratingEntity = RatingMapper.fromDomain(rating);
         expect(await ratingRepository.create(ratingEntity)).toBeInstanceOf(Rating);
         const comment = mockComment({ namePersoHaveDone: student.getName() });
-        const commentEntity = CommentMapper.fromDomain(comment, ratingEntity);
+        const commentEntity = CommentMapper.fromDomain(comment, rating);
         expect(await commentRepository.create(commentEntity)).toBeInstanceOf(Comment);
         const wantedStudentId = student.getId();
 

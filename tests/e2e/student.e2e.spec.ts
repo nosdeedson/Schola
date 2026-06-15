@@ -18,6 +18,9 @@ import { mockClass } from "../mocks/domain/class.mocks";
 import { mockTransferStudendtsRequestDto } from "../mocks/controller/transfer-students-request-dto-mock";
 import { SchoolgroupModule } from "@/infrastructure/api/controllers/schoolgroup/schoolgroup.module";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 describe('STUDENT E2E TESTS', () => {
     let app: INestApplication;

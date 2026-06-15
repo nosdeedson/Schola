@@ -13,9 +13,9 @@ describe('studentRatingUsecase', () => {
     it("should find a ranting of a student", async () => {
         const ratingRepository = MockRepositoriesForUnitTest.mockRepositories();
         const id = "22ac66ab-fae4-4666-82b9-cf0c774f54ed";
-        const ratingEntity = RatingMapper.fromDomain(mockRating());
+        const rating = mockRating();
         const studentRatingUsecase = jest.spyOn(FindRatingByStudent.prototype, 'findRatingByStudent')
-            .mockResolvedValue([ratingEntity]);
+            .mockResolvedValue([rating]);
         const usecase = new FindStudentRantingUsecase(ratingRepository);
         const result = await usecase.execute(id);
         expect(result).toHaveLength(1)

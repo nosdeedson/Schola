@@ -1,9 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { setEnv } from '../../../../tests/mocks/env/env.mock';
-import { DataBaseConnectionModule } from '../../../infrastructure/data-base-connection/data-base-connection.module';
-import { AcademicSemesterEntity } from '../../../infrastructure/entities/academic-semester/academic.semester.entity';
-import { ClassEntity } from '../../../infrastructure/entities/class/class.entity';
-import { RepositoryFactoryService } from '../../../infrastructure/factory/repositiry-factory/repository-factory.service';
 import { FindCurrentSemesterService } from '../../services/academic-semester/find-current/find-current-semester.service';
 import { FindTeacherClassRatingService } from '../../services/class/find-teacher-class-rating/find-teacher-class-rating';
 import { TeacherClassRatingDto } from './find-teacher-class-rating-dto';
@@ -53,14 +47,12 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
         const teacher = mockWorker();
         classModel.setTeacher(teacher);
         classModel.setStudent(mockStudent());
-        const classEntity = ClassMapper.fromDomain(classModel);
         const semester = mockSemester();
-        const semesterEntity = AcademicSemesterMapper.fromDomain(semester);
 
         const findTeacherClassRating = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
-            .mockResolvedValue(Promise.resolve(classEntity));
+            .mockResolvedValue(Promise.resolve(classModel));
         const currentSemester = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
-            .mockResolvedValue(Promise.resolve(semesterEntity));
+            .mockResolvedValue(Promise.resolve(semester));
 
         const teacherId = teacher.getId();
         const classId = classModel.getId();
@@ -82,7 +74,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
         const exceptionHandler = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("class not found") });
         const semesterSErvice = jest.spyOn(FindCurrentSemesterService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(AcademicSemesterMapper.fromDomain(mockSemester())));
+            .mockImplementation(() => Promise.resolve(mockSemester()));
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const semesterRepository = MockRepositoriesForUnitTest.mockRepositories();
@@ -95,7 +87,7 @@ describe('FindTeacherClassRatingUsecase unit test', () => {
 
     it('should throw an error while find the semester', async () => {
         const findTeacherClassRatingService = jest.spyOn(FindTeacherClassRatingService.prototype, 'execute')
-            .mockImplementation(() => Promise.resolve(ClassMapper.fromDomain(mockClass())));
+            .mockImplementation(() => Promise.resolve(mockClass()));
         const exceptionHandler = jest.spyOn(ExceptionHandler, 'exceptionHandler')
             .mockImplementation(() => { throw new BadRequestException("semester not found") });
 

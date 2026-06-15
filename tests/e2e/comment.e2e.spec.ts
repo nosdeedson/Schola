@@ -12,6 +12,8 @@ import { AcademicSemesterEntity } from "@/infrastructure/entities/academic-semes
 import { mockSemester } from "../mocks/domain/semester.mocks";
 import { createE2EConfing } from "../e2e.confing";
 import { AcademicSemesterMapper } from "@/infrastructure/mappers/semester/academic-semester-mapper";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 describe("comment E2E TEST", () => {
     let app: INestApplication;

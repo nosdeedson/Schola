@@ -1,4 +1,5 @@
 import { UpdateClassDto } from "@/application/services/class/update/udpate.class.dto";
+import { Worker } from "@/domain/worker/worker";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 
 export class UpdateSchoolgroupUsecaseDto {
@@ -16,7 +17,7 @@ export class UpdateSchoolgroupUsecaseDto {
         this.teacherName = params.teacherName;
     }
 
-    toInput(teacher: WorkerEntity): UpdateClassDto {
+    toInput(teacher: Worker): UpdateClassDto {
         const dto = new UpdateClassDto(
             this.id,
             this.nameBook,

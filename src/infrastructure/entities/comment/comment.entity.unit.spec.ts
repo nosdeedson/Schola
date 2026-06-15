@@ -1,6 +1,7 @@
+import { CommentMapper } from "@/infrastructure/mappers/comment/comment-mapper";
 import { Comment } from "../../../domain/comment/comment";
-import { RatingEntity } from "../rating/rating.entity";
-import { CommentEntity } from "./comment.entity";
+import { Rating } from "@/domain/rating/rating";
+import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
 
 
 jest.mock('../../../domain/rating/rating')
@@ -10,10 +11,10 @@ describe("CommentModel unit tests", () => {
     let comment: Comment;
     let comment1;
     let comments: Comment[] = [];
-    let ratingModel: RatingEntity;
+    let ratingModel: Rating;
 
     beforeEach(() => {
-        ratingModel = new RatingEntity();
+        ratingModel = mockRating();
         comment = new Comment("comment", 'name who has done');
         comment1 = new Comment("comment1", 'name who has done');
         comments.push(comment)

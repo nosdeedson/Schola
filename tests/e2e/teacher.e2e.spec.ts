@@ -11,6 +11,9 @@ import { StudentEntity } from "@/infrastructure/entities/student/student.entity"
 import { mockStudent } from "../mocks/domain/student.mocks";
 import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { mockWorker } from "../mocks/domain/worker.mock";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('TEACHAR E2E TESTS', () => {
     let app: INestApplication;

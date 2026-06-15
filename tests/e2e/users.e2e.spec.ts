@@ -18,6 +18,9 @@ import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { mockCreateUserRequestDto } from "../mocks/controller/create-user-request-dto-mock";
 import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../mocks/domain/class.mocks";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe("USERS E2E TESTS", () => {
     let app: INestApplication;

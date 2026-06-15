@@ -2,7 +2,6 @@ import { CreateRatingService } from "@/application/services/rating/create/create
 import { AcademicSemesterRespositoryInterface } from "@/domain/academc-semester/academic.semester.repository.interface";
 import { RatingRepositoryInterface } from "@/domain/rating/rating.repository.interface";
 import { StudentRepositoryInterface } from "@/domain/student/student.repository.interface";
-import { BadRequestException, Injectable } from "@nestjs/common";
 import { SaveRatingUsecaseDto } from "./save-rating-usecase-dto";
 import { FindCurrentSemesterService } from "@/application/services/academic-semester/find-current/find-current-semester.service";
 import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
@@ -32,14 +31,12 @@ export class SaveRatingUsecase {
             const semesterService = new FindCurrentSemesterService(this.semesterRespository);
             const semester = await semesterService.execute();
             const studentService = new FindStudentService(this.studentRepository);
-            const studentEntity = await studentService.execute(dto.studentBeingEvaluatedId);
+            const student = await studentService.execute(dto.studentBeingEvaluatedId);
             const workerService = new FindWorkerService(this.workerRepo);
             const teacher = await workerService.execute(dto.teacherId);
-            let quarter: Quarter;
-            const quarterEntity = semester.quarters[0].currentQuarter ? semester.quarters[0] : semester.quarters[1];
-            quarter = Quarter.fromEntity(quarterEntity);
+            let quarter = semester.getFirstQuarter().currentQuarter ? semester.getFirstQuarter() : semester.getSecondQuarter(); 
             const rating = new CreateRatingDto(
-                Student.toDomain(studentEntity),
+                student,
                 quarter,
                 dto.listing,
                 dto.writing,

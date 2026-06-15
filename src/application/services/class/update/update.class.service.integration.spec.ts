@@ -45,7 +45,7 @@ describe('update class integration test', () => {
 
         let wantedId = 'ea224f51-5404-4228-8a77-2795b900702d';
         let wantedBookName = 'new book';
-        let wantedTeacher = WorkerMapper.fromDomain(mockWorker());
+        let wantedTeacher = mockWorker() // WorkerMapper.fromDomain(mockWorker());
         let input: UpdateClassDto = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
         const service = new UpdateClassService(classRepository);
         await expect(service.execute(input)).rejects
@@ -66,7 +66,7 @@ describe('update class integration test', () => {
         let wantedBookName = 'new book';
         let wantedTeacher = WorkerMapper.fromDomain(mockWorker({name: 'Emily'}));
         expect(await teacherRepository.create(wantedTeacher)).toBeInstanceOf(Worker);
-        let input = new UpdateClassDto(wantedId, wantedBookName, wantedTeacher);
+        let input = new UpdateClassDto(wantedId, wantedBookName, WorkerMapper.fromEntity(wantedTeacher));
 
         const service = new UpdateClassService(classRepository);
 

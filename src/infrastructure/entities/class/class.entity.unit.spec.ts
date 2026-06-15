@@ -9,6 +9,9 @@ import { RoleEnum } from "../../../domain/worker/roleEnum";
 import { WorkerEntity } from "../worker/worker.entity";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { mockWorker } from "../../../../tests/mocks/domain/worker.mock";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('Classmodel unit tests', () => {
 

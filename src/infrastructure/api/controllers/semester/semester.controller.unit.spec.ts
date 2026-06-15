@@ -16,6 +16,7 @@ import { SemesterRequestDto } from './dto/create/semester-request-dto';
 import { UpdateAcademicSemesterRequestDto } from './dto/update/update-academic-semester-request-dto';
 import { DeleteSemesterUsecase } from '@/application/usecases/semester-usecases/delete/delete-semester-usecase';
 import { AcademicSemesterMapper } from '../../../../infrastructure/mappers/semester/academic-semester-mapper';
+import { AcademicSemester } from '@/domain/academc-semester/academic.semester';
 
 
 describe('SemesterController', () => {
@@ -115,19 +116,19 @@ describe('SemesterController', () => {
   });
 
   it('should find all semester', async () => {
-    const entity1 = AcademicSemesterMapper.fromDomain(mockSemester());
-    const entity2 = AcademicSemesterMapper.fromDomain(mockSemester());
-    findAllSemesterUsecase.execute.mockResolvedValue(new FindAllAcademicSemesterDto([entity1, entity2]));
+    const class1 = mockSemester();
+    const class2 = mockSemester();
+    findAllSemesterUsecase.execute.mockResolvedValue(new FindAllAcademicSemesterDto([class1, class2]));
     const result = await controller.findAll();
     expect(result).toBeDefined();
     expect(result).toHaveLength(2);
-    expect([entity1.id, entity2.id].includes(result[0].id)).toBeTruthy();
-    expect([entity1.id, entity2.id].includes(result[1].id)).toBeTruthy();
+    expect([class1.getId(), class2.getId()].includes(result[0].id)).toBeTruthy();
+    expect([class1.getId(), class2.getId()].includes(result[1].id)).toBeTruthy();
     expect(findAllSemesterUsecase.execute).toHaveBeenCalledTimes(1);
   });
 
   it('should not find any semester', async () => {
-    const entities: AcademicSemesterEntity[] = [];
+    const entities: AcademicSemester[] = [];
     const mockResult = new FindAllAcademicSemesterDto(entities);
     findAllSemesterUsecase.execute.mockResolvedValue(mockResult);
     const result = await controller.findAll();

@@ -2,6 +2,8 @@ import { Grade } from '../../../src/domain/enum/grade/grade';
 import { RatingCommentResponseDto, StudentRatingUsecaseResponseDto } from '../../../src/application/usecases/find-student-rating/student-rating-usecase-response-dto';
 import { RatingEntity } from '../../../src/infrastructure/entities/rating/rating.entity';
 import { QuarterResponseDto } from '@/infrastructure/api/controllers/semester/dto/find/quarter-response-dto';
+import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
+import { QuarterMapper } from '@/infrastructure/mappers/semester/quarter-mapper';
 
 export function mockStudentRatingUsecaseDtoOut(
     overrides: RatingEntity
@@ -18,7 +20,7 @@ export function mockStudentRatingUsecaseDtoOut(
         vocabulary: Grade.EXCELENT,
         studentId: overrides.student.id ?? 'f33b56e7-3e23-487d-85c0-1d4b6dad3e34',
         studentName: overrides.student.fullName ?? 'student name',
-        quarter: overrides.quarter ? QuarterResponseDto.fromQuarterEntity(overrides.quarter) : null,
-        comments: RatingCommentResponseDto.from(overrides.comments[0]) as any
+        quarter: overrides.quarter ? QuarterResponseDto.fromQuarterEntity(QuarterMapper.fromEntity(overrides.quarter)) : null,
+        comments: RatingCommentResponseDto.from(CommentMapper.fromEntity(overrides.comments[0])) as any
     }
 }

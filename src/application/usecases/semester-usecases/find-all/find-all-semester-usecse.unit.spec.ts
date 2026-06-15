@@ -24,7 +24,7 @@ describe('FindAllSemesterUsecase', () => {
     });
 
     it('should find all semester', async () => {
-        const semester = AcademicSemesterMapper.fromDomain(mockSemester());
+        const semester = mockSemester();
         const repository = MockRepositoriesForUnitTest.mockRepositories();
         repository.findAll = jest.fn().mockImplementation(() => Promise.resolve([semester]));
         const findSemesterService = jest.spyOn(FindAllAcademicSemesterService.prototype, 'execute')
@@ -33,7 +33,7 @@ describe('FindAllSemesterUsecase', () => {
         const result = await usecase.execute();
         expect(result).toBeDefined();
         expect(result.all).toHaveLength(1);
-        expect(result.all[0].id).toBe(semester.id);
+        expect(result.all[0].id).toBe(semester.getId());
         expect(findSemesterService).toHaveBeenCalledTimes(1);
     });
 });

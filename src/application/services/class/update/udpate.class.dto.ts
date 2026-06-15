@@ -1,14 +1,14 @@
-import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
+import { Worker } from "@/domain/worker/worker";
 
 export class UpdateClassDto{
     id: string;
     nameBook: string;
-    teacher: WorkerEntity;
+    teacher: Worker;
 
     constructor(
         id: string,
         nameBook: string,
-        teacher: WorkerEntity,
+        teacher: Worker,
     ){
         this.nameBook = nameBook;
         this.teacher = teacher;

@@ -13,6 +13,8 @@ import { createE2EConfing } from "../e2e.confing";
 import { mockCreateSchoolgroupRequestDto } from "../mocks/controller/schoolgroup-request-dto-mock";
 import { mockScheduleRequestDto } from "../mocks/controller/schedule-request-dto-mock";
 import { ScheduleRequestDto } from "@/infrastructure/api/controllers/schoolgroup/dto/create/create-schoolgroup-request-dto";
+import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 describe('SCHOOLGROUP CONTROLLER', () => {
     let app: INestApplication;

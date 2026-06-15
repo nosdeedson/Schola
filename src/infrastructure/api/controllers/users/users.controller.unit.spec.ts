@@ -5,13 +5,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUsecase } from '../../../../application/usecases/user-usecases/create-user/create-user-usecase';
 import { AccessType } from '../../../../domain/user/access.type';
 import { mockCreateUsersDto, mockFindUserDto } from '../../../../../tests/mocks/mock-dtos/mock-dtos';
-import { DataBaseConnectionModule } from '../../../data-base-connection/data-base-connection.module';
 import { UsersController } from './users.controller';
 import { SystemError } from '@/application/services/@shared/system-error';
 import { FindAllUserUsecase } from '@/application/usecases/user-usecases/find-all/find-all-user-usecase';
 import { FindAllUserDto } from '@/application/services/user/findAll/findAll.user.dto';
 import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
-import { UserEntity } from '@/infrastructure/entities/user/user.entity';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -149,15 +147,13 @@ describe('UsersController', () => {
     it('should find users', async () => {
       const user1 = mockUser(AccessType.ADMIN);
       const user2 = mockUser(AccessType.TEACHER);
-      const userEntity1 = UserMapper.fromDomain(user1);
-      const userEntity2 = UserMapper.fromDomain(user2);
-      const dto = new FindAllUserDto([userEntity1, userEntity2]);
+      const dto = new FindAllUserDto([user1, user2]);
       findAllUserUsecase.execute.mockResolvedValue(dto);
       const result = await controller.findAll();
       expect(result).toBeDefined();
       expect(result).toHaveLength(2);
-      expect([result[0].id, result[1].id].includes(userEntity1.id)).toBeTruthy();
-      expect([result[0].id, result[1].id].includes(userEntity2.id)).toBeTruthy();
+      expect([result[0].id, result[1].id].includes(user1.getId())).toBeTruthy();
+      expect([result[0].id, result[1].id].includes(user2.getId())).toBeTruthy();
       expect(findAllUserUsecase.execute).toHaveBeenCalledTimes(1);
     })
   });

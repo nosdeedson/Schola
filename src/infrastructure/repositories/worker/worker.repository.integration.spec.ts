@@ -5,6 +5,7 @@ import { WorkerRepository } from "./worker.repository";
 import { TestDataSource } from "../config-test/test.datasource";
 import { mockWorker } from "../../../../tests/mocks/domain/worker.mock";
 import { QueryFailedError } from "typeorm";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 
 const MILISECONDS = 1000;
@@ -37,9 +38,9 @@ describe("WorkerRepository unit tets", () => {
         await repository.create(model);
         let result = await repository.find(id);
         expect(result).toBeDefined();
-        expect(result.birthday).toEqual(model.birthday);
-        expect(result.role).toEqual(model.role)
-        expect(result.id).toEqual(model.id)
+        expect(result.getBirthday()).toEqual(model.birthday);
+        expect(result.getRole()).toEqual(model.role)
+        expect(result.getId()).toEqual(model.id)
     });
 
     it('should find a worker entity in the database', async () => {
@@ -49,9 +50,9 @@ describe("WorkerRepository unit tets", () => {
         await repository.create(model);
         let result = await repository.find(expectedId);
         expect(result).toBeDefined();
-        expect(result.birthday).toEqual(model.birthday);
-        expect(result.role).toEqual(model.role)
-        expect(result.id).toEqual(model.id)
+        expect(result.getBirthday()).toEqual(model.birthday);
+        expect(result.getRole()).toEqual(model.role)
+        expect(result.getId()).toEqual(model.id)
     });
 
 
@@ -64,10 +65,10 @@ describe("WorkerRepository unit tets", () => {
         await repository.create(model2);
         let results = await repository.findAll();
         expect(results.length).toBe(2);
-        expect(results[0].id).toEqual(model.id)
-        expect(results[0].role).toEqual(model.role)
-        expect(results[1].id).toEqual(model2.id)
-        expect(results[1].role).toEqual(model2.role)
+        expect(results[0].getId()).toEqual(model.id)
+        expect(results[0].getRole()).toEqual(model.role)
+        expect(results[1].getId()).toEqual(model2.id)
+        expect(results[1].getRole()).toEqual(model2.role)
     });
 
     it('should udpate a workers entity in the database', async () => {
@@ -86,11 +87,11 @@ describe("WorkerRepository unit tets", () => {
     it('should find teacher entity by name', async () => {
         let worker = mockWorker();
         let model = WorkerMapper.fromDomain(worker);
-        expect(await repository.create(model)).toBeInstanceOf(WorkerEntity);
+        expect(await repository.create(model)).toBeInstanceOf(Worker);
         let entity = await repository.findByName(model.fullName);
         expect(entity).toBeDefined();
-        expect(entity.id).toEqual(model.id);
-        expect(entity.role).toEqual(model.role);
+        expect(entity.getId()).toEqual(model.id);
+        expect(entity.getRole()).toEqual(model.role);
     });
 
     it('should throw a QueryFailedError while saving a Worker', async () => {
@@ -98,4 +99,4 @@ describe("WorkerRepository unit tets", () => {
         await expect(repository.create(entity)).rejects.toThrow(QueryFailedError);
     });
 
-})
+});

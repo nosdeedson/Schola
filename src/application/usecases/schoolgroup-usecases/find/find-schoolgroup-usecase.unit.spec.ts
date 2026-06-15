@@ -1,5 +1,4 @@
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { ClassEntity } from "@/infrastructure/entities/class/class.entity";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
 import { FindSchoolgroupUsecase } from "./find-schoolgroup-usecase";
 import { FindClassDto } from "@/application/services/class/find/find.class.dto";
@@ -11,15 +10,15 @@ import { FindClassService } from "@/application/services/class/find/find.class.s
 describe('FindSchoolgroupUsecase', () => {
 
     it('should find a class', async () => {
-        const entity = ClassMapper.fromDomain(mockClass());
+        const schoolgroup = mockClass();
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn()
-            .mockImplementation(() => Promise.resolve(entity));
+            .mockImplementation(() => Promise.resolve(schoolgroup));
         const usecase = new FindSchoolgroupUsecase(classRepository);
-        const result = await usecase.execute(entity.id);
+        const result = await usecase.execute(schoolgroup.getId());
         expect(result).toBeInstanceOf(FindClassDto);
-        expect(result.id).toBe(entity.id);
-        expect(result.classCode).toBe(entity.classCode);
+        expect(result.id).toBe(schoolgroup.getId());
+        expect(result.classCode).toBe(schoolgroup.getClassCode());
     });
 
     it('should throw an error if class not found', async () => {
@@ -33,4 +32,4 @@ describe('FindSchoolgroupUsecase', () => {
         expect(tratarError).toHaveBeenCalledTimes(1);
         expect(findClassService).toHaveBeenCalledTimes(1);
     });
-})
+});

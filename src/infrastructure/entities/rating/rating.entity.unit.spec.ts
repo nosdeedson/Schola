@@ -1,6 +1,6 @@
 import { Rating } from "../../../domain/rating/rating"
-import { RatingEntity } from "./rating.entity"
 import { mockRating } from "../../../../tests/mocks/domain/rating.mocks";
+import { RatingMapper } from "@/infrastructure/mappers/rating/rating-mapper";
 
 describe('RatingModel test units', () => {
 
@@ -37,7 +37,7 @@ describe('RatingModel test units', () => {
     });
 
     it('should convert an array of Rating to RatingModel', () => {
-        let models = RatingEntity.toRatingsEntity(ratings);
+        let models = RatingMapper.toRatingsEntity(ratings);
         expect(models).toBeDefined();
         expect(models.length).toBe(2);
         expect(models[0].id).toStrictEqual(rating.getId());
@@ -45,6 +45,6 @@ describe('RatingModel test units', () => {
     });
 
     it('should return undefined', () => {
-        expect(RatingEntity.toRatingsEntity(null)).toBeUndefined();
+        expect(RatingMapper.fromDomain(null)).toBeNull();
     })
 });

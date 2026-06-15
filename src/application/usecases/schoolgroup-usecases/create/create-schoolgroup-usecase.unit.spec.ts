@@ -1,13 +1,12 @@
 import { CreateSchoolgroupUseCase } from "./create-schoolgroup-usecase";
 import { BadRequestException } from "@nestjs/common";
-import { RoleEnum } from "../../../../domain/worker/roleEnum";
-import { WorkerEntity } from "../../../../infrastructure/entities/worker/worker.entity";
 import { CreateClassService } from "../../../services/class/create/create.class.service";
 import { mockCreateSchoolgroupUseCaseDto } from "../../../../../tests/mocks/usecases/create-schoolgroup-usecase-dto.mocks";
 import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
 import { mockWorker } from "../../../../../tests/mocks/domain/worker.mock";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 
 const mockManager = {
@@ -34,8 +33,8 @@ describe('CreateSchoolGroupUsecase', () => {
 
         const dto = mockCreateSchoolgroupUseCaseDto();
 
-        const teacher = WorkerMapper.fromDomain(mockWorker());
-        const input = dto.toCreateClassDto(teacher);
+        const teacher = mockWorker();
+        const input = dto.toCreateClassDto(WorkerMapper.fromDomain((teacher)));
 
         const createTeacher = jest.spyOn(CreateGetWorkerService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(teacher));
@@ -77,8 +76,8 @@ describe('CreateSchoolGroupUsecase', () => {
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();
         const dto = mockCreateSchoolgroupUseCaseDto();
-        const teacher = WorkerMapper.fromDomain(mockWorker());
-        const input = dto.toCreateClassDto(teacher);
+        const teacher = mockWorker();
+        const input = dto.toCreateClassDto(WorkerMapper.fromDomain(teacher));
 
         const createTeacher = jest.spyOn(CreateGetWorkerService.prototype, 'execute')
             .mockImplementationOnce(() => Promise.resolve(teacher));

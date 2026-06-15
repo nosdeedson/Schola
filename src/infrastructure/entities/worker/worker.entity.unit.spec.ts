@@ -1,3 +1,4 @@
+import { WorkerMapper } from '@/infrastructure/mappers/worker/worker-mapper';
 import { mockClass } from '../../../../tests/mocks/domain/class.mocks';
 import { mockWorker } from '../../../../tests/mocks/domain/worker.mock';
 import { RoleEnum } from '../../../domain/worker/roleEnum';

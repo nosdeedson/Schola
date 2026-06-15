@@ -16,7 +16,7 @@ describe('update class service unit test', () => {
         let nonExistentId = '123';
         let wantedBookName = 'bookb1';
         let newTeacher = WorkerMapper.fromDomain(mockWorker());
-        let input = new UpdateClassDto(nonExistentId, wantedBookName, newTeacher);
+        let input = new UpdateClassDto(nonExistentId, wantedBookName, mockWorker());
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn().mockImplementationOnce(() => { return null });
@@ -31,7 +31,7 @@ describe('update class service unit test', () => {
         const newTeacher = WorkerMapper.fromDomain(mockWorker());
         let wantedId = schoolgroup.getId();
         let wantedBookName = 'bookb1';
-        let input = new UpdateClassDto(wantedId, wantedBookName, newTeacher);
+        let input = new UpdateClassDto(wantedId, wantedBookName, mockWorker());
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         classRepository.find = jest.fn().mockImplementationOnce(() => { return schoolgroup });

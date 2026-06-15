@@ -9,8 +9,9 @@ import { TransferStudentsAnotherClassUsecase } from '@/application/usecases/tran
 import { mockTransferStudendtsRequestDto } from '../../../../../tests/mocks/controller/transfer-students-request-dto-mock';
 import { NotFoundException } from '@nestjs/common';
 import { mockComment } from '../../../../../tests/mocks/domain/comment.mocks';
-import { CommentEntity } from '@/infrastructure/entities/comment/comment.entity';
 import { TransferStudendtsRequestDto } from './dto/transfer-students-request-dto';
+import { RatingMapper } from '@/infrastructure/mappers/rating/rating-mapper';
+import { CommentMapper } from '@/infrastructure/mappers/comment/comment-mapper';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -59,7 +60,7 @@ describe('StudentController', () => {
   it('should find a rating', async () => {
     const rating = mockRating();
     const ratingEntity = RatingMapper.fromDomain(rating);
-    ratingEntity.comments = CommentEntity.toCommentsEntity([mockComment()], ratingEntity);
+    ratingEntity.comments = CommentMapper.toCommentsEntity([mockComment()], rating);
     const wantedId = ratingEntity.id;
     const out = mockStudentRatingUsecaseDtoOut(ratingEntity);
     findStudentRatingUsecase.execute.mockResolvedValue([out])

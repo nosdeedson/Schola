@@ -17,7 +17,7 @@ describe('UpdateSchoolgroupUsecase', () => {
     });
 
     it('should update a schoolgroup', async () => {
-        const teacher = WorkerMapper.fromDomain(mockWorker());
+        const teacher = mockWorker();
 
         const classRepository = MockRepositoriesForUnitTest.mockRepositories();
         const workerRepository = MockRepositoriesForUnitTest.mockRepositories();

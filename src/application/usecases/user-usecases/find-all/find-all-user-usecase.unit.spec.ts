@@ -4,7 +4,6 @@ import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-rep
 import { FindAllUserUsecase } from "./find-all-user-usecase";
 import { AccessType } from "@/domain/user/access.type";
 import { mockUser } from '../../../../../tests/mocks/domain/user.mock';
-import { UserEntity } from "@/infrastructure/entities/user/user.entity";
 
 describe('FindAllUserUsecase', () => {
 
@@ -26,9 +25,7 @@ describe('FindAllUserUsecase', () => {
     it('should find users', async () => {
         const user1 = mockUser(AccessType.ADMIN);
         const user2 = mockUser(AccessType.TEACHER);
-        const userEntity1 = UserMapper.fromDomain(user1);
-        const userEntity2 = UserMapper.fromDomain(user2);
-        const dto = new FindAllUserDto([userEntity1, userEntity2]);
+        const dto = new FindAllUserDto([user1, user2]);
         const userService = jest.spyOn(FindAllUserService.prototype, 'execute')
             .mockImplementation(() => Promise.resolve(dto));
         const repository = MockRepositoriesForUnitTest.mockRepositories();

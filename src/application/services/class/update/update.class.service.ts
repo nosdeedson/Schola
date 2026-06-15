@@ -18,7 +18,7 @@ export class UpdateClassService {
             throw new SystemError([{ context: 'class', message: "class not found" }], 404);
         }
         schoolgroup.setNameBook(dto.nameBook);
-        schoolgroup.setTeacher(WorkerMapper.fromEntity(dto.teacher));
+        schoolgroup.setTeacher(dto.teacher);
         schoolgroup.setUpdatedAt(new Date());
         await this.classRepository.update(ClassMapper.fromDomain(schoolgroup));
     }

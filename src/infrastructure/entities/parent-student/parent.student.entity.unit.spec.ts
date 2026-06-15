@@ -1,18 +1,16 @@
-import { ParentEntity } from "../parent/parent.entity";
-import { StudentEntity } from "../student/student.entity";
-import { ParentStudentEntity } from "../parent-student/parent.student.entity";
 import { mockStudent } from "../../../../tests/mocks/domain/student.mocks";
 import { mockParent } from "../../../../tests/mocks/domain/parent.mocks";
+import { ParentStudentMapper } from "@/infrastructure/mappers/parent-student/parent-student-mapper";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 
 describe('ParentStudentEntity', () => {
   it('should be defined', () => {
     const student = mockStudent();
     const parent = mockParent(); 
-    const studentEntity = StudentMapper.fromDomain(student);
-    const parentEntity = ParentMapper.fromDomain(parent);
-    const parentStudentEntity = ParentStudentMapper.fromDomain(parentEntity, studentEntity);
+    const parentStudentEntity = ParentStudentMapper.fromDomain(parent, student);
     expect(parentStudentEntity).toBeDefined();
-    expect(parentStudentEntity.parent).toBe(parentEntity);
-    expect(parentStudentEntity.student).toBe(studentEntity);
+    expect(parentStudentEntity.parent).toStrictEqual(ParentMapper.fromDomain(parent));
+    expect(parentStudentEntity.student).toStrictEqual(StudentMapper.fromDomain(student));
   });
 } )

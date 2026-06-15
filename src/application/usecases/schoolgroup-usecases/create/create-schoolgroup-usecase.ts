@@ -4,10 +4,11 @@ import { CreateWorkerDto } from "@/application/services/worker/create/create.wor
 import { ClassRepositoryInterface } from "@/domain/class/class.repository.interface";
 import { AccessType } from "@/domain/user/access.type";
 import { WorkerRepositoryInterface } from "@/domain/worker/worker.repository.interface";
-import { WorkerEntity } from "@/infrastructure/entities/worker/worker.entity";
 import { ExceptionHandler } from "@/infrastructure/utils/exception-handler/exception-handler";
 import { CreateSchoolgroupUseCaseDto } from "./dto/create-schoolgroup-usecase.dto";
 import { CreateGetWorkerService } from "@/application/services/worker/create-or-get-worker/create-get-worker.service";
+import { Worker } from "@/domain/worker/worker";
+import { WorkerMapper } from "@/infrastructure/mappers/worker/worker-mapper";
 
 export class CreateSchoolgroupUseCase {
 
@@ -24,9 +25,9 @@ export class CreateSchoolgroupUseCase {
                 accessType: AccessType.TEACHER,
                 classCode: null,
             })
-            const teacher = await teacherService.execute(teacherDto) as WorkerEntity;
+            const teacher = await teacherService.execute(teacherDto) as Worker;
             let createService = new CreateClassService(this.classRepository);
-            let input = dto.toCreateClassDto(teacher);
+            let input = dto.toCreateClassDto(WorkerMapper.fromDomain(teacher));
             await createService.execute(input);
         } catch (error) {
             ExceptionHandler.exceptionHandler(error as SystemError);
