@@ -85,7 +85,7 @@ describe('Parent unit tests', () => {
     it('should convert a parentEntity to a domain parent', () => {
         const parent = mockParent();
         const parentEntity = ParentMapper.fromDomain(parent);
-        const toDomain = Parent.toDomain(parentEntity);
+        const toDomain = ParentMapper.fromEntity(parentEntity);
         expect(toDomain).toBeDefined();
         expect(toDomain.getId()).toBe(parentEntity.id);
     });

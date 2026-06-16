@@ -1,12 +1,10 @@
 import { CreateStudentDto } from "./create.student.dto";
 import { CreateStudentService } from './create.student.service';
 import { MockRepositoriesForUnitTest } from "../../../../../tests/mocks/mock-repositories/mockRepositories";
-import { StudentEntity } from "../../../../infrastructure/entities/student/student.entity";
 import { mockStudent } from "../../../../../tests/mocks/domain/student.mocks";
 import { mockClass } from "../../../../../tests/mocks/domain/class.mocks";
-import { ClassMapper } from "@/infrastructure/mappers/schoolgroup/class-mapper";
-import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
 import { Student } from "@/domain/student/student";
+import { mockParent } from "../../../../../tests/mocks/domain/parent.mocks";
 
 
 describe('CreateStudentService', () => {
@@ -83,8 +81,6 @@ describe('CreateStudentService', () => {
         expect(studentRepository.create).toHaveBeenCalledTimes(1);
         expect(schoolgroupRepository.findByClassCode).toHaveBeenCalledTimes(1);
     });
-
-
 
     it('should save student', async () => {
         const schoolGroup = mockClass();

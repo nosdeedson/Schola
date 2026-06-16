@@ -4,6 +4,7 @@ import { StudentValidator } from "./student.validator";
 import { Rating } from "../rating/rating";
 import { Class } from "../class/class";
 import { StudentEntity } from "@/infrastructure/entities/student/student.entity";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 export class Student extends Person {
     private enrolled: string;
@@ -31,11 +32,8 @@ export class Student extends Person {
             deletedAt: params.deletedAt
         });
         this.enrolled = params.enrolled;
-        // TODO SHOULD VALIDATE EVERYTIME
-        if (params.nameParents) {
-            this.parents = Student.createMyParents(params.nameParents);
-            this.validate();
-        }
+        this.parents = params.nameParents ? Student.createMyParents(params.nameParents) : null;
+        this.validate();
     }
 
     validate(): void {
@@ -71,29 +69,6 @@ export class Student extends Person {
 
     setSchoolGroup(schoolGroup: Class) {
         this.schoolGroup = schoolGroup;
-    }
-
-    static toDomain(entity: StudentEntity): Student {
-        let parents = [];
-        if (entity.parents && entity?.parents.length > 0) {
-            entity.parents.forEach(it => {
-                parents.push(Parent.toDomain(it));
-            })
-        }
-        let student = new Student({
-            nameParents: parents.map(it => it.getName()),
-            birthday: entity.birthday,
-            name: entity.fullName,
-            enrolled: entity.enrolled,
-            id: entity.id,
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt,
-            deletedAt: entity.deletedAt,
-        });
-        parents.forEach(it => {
-            student.setParents(it);
-        });
-        return student;
     }
 
     static createMyParent(nameParent: string): Parent {

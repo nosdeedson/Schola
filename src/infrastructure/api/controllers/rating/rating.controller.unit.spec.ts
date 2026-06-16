@@ -12,7 +12,6 @@ describe('RatingController', () => {
   let saveRatingUsecase: {
     execute: jest.Mock;
   };
-  // TODO HOW TO TEST CONTROLLER WITHOUT DEPENDING ON DATABASE CONNECTION
   beforeAll(async () => {
     module = await Test.createTestingModule({
       controllers: [RatingController],

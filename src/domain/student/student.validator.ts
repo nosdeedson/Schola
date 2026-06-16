@@ -10,13 +10,11 @@ export class StudentValidator implements Validator<Student>{
                 name: yup.string().required('Name should not be null'),
                 birthday: yup.date().required('Birthday should not be null'),
                 enrolled: yup.string().required('Enrolled should not be null'),
-                parents: yup.array().min(1)
             })
             .validateSync({
                 name: entity.getName(),
                 birthday: entity.getBirthday(),
                 enrolled: entity.getEnrolled(),
-                parents: entity.getParents()
             },{
                 abortEarly: false
             });

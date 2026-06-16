@@ -13,6 +13,8 @@ import { Student } from "@/domain/student/student";
 import { RepositoryInterface } from "@/domain/@shared/repository/repository.interface";
 import { PasswordHasher } from "@/helpers/password-encryption/password-hasher";
 import { UserMapper } from "@/infrastructure/mappers/user/user-mapper";
+import { StudentMapper } from "@/infrastructure/mappers/student/student-mapper";
+import { ParentMapper } from "@/infrastructure/mappers/parent/parent-mapper";
 
 export class CreateUserService {
 
@@ -45,10 +47,10 @@ export class CreateUserService {
             return Worker.toDomain(workerEntity, accessType);
         } else if (AccessType.PARENT == accessType) {
             let parentEntity = person as ParentEntity;
-            return Parent.toDomain(parentEntity);
+            return ParentMapper.fromEntity(parentEntity);
         } else {
             let entity = person as StudentEntity;
-            return Student.toDomain(entity);
+            return StudentMapper.fromEntity(entity);
         }
     }
 

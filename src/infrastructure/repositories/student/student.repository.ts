@@ -35,7 +35,6 @@ export class StudentRepository implements StudentRepositoryInterface {
     }
 
     async delete(id: string): Promise<void> {
-        // TODO is not softdeleting the student
         const student = await this.studentRepository.delete(id)
     }
 

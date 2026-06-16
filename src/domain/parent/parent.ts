@@ -36,20 +36,8 @@ export class Parent extends Person{
     setStudents(students: Student[]){
         this.students = students;
     }
-    // TODO CREATE A PARENT MAPPER THAT WILL CONVERT DOMAIN TO ENTITY AND VICE-VERSA TO IT FOR ALL
-    static toDomain(parentEntity: ParentEntity): Parent {
 
-        let parent = new Parent({
-            name: parentEntity.fullName,
-            birthday: parentEntity.birthday,
-            id: parentEntity.id,
-            createdAt: parentEntity.createdAt,
-            updatedAt: parentEntity.updatedAt,
-            deletedAt: parentEntity.deletedAt,
-        });
-        return parent;
-    }
-
+    
     static createMyChild(nameStudent: string): Student {
         return new Student({
             birthday: null,

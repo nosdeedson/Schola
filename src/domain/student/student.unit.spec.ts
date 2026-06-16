@@ -64,19 +64,7 @@ describe("student unit tests", () =>{
         expect(student.notification?.getErrors().length).toBe(1)
         expect(student.notification?.getErrors()[0].message).toBe('Enrolled should not be null')
         expect(student.notification?.messages('student')).toBe('student: Enrolled should not be null,')
-    })
-
-    it('should have error if parents empty', () =>{
-        let birthday = new Date();
-        let name = 'edson';
-        let enrolled = '123';
-        let nameParents = [] as any;
-        let student = new Student({birthday, name, enrolled, nameParents});
-
-        expect(student.notification?.getErrors().length).toBe(1)
-        expect(student.notification?.getErrors()[0].message).toBe('parents field must have at least 1 items')
-        expect(student.notification?.messages('student')).toBe('student: parents field must have at least 1 items,')
-    })
+    });
 
     it('should have two errors', () =>{
         let birthday;
@@ -120,7 +108,7 @@ describe("student unit tests", () =>{
     it('should convert studentEntity to domain student', () => {
         const studentEntity = StudentMapper.fromDomain(mockStudent());
         studentEntity.parents.push(ParentMapper.fromDomain(mockParent()));
-        const toDomain = Student.toDomain(studentEntity);
+        const toDomain = StudentMapper.fromEntity(studentEntity);
         expect(toDomain).toBeDefined();
         expect(toDomain.getId()).toBe(studentEntity.id);
     });

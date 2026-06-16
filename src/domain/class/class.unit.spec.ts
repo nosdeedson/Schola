@@ -41,7 +41,6 @@ describe('Class tests units', () => {
         )
     })
 
-    // TODO TESTS WITH DIFERENT TIMES AND VALIDATE FIRST DAY LESS THAN SECOND DAY
 
     it('Verify validate is called', () => {
         const classFile = jest.spyOn(Class.prototype, 'validate')
